@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.NoticeMapper">
+	<!-- 전체공지사항 리스트 -->
+	<select id="noticeList" parameterType="HashMap" resultType="HashMap" >
+		SELECT 
+			n.notice_no noticeNo, 
+			n.writer_emp_no writerEmpNo, 
+			n.dpt_no dptNo, 
+			n.title title, 
+			n.content content, 
+			n.create_datetime createDatetime, 
+			n.update_datetime updateDatetime, 
+			n.type type, 
+			e.emp_name name
+		FROM 
+			notice n 
+		INNER JOIN 
+			emp e
+		ON 
+			n.writer_emp_no = e.emp_no
+		WHERE 
+			(e.dpt_no = #{dptNo} AND n.type='부서')
+		OR
+			n.type='전사원'
+	</select>
+	<!-- 전사원공지사항 리스트 -->
+	<select id="allEmpNoticeList" parameterType="HashMap" resultType="HashMap">
+		SELECT 
+			n.notice_no noticeNo, 
+			n.writer_emp_no writerEmpNo, 
+			n.dpt_no dptNo, 
+			n.title title, 
+			n.content content, 
+			n.create_datetime createDatetime, 
+			n.update_datetime updateDatetime, 
+			n.type type, 
+			e.emp_name name
+		FROM 
+			notice n 
+		INNER JOIN 
+			emp e
+		ON 
+			n.writer_emp_no = e.emp_no
+		WHERE 
+			type = '전사원'
+	</select>
+	<!-- 부서별공지사항 리스트 -->
+	<select id="allDptNoticeList" parameterType="HashMap" resultType="HashMap">
+		SELECT 
+			n.notice_no noticeNo, 
+			n.writer_emp_no writerEmpNo, 
+			n.dpt_no dptNo, 
+			n.title title, 
+			n.content content, 
+			n.create_datetime createDatetime, 
+			n.update_datetime updateDatetime, 
+			n.type type, 
+			e.emp_name name
+		FROM 
+			notice n 
+		INNER JOIN 
+			emp e
+		ON 
+			n.writer_emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+		AND
+			type='부서'
+	</select>
+	<!-- 공지사항의 총갯수 구하기 -->
+	<select id="countNoticeList" resultType="int">
+		SELECT
+		    (SELECT COUNT(*) FROM notice WHERE TYPE = '부서') +
+		    (SELECT COUNT(*) FROM notice WHERE TYPE = '전사원') AS total_count;
+    </select>
+    <!-- 전사원유형의 공지사항 총갯수 -->
+    <select id="countEmpNoticeList" resultType="int">
+    	SELECT COUNT(*) 
+    	FROM 
+    		notice
+		WHERE 
+			type='전사원'
+    </select>
+    <!-- 공지사항 추가 -->
+   <insert id="insertNotice" parameterType="com.gd.foodbee.dto.NoticeDTO">
+    <selectKey resultType="int" order="AFTER" keyProperty="noticeNo">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+	    INSERT INTO notice (
+	        writer_emp_no,
+	        dpt_no,
+	        title,
+	        content,
+	        type,
+	        update_datetime,
+	        create_datetime
+	    ) VALUES (
+	        #{writerEmpNo},
+	        #{dptNo},
+	        #{title},
+	        #{content},
+	        #{type},
+	        NOW(),
+	        NOW()
+	    )
+	</insert>
+	<!-- 공지사항 상세보기 -->
+	<select id="noticeOne" parameterType="int" resultType="Map">
+		SELECT 
+			n.notice_no noticeNo, 
+			n.create_datetime createDatetime, 
+			n.dpt_no dptNo, 
+			n.title title, 
+			n.content content, 
+			nf.original_file originalFile, 
+			nf.save_file saveFile, 
+			e.emp_name empName
+		FROM 
+			notice n
+		LEFT JOIN 
+			notice_file nf ON n.notice_no = nf.notice_no
+		LEFT JOIN 
+			emp e ON n.writer_emp_no = e.emp_no
+		WHERE 
+			n.notice_no = #{noticeNo}
+	</select>
+	<!-- 공지사항 삭제하기 -->
+	<delete id="deleteNotice" parameterType="int">
+		DELETE 
+		FROM 
+			notice
+		WHERE 
+			notice_no = #{noticeNo}
+	</delete>
+</mapper>
