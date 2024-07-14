@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.EmpMapper">
+	<select id="selectEmpByNoAndPw" parameterType="com.gd.foodbee.dto.LoginDTO" resultType="com.gd.foodbee.dto.EmpDTO">
+		SELECT
+			emp_no empNo,
+			emp_name empName,
+			rank_name rankName,
+			dpt_no dptNo
+		FROM emp
+		WHERE 
+			emp_no = #{empNo} 
+			AND emp_pw = #{empPw}
+	</select>
+	<select id="selectEmpByNoAndEmail" parameterType="map" resultType="com.gd.foodbee.dto.EmpDTO">
+		SELECT
+			emp_no empNo,
+			emp_name empName,
+			emp_email empEmail
+		FROM emp
+		WHERE 
+			emp_no = #{empNo} 
+			AND emp_email = #{empEmail}
+	</select>
+	<update id="updateEmpPw" parameterType="map">
+		UPDATE emp
+		SET
+			emp_pw = #{empPw}
+		WHERE
+			emp_no = #{empNo}
+	</update>
+</mapper>
