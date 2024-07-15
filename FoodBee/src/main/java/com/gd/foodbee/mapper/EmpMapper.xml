@@ -25,8 +25,24 @@
 	<update id="updateEmpPw" parameterType="map">
 		UPDATE emp
 		SET
-			emp_pw = SHA2(#{empPw},256)
+			emp_pw = SHA2(#{empPw},256),
+			pw_update_datetime = NOW()
 		WHERE
 			emp_no = #{empNo}
+	</update>
+	
+	<update id="updateEmpSignup" parameterType="com.gd.foodbee.dto.EmpDTO">
+		UPDATE emp
+		SET
+			contact = #{contact},
+			post_no = #{postNo},
+			address = #{address},
+			emp_pw = SHA2(#{empPw},256),
+			pw_update_datetime = NOW(),
+			signup_YN = 'Y',
+			signup_date = NOW()
+		WHERE
+			emp_no = #{empNo}
+	
 	</update>
 </mapper>

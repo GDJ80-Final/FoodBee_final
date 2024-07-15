@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.LoginDTO;
+import com.gd.foodbee.dto.SignupDTO;
 
 @Mapper
 public interface EmpMapper {
@@ -25,4 +26,10 @@ public interface EmpMapper {
 	// 반환 값 : int
 	// 사용 클래스 : LoginServiceImpl.modifyEmpPw
 	int updateEmpPw(int empNo, String empPw);
+	
+	//회원가입
+	//파라미터 : EmpDTO empDTO
+	//반환 값 : int
+	//사용 클래스 : EmpServiceImpl.updateEmpSignup
+	int updateEmpSignup(EmpDTO empDTO);
 }
