@@ -10,7 +10,7 @@
 		FROM emp
 		WHERE 
 			emp_no = #{empNo} 
-			AND emp_pw = #{empPw}
+			AND emp_pw = SHA2(#{empPw},256)
 	</select>
 	<select id="selectEmpByNoAndEmail" parameterType="map" resultType="com.gd.foodbee.dto.EmpDTO">
 		SELECT
@@ -25,7 +25,7 @@
 	<update id="updateEmpPw" parameterType="map">
 		UPDATE emp
 		SET
-			emp_pw = #{empPw}
+			emp_pw = SHA2(#{empPw},256)
 		WHERE
 			emp_no = #{empNo}
 	</update>
