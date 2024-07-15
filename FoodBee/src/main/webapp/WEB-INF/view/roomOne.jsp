@@ -1,186 +1,200 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>È¸ÀÇ½Ç Á¤º¸ ¹× ¿¹¾à</title>
+<meta charset="UTF-8">
+<title>íšŒì˜ì‹¤ ì •ë³´ ë° ì˜ˆì•½</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	<h1>È¸ÀÇ½Ç ¿¹¾à</h1>
-	<form method="post" action="${pageContext.request.contextPath}/roomRsv">		
-		<input type="hidden" value="${roomNo}" name="roomNo">
-		<input type="date" value="${rsvDate}" name="rsvDate" readonly="readonly">
-		<div>¿¹¾àµÈ ½Ã°£ : </div>
-		<c:forEach var="m" items="${reservedTimes}">
-		    <input type="hidden" value="${m.startDateTime}" id="startDateTime_${m.index}">
-		    <input type="hidden" value="${m.endDateTime}" id="endDateTime_${m.index}">
-		    <div>${m.startDateTime}~${m.endDateTime}</div>
-		</c:forEach>
-		
-		<label for="start-time">½ÃÀÛ ½Ã°£:</label>
-	    <select id="start-time" name="startTime">
-	        <option selected="selected">:::¼±ÅÃ:::</option>        
-	    </select>
+<div id="reserved-times"></div>
+<h1>íšŒì˜ì‹¤ ì˜ˆì•½</h1>
+<form method="post" action="${pageContext.request.contextPath}/roomRsv">		
+	<input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
+	<input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
 	
-	    <label for="end-time">Á¾·á ½Ã°£:</label>
-	    <select id="end-time" name="endTime">
-	        <option selected="selected">:::¼±ÅÃ:::</option>       
-	    </select>
+	<div>ì˜ˆì•½ëœ ì‹œê°„ : </div>
+	<c:forEach var="m" items="${reservedTimes}">
+	    <input type="hidden" value="${m.startDateTime}" id="startDateTime_${m.index}">
+	    <input type="hidden" value="${m.endDateTime}" id="endDateTime_${m.index}">
+	    <div>${m.startTime} ~ ${m.endTime}</div>
+	</c:forEach>
 	
-	    <label for="selected-times">¼±ÅÃµÈ ½Ã°£:</label>
-	    <select id="selected-times" name="selectedTimes" multiple>
-	    </select>
-	    
-	    <label for="all-day">Á¾ÀÏ:</label>
-		<input type="checkbox" id="all-day">
-		<br>
-		<label for="type">À¯Çü :</label>
-	    <input type="radio" name="type" id="type" value="team"> ÆÀ
-	    <input type="radio" name="type" id="type" value="personal"> °³ÀÎ¿ë¹«
-	    
-	    
-		<table border="1">
-			<tr>
-				<td style="width:300px; height:50px;">È¸ÀÇ½Ç ¸í</td>
-				<td style="width:25%; height:50px;">ÀÌ¹ÌÁö</td>
-				<td style="width:25%; height:50px;">À§Ä¡</td>
-				<td style="width:25%; height:50px;">¼ö¿ëÀÎ¿ø</td>
-				<td style="width:25%; height:50px;">ºñÇ°</td>
-			</tr>
-		
-			<tr>
-				<td style="height:200px;">${roomInfo.roomName}</td>				
-				<td style="height:200px;">gd
-					<!-- <img src="FoodBee/img/${roomInfo.originalFiles}" width="100px"></td>  -->
-				<td style="height:200px;">${roomInfo.roomPlace}</td>
-				<td style="height:200px;">ÃÖ´ë ${roomInfo.roomMax}¸í</td>
-				<td style="height:200px;">${roomInfo.info}</td>
-				
-			</tr>
-			<tr>
-				<td>¸ñÀû</td>
-				<td colspan="4"><textarea style="width: 100%; height: 300px;"></textarea></td>
-			</tr>
-		</table>
-			<button type="submit">¿¹¾à</button>
-			<button type="button"><a href="${pageContext.request.contextPath}/roomList">Ãë¼Ò</a></button>
+	<label for="start-time">ì‹œì‘ ì‹œê°„:</label>
+    <select id="start-time" name="startTime">
+        <option selected="selected">:::ì„ íƒ:::</option>        
+    </select>
+
+    <label for="end-time">ì¢…ë£Œ ì‹œê°„:</label>
+    <select id="end-time" name="endTime">
+        <option selected="selected">:::ì„ íƒ:::</option>       
+    </select>
+	<!--  
+    <label for="selected-times">ì„ íƒëœ ì‹œê°„:</label>
+    <select id="selected-times" name="selectedTimes" multiple>
+    </select>
+    
+    <label for="all-day">ì¢…ì¼:</label>
+	<input type="checkbox" id="all-day">
+	-->
+	<br>		
+	<label for="type">ìœ í˜• :</label>
+    <input type="radio" name="type" id="type" value="team"> íŒ€
+    <input type="radio" name="type" id="type" value="personal"> ê°œì¸ìš©ë¬´
+        
+	<table border="1">
+		<tr>
+			<td style="width:300px; height:50px;">íšŒì˜ì‹¤ ëª…</td>
+			<td style="width:25%; height:50px;">ì´ë¯¸ì§€</td>
+			<td style="width:25%; height:50px;">ìœ„ì¹˜</td>
+			<td style="width:25%; height:50px;">ìˆ˜ìš©ì¸ì›</td>
+			<td style="width:25%; height:50px;">ë¹„í’ˆ</td>
+		</tr>
+	
+		<tr>
+			<td style="height:200px;">${roomDTO.roomName}</td>				
+			<td style="height:200px;">picture
+				<!-- <img src="FoodBee/img/${roomInfo.originalFiles}" width="100px"></td>  -->
+			<td style="height:200px;">${roomDTO.roomPlace}</td>
+			<td style="height:200px;">ìµœëŒ€ ${roomDTO.roomMax}ëª…</td>
+			<td style="height:200px;">${roomDTO.info}</td>
 			
-	</form>	
+		</tr>
+		<tr>
+			<td>ëª©ì </td>
+			<td colspan="4"><textarea style="width: 60%; height: 200px;"></textarea></td>
+		</tr>
+	</table>
+		<button type="submit">ì˜ˆì•½</button>
+		<button type="button"><a href="${pageContext.request.contextPath}/roomList">ì·¨ì†Œ</a></button>
+		
+</form>	
 <script>
-	const startTimeSelect = document.getElementById('start-time');
-	const endTimeSelect = document.getElementById('end-time');
-	const selectedTimesSelect = document.getElementById('selected-times');
-	const allDayCheckbox = document.getElementById('all-day');		
-	const availableTimes = [
-	    { value: '09:00', label: '09:00' },
-	    { value: '09:30', label: '09:30' },
-	    { value: '10:00', label: '10:00' },
-	    { value: '10:30', label: '10:30' },
-	    { value: '11:00', label: '11:00' },
-	    { value: '11:30', label: '11:30' },
-	    { value: '12:00', label: '12:00' },
-	    { value: '12:30', label: '12:30' },		    
-	    { value: '13:00', label: '13:00' },
-	    { value: '13:30', label: '13:30' },
-	    { value: '14:00', label: '14:00' },
-	    { value: '14:30', label: '14:30' },
-	    { value: '15:00', label: '15:00' },
-	    { value: '15:30', label: '15:30' },
-	    { value: '16:00', label: '16:00' },
-	    { value: '16:30', label: '16:30' },
-	    { value: '17:00', label: '17:00' },
-	    { value: '17:30', label: '17:30' },
-	    { value: '18:00', label: '18:00' }
-	];
+$(document).ready(function() {
+    const availableTimes = [
+        { value: '09:00', label: '09:00' },
+        { value: '09:30', label: '09:30' },
+        { value: '10:00', label: '10:00' },
+        { value: '10:30', label: '10:30' },
+        { value: '11:00', label: '11:00' },
+        { value: '11:30', label: '11:30' },
+        { value: '12:00', label: '12:00' },
+        { value: '12:30', label: '12:30' },
+        { value: '13:00', label: '13:00' },
+        { value: '13:30', label: '13:30' },
+        { value: '14:00', label: '14:00' },
+        { value: '14:30', label: '14:30' },
+        { value: '15:00', label: '15:00' },
+        { value: '15:30', label: '15:30' },
+        { value: '16:00', label: '16:00' },
+        { value: '16:30', label: '16:30' },
+        { value: '17:00', label: '17:00' },
+        { value: '17:30', label: '17:30' },
+        { value: '18:00', label: '18:00' }
+    ];
 
-	const reservedTimes = [
-	    { start: '09:00', end: '10:00' } // ¿¹¾àµÈ ½Ã°£ ¿¹½Ã
-	    
-	];
+    const startTimeSelect = $('#start-time');
+    const endTimeSelect = $('#end-time');
 
-	// ½Ã°£ ¿É¼Ç »ı¼º
-	function populateTimeOptions() {
-	    availableTimes.forEach(time => {
-	        const option = new Option(time.label, time.value);
-	        // ¿¹¾àµÈ ½Ã°£ ±¸°£ È®ÀÎ
-	        const isReserved = reservedTimes.some(reserved => {
-	            const reservedStart = reserved.start;
-	            const reservedEnd = reserved.end;
-	            return time.value >= reservedStart && time.value < reservedEnd;
-	        });
-	        if (isReserved) {
-	            option.disabled = true; // ¿¹¾àµÈ ½Ã°£ ºñÈ°¼ºÈ­
-	        }
-	        startTimeSelect.add(option);
-	        endTimeSelect.add(option.cloneNode(true)); // Á¾·á ½Ã°£¿¡µµ °°Àº ¿É¼Ç Ãß°¡
-	    });
-	}
+    // í˜ì´ì§€ ë¡œë“œ ì‹œ ì˜ˆì•½ëœ ì‹œê°„ ê°€ì ¸ì˜¤ê¸°
+    const roomNo = $('input[name="roomNo"]').val();
+    const rsvDate = $('input[name="rsvDate"]').val();
+    fetchReservedTimes(roomNo, rsvDate);
 
-	populateTimeOptions();
+    // ì˜ˆì•½ëœ ì‹œê°„ ê°€ì ¸ì˜¤ê¸°
+    function fetchReservedTimes(roomNo, rsvDate) {
+        $.ajax({
+            url: '/foodbee/controller/getReservedTimes',
+            method: 'POST',
+            data: {
+                roomNo: roomNo,
+                rsvDate: rsvDate
+            },
+            success: function(data) {
+                console.log(data); // ë°ì´í„° í™•ì¸
+                disableReservedTimes(data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching reserved times:', error);
+            }
+        });
+    }
 
-	// ¼±ÅÃµÈ ½Ã°£µé ¾÷µ¥ÀÌÆ®
-	updateSelectedTimes();
+    // ì˜ˆì•½ëœ ì‹œê°„ ë¹„í™œì„±í™” ì²˜ë¦¬
+    function disableReservedTimes(reservedTimes) {
+        availableTimes.forEach(function(time) {
+            const option = new Option(time.label, time.value);
+            let isReserved = false;
+            reservedTimes.forEach(function(reserved) {
+                if (time.value >= reserved.startTime && time.value < reserved.endTime) {
+                    isReserved = true;
+                }
+            });
+            if (isReserved) {
+                option.disabled = true; // ì˜ˆì•½ëœ ì‹œê°„ ë¹„í™œì„±í™”
+            }
+            if (time.value !== '18:00') { // ì‹œì‘ ì‹œê°„ì—ì„œ 18:00ì„ ì œì™¸
+                startTimeSelect.append(option);
+            }
+            if (time.value !== '09:00') { // ì¢…ë£Œ ì‹œê°„ì—ì„œ 09:00ì„ ì œì™¸
+                endTimeSelect.append(option.cloneNode(true)); // ì¢…ë£Œ ì‹œê°„ì—ë„ ê°™ì€ ì˜µì…˜ ì¶”ê°€
+            }
+        });
+    }
 
-	// ½ÃÀÛ ½Ã°£ º¯°æ ½Ã Á¾·á ½Ã°£ ¿É¼Ç ¾÷µ¥ÀÌÆ®
-	startTimeSelect.addEventListener('change', function() {
-	    const startTimeValue = startTimeSelect.value;
-	    const filteredTimes = availableTimes.filter(time => time.value > startTimeValue && !reservedTimes.some(reserved => time.value >= reserved.start && time.value < reserved.end));
-	    updateSelectOptions(endTimeSelect, filteredTimes);
-	    updateSelectedTimes();
-	});
+    // ì‹œì‘ ì‹œê°„ ë³€ê²½ ì‹œ ì¢…ë£Œ ì‹œê°„ ì—…ë°ì´íŠ¸
+    startTimeSelect.change(function() {
+        const startTime = $(this).val();
+        if (startTime) {
+            const availableEndTimes = availableTimes.filter(time => time.value > startTime);
+            updateSelectOptions(endTimeSelect, availableEndTimes);
+        }
+    });
 
-	// Á¾·á ½Ã°£ º¯°æ ½Ã ¼±ÅÃµÈ ½Ã°£µé ¾÷µ¥ÀÌÆ®
-	endTimeSelect.addEventListener('change', updateSelectedTimes);
-	
-	// Á¾ÀÏ Ã¼Å©¹Ú½º Ã³¸®
-	allDayCheckbox.addEventListener('change', function() {
-	    if (allDayCheckbox.checked) {
-	        startTimeSelect.value = '09:00';
-	        endTimeSelect.value = '18:00';
-	    }
-	    updateSelectedTimes();
-	});
-	
-	// ¼±ÅÃµÈ ½Ã°£µé ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-	function updateSelectedTimes() {
-	    selectedTimesSelect.innerHTML = '';
-	    const startTime = startTimeSelect.value;
-	    const endTime = endTimeSelect.value;
+    // ì¢…ë£Œ ì‹œê°„ ë³€ê²½ ì‹œ ì„ íƒëœ ì‹œê°„ ì—…ë°ì´íŠ¸
+    endTimeSelect.change(updateSelectedTimes);
 
-	    if (!startTime || !endTime) return;
+    // ì„ íƒëœ ì‹œê°„ë“¤ ì—…ë°ì´íŠ¸
+    function updateSelectedTimes() {
+        const selectedTimesSelect = $('#selected-times');
+        selectedTimesSelect.empty();
+        const startTime = startTimeSelect.val();
+        const endTime = endTimeSelect.val();
 
-	    const startHour = parseInt(startTime.split(':')[0]);
-	    const startMinute = parseInt(startTime.split(':')[1]);
-	    const endHour = parseInt(endTime.split(':')[0]);
-	    const endMinute = parseInt(endTime.split(':')[1]);
-	
-	    let currentHour = startHour;
-	    let currentMinute = startMinute;
-	
-	    while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
-	        const time = ('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2);
-	        const option = new Option(time, time);
-	        selectedTimesSelect.add(option);
-	        currentMinute += 30;
-	        if (currentMinute >= 60) {
-	            currentHour++;
-	            currentMinute -= 60;
-	        }
-	    }
-	}
-	
-	// ¼¿·ºÆ® ¹Ú½º ¿É¼Ç ¾÷µ¥ÀÌÆ® ÇÔ¼ö
-	function updateSelectOptions(selectElement, options) {
-	    selectElement.innerHTML = '';
-	    options.forEach(option => {
-	        const opt = new Option(option.label, option.value);
-	        selectElement.add(opt);
-	    });
-	} 
+        if (!startTime || !endTime) return;
+
+        const startHour = parseInt(startTime.split(':')[0]);
+        const startMinute = parseInt(startTime.split(':')[1]);
+        const endHour = parseInt(endTime.split(':')[0]);
+        const endMinute = parseInt(endTime.split(':')[1]);
+
+        let currentHour = startHour;
+        let currentMinute = startMinute;
+
+        while (currentHour < endHour || (currentHour === endHour && currentMinute <= endMinute)) {
+            const time = ('0' + currentHour).slice(-2) + ':' + ('0' + currentMinute).slice(-2);
+            const option = new Option(time, time);
+            selectedTimesSelect.append(option);
+            currentMinute += 30;
+            if (currentMinute >= 60) {
+                currentHour++;
+                currentMinute -= 60;
+            }
+        }
+    }
+
+    // ì…€ë ‰íŠ¸ ë°•ìŠ¤ ì˜µì…˜ ì—…ë°ì´íŠ¸ í•¨ìˆ˜
+    function updateSelectOptions(selectElement, options) {
+        selectElement.empty();
+        options.forEach(option => {
+            const opt = new Option(option.label, option.value);
+            selectElement.append(opt);
+        });
+    }
+});
 </script>
 </body>
 </html>

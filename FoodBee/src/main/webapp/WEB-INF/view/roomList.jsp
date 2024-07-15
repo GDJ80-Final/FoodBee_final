@@ -1,58 +1,63 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>È¸ÀÇ½Ç ¸ñ·Ï</title>
+<meta charset="UTF-8">
+<title>íšŒì˜ì‹¤ ëª©ë¡</title>
 </head>
 <body>
-	<h1>È¸ÀÇ½Ç ¸ñ·Ï</h1>
-	<input type="date" id="dateInput">
-	<a href="${pageContext.request.contextPath}/roomRsvList">¿¹¾à ¸®½ºÆ®</a>
-	<table border="1">
-		<tr>
-			<td style="width:300px; height:50px;">È¸ÀÇ½Ç ¸í</td>
-			<td style="width:25%; height:50px;">ÀÌ¹ÌÁö</td>
-			<td style="width:25%; height:50px;">À§Ä¡</td>
-			<td style="width:25%; height:50px;">¼ö¿ëÀÎ¿ø</td>
-		</tr>
+<h1>íšŒì˜ì‹¤ ëª©ë¡</h1>
+<input type="date" id="dateInput">
+<a href="${pageContext.request.contextPath}/roomRsvList">ì˜ˆì•½ ë¦¬ìŠ¤íŠ¸</a>
+
+<table border="1">
+	<tr>
+		<td style="width:300px; height:50px;">íšŒì˜ì‹¤ ëª…</td>
+		<td style="width:25%; height:50px;">ì´ë¯¸ì§€</td>
+		<td style="width:25%; height:50px;">ìœ„ì¹˜</td>
+		<td style="width:25%; height:50px;">ìˆ˜ìš©ì¸ì›</td>
+	</tr>
 	<c:forEach var="m" items="${list}">	
 		<tr>
 			<td style="height:200px;">
 				<form action="${pageContext.request.contextPath}/roomOne" method="get">
 					<input type="hidden" name="roomNo" value="${m.roomNo}">
 					<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
-					<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">${m.roomName}</a>
+					
+					<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
+						${m.roomName}
+					</a>
 				</form>	
 			</td>
-			<td style="height:200px;"><a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
-									  	<img src="/article/img/${m.roomName}" width="100px">
-									  </a>
+			<td style="height:200px;">
+				<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
+					<img src="/article/img/${m.roomName}" width="100px">
+				 </a>
 			</td>
 			<td style="height:200px;">${m.roomPlace}</td>
-			<td style="height:200px;">ÃÖ´ë ${m.roomMAX}¸í</td>
+			<td style="height:200px;">ìµœëŒ€ ${m.roomMAX}ëª…</td>
 		</tr>
 	</c:forEach>	
-	</table>
+</table>
 <script>
-	// ÆäÀÌÁö°¡ ·ÎµåµÇ¾úÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö
-	window.onload = function() {
-	    var today = new Date();
-	    var year1 = today.getFullYear();
-	    var month = ('0' + (today.getMonth() + 1)).slice(-2);
-	    var day = ('0' + today.getDate()).slice(-2);
-	    var dateString = year1 + '-' + month + '-' + day;
-	    document.getElementById('dateInput').setAttribute('min', dateString);
-	    dateInput.value = dateString; // ±âº»°ª ¼³Á¤
-	}
+// í˜ì´ì§€ê°€ ë¡œë“œë˜ì—ˆì„ ë•Œ ì‹¤í–‰ë  í•¨ìˆ˜
+window.onload = function() {
+    let today = new Date();
+    let year1 = today.getFullYear();
+    let month = ('0' + (today.getMonth() + 1)).slice(-2);
+    let day = ('0' + today.getDate()).slice(-2);
+    let dateString = year1 + '-' + month + '-' + day;
+    document.getElementById('dateInput').setAttribute('min', dateString);
+    dateInput.value = dateString; // ê¸°ë³¸ê°’ ì„¤ì •
+}
 
-	function submitForm(link, roomNo) {
-	    var form = link.closest('form');
-	    var dateInput = document.getElementById('dateInput');
-	    document.getElementById('hiddenDateInput_' + roomNo).value = dateInput.value; // ¼±ÅÃµÈ ³¯Â¥ ¼³Á¤
-	    form.submit(); // Æû Á¦Ãâ
-	}
+function submitForm(link, roomNo) {
+	let form = link.closest('form');
+	let dateInput = document.getElementById('dateInput');
+    document.getElementById('hiddenDateInput_' + roomNo).value = dateInput.value; // ì„ íƒëœ ë‚ ì§œ ì„¤ì •
+    form.submit(); // í¼ ì œì¶œ
+}
 </script>
 </body>
 </html>

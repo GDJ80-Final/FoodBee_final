@@ -19,6 +19,7 @@
         <th>예약 날짜</th>
         <th>예약시간</th>
         <th>예약자</th>
+        <th>&nbsp;</th>
     </tr>
     <c:forEach var="rsv" items="${rsvListByDate}">
         <tr>
@@ -26,6 +27,7 @@
             <td>${rsv.rsvDate}</td>
             <td>${rsv.startTime} ~ ${rsv.endTime}</td>
             <td>${rsv.empName}</td>
+            <td><a href="${pageContext.request.contextPath}/roomList">취소</a></td>
         </tr>
     </c:forEach>
 </table>
