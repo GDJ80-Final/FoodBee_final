@@ -76,11 +76,11 @@
     </select>
     <!-- 전사원유형의 공지사항 총갯수 -->
     <select id="countEmpNoticeList" resultType="int">
-    	SELECT COUNT(*) 
-    	FROM 
-    		notice
-		WHERE 
-			type='전사원'
+원'
+    </select>
+    <!-- 부서유형의 공지사항 총갯수 -->
+     <select id="countDptNoticeList" resultType="int">
+
     </select>
     <!-- 공지사항 추가 -->
    <insert id="insertNotice" parameterType="com.gd.foodbee.dto.NoticeDTO">

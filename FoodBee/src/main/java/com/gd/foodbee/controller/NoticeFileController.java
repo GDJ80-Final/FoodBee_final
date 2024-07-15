@@ -21,11 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeFileController {
 	@Autowired NoticeService noticeService;
 	
-	 @GetMapping("/download")
-	    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam("file") String filename) {
+	@GetMapping("/download")
+	   public ResponseEntity<InputStreamResource> downloadFile(@RequestParam("file") String filename) {
 	        //inputStream = 클라이언트에게 데이터를 전송할때 많이사용
 	       
-	       log.info("file : " + "c:/upload/" + filename);
+	        log.info("file : " + "c:/upload/" + filename);
 	        File file = new File("c:/upload/" + filename);
 
 	        if (!file.exists()) {

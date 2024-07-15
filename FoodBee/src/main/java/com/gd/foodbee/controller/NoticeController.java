@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.LoginDTO;
@@ -35,13 +36,16 @@ public class NoticeController {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = 0;
 		String dptNo = null;
+		String rankName = null;
 		
 	    if (emp != null) {
 	        log.debug(TeamColor.PURPLE + "emp => " + emp);
 	        empNo = emp.getEmpNo();
 	        dptNo = emp.getDptNo();
+	        rankName = emp.getRankName();
 	        log.debug(TeamColor.PURPLE + "empNo => " + empNo);
 	        log.debug(TeamColor.PURPLE + "dptNo => " + dptNo);
+	        log.debug(TeamColor.PURPLE + "rankName=>" + rankName);
 	    } else {
 	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
 	    }
@@ -50,26 +54,66 @@ public class NoticeController {
 		log.debug(TeamColor.PURPLE + "rowPerPage =>" + rowPerPage);
 		
 		List<HashMap<String,Object>> list = noticeService.getNoticeList(currentPage, rowPerPage, dptNo);
-		List<HashMap<String,Object>> allEmpList = noticeService.getAllEmpNoticeList(currentPage, rowPerPage);
-		List<HashMap<String,Object>> allDptList = noticeService.getAllDptNoticeList(currentPage, rowPerPage, dptNo);
 		
 		log.debug(TeamColor.PURPLE + "list=>" + list);
-		log.debug(TeamColor.PURPLE + "allEmpList=>" + allEmpList);
-		log.debug(TeamColor.PURPLE + "allDptList=>" + allDptList);
 		
 		//총 공지사항의 갯수
 		int cntNotice = noticeService.getCountNoticeList();
 		log.debug(TeamColor.PURPLE + "cntNotice=>" + cntNotice);
 		
 		model.addAttribute("dptNo", dptNo);
+		model.addAttribute("rankName", rankName);
 		model.addAttribute("list", list);
-		model.addAttribute("allEmpList", allEmpList);
-		model.addAttribute("allDptList", allDptList);
 	return "noticeList";
 	}
 	
+	@GetMapping("/allNoticeList")//[버튼]전체 공지사항
+	@ResponseBody
+	public List<HashMap<String,Object>> allNoticeList(int currentPage, int rowPerPage, String dptNo) {
+		List<HashMap<String,Object>> list = noticeService.getNoticeList(currentPage, rowPerPage, dptNo);
+		log.debug(TeamColor.PURPLE + "list=>" + list);		
+		return list;
+	}
+	
+	@GetMapping("/allEmpList")//[버튼]전사원 공지사항
+	@ResponseBody
+	public List<HashMap<String,Object>> allEmpList(int currentPage, int rowPerPage) {
+		List<HashMap<String,Object>> allEmpList = noticeService.getAllEmpNoticeList(currentPage, rowPerPage);
+		log.debug(TeamColor.PURPLE + "allEmpList=>" + allEmpList);
+		
+		return allEmpList;
+	}
+	@GetMapping("/allDptList")//[버튼]부서별 공지사항
+	@ResponseBody
+	public List<HashMap<String,Object>>allDptList(int currentPage, int rowPerPage, String dptNo) {
+		List<HashMap<String,Object>> allDptList = noticeService.getAllDptNoticeList(currentPage, rowPerPage, dptNo);
+		log.debug(TeamColor.PURPLE + "allDptList=>" + allDptList);
+		
+		return allDptList;
+	}
+	
 	@GetMapping("/addNotice")//공지사항 추가
-	public String addNotice() {
+	public String addNotice(Model model, HttpSession session) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = 0;
+		String dptNo = null;
+		String empName = null;
+		
+	    if (emp != null) {
+	        log.debug(TeamColor.PURPLE + "emp => " + emp);
+	        empNo = emp.getEmpNo();
+	        empName = emp.getEmpName();
+	        dptNo = emp.getDptNo();
+	        log.debug(TeamColor.PURPLE + "empNo => " + empNo);
+	        log.debug(TeamColor.PURPLE + "dptNo => " + dptNo);
+	        log.debug(TeamColor.PURPLE + "empName=>" + empName);
+	    } else {
+	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
+	    }
+	    
+	    model.addAttribute("dptNo", dptNo);
+	    model.addAttribute("empNo", empNo);
+	    model.addAttribute("empName", empName);
 	return "addNotice";
 	}
 	
@@ -80,9 +124,7 @@ public class NoticeController {
 		noticeService.addNotice(noticeRequest);
 		
 	return"redirect:/noticeList";
-	
 	}
-	
 	@GetMapping("/noticeOne")
     public String noticeOne(
     		@RequestParam("noticeNo") int noticeNo,

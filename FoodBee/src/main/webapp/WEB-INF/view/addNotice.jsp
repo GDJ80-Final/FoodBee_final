@@ -19,7 +19,7 @@
                 <tr>
                     <th>작성자</th>
                     <td>
-                        <input type="text" name="writerEmpNo" value="">
+                        <input type="text" name="writerEmpName" value="${empName}">
                     </td>
                 </tr>
                 <tr>
@@ -53,7 +53,8 @@
                     </td>
                 </tr>
             </table>
-     		<input type="hidden" name="dptNo" value="D029">
+     		<input type="hidden" name="dptNo" value="${dptNo}">
+     		<input type="hidden" name="writerEmpNo" value="${empNo}">
             <button type="submit">공지사항 등록</button>
         </form>
     </div>

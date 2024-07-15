@@ -5,106 +5,137 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>notice</title>
+<title>공지사항</title>
 <style>
     .content-div {
         display: none;
     }
 </style>
-<script>
-    function show(divId) {
-        var divs = ['allList', 'allEmpList', 'deptList']; // 모든 div ID 목록
-        for (var i = 0; i < divs.length; i++) {
-            document.getElementById(divs[i]).style.display = 'none';
-        }
-        document.getElementById(divId).style.display = 'block';
-    }
-    // 페이지가 로드될 때 기본적으로 allList를 표시
-    window.onload = function() {
-        show('allList');
-    }
-</script>
 </head>
 <body>
 <h1>공지사항</h1>
-    <button onclick="show('allList')">전체</button>
-    <button onclick="show('allEmpList')">전사원</button>
-    <button onclick="show('deptList')">부서별</button>
-    
-    <div id="allList" class="content-div">
-        <table border="1">
+<button id="list">전체</button>
+<button id="emp">전사원</button>
+<button id="dpt">부서별</button>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>유형</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일자</th>
+        </tr>
+    </thead>
+    <tbody id="first"><!-- 페이지 처음 들어가면 보이는 list -->
+        <c:forEach var="all" items="${list}">
             <tr>
-                <th>번호</th>
-                <th>유형</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일자</th>
+                <td>${all.noticeNo}</td>
+                <td>${all.type}</td>
+                <td>
+                    <a href="${pageContext.request.contextPath}/noticeOne?noticeNo=${all.noticeNo}">
+                        ${all.title}
+                    </a>
+                </td>
+                <td>${all.name}</td>
+                <td>${all.createDatetime}</td>
             </tr>
-            <c:forEach var="all" items="${list}">
-                <tr>
-                    <td>${all.noticeNo}</td>
-                    <td>${all.type}</td>
-                    <td>
-                    	<a href="${pageContext.request.contextPath}/noticeOne?noticeNo=${all.noticeNo}">
-                    		${all.title}
-                    	</a>
-                    </td>
-                    <td>${all.name}</td>
-                    <td>${all.createDatetime}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-    
-    <div id="allEmpList" class="content-div">
-        <table border="1">
-            <tr>
-                <th>번호</th>
-                <th>유형</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-            </tr>
-            <c:forEach var="emp" items="${allEmpList}">
-                <tr>
-                    <td>${emp.noticeNo}</td>
-                    <td>${emp.type}</td>
-                    <td>
-                    	<a href="${pageContext.request.contextPath}/noticeOne?noticeNo=${emp.noticeNo}">
-                    		${emp.title}
-                    	</a>
-                    </td>
-                    <td>${emp.name}</td>
-                    <td>${emp.createDatetime}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-    
-    <div id="deptList" class="content-div">
-        <table border="1">
-            <tr>
-                <th>번호</th>
-                <th>유형</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일자</th>
-            </tr>
-            <c:forEach var="dpt" items="${allDptList}">
-                <tr>
-                    <td>${dpt.noticeNo}</td>
-                    <td>${dpt.type}</td>
-                    <td>
-                    	<a href="${pageContext.request.contextPath}/noticeOne?noticeNo=${dpt.noticeNo}">
-                    		${dpt.title}
-                    	</a>
-                    </td>
-                    <td>${dpt.name}</td>
-                    <td>${dpt.createDatetime}</td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
+        </c:forEach>
+    </tbody>
+    <tbody id="noticeTableBody" style="display:none;">
+    </tbody>
+</table>
+
+<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
     <a href="addNotice">공지사항 작성</a>
+</c:if>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // 페이지 로드 시 초기 데이터 보이기 & id가 noticeTableBody인 div숨기기
+        $("#first").show();
+        $("#noticeTableBody").hide();
+
+        $("#list").click(function() {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/allNoticeList", // mapping에서 가져옴
+                type: "GET",
+                data: {
+                    currentPage: 1,
+                    rowPerPage: 10,
+                    dptNo: "${dptNo}"
+                },
+                success: function(json) {
+                    updateTable(json);
+                },
+                error: function() {
+                    alert("전체 공지사항 가져올 수 없음.");
+                }
+            });
+        });
+
+        $("#emp").click(function() {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/allEmpList", // mapping에서 가져옴
+                type: "GET",
+                data: {
+                    currentPage: 1,
+                    rowPerPage: 10
+                },
+                success: function(json) {//callBack함수 json으로 고정!
+                    updateTable(json);
+                },
+                error: function() {
+                    alert("전사원 공지사항 가져올 수 없음.");
+                }
+            });
+        });
+
+        $("#dpt").click(function() {
+            let dptNo = "${dptNo}";
+
+            $.ajax({
+                url: "${pageContext.request.contextPath}/allDptList",
+                type: "GET",
+                data: {
+                    currentPage: 1,
+                    rowPerPage: 10,
+                    dptNo: dptNo 
+                },
+                success: function(json) {
+                    updateTable(json);
+                },
+                error: function() {
+                    alert("부서별 공지사항 가져올 수 없음");
+                }
+            });
+        });
+
+        function updateTable(json) {
+            let tableBody = $("#noticeTableBody");
+            tableBody.empty();
+
+            $.each(json, function(index, item) { //여기서의 index는 for문의 i같은 개념이라고 생각하면된다.item은 실제값
+                let date = new Date(item.createDatetime);
+                let formattedDate = date.toISOString().split('T')[0]; // yyyy-MM-dd 포맷으로 변환
+
+                let newRow = $("<tr>" +
+                    "<td>" + item.noticeNo + "</td>" +
+                    "<td>" + item.type + "</td>" +
+                    "<td><a href='" + "${pageContext.request.contextPath}/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
+                    "<td>" + item.name + "</td>" +
+                    "<td>" + formattedDate + "</td>" +
+                    "</tr>");
+                tableBody.append(newRow);
+            });
+
+            // 테이블 표시 및 숨김 처리
+            $("#first").hide();
+            tableBody.show();
+        }
+    });
+</script>
 </body>
 </html>

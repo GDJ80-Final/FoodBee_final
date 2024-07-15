@@ -18,5 +18,4 @@ public class NoticeDTO {
 	private String createDatetime;
 	private String updateDatetime;
 	private String type;
-
 }
