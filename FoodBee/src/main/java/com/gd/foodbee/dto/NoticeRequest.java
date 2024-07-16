@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NoticeRequest {
 	private int writerEmpNo;
+	private int noticeNo;
 	private String dptNo;
 	private String title;
 	private String content;
@@ -18,6 +19,7 @@ public class NoticeRequest {
 	private String updateDatetime;
 	private String type;
 	private String saveFile;
+	private String originalFile;
 	private MultipartFile[] files;
 	
 }

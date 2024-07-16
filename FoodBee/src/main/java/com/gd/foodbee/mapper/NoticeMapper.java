@@ -54,6 +54,11 @@ public interface NoticeMapper {
     //사용클래스="NoticeService."
     List<Map<String,Object>> noticeOne(int noticeNo);
     
+    //공지사항 내용수정하기
+    //파라미터="int"
+    //사용클래스=NoticeService.getModifyNoticeList
+    int updateNotice(NoticeDTO noticeDTO);
+    
     //공지사항 삭제하기
     //파라미터="int"
     //반환값="int"

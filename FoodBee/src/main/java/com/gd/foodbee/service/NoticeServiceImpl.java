@@ -25,10 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeServiceImpl implements NoticeService{
     @Autowired NoticeMapper noticeMapper;
     @Autowired NoticeFileMapper noticeFileMapper;
-    //전체 공지사항리스트
+    final int rowPerPage= 10;
     
+    //전체 공지사항리스트
     @Override
-    public List<HashMap<String,Object>> getNoticeList(int currentPage, int rowPerPage, String dptNo){
+    public List<HashMap<String,Object>> getNoticeList(int currentPage, String dptNo){
         
         int beginRow = 0;
         beginRow = (currentPage -1) * rowPerPage;
@@ -43,7 +44,7 @@ public class NoticeServiceImpl implements NoticeService{
     
     //전사원 공지사항리스트
     @Override
-    public List<HashMap<String,Object>> getAllEmpNoticeList(int currentPage, int rowPerPage){
+    public List<HashMap<String,Object>> getAllEmpNoticeList(int currentPage){
     	
     	int beginRow = 0;
         beginRow = (currentPage -1) * rowPerPage;
@@ -56,7 +57,7 @@ public class NoticeServiceImpl implements NoticeService{
     }
     //부서별 공지사항 리스트
     @Override
-    public List<HashMap<String,Object>> getAllDptNoticeList(int currentPage, int rowPerPage, String dptNo){
+    public List<HashMap<String,Object>> getAllDptNoticeList(int currentPage, String dptNo){
     	
     	int beginRow = 0;
         beginRow = (currentPage -1) * rowPerPage;
@@ -68,27 +69,40 @@ public class NoticeServiceImpl implements NoticeService{
         
         return noticeMapper.allDptNoticeList(m);
     }
-    
-    //공지사항 총갯수
+    //전체 공지사항 마지막페이지
     @Override
-    public int getCountNoticeList() {
+    public int allLastPage() {
     	int count = noticeMapper.countNoticeList();
+    	int lastPage = (int) Math.ceil((double) count / rowPerPage);
     	
-    	return count;
+    	if(lastPage % 2 != 0) {
+	    	lastPage = lastPage +1;
+	    }
+    	
+    	return lastPage;
     }
-    //공지사항 전사원별 총갯수
+    //사원별 공지사항 마지막페이지
     @Override
-    public int getCountEmpNoticeList() {
+    public int allEmpLastPage() {
     	int countEmp = noticeMapper.countEmpNoticeList();
+    	int empLastPage = (int) Math.ceil((double) countEmp / rowPerPage);
     	
-    	return countEmp;
+    	if(empLastPage % 2 != 0) {
+	    	empLastPage = empLastPage +1;
+	    }
+    	
+    	return empLastPage;
     }
-    //공지사항 부서별 총갯수
+    //부서별 공지사항 마지막페이지
     @Override
-    public int getCountDptNoticeList() {
+    public int allDptLastPage() {
     	int countDpt = noticeMapper.countDptNoticeList();
+    	int dptLastPage = (int) Math.ceil((double) countDpt / rowPerPage);
     	
-    	return countDpt;
+    	if(dptLastPage % 2 != 0) {
+	    	dptLastPage = dptLastPage +1;
+	    }
+    	return dptLastPage;
     }
  
     //공지사항 내용추가
@@ -149,6 +163,36 @@ public class NoticeServiceImpl implements NoticeService{
 		
 		return noticeMapper.noticeOne(noticeNo);
 	}
+    
+    
+    //공지사항 내용수정하기
+    @Override
+    public void getModifyNoticeList(int noticeNo, NoticeRequest noticeRequest) {
+    	NoticeDTO notice = new NoticeDTO();
+    	notice.setNoticeNo(noticeNo);
+    	notice.setTitle(noticeRequest.getTitle());
+    	notice.setContent(noticeRequest.getContent());
+    	notice.setType(noticeRequest.getType());
+    
+    	int update = noticeMapper.updateNotice(notice);
+    	
+    	if(update != 1) {
+    		throw new RuntimeException("내용수정에 실패하였음"); 
+    	}
+    }
+   
+    
+    //공지사항 파일 삭제하기
+    @Override
+    public void getDeleteNoticeFile(String fileName, int noticeNo) {
+    	//DTO랑 맞춰주는작업
+        NoticeFileDTO noticeFileDTO = new NoticeFileDTO();
+        noticeFileDTO.setNoticeNo(noticeNo);
+        noticeFileDTO.setSaveFile(fileName);
+        
+        noticeFileMapper.deleteNoticeFile(noticeFileDTO);
+
+    }
 	
 	//공지사항 삭제하기
     @Override

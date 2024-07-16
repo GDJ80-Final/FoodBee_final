@@ -2,27 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.NoticeMapper">
 	<!-- 전체공지사항 리스트 -->
-	<select id="noticeList" parameterType="HashMap" resultType="HashMap" >
+	<select id="noticeList" parameterType="HashMap" resultType="HashMap" >	
 		SELECT 
-			n.notice_no noticeNo, 
-			n.writer_emp_no writerEmpNo, 
-			n.dpt_no dptNo, 
-			n.title title, 
-			n.content content, 
-			n.create_datetime createDatetime, 
-			n.update_datetime updateDatetime, 
-			n.type type, 
-			e.emp_name name
+		    n.notice_no AS noticeNo, 
+		    n.writer_emp_no AS writerEmpNo, 
+		    n.dpt_no AS dptNo, 
+		    n.title AS title, 
+		    n.content AS content, 
+		    n.create_datetime AS createDatetime, 
+		    n.update_datetime AS updateDatetime, 
+		    n.type AS type, 
+		    e.emp_name AS name,
+		    g.dpt_name AS superiorDptName,
+		    g.superior_dpt_no AS superiorDptNo
 		FROM 
-			notice n 
+		    notice n 
 		INNER JOIN 
-			emp e
-		ON 
-			n.writer_emp_no = e.emp_no
+		    emp e ON n.writer_emp_no = e.emp_no
+		INNER JOIN 
+		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
-			(e.dpt_no = #{dptNo} AND n.type='부서')
+		    (g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
+			AND
+		    n.type = '부서') 
 		OR
-			n.type='전사원'
+			n.type ='전사원';
 	</select>
 	<!-- 전사원공지사항 리스트 -->
 	<select id="allEmpNoticeList" parameterType="HashMap" resultType="HashMap">
@@ -48,15 +52,47 @@
 	<!-- 부서별공지사항 리스트 -->
 	<select id="allDptNoticeList" parameterType="HashMap" resultType="HashMap">
 		SELECT 
-			n.notice_no noticeNo, 
-			n.writer_emp_no writerEmpNo, 
-			n.dpt_no dptNo, 
-			n.title title, 
-			n.content content, 
-			n.create_datetime createDatetime, 
-			n.update_datetime updateDatetime, 
-			n.type type, 
-			e.emp_name name
+		    n.notice_no AS noticeNo, 
+		    n.writer_emp_no AS writerEmpNo, 
+		    n.dpt_no AS dptNo, 
+		    n.title AS title, 
+		    n.content AS content, 
+		    n.create_datetime AS createDatetime, 
+		    n.update_datetime AS updateDatetime, 
+		    n.type AS type, 
+		    e.emp_name AS name,
+		    g.dpt_name AS superiorDptName,
+		    g.superior_dpt_no AS superiorDptNo
+		FROM 
+		    notice n 
+		INNER JOIN 
+		    emp e ON n.writer_emp_no = e.emp_no
+		INNER JOIN 
+		    `group` g ON e.dpt_no = g.dpt_no
+		WHERE 
+		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
+			AND
+		    n.type = '부서';
+	</select>
+	<!-- 공지사항의 총갯수 구하기 -->
+	<select id="countNoticeList" resultType="int">
+		SELECT COUNT(*)
+		FROM 
+		    notice n 
+		INNER JOIN 
+		    emp e ON n.writer_emp_no = e.emp_no
+		INNER JOIN 
+		    `group` g ON e.dpt_no = g.dpt_no
+		WHERE 
+		   ( g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
+		AND
+		    n.type = '부서')
+		OR 
+			n.type='전사원';
+    </select>
+    <!-- 전사원유형의 공지사항 총갯수 -->
+    <select id="countEmpNoticeList" resultType="int">
+		SELECT COUNT(*)
 		FROM 
 			notice n 
 		INNER JOIN 
@@ -64,23 +100,21 @@
 		ON 
 			n.writer_emp_no = e.emp_no
 		WHERE 
-			e.dpt_no = #{dptNo} 
-		AND
-			type='부서'
-	</select>
-	<!-- 공지사항의 총갯수 구하기 -->
-	<select id="countNoticeList" resultType="int">
-		SELECT
-		    (SELECT COUNT(*) FROM notice WHERE TYPE = '부서') +
-		    (SELECT COUNT(*) FROM notice WHERE TYPE = '전사원') AS total_count;
-    </select>
-    <!-- 전사원유형의 공지사항 총갯수 -->
-    <select id="countEmpNoticeList" resultType="int">
-원'
+			type = '전사원'
     </select>
     <!-- 부서유형의 공지사항 총갯수 -->
      <select id="countDptNoticeList" resultType="int">
-
+		SELECT COUNT(*)
+		FROM 
+		    notice n 
+		INNER JOIN 
+		    emp e ON n.writer_emp_no = e.emp_no
+		INNER JOIN 
+		    `group` g ON e.dpt_no = g.dpt_no
+		WHERE 
+		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
+		AND
+		    n.type = '부서'
     </select>
     <!-- 공지사항 추가 -->
    <insert id="insertNotice" parameterType="com.gd.foodbee.dto.NoticeDTO">
@@ -113,6 +147,7 @@
 			n.dpt_no dptNo, 
 			n.title title, 
 			n.content content, 
+			n.type type,
 			nf.original_file originalFile, 
 			nf.save_file saveFile, 
 			e.emp_name empName
@@ -125,6 +160,18 @@
 		WHERE 
 			n.notice_no = #{noticeNo}
 	</select>
+	<!-- 공지사항 수정하기 -->
+	<update id="updateNotice" parameterType="com.gd.foodbee.dto.NoticeDTO">
+	    UPDATE 
+	        notice
+	    SET 
+	        title = #{title}, 
+	        content = #{content}, 
+	        TYPE = #{type}, 
+	        update_datetime = NOW()
+	    WHERE 
+	        notice_no = #{noticeNo}
+	</update>
 	<!-- 공지사항 삭제하기 -->
 	<delete id="deleteNotice" parameterType="int">
 		DELETE 

@@ -46,6 +46,18 @@
     <tbody id="noticeTableBody" style="display:none;">
     </tbody>
 </table>
+<div id="first">
+    <c:if test="${currentPage > 1}">
+        <a href="noticeList?currentPage=1">First</a>
+        <a href="noticeList?currentPage=${currentPage - 1}">◁</a>
+    </c:if>
+    <c:if test="${currentPage < lastPage}">
+        <a href="noticeList?currentPage=${currentPage + 1}">▶</a>
+        <a href="noticeList?currentPage=${lastPage}">Last</a>
+    </c:if>
+</div>
+
+ <div id="page"></div>
 
 <c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
     <a href="addNotice">공지사항 작성</a>
@@ -68,7 +80,8 @@
                     dptNo: "${dptNo}"
                 },
                 success: function(json) {
-                    updateTable(json);
+                    updateTable(json.list);
+                    updatePage(json.lastPage);
                 },
                 error: function() {
                     alert("전체 공지사항 가져올 수 없음.");
@@ -85,7 +98,8 @@
                     rowPerPage: 10
                 },
                 success: function(json) {//callBack함수 json으로 고정!
-                    updateTable(json);
+                    updateTable(json.allEmpList);
+                	updatePage(json.empLastPage);
                 },
                 error: function() {
                     alert("전사원 공지사항 가져올 수 없음.");
@@ -102,10 +116,11 @@
                 data: {
                     currentPage: 1,
                     rowPerPage: 10,
-                    dptNo: dptNo 
+                    dptNo: "${dptNo}"
                 },
                 success: function(json) {
-                    updateTable(json);
+                    updateTable(json.allDptList);
+                    updatePage(json.dptLastPage);
                 },
                 error: function() {
                     alert("부서별 공지사항 가져올 수 없음");
@@ -135,6 +150,13 @@
             $("#first").hide();
             tableBody.show();
         }
+        
+        function updatePage(lastPage, currentPage) {
+            let pagination = $("#page");
+            pagination.empty();
+
+        }
+
     });
 </script>
 </body>

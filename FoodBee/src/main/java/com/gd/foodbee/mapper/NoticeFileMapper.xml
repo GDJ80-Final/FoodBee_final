@@ -22,4 +22,12 @@
         NOW()
     )
 </insert>
+<delete id="deleteNoticeFile" parameterType="com.gd.foodbee.dto.NoticeFileDTO">
+    DELETE FROM 
+    	notice_file 
+    WHERE 
+    	notice_no = #{noticeNo} 
+    AND 
+    	save_file = #{saveFile}
+</delete>
 </mapper>

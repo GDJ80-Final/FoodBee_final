@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
@@ -28,10 +29,10 @@
                     <th>첨부파일</th>
                     <td>
                         <c:forEach items="${one}" var="one">
-   						<a href="${pageContext.request.contextPath}/download?file=${one.saveFile}" download="${one.originalFile}">
-   							${one.originalFile}
-   						</a>
-                        <br>
+                            <a href="${pageContext.request.contextPath}/download?file=${one.saveFile}" download="${one.originalFile}">
+                                ${one.originalFile}
+                            </a>
+                            <br>
                         </c:forEach>
                     </td>
                 </tr>
@@ -46,10 +47,17 @@
             <a href="noticeList">돌아가기</a>
             
             <form action="deleteNotice" method="post">
-			    <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">
-			    <button type="submit">삭제</button>
-			</form>
-			
+                <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">
+                <button type="submit">삭제</button>
+            </form>
+            
+            <!-- 수정 버튼 추가 -->
+            <c:if test="${one[0].empName == empName}">
+                <form action="modifyNotice" method="get">
+                    <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">
+                    <button type="submit">수정하기</button>
+                </form>
+            </c:if>
         </c:when>
     </c:choose>
 </div>
