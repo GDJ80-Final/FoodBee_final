@@ -157,17 +157,17 @@ public class EmpController {
 		
 		int authNum = empService.createAuth(empNo, empEmail);
 		
-		EmailDTO emailDTO = EmailDTO.builder()
-                .to(empEmail)
-                .subject("[FoodBee] 인증번호")
-                .message("인증번호는 " + authNum + " 입니다. ")
-                .build();
-
-		
-		sendEmail.sendEmail(emailDTO);
-		
 		log.debug(TeamColor.RED + authNum);
 		if(authNum != 0) {
+			EmailDTO emailDTO = EmailDTO.builder()
+	                .to(empEmail)
+	                .subject("[FoodBee] 인증번호")
+	                .message("인증번호는 " + authNum + " 입니다. ")
+	                .build();
+
+			
+			sendEmail.sendEmail(emailDTO);
+			
 			HttpSession session = request.getSession();
 		    session.setAttribute("authNum", authNum);
 		    session.setMaxInactiveInterval(600);
