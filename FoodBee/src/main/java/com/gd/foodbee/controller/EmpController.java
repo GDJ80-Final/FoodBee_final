@@ -15,9 +15,11 @@ import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.service.EmpService;
+import com.gd.foodbee.util.SendEmail;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +31,8 @@ public class EmpController {
 	@Autowired
 	EmpService empService;
 	
+	@Autowired
+	private SendEmail sendEmail;
 	
 	//회원가입 페이지
 	//파라미터 : int empNo
@@ -103,7 +107,7 @@ public class EmpController {
 			 HttpServletRequest request,
 			 Model model) {
 	 
-		 log.debug(TeamColor.RED + "empDTO => " +  empDTO.toString());
+		log.debug(TeamColor.RED + "empDTO => " +  empDTO.toString());
 		 
 			
 		if(errors.hasErrors()) {
@@ -123,16 +127,55 @@ public class EmpController {
 			return "addEmp";
 		}
 	 
-		 EmailDTO emailDTO = EmailDTO.builder()
+		String url = "http://localhost/foodbee/signup?empNo=" + empDTO.getEmpNo();
+		EmailDTO emailDTO = EmailDTO.builder()
 				 .to(empDTO.getEmpEmail())
 			     .subject("[FoodBee] 회원가입 링크")
+			     .message("회원가입 링크 : <a href=\"" + url + "\">" + url + "</a> 입니다.")
 			     .build();
 	
-		 empService.addEmp(empDTO, emailDTO);
-			 
+		empService.addEmp(empDTO, emailDTO);
+			
 	 
 		    
 		    // 사원 목록으로 이동
 	 	return "redirect:/";
 	 }
+	 
+	// 인증번호 메일 발송
+	// 파라미터 : int empNo, String empEmail
+	// 반환 값 : String
+	// 사용 페이지 : /findPw
+	@PostMapping("/sendEmail")
+	@ResponseBody
+	public String sendAuthEmail(@RequestParam int empNo, 
+				@RequestParam String empEmail,
+				HttpServletRequest request) {
+		
+		log.debug(TeamColor.RED + empNo);
+		log.debug(TeamColor.RED + empEmail);
+		
+		int authNum = empService.createAuth(empNo, empEmail);
+		
+		EmailDTO emailDTO = EmailDTO.builder()
+                .to(empEmail)
+                .subject("[FoodBee] 인증번호")
+                .message("인증번호는 " + authNum + " 입니다. ")
+                .build();
+
+		
+		sendEmail.sendEmail(emailDTO);
+		
+		log.debug(TeamColor.RED + authNum);
+		if(authNum != 0) {
+			HttpSession session = request.getSession();
+		    session.setAttribute("authNum", authNum);
+		    session.setMaxInactiveInterval(600);
+		    
+		    return "success";
+		}
+		
+		
+		return "fail";
+	}
 }

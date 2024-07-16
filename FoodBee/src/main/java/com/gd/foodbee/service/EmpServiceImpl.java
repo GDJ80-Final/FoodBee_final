@@ -2,6 +2,7 @@ package com.gd.foodbee.service;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,6 +18,7 @@ import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.mapper.EmpMapper;
 import com.gd.foodbee.mapper.ProfileMapper;
 import com.gd.foodbee.util.FileFormatter;
+import com.gd.foodbee.util.SendEmail;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.mail.MessagingException;
@@ -37,7 +39,7 @@ public class EmpServiceImpl implements EmpService{
 	private ProfileMapper profileMapper;
 	
 	@Autowired
-	private JavaMailSender javaMailSender;
+	private SendEmail sendEmail;
 	
 	
 	//사원 인트라넷 등록 (가입) 
@@ -130,35 +132,39 @@ public class EmpServiceImpl implements EmpService{
 	
 	@Override
 	public void addEmp(EmpDTO empDTO, EmailDTO emailDTO) {
-      
-		
 		
 		int row = empMapper.insertEmp(empDTO);
-		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
       
-		if(row == 1) {
-         
-			//이메일 발송
-			try {
-				MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-	            mimeMessageHelper.setTo(emailDTO.getTo()); // 메일 수신자
-	            mimeMessageHelper.setSubject(emailDTO.getSubject()); // 메일 제목
-	            mimeMessageHelper.setText("회원가입 링크 : http://localhost/foodbee/signup?empNo=" + empDTO.getEmpNo()); // 메일 본문 내용, HTML 여부
-	            javaMailSender.send(mimeMessage);
-	
-	             log.debug(TeamColor.RED + "메일 발송 성공");
-	
-	
-	        } catch (MessagingException e) {
-	           log.debug(TeamColor.RED + "메일 발송 실패");
-	           throw new RuntimeException(e);
-	        }
-     
-		} else {
-			// row가 1이 아니면 잘못된것이므로 오류
+		if(row != 1) {
 			throw new RuntimeException();
 		}
+		
+		sendEmail.sendEmail(emailDTO);
   
+	}
+	
+	// 인증번호 생성
+	// 파라미터 : int empNo, EmailDTO emailDTO
+	// 반환 값 : int
+	// 사용 클래스 : EmpController.sendAuthEmail
+	@Override
+	public int createAuth(int empNo, String empEmail) {
+		
+		
+		EmpDTO empDTO = empMapper.selectEmpByNoAndEmail(empNo, empEmail);
+		
+		
+		if(empDTO != null) {
+			
+			Random random = new Random();
+			int authNum = random.nextInt(9000) + 1000;
+			
+			return authNum;
+			
+			
+		}
+		// empDTO가 없으면 사원번호나 이메일이 틀리다는 것이므로 틀렸다는 표시로 0을 넘김.
+		return 0;
 	}
 	
 }
