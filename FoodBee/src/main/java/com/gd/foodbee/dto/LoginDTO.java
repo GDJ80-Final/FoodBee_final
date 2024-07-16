@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginDTO {
 
-	private Integer empNo;
+	private int empNo;
 	
 	private String empPw;
 	

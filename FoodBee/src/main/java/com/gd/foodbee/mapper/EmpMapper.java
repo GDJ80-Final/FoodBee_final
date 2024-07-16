@@ -38,4 +38,14 @@ public interface EmpMapper {
 	//반환값: String
 	//사용클래스 : EmpServiceImpl.selectEmpNoDuplicate
 	String selectEmpNoDuplicate(int empNo);
+	
+	// 마지막 사원 번호 찾기
+    // 파라미터 : X
+    // 반환 값 : int
+    // 사용 클래스 : EmpServiceImpl.createNo
+    int selectEmpNoMax();
+
+    
+    // 사원 등록
+    int insertEmp(EmpDTO empDTO);
 }

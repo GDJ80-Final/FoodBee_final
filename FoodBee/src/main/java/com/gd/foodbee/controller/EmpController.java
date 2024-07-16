@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gd.foodbee.dto.EmailDTO;
+import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.service.EmpService;
 import com.gd.foodbee.util.TeamColor;
@@ -80,4 +82,57 @@ public class EmpController {
 		return "redirect:/login";
 	}
 	
+	@GetMapping("/addEmp")
+	   public String addEmp() {
+	      
+	      return "addEmp";
+	   }
+	   
+	@GetMapping("/createEmpNo")
+	@ResponseBody
+	 public int createEmpNo() {
+			int empNo = empService.createEmpNo();
+	   
+			return empNo;
+		}
+		
+	 
+	 @PostMapping("/addEmp")
+	 public String addEmp(@Valid EmpDTO empDTO,
+			 Errors errors,
+			 HttpServletRequest request,
+			 Model model) {
+	 
+		 log.debug(TeamColor.RED + "empDTO => " +  empDTO.toString());
+		 
+			
+		if(errors.hasErrors()) {
+			//백에서 validation 유효성 검사 후 에러 발견시 true 반환
+			log.debug(TeamColor.RED + "hasErrors => "+ errors.hasErrors());
+			//에러 난 갯수 확인 
+			log.debug(TeamColor.RED + "Errors => "+ errors);
+			for(FieldError e : errors.getFieldErrors()) {
+				//오류난 필드 디버깅 
+				log.debug(TeamColor.RED + "error fieldName =>" + e.getField());
+				// 에러메세지 
+				log.debug(TeamColor.RED + "error message => " + e.getDefaultMessage());
+				// "이름+errorMsg"형태로 모델에 추가
+				model.addAttribute(e.getField()+"ErrorMsg", e.getDefaultMessage());
+			}
+			
+			return "addEmp";
+		}
+	 
+		 EmailDTO emailDTO = EmailDTO.builder()
+				 .to(empDTO.getEmpEmail())
+			     .subject("[FoodBee] 회원가입 링크")
+			     .build();
+	
+		 empService.addEmp(empDTO, emailDTO);
+			 
+	 
+		    
+		    // 사원 목록으로 이동
+	 	return "redirect:/";
+	 }
 }

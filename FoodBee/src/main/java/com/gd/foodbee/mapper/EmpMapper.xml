@@ -52,4 +52,28 @@
 		emp
 	WHERE emp_no = #{empNo} AND signup_YN = 'Y';
 	</select>
+	<select id="selectEmpNoMax" resultType="int">
+     	SELECT
+    		MAX(emp_no) empNo
+    	FROM emp
+    </select>
+    <insert id="insertEmp" parameterType="com.gd.foodbee.dto.EmpDTO">
+		INSERT INTO emp(
+			emp_no, 
+			emp_name,
+			emp_state,
+			dpt_no,
+			rank_name,
+			start_date,
+			emp_email	
+		) VALUES (
+			#{empNo},
+			#{empName},
+			#{empState},
+			#{dptNo},
+			#{rankName},
+			#{startDate},
+			#{empEmail}
+		)
+	</insert>
 </mapper>
