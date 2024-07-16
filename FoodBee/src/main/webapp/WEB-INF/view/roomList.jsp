@@ -44,10 +44,10 @@
 // 페이지가 로드되었을 때 실행될 함수
 window.onload = function() {
     let today = new Date();
-    let year1 = today.getFullYear();
+    let year = today.getFullYear();
     let month = ('0' + (today.getMonth() + 1)).slice(-2);
     let day = ('0' + today.getDate()).slice(-2);
-    let dateString = year1 + '-' + month + '-' + day;
+    let dateString = year + '-' + month + '-' + day;
     document.getElementById('dateInput').setAttribute('min', dateString);
     dateInput.value = dateString; // 기본값 설정
 }

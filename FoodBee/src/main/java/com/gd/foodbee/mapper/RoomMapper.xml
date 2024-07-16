@@ -12,7 +12,9 @@
 			img.original_file, 
 			img.save_file
 		FROM 
-			room_info info INNER JOIN room_img img
+			room_info info 
+		INNER JOIN 
+			room_img img
 		ON 	
 			info.room_no = img.room_no
 		WHERE 
@@ -29,7 +31,9 @@
 		    GROUP_CONCAT(img.original_file SEPARATOR ', ') originalFiles, 
 		    GROUP_CONCAT(img.save_file SEPARATOR ', ') saveFiles
 		FROM 
-		    room_info info INNER JOIN room_img img 
+		    room_info info 
+		INNER JOIN 
+			room_img img 
 		ON	
 			info.room_no = img.room_no
 		WHERE 
@@ -47,7 +51,7 @@
 			type)
 		VALUES (
  			#{roomNo}, 
- 			1, 
+ 			#{empNo}, 
  			#{rsvDate}, 
  			CONCAT(#{rsvDate}, ' ', #{startTime}),
         	CONCAT(#{rsvDate}, ' ', #{endTime}),
@@ -64,7 +68,9 @@
 		FROM
 		 	room_rsv
 		WHERE
-		 	rsv_date = #{rsvDate} AND room_no = #{roomNo}
+		 	rsv_date = #{rsvDate} 
+		AND
+			room_no = #{roomNo}
 	</select>
 	
 	<!-- 회의실 번호, 선택된 날짜에 예약된 시간을 출력 -->
@@ -75,11 +81,13 @@
 		FROM
 			room_rsv rsv
 		WHERE
-			room_no = #{roomNo} AND rsv_date = #{rsvDate}		 	
+			room_no = #{roomNo} 
+		AND 
+			rsv_date = #{rsvDate}		 	
 	</select>
 	
 	<!-- 선택된 날짜별 전체 예약리스트 출력 -->
-	<select id="selectRsvListByDate" resultType="Map" parameterType="com.gd.foodbee.dto.RoomRsvDTO">
+	<select id="selectRsvListByDate" resultType="Map" parameterType="Map">
 		SELECT 
 		    emp.emp_no empNo, 
 		    emp.emp_name empName, 
@@ -102,17 +110,29 @@
 			rsv.rsv_date = #{rsvDate}
 		ORDER BY
 			startTime ASC
+		LIMIT
+			#{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 선택된 날짜 예약 총갯수 -->
+	<select id="selectRsvCntByDate" resultType="int" parameterType="String">
+		SELECT
+			COUNT(*) cnt
+		FROM  
+			room_rsv
+		WHERE 
+			rsv_date = #{rsvDate}
 	</select>
 	
 	<!-- 내 예약리스트 출력 -->
-	<select id="selectRsvListByEmpNo" resultType="Map" parameterType="int">
+	<select id="selectRsvListByEmpNo" resultType="Map" parameterType="Map">
 		SELECT 
 		    emp.emp_no empNo, 
 		    emp.emp_name empName, 
 		    info.room_name roomName, 
 		    rsv.rsv_date rsvDate, 
-		    rsv.start_datetime startTime, 
-		    rsv.end_datetime endTime, 
+		    DATE_FORMAT(rsv.start_dateTime, '%H:%i') startTime, 
+		    DATE_FORMAT(rsv.end_dateTime, '%H:%i') endTime,  
 		    rsv.rsv_state rsvState
 		FROM 
 		    room_rsv rsv 
@@ -126,7 +146,36 @@
 			rsv.room_no = info.room_no
 		WHERE 
 			emp.emp_no = #{empNo}
+		AND
+			rsv.rsv_state = 1 
 		ORDER BY 
-			startTime DESC
+			rsvDate DESC, 
+			startTime ASC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
+	
+	<!-- 내 예약 총갯수 -->
+	<select id="selectRsvCntByEmpNo" resultType="int" parameterType="int">
+		SELECT 
+			COUNT(*) cnt		
+		FROM  
+			room_rsv		
+		WHERE 
+			emp_no = #{empNo}
+	</select>
+	
+	<!-- 예약 취소 -->
+	<update id="updateRoomRsv" parameterType="com.gd.foodbee.dto.RoomRsvDTO">
+		UPDATE 
+			room_rsv 
+		SET 
+			rsv_state = 0
+		WHERE 
+			emp_no = #{empNo}
+		AND
+			TIME(start_datetime) = #{startTime} 
+		AND 
+			rsv_date = #{rsvDate}
+	</update>
 </mapper>

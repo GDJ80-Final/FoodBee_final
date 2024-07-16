@@ -12,7 +12,7 @@
 <body>
 <div id="reserved-times"></div>
 <h1>회의실 예약</h1>
-<form method="post" action="${pageContext.request.contextPath}/roomRsv">		
+<form id="reservationForm" method="post" action="${pageContext.request.contextPath}/roomRsv">		
 	<input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
 	<input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
 	
@@ -74,27 +74,18 @@
 </form>	
 <script>
 $(document).ready(function() {
-    const availableTimes = [
-        { value: '09:00', label: '09:00' },
-        { value: '09:30', label: '09:30' },
-        { value: '10:00', label: '10:00' },
-        { value: '10:30', label: '10:30' },
-        { value: '11:00', label: '11:00' },
-        { value: '11:30', label: '11:30' },
-        { value: '12:00', label: '12:00' },
-        { value: '12:30', label: '12:30' },
-        { value: '13:00', label: '13:00' },
-        { value: '13:30', label: '13:30' },
-        { value: '14:00', label: '14:00' },
-        { value: '14:30', label: '14:30' },
-        { value: '15:00', label: '15:00' },
-        { value: '15:30', label: '15:30' },
-        { value: '16:00', label: '16:00' },
-        { value: '16:30', label: '16:30' },
-        { value: '17:00', label: '17:00' },
-        { value: '17:30', label: '17:30' },
-        { value: '18:00', label: '18:00' }
-    ];
+	// 09:00 부터 17:30 까지 30분 단위로 생성
+	const availableTimes = [];
+	
+	for (let hour = 9; hour <= 17; hour++) {
+	    for (let minute of ['00', '30']) {
+	        const time = ('0' + hour).slice(-2) + ':' + minute;
+	        availableTimes.push({ value: time, label: time });
+	    }
+	}
+
+	// 추가로 18:00 시간을 종료 시간에만 추가
+	availableTimes.push({ value: '18:00', label: '18:00' });
 
     const startTimeSelect = $('#start-time');
     const endTimeSelect = $('#end-time');
@@ -118,7 +109,7 @@ $(document).ready(function() {
                 disableReservedTimes(data);
             },
             error: function(xhr, status, error) {
-                console.error('Error fetching reserved times:', error);
+                console.error('에러 :', error);
             }
         });
     }
@@ -194,6 +185,18 @@ $(document).ready(function() {
             selectElement.append(opt);
         });
     }
+    
+ 	// 예약 버튼 클릭 시 시작시간, 유형 선택 여부 확인
+    $('#reservationForm').submit(function(event) {
+        if (!$('input[name="type"]:checked').val()) {
+            alert('유형을 선택하세요.');
+            event.preventDefault(); // 폼 제출 막기
+        } else if ($('#start-time').val() === ':::선택:::') {
+            alert('시작 시간을 선택하세요.');
+            event.preventDefault(); 
+        }
+    });
+    
 });
 </script>
 </body>

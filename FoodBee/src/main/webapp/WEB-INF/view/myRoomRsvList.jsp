@@ -4,49 +4,61 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>얘약 목록</title>
+<title>내 예약 목록</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-<h1>예약 목록</h1>
-
-<form id="dateForm" method="get" action="${pageContext.request.contextPath}/roomRsvList">
-    <input type="date" id="dateInput" name="date" value="${rsvDate}">
-</form>
-
+<h1>내 예약 목록</h1>
+<a href="${pageContext.request.contextPath}/roomRsvList">전체 예약</a>
+<a href="${pageContext.request.contextPath}/myRoomRsvList">내 예약</a>
 <table border="1">
-    <tr>   
+    <tr> 
         <th>회의실</th>
         <th>예약 날짜</th>
         <th>예약시간</th>
         <th>예약자</th>
         <th>&nbsp;</th>
-    </tr>
-    <c:forEach var="rsv" items="${rsvListByDate}">
+    </tr>    
+    <c:forEach var="rsv" items="${rsvListByEmpNo}">   
         <tr>
             <td>${rsv.roomName}</td>
             <td>${rsv.rsvDate}</td>
             <td>${rsv.startTime} ~ ${rsv.endTime}</td>
             <td>${rsv.empName}</td>
-            <td><a href="${pageContext.request.contextPath}/roomList">취소</a></td>
-        </tr>
-    </c:forEach>
+            <td>
+            	<form method="post" action="${pageContext.request.contextPath}/cancleRoomRsv"> 
+            	<input type="hidden" name="empNo" value="${rsv.empNo}">
+				<input type="hidden" name="rsvDate" value="${rsv.rsvDate}">
+				<input type="hidden" name="startTime" value="${rsv.startTime}">            	           
+            	<button id="cancel-link" type="submit">취소</button>
+            	</form> 
+            </td>
+        </tr>  
+    </c:forEach>   
 </table>
-    
+<div>
+    <c:if test="${currentPage > 1}">
+        <a href="${pageContext.request.contextPath}/myRoomRsvList?currentPage=${currentPage - 1}">이전</a>
+    </c:if>
+    <span>페이지 ${currentPage} / ${lastPage}</span>
+    <c:if test="${currentPage < lastPage}">
+        <a href="${pageContext.request.contextPath}/myRoomRsvList?currentPage=${currentPage + 1}">다음</a>
+    </c:if>
+</div>
 <script>
-    // 페이지가 로드될 때 실행될 함수
-    window.onload = function() {
-        var today = new Date();
-        var year = today.getFullYear();
-        var month = ('0' + (today.getMonth() + 1)).slice(-2);
-        var day = ('0' + today.getDate()).slice(-2);
-        var dateString = year + '-' + month + '-' + day;
-        document.getElementById('dateInput').value = dateString; // 기본값 설정
-    }
+$(document).ready(function() {
+    let today = new Date(); // 오늘 날짜 객체를 가져옴
 
-    // 날짜 입력 변경 시 폼 제출
-    document.getElementById('dateInput').addEventListener('change', function() {
-        document.getElementById('dateForm').submit();
+    // 각 예약 항목을 순회하며 날짜를 비교하고 취소 링크를 숨김
+    $('table tr').each(function() {
+        let rsvDateStr = $(this).find('td:eq(1)').text(); // 두 번째 td 요소의 텍스트(예약 날짜)를 가져옴
+        let rsvDate = new Date(rsvDateStr); // 예약 날짜를 Date 객체로 변환
+
+        if (rsvDate <= today) {
+            $(this).find('#cancel-link').hide(); // 예약 날짜가 오늘 이전인 경우 취소 링크를 숨김
+        }
     });
+});
 </script>
 </body>
 </html>

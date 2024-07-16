@@ -21,11 +21,20 @@ public interface RoomService {
 	List<RoomRsvDTO> getReservedTimes(int roomNo, String rsvDate);
 	
 	// 선택된 날짜별 전체 예약리스트 출력
-	List<RoomRsvDTO> getRsvListByDate(String rsvDate);
+	List<RoomRsvDTO> getRsvListByDate(String rsvDate, int currentPage);
+	
+	// 선택된 날짜 예약 총 갯수
+	int getRsvByDateLastPage(String rsvDate);
 	
 	// 내 예약리스트 출력
-	List<RoomRsvDTO> getRsvListByEmpNo(String empNo);
+	List<RoomRsvDTO> getRsvListByEmpNo(int empNo, int currentPage);
+	
+	// 내 예약 총 갯수
+	int getRsvByEmpNoLastPage(int empNo);
 	
 	// 회의실 번호, 선택된 날짜에 예약된 시간을 출력
 	List<Map<String, Object>> getReservedTime(int roomNo, String rsvDate);
+	
+	// 예약 취소
+	int modifyRoomRsv(RoomRsvDTO rsv);
 }
