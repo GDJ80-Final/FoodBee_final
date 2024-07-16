@@ -32,4 +32,10 @@ public interface EmpMapper {
 	//반환 값 : int
 	//사용 클래스 : EmpServiceImpl.updateEmpSignup
 	int updateEmpSignup(EmpDTO empDTO);
+	
+	//사번 중복 체크
+	//파라미터 : int empNo
+	//반환값: String
+	//사용클래스 : EmpServiceImpl.selectEmpNoDuplicate
+	String selectEmpNoDuplicate(int empNo);
 }

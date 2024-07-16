@@ -45,4 +45,11 @@
 			emp_no = #{empNo}
 	
 	</update>
+	<select id="selectEmpNoDuplicate" parameterType="int" resultType="String">
+	SELECT
+		emp_name
+	FROM
+		emp
+	WHERE emp_no = #{empNo} AND signup_YN = 'Y';
+	</select>
 </mapper>

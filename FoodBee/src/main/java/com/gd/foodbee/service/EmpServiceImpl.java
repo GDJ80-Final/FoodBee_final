@@ -87,6 +87,17 @@ public class EmpServiceImpl implements EmpService{
 		}	
 		
 	}
+	@Override
+	public int selectEmpNoDuplicate(int empNo) {
+		log.debug(TeamColor.YELLOW + "empNo => "+ empNo);
+		int result = 0;
+		//가입페이지접근은 result 가 0일때만 가능
+		if(empMapper.selectEmpNoDuplicate(empNo) != null) {
+			result = 1;
+		}
+		log.debug(TeamColor.YELLOW + "result => "+ result);
+		return result;
+	}
 	
 	
 }

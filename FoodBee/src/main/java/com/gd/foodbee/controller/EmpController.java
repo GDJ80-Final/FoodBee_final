@@ -7,8 +7,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.service.EmpService;
@@ -28,17 +29,21 @@ public class EmpController {
 	
 	
 	//회원가입 페이지
-	//파라미터 : String empNo
+	//파라미터 : int empNo
 	//반환값 : String(view)
 	//사용페이지 : /signup
 	@GetMapping("/signup")
-	public String signup(@RequestParam(name="empNo")String empNo, 
+	public String signup(@RequestParam(name="empNo")int empNo, 
 				Model model) {
 		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
+		int result = empService.selectEmpNoDuplicate(empNo);
 		model.addAttribute("empNo",empNo);
+		model.addAttribute("result",result);
+		
 		
 		return "signup";
 	}
+	
 	
 	//회원가입값입력
 	//파라미터 : signupDTO,Errors errors,HttpServletRequest request,Model model

@@ -130,6 +130,19 @@
 </body>
 <script>
        $(document).ready(function() {
+    	   
+    	   //사원번호 중복 검사 
+    	   //model에 담았던 result 값
+    	   //1 => 가입불가, 바로 로그인으로 이동
+    	   //0 => 가입 가능 
+    	   let result = '<%=request.getAttribute("result")%>';
+           
+           if (result == 1) {
+               // 접근 불가한 경우 
+        	   alert("잘못 된 접근입니다.이미 가입된 사번이거나 정상등록 되지 않은 사번입니다.");
+               window.location.href = '${pageContext.request.contextPath}/login'; // 로그인 페이지 URL로 변경
+           } 
+   
     	   //주소검색 버튼 클릭 시 다음주소api 팝업 호출
            $('#selectAddr').click(function() {
                new daum.Postcode({
