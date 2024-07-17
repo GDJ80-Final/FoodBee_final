@@ -1,7 +1,10 @@
 package com.gd.foodbee.service;
 
+import java.util.List;
+
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
+import com.gd.foodbee.dto.EmpSearchDTO;
 import com.gd.foodbee.dto.SignupDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,4 +25,7 @@ public interface EmpService {
 	
 	// 인증번호 생성
 	int createAuth(int empNo, String empEmail);
+	
+	// 사원 목록
+	List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO); 
 }

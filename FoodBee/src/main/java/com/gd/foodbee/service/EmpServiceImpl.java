@@ -2,6 +2,7 @@ package com.gd.foodbee.service;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
+import com.gd.foodbee.dto.EmpSearchDTO;
 import com.gd.foodbee.dto.ProfileDTO;
 import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.mapper.EmpMapper;
@@ -165,6 +167,11 @@ public class EmpServiceImpl implements EmpService{
 		}
 		// empDTO가 없으면 사원번호나 이메일이 틀리다는 것이므로 틀렸다는 표시로 0을 넘김.
 		return 0;
+	}
+	@Override
+	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO) {
+		
+		return empMapper.selectEmpList(empSearchDTO);
 	}
 	
 }

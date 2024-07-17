@@ -24,28 +24,29 @@
 		<div><a href="/foodbee/findPw">비밀번호 찾기</a></div>
 		<div><button type="button" id="btn">Login</button></div>
 	</form>
+	
+	<script>
+		$(document).ready(function() {
+			$('#btn').click(function(){
+				if($('#empNo').val().length == 0) {
+					$('#noMsg').text('사원번호를 입력해주세요');
+					$('#empNo').focus();
+					return;
+				} else {
+					$('#empNoMsg').text('');
+				}
+				
+				if($('#empPw').val().length == 0) {
+					$('#pwMsg').text('비밀번호를 입력해주세요 ');
+					$('#empPw').focus();
+					return;
+				} else {
+					$('#pwMsg').text('');
+				}
+				
+				$('#signinForm').submit();
+			});	
+		});
+	</script>
 </body>
-<script>
-	$(document).ready(function() {
-		$('#btn').click(function(){
-			if($('#empNo').val().length == 0) {
-				$('#noMsg').text('사원번호를 입력해주세요');
-				$('#empNo').focus();
-				return;
-			} else {
-				$('#empNoMsg').text('');
-			}
-			
-			if($('#empPw').val().length == 0) {
-				$('#pwMsg').text('비밀번호를 입력해주세요 ');
-				$('#empPw').focus();
-				return;
-			} else {
-				$('#pwMsg').text('');
-			}
-			
-			$('#signinForm').submit();
-		});	
-	});
-</script>
 </html>

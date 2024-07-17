@@ -1,5 +1,7 @@
 package com.gd.foodbee.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
+import com.gd.foodbee.dto.EmpSearchDTO;
 import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.service.EmpService;
 import com.gd.foodbee.util.SendEmail;
@@ -86,26 +89,37 @@ public class EmpController {
 		return "redirect:/login";
 	}
 	
+	//사원 등록 및 초대 페이지
+	//파라미터 : X
+	//반환값 : String(view)
+	//사용페이지 : /addEmp
 	@GetMapping("/addEmp")
 	   public String addEmp() {
 	      
 	      return "addEmp";
 	   }
-	   
+	
+	//사원 번호 생성
+	//파라미터 : X
+	//반환값 : int
+	//사용페이지 : /addEmp
 	@GetMapping("/createEmpNo")
 	@ResponseBody
-	 public int createEmpNo() {
+	public int createEmpNo() {
 			int empNo = empService.createEmpNo();
 	   
 			return empNo;
 		}
 		
-	 
-	 @PostMapping("/addEmp")
-	 public String addEmp(@Valid EmpDTO empDTO,
-			 Errors errors,
-			 HttpServletRequest request,
-			 Model model) {
+	//사원 등록 및 초대
+	//파라미터 : EmpDTO empDTO,  Errors errors,HttpServletRequest request,Model model
+	//반환값 : String(View)
+	//사용페이지 : /addEmp
+	@PostMapping("/addEmp")
+	public String addEmp(@Valid EmpDTO empDTO,
+			Errors errors,
+			HttpServletRequest request,
+			Model model) {
 	 
 		log.debug(TeamColor.RED + "empDTO => " +  empDTO.toString());
 		 
@@ -139,7 +153,7 @@ public class EmpController {
 	 
 		    
 		    // 사원 목록으로 이동
-	 	return "redirect:/";
+	 	return "redirect:/empList";
 	 }
 	 
 	// 인증번호 메일 발송
@@ -178,4 +192,33 @@ public class EmpController {
 		
 		return "fail";
 	}
+	
+	//사원 목록 페이지
+	//파라미터 : X
+	//반환값 : String(view)
+	//사용페이지 : /empList
+	@GetMapping("/empList")
+	public String getEmpList() {
+		
+		return "empList";
+	}
+	
+	//사원 목록 조회
+	//파라미터 : EmpSearchDTO empSearchDTO
+	//반환값 : List<EmpSearchDTO>
+	//사용페이지 : /empList
+	@GetMapping("/searchEmp")
+	@ResponseBody
+	public List<EmpSearchDTO> searhEmpList(EmpSearchDTO empSearchDTO) {
+		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
+		log.debug(TeamColor.RED + "deptName =>" + empSearchDTO.getDeptName());
+		log.debug(TeamColor.RED + "teamName =>" + empSearchDTO.getTeamName());
+		log.debug(TeamColor.RED + "rankName =>" + empSearchDTO.getRankName());
+		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
+		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
+		
+		return empService.getEmpList(empSearchDTO);
+	}
+	
+	//
 }

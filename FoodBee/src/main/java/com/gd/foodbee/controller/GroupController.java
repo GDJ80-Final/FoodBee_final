@@ -25,20 +25,32 @@ public class GroupController {
 	public List<GroupDTO> getOfficeList(){
 		
 	
-		return groupService.getOffcieList();
+		return groupService.getOfficeList();
 	}
 	
 	@PostMapping("/deptList")
-	public List<GroupDTO> getDeptList(@RequestParam String dptNo){
+	public List<GroupDTO> getDeptListByOffice(@RequestParam String dptNo){
 		log.debug(TeamColor.RED + "dptNo =>" + dptNo);
 		
-		return groupService.getDeptList(dptNo);
+		return groupService.getDeptListByOffice(dptNo);
 	}
 	
 	@PostMapping("/teamList")
-	public List<GroupDTO> getTeamList(@RequestParam String dptNo){
+	public List<GroupDTO> getTeamListByDept(@RequestParam String dptNo){
 		log.debug(TeamColor.RED + "dptNo =>" + dptNo);
 		
-		return groupService.getTeamist(dptNo);
+		return groupService.getTeamListByDept(dptNo);
+	}
+	
+	@GetMapping("/deptList")
+	public List<GroupDTO> getDeptList(){
+		
+		return groupService.getDeptList();
+	}
+	
+	@GetMapping("/teamList")
+	public List<GroupDTO> getTeamList(){
+		
+		return groupService.getTeamList();
 	}
 }

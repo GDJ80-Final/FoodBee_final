@@ -6,11 +6,18 @@ import com.gd.foodbee.dto.GroupDTO;
 
 public interface GroupService {
 
-	List<GroupDTO> getOffcieList();
+	// 전체 본사/지사 리스트
+	List<GroupDTO> getOfficeList();
 	
-	List<GroupDTO> getDeptList(String dptNo);
+	// 본사/지사에 포함된 부서 리스트
+	List<GroupDTO> getDeptListByOffice(String dptNo);
 	
-	List<GroupDTO> getTeamist(String dptNo);
+	// 부서에 포함된 팀 리스트
+	List<GroupDTO> getTeamListByDept(String dptNo);
 	
+	// 전체 부서 리스트
+	List<GroupDTO> getDeptList();
 	
+	// 전체 팀 리스트
+	List<GroupDTO> getTeamList();
 }

@@ -1,8 +1,11 @@
 package com.gd.foodbee.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.EmpDTO;
+import com.gd.foodbee.dto.EmpSearchDTO;
 import com.gd.foodbee.dto.LoginDTO;
 import com.gd.foodbee.dto.SignupDTO;
 
@@ -48,4 +51,7 @@ public interface EmpMapper {
     
     // 사원 등록
     int insertEmp(EmpDTO empDTO);
+    
+    // 사원 목록
+    List<EmpSearchDTO> selectEmpList(EmpSearchDTO empSearchDTO);
 }
