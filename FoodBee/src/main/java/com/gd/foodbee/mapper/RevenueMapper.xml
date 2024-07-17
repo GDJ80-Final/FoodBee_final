@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.RevenueMapper">
+	
+	<!-- 해당 월 매출액 출력 -->
+	<select id="selectMonthRevenue" resultType="com.gd.foodbee.dto.RevenueDTO" parameterType="String">
+		SELECT 
+			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) referenceMonth,
+			category_name categoryName, 
+			drafter_emp_no drafterEmpNo, 
+			revenue
+		FROM 
+			revenue_history
+		WHERE 
+			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) = #{referenceMonth};
+	</select>
+	
+</mapper>

@@ -98,15 +98,15 @@ $(document).ready(function() {
     // 예약된 시간 가져오기
     function fetchReservedTimes(roomNo, rsvDate) {
         $.ajax({
-            url: '/foodbee/controller/getReservedTimes',
+            url: "${pageContext.request.contextPath}/getReservedTimes",
             method: 'POST',
             data: {
                 roomNo: roomNo,
                 rsvDate: rsvDate
             },
-            success: function(data) {
-                console.log(data); // 데이터 확인
-                disableReservedTimes(data);
+            success: function(json) {
+                console.log(json); // 데이터 확인
+                disableReservedTimes(json);
             },
             error: function(xhr, status, error) {
                 console.error('에러 :', error);

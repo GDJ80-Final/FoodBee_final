@@ -31,8 +31,8 @@
 				</form>	
 			</td>
 			<td style="height:200px;">
+			<img src="${pageContext.request.contextPath}/profileImg?name=20240716004716.jpeg" width="100px">
 				<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
-					<img src="/article/img/${m.roomName}" width="100px">
 				 </a>
 			</td>
 			<td style="height:200px;">${m.roomPlace}</td>
