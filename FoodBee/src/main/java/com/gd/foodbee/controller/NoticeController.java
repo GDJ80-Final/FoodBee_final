@@ -56,7 +56,7 @@ public class NoticeController {
 		
 		log.debug(TeamColor.PURPLE + "list=>" + list);
 		
-		//총 공지사항의 갯수
+		//공지사항 마지막페이지
 		int lastPage = noticeService.allLastPage();
 		
 		model.addAttribute("dptNo", dptNo);

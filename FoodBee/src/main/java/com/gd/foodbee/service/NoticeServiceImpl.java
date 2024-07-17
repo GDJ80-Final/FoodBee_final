@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,9 +138,9 @@ public class NoticeServiceImpl implements NoticeService{
 	        file.setOriginalFile(mf.getOriginalFilename());
 	        file.setType(notice.getType());
 	        
-	        // setSaveFile() 저장될 파일 이름은 UUID 사용
-	        //prefix를 연/월/일/시/분/초
-	        String prefix = UUID.randomUUID().toString().replace("-", "");
+	        LocalDateTime now = LocalDateTime.now();
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+	        String prefix = now.format(formatter);
 	        String suffix = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
 	        file.setSaveFile(prefix + suffix);
 	        
@@ -179,9 +181,42 @@ public class NoticeServiceImpl implements NoticeService{
     	if(update != 1) {
     		throw new RuntimeException("내용수정에 실패하였음"); 
     	}
+    	
+    	MultipartFile[] mfs = noticeRequest.getFiles();
+    	
+    	for(MultipartFile mf : mfs) {
+    		 if (mf.isEmpty()) {
+  	            continue; // 파일이 없는 경우 스킵
+  	        }
+  	        
+  	        NoticeFileDTO file = new NoticeFileDTO();
+  	        file.setNoticeNo(noticeNo);
+  	        file.setOriginalFile(mf.getOriginalFilename());
+  	        file.setType("default"); 
+  	        
+  	      LocalDateTime now = LocalDateTime.now();
+          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+          String prefix = now.format(formatter);
+
+          String suffix = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
+          file.setSaveFile(prefix + suffix);
+		
+          int update2 = noticeFileMapper.insertNoticeFile(file);
+         
+    	  if (update2 != 1) {
+  	            throw new RuntimeException("파일입력실패");
+  	      }
+    	// 파일 저장
+	        File emptyFile = new File("c:/upload/" + prefix + suffix);
+	        try {
+	            mf.transferTo(emptyFile);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            throw new RuntimeException("파일업로드 실패");
+	        }	  
+    	}
     }
    
-    
     //공지사항 파일 삭제하기
     @Override
     public void getDeleteNoticeFile(String fileName, int noticeNo) {
@@ -191,7 +226,6 @@ public class NoticeServiceImpl implements NoticeService{
         noticeFileDTO.setSaveFile(fileName);
         
         noticeFileMapper.deleteNoticeFile(noticeFileDTO);
-
     }
 	
 	//공지사항 삭제하기

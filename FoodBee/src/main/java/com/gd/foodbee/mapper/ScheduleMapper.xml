@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.ScheduleMapper">
+<!-- 일정 테이블의 개인일정 -->
+<select id="scheduleList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
+	SELECT 
+		schedule_no scheduleNo, 
+		emp_no empNo, 
+		title, 
+		content, 
+		type, 
+		start_datetime startDatetime, 
+		end_datetime endDatetime 
+	FROM 
+		schedule
+	WHERE 
+		emp_no = #{empNo}
+</select>
+<!-- 팀별 회의실 예약리스트 -->
+<select id="roomRsvList" parameterType="HashMap" resultType="HashMap">
+	SELECT 
+		r.rsv_no rsvNo, 
+		r.room_no roomNo, 
+		r.emp_no empNo, 
+		r.rsv_date rsvDate, 
+		r.start_datetime startDatetime, 
+		r.end_datetime endDatetime, 
+		r.`type` type, 
+		r.rsv_state rsvState,
+		e.dpt_no dptNo, 
+		e.emp_name empName
+	FROM 
+		room_rsv r
+	INNER JOIN 
+		emp e
+	ON 
+		r.emp_no = e.emp_no
+	WHERE 
+		e.dpt_no = #{dptNo}
+</select>
+<!-- 팀원 휴가내역리스트 -->
+<select id="dayOffList" parameterType="HashMap" resultType="HashMap">
+	SELECT 
+		h.start_date startDate, 
+		h.end_date endDate, 
+		h.emergency_contact contact, 
+		e.emp_name name
+	FROM 
+		day_off_history h
+	INNER JOIN 
+		emp e
+	ON 
+		h.emp_no = h.emp_no
+	WHERE 
+		e.dpt_no = #{dptNo}
+	AND 
+		h.cancel_YN = 'N'
+</select>
+<select id="businessTripList" parameterType="HashMap" resultType="HashMap">
+	SELECT 
+		e.emp_name name, 
+		b.business_trip_destination destination, 
+		b.start_date startDate, 
+		b.end_date endDate, 
+		b.emergency_contact contact
+	FROM 
+		business_trip_history b
+	LEFT JOIN 
+		emp e
+	ON 
+		b.emp_no = e.emp_no
+	WHERE 
+		e.dpt_no = #{dptNo}
+	AND 
+		b.cancle_YN = 'N'
+</select>
+</mapper>
