@@ -90,12 +90,10 @@
 	            $('#team').val('')
 	            $('#team').empty();
 	            $('#team').append('<option value="">---팀 선택---</option>');
-	            $('#dept').val('')
+	            $('#dept').val('');
 	            $('#dept').empty();
 	            $('#dept').append('<option value="">---부서 선택---</option>');
-	            $('#office').val('')
-	            $('#office').empty();
-	            $('#office').append('<option value="">---본사/지사 선택---</option>');
+	            $('#office').val('');
 	            
 	        }
 	    });
@@ -129,6 +127,12 @@
 		
 		$('#office').change(function(){
 			if($('#office').val() == '') {
+				$('#team').val('');
+	            $('#team').empty();
+	            $('#team').append('<option value="">---팀 선택---</option>');
+	            $('#dept').val('');
+	            $('#dept').empty();
+	            $('#dept').append('<option value="">---부서 선택---</option>');
 				return;
 			}
 			
@@ -151,6 +155,9 @@
 		
 		$('#dept').change(function(){
 			if($('#dept').val() == '') {
+				$('#team').val('');
+	            $('#team').empty();
+	            $('#team').append('<option value="">---부서 선택---</option>');
 				return;
 			}
 			
