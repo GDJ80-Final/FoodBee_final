@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.EmpSearchDTO;
+import com.gd.foodbee.dto.LoginDTO;
 import com.gd.foodbee.dto.ProfileDTO;
 import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.mapper.EmpMapper;
@@ -43,6 +44,27 @@ public class EmpServiceImpl implements EmpService{
 	@Autowired
 	private SendEmail sendEmail;
 	
+	// 로그인
+	// 파라미터 : LoginDTO
+	// 반환 값 : EmptDTO
+	// 사용 클래스 : LoginController.login
+	@Override
+	public EmpDTO login(LoginDTO loginDTO) {
+		
+		return empMapper.selectEmpByNoAndPw(loginDTO);
+	}
+
+	// 임시 비밀번호로 변경
+	// 파라미터 : int empNo, String empPw
+	// 반환 값 : void
+	// 사용 클래스 : LoginController.getPw
+	@Override
+	public void modifyEmpPw(int empNo, String empPw) {
+		int row = empMapper.updateEmpPw(empNo, empPw);
+		if(row == 0) {
+			throw new RuntimeException();
+		}
+	}
 	
 	//사원 인트라넷 등록 (가입) 
 	//파라미터 : SignupDTO signupDTO,HttpServletRequest request
@@ -168,10 +190,19 @@ public class EmpServiceImpl implements EmpService{
 		// empDTO가 없으면 사원번호나 이메일이 틀리다는 것이므로 틀렸다는 표시로 0을 넘김.
 		return 0;
 	}
+	
+	// 사원목록
 	@Override
 	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO) {
 		
 		return empMapper.selectEmpList(empSearchDTO);
+	}
+
+	// 사원번호로 이메일 찾기
+	@Override
+	public String getEmpEmailByEmpNo(int empNo) {
+		
+		return empMapper.selectEmpEmailByEmpNo(empNo);
 	}
 	
 }

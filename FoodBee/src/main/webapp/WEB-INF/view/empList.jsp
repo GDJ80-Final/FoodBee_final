@@ -118,8 +118,9 @@
 							'<td>' + item.extNo +'</td>' + 
 							'<td>' + item.startDate +'</td>' + 
 							'<td>' + item.signupYN +
-							(item.signupYN == 'N' ? '<button type="button" id="sendEmail">이메일 재발송</button>' : '') +
+							(item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') +
 							'</td>' + 
+							'<td><button type="button" class="resetPw" value="' + item.empNo + '">비밀번호 초기화</button></td>' +
 							'</tr>');
 					});
 				}
@@ -164,14 +165,40 @@
 								'<td>' + item.extNo +'</td>' + 
 								'<td>' + item.startDate +'</td>' + 
 								'<td>' + item.signupYN +
-								(item.signupYN == 'N' ? '<button type="button" id="sendEmail">이메일 재발송</button>' : '') +
+								(item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') +
 								'</td>' + 
+								'<td><button type="button" class="resetPw" value="' + item.empNo + '">비밀번호 초기화</button></td>' +
 								'</tr>');
-							
 							
 						});
 					}
 				});
+			});
+			
+			$('#empList').on('click', '.resetPw', function(){
+			    let empNo = $(this).val();
+			    console.log(empNo);
+			    $.ajax({
+			        url: '${pageContext.request.contextPath}/resetPw',
+			        method: 'post',
+			        data: { empNo: empNo },
+			        success: function(json){
+			            alert('비밀번호가 초기화되었습니다. 임시 비밀번호는 ' + json + '입니다');
+			        }
+			    });
+			});
+			
+			$('#empList').on('click', '.sendEmail', function(){
+			    let empNo = $(this).val();
+			    console.log(empNo);
+			    $.ajax({
+			        url: '${pageContext.request.contextPath}/resendEmail',
+			        method: 'post',
+			        data: { empNo: empNo },
+			        success: function(json){
+			            alert('회원가입 링크가 발송되었습니다. 이메일 : ' + json);
+			        }
+			    });
 			});
 		});
 	</script>

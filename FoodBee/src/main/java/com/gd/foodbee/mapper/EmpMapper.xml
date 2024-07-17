@@ -114,7 +114,13 @@
             <if test="empNo != null and empNo != ''">
                 AND e.emp_no LIKE '%${empNo}%'
             </if>
-		ORDER BY emp_name;
-		
+		ORDER BY emp_name;	
+	</select>
+	<select id="selectEmpEmailByEmpNo" parameterType="int" resultType="String">
+		SELECT
+			emp_email empEmail
+		FROM emp
+		WHERE
+			emp_no = #{empNo}
 	</select>
 </mapper>

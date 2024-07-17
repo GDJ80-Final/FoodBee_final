@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.LoginDTO;
-import com.gd.foodbee.service.LoginService;
+import com.gd.foodbee.service.EmpService;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.Cookie;
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 	
 	@Autowired
-	private LoginService loginService;
+	private EmpService empService;
 
 	// 로그인 페이지
 	// 파라미터 : HttpServletRequest
@@ -64,7 +64,7 @@ public class LoginController {
 		log.debug(TeamColor.RED + "empPw =>" + loginDto.getEmpPw());
 		log.debug(TeamColor.RED + "saveId =>" + loginDto.getSaveId());
 		
-		EmpDTO empDto =  loginService.login(loginDto);
+		EmpDTO empDto =  empService.login(loginDto);
 		
 		log.debug(TeamColor.RED + "empDto =>" + empDto);
 		
@@ -148,7 +148,7 @@ public class LoginController {
 	        log.debug(TeamColor.RED + "tmpPw =>" + tmpPw);
 	        
 	        
-	        loginService.modifyEmpPw(empNo, tmpPw);
+	        empService.modifyEmpPw(empNo, tmpPw);
 	        
 	        return tmpPw;
 	    }

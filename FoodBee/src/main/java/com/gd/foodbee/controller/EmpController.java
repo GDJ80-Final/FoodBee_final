@@ -1,6 +1,7 @@
 package com.gd.foodbee.controller;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -220,5 +221,56 @@ public class EmpController {
 		return empService.getEmpList(empSearchDTO);
 	}
 	
-	//
+	//비밀번호 초기화
+	@PostMapping("/resetPw")
+	@ResponseBody
+	public String resetEmpPw(@RequestParam(name = "empNo") int empNo) {
+		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		
+		Random random = new Random();
+    	String tmpPw = "";
+		
+		for (int i = 0; i < 8; i++) {
+            int index = random.nextInt(3);  // 0, 1, 2 중 하나의 값을 랜덤하게 선택
+
+            switch (index) {
+                case 0:
+                	tmpPw += (char) (random.nextInt(26) + 'a');  // 소문자
+                    break;
+                case 1:
+                	tmpPw += (char) (random.nextInt(26) + 'A');  // 대문자
+                    break;
+                case 2:
+                	tmpPw += (char) (random.nextInt(10) + '0');  // 숫자
+                    break;
+            }
+        }
+        log.debug(TeamColor.RED + "tmpPw =>" + tmpPw);
+        
+        
+        empService.modifyEmpPw(empNo, tmpPw);
+
+		return tmpPw;
+	}
+	
+	//이메일 재발송
+	@PostMapping("/resendEmail")
+	@ResponseBody
+	public String resendEmail(@RequestParam(name = "empNo") int empNo) {
+		
+		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		
+		String empEmail = empService.getEmpEmailByEmpNo(empNo);
+		
+		String url = "http://localhost/foodbee/signup?empNo=" + empNo;
+		EmailDTO emailDTO = EmailDTO.builder()
+				 .to(empEmail)
+			     .subject("[FoodBee] 회원가입 링크")
+			     .message("회원가입 링크 : <a href=\"" + url + "\">" + url + "</a> 입니다.")
+			     .build();
+	
+		sendEmail.sendEmail(emailDTO);
+		
+		return empEmail;
+	}
 }
