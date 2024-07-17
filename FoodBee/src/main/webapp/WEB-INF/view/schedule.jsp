@@ -4,46 +4,46 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <style>
-      #calendar {
-        max-width: 700px; 
-        height: 600px; 
-        margin: 0 auto; 
-        font-size: 10px;
-      }
-      #btn {
-        text-align: center; 
-        margin-top: 20px;
-      }
-      #btn button {
-        display: inline-block;
-        margin: 0 2px;
-        cursor: pointer; 
-        border: 1px solid transparent; 
-        border-radius: 4px; 
-      }
-      #all {
-        background-color: #4C4C4C;
-        color: white;
-      }
-      #personal {
-        background-color: #FFA7A7; 
-        color: white; 
-      }
-      #team {
-        background-color: #BCE55C; 
-        color: white; 
-      }
-    </style>
-  </head>
+ <head>
+   <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+   <style>
+     #calendar {
+       max-width: 700px; 
+       height: 600px; 
+       margin: 0 auto; 
+       font-size: 10px;
+     }
+     #btn {
+       text-align: center; 
+       margin-top: 20px;
+     }
+     #btn button {
+       display: inline-block;
+       margin: 0 2px;
+       cursor: pointer; 
+       border: 1px solid transparent; 
+       border-radius: 4px; 
+     }
+     #allEvents {
+       background-color: #4C4C4C;
+       color: white;
+     }
+     #personalEvents {
+       background-color: #FFA7A7; 
+       color: white; 
+     }
+     #teamEvents {
+       background-color: #BCE55C; 
+       color: white; 
+     }
+   </style>
+ </head>
   <body>
     <div id="btn">
-      <button id="all">전체</button>
-      <button id="personal">개인</button>
-      <button id="team">팀</button>
+      <button id="allEvents">전체</button>
+      <button id="personalEvents">개인</button>
+      <button id="teamEvents">팀</button>
     </div>
     <div id='calendar'></div>
 
@@ -114,10 +114,11 @@
       </div>
     </div>
 
-    <!-- CalendarAPI script! -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- CalendarAPI script! -->    
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const events = [
@@ -128,7 +129,7 @@
               start: '<c:out value="${m.startDatetime}" />',
               end: '<c:out value="${m.endDatetime}" />',
               color: '<c:out value="${m.type == '개인' ? '#FF6C6C' : '#BCE55C'}" />',
-              type: '<c:out value="${m.type}" />',
+              type: '개인',
               description: '<c:out value="${m.content}" />'
             },
           </c:forEach>
@@ -216,10 +217,32 @@
             }
           }
         });
+        
+        // 전체 데이터를 백업해 둘 변수
+        let allEvents = calendar.getEvents();
+
+        // 일정 필터링 함수
+        function filterEventsByType(type) {
+          // 백업된 전체 데이터를 기반으로 필터링
+          const filteredEvents = allEvents.filter(event => event.extendedProps.type === type || type === '전체');
+          calendar.removeAllEvents();
+          calendar.addEventSource(filteredEvents);
+          calendar.render();
+        }
+        // 필터링 버튼 클릭 시
+        document.getElementById('allEvents').addEventListener('click', function() {
+          filterEventsByType('전체');
+        });
+
+        document.getElementById('personalEvents').addEventListener('click', function() {
+          filterEventsByType('개인');
+        });
+
+        document.getElementById('teamEvents').addEventListener('click', function() {
+          filterEventsByType('팀');
+        });
 
         calendar.render();
-        
-
       });
 </script>
 </body>
