@@ -54,4 +54,7 @@ public interface EmpMapper {
     
     // 사원 목록
     List<EmpSearchDTO> selectEmpList(EmpSearchDTO empSearchDTO);
+    
+    //사원번호로 이메일 찾기
+    String selectEmpEmailByEmpNo(int empNo);
 }

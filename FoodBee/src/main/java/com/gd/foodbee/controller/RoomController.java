@@ -3,6 +3,7 @@ package com.gd.foodbee.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.RoomDTO;
@@ -61,6 +63,20 @@ public class RoomController {
 		model.addAttribute("rsvDate",rsvDate);
 		model.addAttribute("reservedTimes",reservedTimes);
 		return "roomOne";
+	}
+	
+	// 회의실 번호, 선택된 날짜에 예약된 시간을 출력 / 예약시간 필터링
+	// 파라미터 : int roomNo, String rsvDate
+	// 반환 값 : String startTime, String endTime
+	// 사용 페이지 : /roomOne
+	@PostMapping("/getReservedTimes")
+	@ResponseBody
+	public List<Map<String, Object>> getReservedTimes(@RequestParam("roomNo") int roomNo,  
+													  @RequestParam(name = "rsvDate", required = false) String rsvDate) {
+		log.debug(TeamColor.GREEN+"roomNo:"+roomNo);
+		log.debug(TeamColor.GREEN+"rsvDate:"+rsvDate);
+		
+	    return roomService.getReservedTime(roomNo, rsvDate);
 	}
 	
 	// 회의실 예약

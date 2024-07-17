@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmpDTO;
-import com.gd.foodbee.dto.LoginDTO;
 import com.gd.foodbee.dto.NoticeRequest;
-import com.gd.foodbee.service.LoginService;
 import com.gd.foodbee.service.NoticeService;
 import com.gd.foodbee.util.TeamColor;
 
