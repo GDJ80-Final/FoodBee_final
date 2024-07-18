@@ -5,7 +5,8 @@
 		SELECT 
 		    dpt_name dptName,
 		    dpt_no dptNo
-		FROM `group`
+		FROM 
+			`group`
 		WHERE 
 		    dpt_name LIKE '%사'
 	</select>
@@ -13,7 +14,8 @@
 		SELECT 
 		    dpt_name dptName,
 		    dpt_no dptNo
-		FROM `group`
+		FROM 
+			`group`
 		WHERE 
 		    superior_dpt_no = #{dptNo} 
 		    AND dpt_name LIKE '%부서';
@@ -22,21 +24,24 @@
 		SELECT 
 		    dpt_name dptName,
 		    dpt_no dptNo
-		FROM `group`
+		FROM 
+			`group`
 		WHERE 
 	   		superior_dpt_no = #{dptNo};	
 	</select>
 	<select id="selectDeptList" resultType="com.gd.foodbee.dto.GroupDTO">
 		SELECT DISTINCT
 		    dpt_name dptName
-		FROM `group`
+		FROM 
+			`group`
 		WHERE 
 	   		dpt_name LIKE '%부서';
 	</select>
 	<select id="selectTeamList" resultType="com.gd.foodbee.dto.GroupDTO">
 		SELECT DISTINCT
 		   dpt_name dptName
-		FROM `group`
+		FROM 
+			`group`
 		WHERE 
 			dpt_name LIKE '%팀';	
 	</select>

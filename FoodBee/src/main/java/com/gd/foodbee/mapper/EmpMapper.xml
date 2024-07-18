@@ -7,7 +7,8 @@
 			emp_name empName,
 			rank_name rankName,
 			dpt_no dptNo
-		FROM emp
+		FROM 
+			emp
 		WHERE 
 			emp_no = #{empNo} 
 			AND emp_pw = SHA2(#{empPw},256)
@@ -17,13 +18,15 @@
 			emp_no empNo,
 			emp_name empName,
 			emp_email empEmail
-		FROM emp
+		FROM 
+			emp
 		WHERE 
 			emp_no = #{empNo} 
 			AND emp_email = #{empEmail}
 	</select>
 	<update id="updateEmpPw" parameterType="map">
-		UPDATE emp
+		UPDATE 
+			emp
 		SET
 			emp_pw = SHA2(#{empPw},256),
 			pw_update_datetime = NOW()
@@ -32,7 +35,8 @@
 	</update>
 	
 	<update id="updateEmpSignup" parameterType="com.gd.foodbee.dto.EmpDTO">
-		UPDATE emp
+		UPDATE 
+			emp
 		SET
 			contact = #{contact},
 			post_no = #{postNo},
@@ -46,11 +50,13 @@
 	
 	</update>
 	<select id="selectEmpNoDuplicate" parameterType="int" resultType="String">
-	SELECT
-		emp_name
-	FROM
-		emp
-	WHERE emp_no = #{empNo} AND signup_YN = 'Y';
+		SELECT
+			emp_name empName
+		FROM
+			emp
+		WHERE 
+			emp_no = #{empNo} 
+			AND signup_YN = 'Y';
 	</select>
 	<select id="selectEmpNoMax" resultType="int">
      	SELECT
@@ -87,7 +93,8 @@
 			o.dpt_name officeName,
 			d.dpt_name deptName,
 			t.dpt_name teamName
-		FROM emp e
+		FROM 
+			emp e
 		INNER JOIN
 			`group` t ON t.dpt_no = e.dpt_no
 		INNER JOIN
@@ -119,8 +126,53 @@
 	<select id="selectEmpEmailByEmpNo" parameterType="int" resultType="String">
 		SELECT
 			emp_email empEmail
-		FROM emp
+		FROM 
+			emp
 		WHERE
 			emp_no = #{empNo}
 	</select>
+	<select id="selectEmp" parameterType="int" resultType="com.gd.foodbee.dto.EmpDTO">
+		SELECT
+			e.emp_no empNo,
+			e.emp_name empName,
+			e.ext_no extNo,
+			e.start_date startDate,
+			e.emp_state empState,
+			e.dpt_no dptNo,
+			e.contact,
+			e.address,
+			e.emp_email empEmail,
+			i.original_file
+		FROM
+			emp e
+		INNER JOIN
+			profile_img i ON e.emp_no = i.emp_no
+		WHERE
+			emp_no = #{empNo}
+	</select>
+	<select id="selectEmpHr" parameterType="int" resultType="com.gd.foodbee.dto.EmpDTO">
+		SELECT
+			e.emp_no empNo,
+			e.emp_name empName,
+			e.ext_no extNo,
+			e.start_date startDate,
+			e.emp_state empState,
+			e.dpt_no dptNo,
+			i.original_file
+		FROM
+			emp e
+		INNER JOIN
+			profile_img i ON e.emp_no = i.emp_no
+		WHERE
+			emp_no = #{empNo}
+	</select>
+	<update id="updateEmpHr" parameterType="com.gd.foodbee.dto.EmpDTO">
+		UPDATE
+			emp
+		SET
+			dpt_no = #{dptNo},
+			emp_state = #{empState}
+		WHERE
+			emp_no = #{empNo}
+	</update>
 </mapper>

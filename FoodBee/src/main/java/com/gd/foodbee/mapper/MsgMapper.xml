@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.MsgMapper">
+	<insert id="insertMsg" parameterType="com.gd.foodbee.dto.MsgDTO">
+	<selectKey resultType="int" order="AFTER" keyProperty="msgNo">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+		INSERT INTO msg(
+			sender_emp_no,
+			title,
+			content,
+			create_datetime,
+			msg_state
+		) VALUES (
+			#{senderEmpNo},
+			#{title},
+			#{content},
+			NOW(),
+			#{msgState}
+		
+		)
+	</insert>
+	<select id="selectReceivedMsgList" parameterType="HashMap" resultType="HashMap">
+		SELECT
+			m.msg_no msgNo,
+			e.emp_name empName,
+			m.title,
+			m.create_datetime createDateTime
+		FROM
+			msg m
+		INNER JOIN
+			msg_recipient mr ON m.msg_no = mr.msg_no
+		INNER JOIN
+			emp e ON e.emp_no = m.sender_emp_no
+		WHERE
+			mr.recipient_emp_no = #{empNo}
+			AND m.msg_state = 1
+		<if test='readYN == "Y"'>
+			AND mr.read_YN = 'Y'
+		</if>
+		<if test='readYN == "N"'>
+			AND mr.read_YN = 'N'
+		</if>
+		LIMIT
+			#{beginRow},
+			#{rowPerPage}
+	</select>
+	<select id="selectCntReceivedMsg" resultType="int">
+		SELECT 
+			COUNT(*) cnt
+		FROM
+			msg
+		WHERE
+			msg_state = 1
+	</select>
+
+
+
+
+</mapper>
