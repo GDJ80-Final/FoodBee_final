@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.gd.foodbee.dto.ScheduleDTO;
 import com.gd.foodbee.mapper.ScheduleMapper;
+import com.gd.foodbee.util.TeamColor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Autowired ScheduleMapper scheduleMapper;
 	final int rowPerPage= 10;
 	
-	//일정 테이블리스트
+	//개인일정 테이블리스트
 	@Override
 	public List<ScheduleDTO>getScheduleList(int empNo){
 		/*
@@ -30,11 +31,20 @@ public class ScheduleServiceImpl implements ScheduleService {
         
 		return scheduleMapper.scheduleList(m);
 	}
+	//팀일정 테이블리스트
+	@Override
+	public List<ScheduleDTO>getTeamScheduleList(String dptNo){
+		
+		HashMap<String,Object> m = new HashMap<String,Object>();
+		m.put("dptNo", dptNo);
+		
+		return scheduleMapper.teamScheduleList(m);
+	}
 	//회의실 예약리스트
 	@Override
 	public List<HashMap<String,Object>>getRoomRsvList(String dptNo){
-        HashMap<String,Object> m = new HashMap<String,Object>();
-
+       
+		HashMap<String,Object> m = new HashMap<String,Object>();
         m.put("dptNo", dptNo);
         
         return scheduleMapper.roomRsvList(m);
@@ -75,5 +85,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 		m.put("scheduleDTO", scheduleDTO);
 		
 		return scheduleMapper.modifySchedule(m);
+	}
+	@Override
+	public int deleteSchedule(int scheduleNo) {
+		
+		int delete = scheduleMapper.deleteSchedule(scheduleNo);
+		log.debug(TeamColor.PURPLE + "delete=>" + delete);
+		
+		if(delete != 1) {
+			log.debug(TeamColor.PURPLE + "일정삭제에 실패했음");
+		}
+		return delete;
+	}
+	
+	@Override
+	public int addSchedule(ScheduleDTO scheduleDTO) {
+		
+		return scheduleMapper.insertSchedule(scheduleDTO);
 	}
 }

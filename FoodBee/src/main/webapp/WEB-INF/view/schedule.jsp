@@ -47,6 +47,8 @@
       <button id="allEvents">전체</button>
       <button id="personalEvents">개인</button>
       <button id="teamEvents">팀</button>
+      <button id="addEvent">일정추가</button>
+      <button id="allList">일정리스트</button>
     </div>
     <div id='calendar'></div>
 
@@ -61,7 +63,22 @@
             제목: <p id="personTitle"></p>
             메모: <p id="personMemo"></p>
 			<a id="modifyLink" href="#">수정</a>
-			<a id="deleteLink" href="#">삭제</a>
+			<a id="deleteBtn" href="#">삭제</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 팀 일정 모달 -->
+  	<div class="modal fade" id="team" tabindex="-1" aria-labelledby="teamModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="teamModalLabel">팀 일정</h5>
+          </div>
+          <div class="modal-body">
+            제목: <p id="teamTitle"></p>
+            메모: <p id="teamMemo"></p>
           </div>
         </div>
       </div>
@@ -139,6 +156,21 @@
                 scheduleNo: '<c:out value="${m.scheduleNo}" />'
             },
           </c:forEach>
+          // 팀일정
+           <c:forEach var="team" items="${teamList}">
+            {
+                title: '<c:out value="(팀)${team.title}" />',
+                start: '<c:out value="${team.startDatetime}" />',
+                end: '<c:out value="${team.endDatetime}" />',
+                color: '<c:out value="${team.type == '팀' ? '#BCE55C' : '#FF6C6C'}" />',
+                type: '팀',
+                description: '<c:out value="${team.content}" />',
+                scheduleNo: '<c:out value="${team.scheduleNo}" />',
+                empNo:'<c:out value="${team.empNo}" />'
+                
+                
+            },
+          </c:forEach>
           // 회의실 예약리스트
           <c:forEach var="room" items="${roomRsvList}">
             {
@@ -209,22 +241,38 @@
               document.getElementById('startDate').innerHTML = info.event.start.toLocaleString();
               document.getElementById('endDate').innerHTML = info.event.end.toLocaleString();
               document.getElementById('contact').innerHTML = info.event.extendedProps.contact;
-            } else if (info.event.title.includes('님출장')) {
+            } else if (info.event.title.includes('님 출장')) {
            	   $('#trip').modal('show');
                document.getElementById('tripEmp').innerHTML = info.event.extendedProps.tripEmp;
                document.getElementById('destination').innerHTML = info.event.extendedProps.destination;
                document.getElementById('tripStartDate').innerHTML = info.event.start.toLocaleString();
                document.getElementById('tripEndDate').innerHTML = info.event.end.toLocaleString();
                document.getElementById('tripContact').innerHTML = info.event.extendedProps.tripContact;
+            } else if(info.event.title.includes('팀')){
+           	  $('#team').modal('show');
+       		  document.getElementById('teamTitle').innerHTML = info.event.title;
+              document.getElementById('teamMemo').innerHTML = info.event.extendedProps.description;
+              document.getElementById('teamModifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+              document.getElementById('teamDeleteBtn').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+          
             } else {
               $('#person').modal('show');
               document.getElementById('personTitle').innerHTML = info.event.title;
               document.getElementById('personMemo').innerHTML = info.event.extendedProps.description;
               document.getElementById('modifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
-              document.getElemetnById('deleteLink').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+              document.getElementById('deleteBtn').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
             }
           }
+         
         });
+        
+	        document.getElementById('addEvent').addEventListener('click', function() {
+	    	    window.location.href = 'addSchedule';
+	   	  	});
+	        
+	        document.getElementById('allList').addEventListener('click', function() {
+	    	    window.location.href = 'scheduleList';
+	   	  	});
         
         // 전체 데이터를 백업해 둘 변수
         let allEvents = calendar.getEvents();
