@@ -28,4 +28,20 @@ public class RevenueServiceImpl implements RevenueService{
 		
 		return revenueMapper.selectMonthRevenue(referenceMonth);
 	}
+	
+	// 해당년도 전체 매출
+	@Override
+	public List<RevenueDTO> getTotalRevenue(String referenceMonth) {
+		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		
+		return revenueMapper.selectTotalRevenue(referenceMonth);
+	}
+	
+	// 카테고리 별 매출
+	@Override
+	public List<RevenueDTO> getCategoryRevenue(String referenceMonth, String categoryName) {
+		
+		return revenueMapper.selectCategoryRevenue(referenceMonth, categoryName);
+	}
+	
 }

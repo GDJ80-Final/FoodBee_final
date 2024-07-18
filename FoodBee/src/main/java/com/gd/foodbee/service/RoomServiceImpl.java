@@ -44,7 +44,7 @@ public class RoomServiceImpl implements RoomService{
 		return roomMapper.selectRoomOne(roomNo); 
 	}
 	
-	// 회의실 얘약
+	// 회의실 예약
 	// 파라미터 : RoomRsvDTO
 	// 사용 클래스 : RoomController.roomRsv
 	@Override

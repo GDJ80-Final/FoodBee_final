@@ -19,7 +19,7 @@ public interface RoomMapper {
 	RoomDTO selectRoomOne(int roomNo); 
 	
 	// 회의실 예약
-	int insertRoomRsv(RoomRsvDTO rsv);
+	int insertRoomRsv(RoomRsvDTO roomRsvDTO);
 	
 	// 선택한 룸번호, 날짜에 예약된 시간을 출력
 	List<RoomRsvDTO> selectReservedTimes(int roomNo, String rsvDate);

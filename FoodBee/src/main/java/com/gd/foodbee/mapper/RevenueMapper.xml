@@ -15,4 +15,33 @@
 			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) = #{referenceMonth};
 	</select>
 	
+	<!-- 해당년도 전체 매출 -->
+	<select id="selectTotalRevenue" resultType="com.gd.foodbee.dto.RevenueDTO" parameterType="String">
+		SELECT 
+			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) referenceMonth,
+			category_name categoryName,
+			drafter_emp_no drafterEmpNo,
+			revenue
+		FROM 
+			revenue_history
+		WHERE 
+			YEAR(reference_month) = #{referenceMonth}
+	</select>
+	
+	<!-- 카테고리 별 매출 -->
+	<select id="selectCategoryRevenue" resultType="com.gd.foodbee.dto.RevenueDTO" parameterType="com.gd.foodbee.dto.RevenueDTO">
+		SELECT 
+			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) referenceMonth,
+			category_name categoryName,
+			drafter_emp_no drafterEmpNo,
+			revenue
+		FROM 
+			revenue_history
+		WHERE 
+			category_name = #{categoryName} 
+			AND 
+			YEAR(reference_month) = #{referenceMonth}
+	</select>
+	
+	
 </mapper>

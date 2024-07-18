@@ -87,7 +87,7 @@ public class RoomController {
 		log.debug(TeamColor.GREEN + "request rsv:" + rsv.toString());
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
-		log.debug(TeamColor.GREEN + "emp:" + emp.toString());
+		log.debug(TeamColor.GREEN + "empNo:" + emp.getEmpNo());
 		
 		int empNo = emp.getEmpNo();
 		rsv.setEmpNo(empNo);

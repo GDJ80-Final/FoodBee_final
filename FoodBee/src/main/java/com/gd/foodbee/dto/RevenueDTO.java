@@ -13,7 +13,5 @@ public class RevenueDTO {
 	private String referenceMonth; 
 	private String categoryName;
 	private int drafterEmpNo;
-	private int draftDocNo;
 	private int revenue;
-	private String createDatetime;
 }

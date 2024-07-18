@@ -14,9 +14,7 @@
 		FROM 
 			room_info info 
 		INNER JOIN 
-			room_img img
-		ON 	
-			info.room_no = img.room_no
+			room_img img ON info.room_no = img.room_no
 		WHERE 
 			img.img_order = 1
 	</select>
@@ -33,9 +31,7 @@
 		FROM 
 		    room_info info 
 		INNER JOIN 
-			room_img img 
-		ON	
-			info.room_no = img.room_no
+			room_img img ON	info.room_no = img.room_no
 		WHERE 
 		    info.room_no = #{roomNo}
 	</select>
@@ -69,7 +65,7 @@
 		 	room_rsv
 		WHERE
 		 	rsv_date = #{rsvDate} 
-		AND
+			AND
 			room_no = #{roomNo}
 	</select>
 	
@@ -82,7 +78,7 @@
 			room_rsv rsv
 		WHERE
 			room_no = #{roomNo} 
-		AND 
+			AND 
 			rsv_date = #{rsvDate}		 	
 	</select>
 	
@@ -99,13 +95,9 @@
 		FROM 
 		    room_rsv rsv 
 		INNER JOIN 
-			emp					 
-		ON
-			rsv.emp_no = emp.emp_no 
+			emp	ON rsv.emp_no = emp.emp_no 
 		INNER JOIN 
-			room_info info 
-		ON 
-			rsv.room_no = info.room_no
+			room_info info ON rsv.room_no = info.room_no
 		WHERE 
 			rsv.rsv_date = #{rsvDate}
 		ORDER BY
@@ -135,18 +127,14 @@
 		    DATE_FORMAT(rsv.end_dateTime, '%H:%i') endTime,  
 		    rsv.rsv_state rsvState
 		FROM 
-		    room_rsv rsv 
+			room_rsv rsv 
 		INNER JOIN 
-			emp 
-		ON 
-			rsv.emp_no = emp.emp_no 
+			emp ON rsv.emp_no = emp.emp_no 
 		INNER JOIN 
-			room_info info 
-		ON 
-			rsv.room_no = info.room_no
+			room_info info ON rsv.room_no = info.room_no
 		WHERE 
 			emp.emp_no = #{empNo}
-		AND
+			AND
 			rsv.rsv_state = 1 
 		ORDER BY 
 			rsvDate DESC, 
@@ -173,9 +161,9 @@
 			rsv_state = 0
 		WHERE 
 			emp_no = #{empNo}
-		AND
+			AND
 			TIME(start_datetime) = #{startTime} 
-		AND 
+			AND 
 			rsv_date = #{rsvDate}
 	</update>
 </mapper>

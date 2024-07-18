@@ -20,22 +20,22 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class RevenueController {
 	@Autowired RevenueService revenueService;
+	
 	// 해당 월 매출액 출력
-	// 반환 값 : RevenueDTO
-	// 사용 페이지 : /totalRevenue
-	@GetMapping("/totalRevenue")
-	public String totalRevenue() {
+	// 사용 페이지 : /monthRevenue
+	@GetMapping("/monthRevenue")
+	public String monthRevenue() {
 		
-		return "totalRevenue";
+		return "monthRevenue";
 	}	
 	
 	// 해당 월 매출액 출력
 	// 파라미터 : String referenceMonth
 	// 반환 값 : RevenueDTO
-	// 사용 페이지 : /totalRevenue
-	@PostMapping("/monthRevenue")
+	// 사용 페이지 : /monthRevenue
+	@PostMapping("/getMonthRevenue")
 	@ResponseBody
-	public List<RevenueDTO> monthRevenue(@RequestParam(name="month") String referenceMonth) {
+	public List<RevenueDTO> getMonthRevenue(@RequestParam(name="month") String referenceMonth) {
 		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
 		
 		List<RevenueDTO> list = revenueService.getMonthRevenue(referenceMonth);
@@ -43,4 +43,45 @@ public class RevenueController {
 		
 		return list;
 	}
+	
+	// 전체/카테고리 매출액 출력
+	// 사용 페이지 : /categoryRevenue
+	@GetMapping("/categoryRevenue")
+	public String categoryRevenue() {
+		
+		return "categoryRevenue";
+	}	
+	
+	// 전체 매출액 출력
+	// 파라미터 : String year
+	// 반환 값 : RevenueDTO
+	// 사용 페이지 : /totalRevenue
+	@PostMapping("/getTotalRevenue")
+	@ResponseBody
+	public List<RevenueDTO> getTotalRevenue(@RequestParam(name="year") String referenceMonth) {
+		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		
+		List<RevenueDTO> list = revenueService.getTotalRevenue(referenceMonth);
+		log.debug(TeamColor.GREEN + "list:" + list.toString());
+		
+		return list;
+	}
+	
+	// 카테고리 별 매출액 출력
+	// 파라미터 : String categoryName
+	// 반환 값 : RevenueDTO
+	// 사용 페이지 : /totalRevenue
+	@PostMapping("/getCategoryRevenue")
+	@ResponseBody
+	public List<RevenueDTO> getCategoryRevenue(@RequestParam(name="year") String referenceMonth,
+											@RequestParam(name="category") String categoryName) {
+		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		log.debug(TeamColor.GREEN + "categoryName:" + categoryName);
+		
+		List<RevenueDTO> list = revenueService.getCategoryRevenue(referenceMonth, categoryName);
+		log.debug(TeamColor.GREEN + "list:" + list.toString());
+		
+		return list;
+	}
+	
 }
