@@ -127,7 +127,7 @@
             <button type="submit">등록</button>
         </div>
     </form>
-</body>
+
 <script>
        $(document).ready(function() {
     	   
@@ -235,4 +235,5 @@
            });
        });
  </script>
+ </body>
 </html>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.MsgRecipientMapper">
+	<insert id="insertMsgRecipient" parameterType="com.gd.foodbee.dto.MsgRecipientDTO">
+		INSERT INTO msg_recipient(
+			msg_no,
+			recipient_order,
+			recipient_emp_no,
+			read_YN,
+			read_datetime
+		) VALUES (
+			#{msgNo},
+			#{recipientOrder},
+			#{recipientEmpNo},
+			'N',
+			NOW()
+		)
+	</insert>
+
+
+
+
+
+
+</mapper>
