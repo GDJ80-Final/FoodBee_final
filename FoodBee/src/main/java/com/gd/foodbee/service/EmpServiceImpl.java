@@ -3,6 +3,7 @@ package com.gd.foodbee.service;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,6 +204,27 @@ public class EmpServiceImpl implements EmpService{
 	public String getEmpEmailByEmpNo(int empNo) {
 		
 		return empMapper.selectEmpEmailByEmpNo(empNo);
+	}
+
+	@Override
+	public Map<String, Object> getEmpPersnal(int empNo) {
+		
+		return empMapper.selectEmpPersnal(empNo);
+	}
+
+	@Override
+	public Map<String, Object> getEmpHr(int empNo) {
+		
+		return empMapper.selectEmpHr(empNo);
+	}
+
+	@Override
+	public void modifyEmpHr(EmpDTO empDTO) {
+		int row = empMapper.updateEmpHr(empDTO);
+		
+		if(row != 1) {
+			throw new RuntimeException();
+		}
 	}
 	
 }

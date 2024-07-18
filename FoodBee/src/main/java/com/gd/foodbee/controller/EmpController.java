@@ -1,6 +1,7 @@
 package com.gd.foodbee.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EmpController {
 	
 	@Autowired
-	EmpService empService;
+	private EmpService empService;
 	
 	@Autowired
 	private SendEmail sendEmail;
@@ -272,5 +273,53 @@ public class EmpController {
 		sendEmail.sendEmail(emailDTO);
 		
 		return empEmail;
+	}
+	
+	// 사원 상세보기 페이지
+	@GetMapping("/empDetail")
+	public String empDetail(@RequestParam int empNo,
+				Model model) {
+		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		
+		model.addAttribute("empNo", empNo);
+		return "empDetail";
+	}
+	
+	// 사원 상세보기(개인 + 인사)
+	@GetMapping("getEmpPersnal")
+	@ResponseBody
+	public Map<String, Object> getEmpPersnal(@RequestParam int empNo){
+		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		
+		return empService.getEmpPersnal(empNo);
+	}
+	
+	// 사원 상세보기(인사)
+	@GetMapping("getEmpHr")
+	@ResponseBody
+	public Map<String, Object> getEmpHr(@RequestParam int empNo){
+		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		
+		return empService.getEmpHr(empNo);
+	}
+	// 사원 수정 페이지
+	@GetMapping("/modifyEmpHr")
+	public String modifyEmpHrPage(@RequestParam int empNo,
+				Model model) {
+		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		
+		Map<String, Object> empHr = empService.getEmpHr(empNo);
+		
+		model.addAttribute("empHr", empHr);
+		return "modifyEmpHr";
+	}
+	
+	// 사원 수정
+	@PostMapping("/modifyEmpHr")
+	public String modifyEmpHr(EmpDTO empDTO) {
+		
+		empService.modifyEmpHr(empDTO);
+		
+		return "redirect:/empDetail?empNo=" + empDTO.getEmpNo();
 	}
 }

@@ -1,6 +1,7 @@
 package com.gd.foodbee.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
@@ -38,4 +39,14 @@ public interface EmpService {
 	
 	// 사원번호로 이메일 찾기
 	String getEmpEmailByEmpNo(int empNo);
+	
+	// 사원상세보기(인사 + 개인)
+	Map<String, Object> getEmpPersnal(int empNo);
+	
+	// 사원상세보기(인사)
+	Map<String, Object> getEmpHr(int empNo);
+
+	// 사원인사정보 수정
+	void modifyEmpHr(EmpDTO empDTO);
+	
 }

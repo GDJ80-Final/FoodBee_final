@@ -114,7 +114,7 @@
 							'<td>' + item.teamName +'</td>' + 
 							'<td>' + item.rankName +'</td>' + 
 							'<td>' + item.empNo +'</td>' + 
-							'<td>' + item.empName +'</td>' + 
+							'<td><a href= "${pageContext.request.contextPath}/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
 							'<td>' + item.extNo +'</td>' + 
 							'<td>' + item.startDate +'</td>' + 
 							'<td>' + item.signupYN +
@@ -161,7 +161,7 @@
 								'<td>' + item.teamName +'</td>' + 
 								'<td>' + item.rankName +'</td>' + 
 								'<td>' + item.empNo +'</td>' + 
-								'<td>' + item.empName +'</td>' + 
+								'<td><a href= "${pageContext.request.contextPath}/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
 								'<td>' + item.extNo +'</td>' + 
 								'<td>' + item.startDate +'</td>' + 
 								'<td>' + item.signupYN +
@@ -200,6 +200,7 @@
 			        }
 			    });
 			});
+			
 		});
 	</script>
 </body>
