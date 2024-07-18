@@ -32,9 +32,7 @@
 	FROM 
 		room_rsv r
 	INNER JOIN 
-		emp e
-	ON 
-		r.emp_no = e.emp_no
+		emp e ON r.emp_no = e.emp_no
 	WHERE 
 		e.dpt_no = #{dptNo}
 </select>
@@ -48,12 +46,10 @@
 	FROM 
 		day_off_history h
 	INNER JOIN 
-		emp e
-	ON 
-		h.emp_no = h.emp_no
+		emp e ON h.emp_no = h.emp_no
 	WHERE 
 		e.dpt_no = #{dptNo}
-	AND 
+		AND 
 		h.cancel_YN = 'N'
 </select>
 <select id="businessTripList" parameterType="HashMap" resultType="HashMap">
@@ -66,12 +62,38 @@
 	FROM 
 		business_trip_history b
 	LEFT JOIN 
-		emp e
-	ON 
-		b.emp_no = e.emp_no
+		emp e ON b.emp_no = e.emp_no
 	WHERE 
 		e.dpt_no = #{dptNo}
-	AND 
+		AND 
 		b.cancle_YN = 'N'
 </select>
+<select id="scheduleOne" parameterType="Map" resultType="Map">
+	SELECT 
+	    s.schedule_no scheduleNo,
+	    s.emp_no empNo,
+	    s.title title,
+	    s.content content,
+	    s.type type,
+	    s.start_datetime startDatetime,
+	    s.end_datetime endDatetime,
+	    e.emp_name empName
+	FROM 
+	    schedule s
+	INNER JOIN 
+	    emp e ON s.emp_no = e.emp_no
+	WHERE 
+	    s.schedule_no =  #{scheduleNo}
+</select>
+<update id="modifySchedule" parameterType="Map">
+	UPDATE 
+		schedule
+	SET 
+		title = #{scheduleDTO.title},
+		content = #{scheduleDTO.content},
+		start_datetime = #{scheduleDTO.startDatetime},
+		end_datetime = #{scheduleDTO.endDatetime}
+	WHERE
+		emp_no = #{scheduleDTO.empNo} AND schedule_no = #{scheduleNo}
+</update>
 </mapper>

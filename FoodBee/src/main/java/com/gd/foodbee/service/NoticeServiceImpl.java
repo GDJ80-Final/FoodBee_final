@@ -18,8 +18,10 @@ import com.gd.foodbee.dto.NoticeFileDTO;
 import com.gd.foodbee.dto.NoticeRequest;
 import com.gd.foodbee.mapper.NoticeFileMapper;
 import com.gd.foodbee.mapper.NoticeMapper;
+import com.gd.foodbee.util.FileFormatter;
 import com.gd.foodbee.util.TeamColor;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -109,14 +111,14 @@ public class NoticeServiceImpl implements NoticeService{
  
     //공지사항 내용추가
     @Override
-	public void addNotice(NoticeRequest noticeRequest) {
-		NoticeDTO notice = new NoticeDTO();
-		
-		notice.setWriterEmpNo(noticeRequest.getWriterEmpNo());
-		notice.setTitle(noticeRequest.getTitle());
-		notice.setContent(noticeRequest.getContent());
-		notice.setType(noticeRequest.getType());
-		notice.setDptNo(noticeRequest.getDptNo());
+	public void addNotice(NoticeRequest noticeRequest, HttpServletRequest request) {
+		NoticeDTO notice = NoticeDTO.builder()
+					.writerEmpNo(noticeRequest.getWriterEmpNo())
+					.title(noticeRequest.getTitle())
+					.content(noticeRequest.getContent())
+					.type(noticeRequest.getType())
+					.dptNo(noticeRequest.getDptNo())
+					.build();
 		
 		int add = noticeMapper.insertNotice(notice);
 		
@@ -124,41 +126,40 @@ public class NoticeServiceImpl implements NoticeService{
 			throw new RuntimeException("내용입력에실패했음"); 
 		}
 		
-	    MultipartFile[] mfs = noticeRequest.getFiles();
-	    //파일 여러개 넣는방법
-	    //1. MultipartFile을 배열[]로만든다
-	    //2. for문으로 각 파일(mf)에 대한 처리를 해준다.
-	    for (MultipartFile mf : mfs) {
-	        if (mf.isEmpty()) {
-	            continue; // 파일이 없는 경우 스킵
-	        }
-	        
-	        NoticeFileDTO file = new NoticeFileDTO();
-	        file.setNoticeNo(notice.getNoticeNo());
-	        file.setOriginalFile(mf.getOriginalFilename());
-	        file.setType(notice.getType());
-	        
-	        LocalDateTime now = LocalDateTime.now();
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-	        String prefix = now.format(formatter);
-	        String suffix = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
-	        file.setSaveFile(prefix + suffix);
-	        
-	        int row2 = noticeFileMapper.insertNoticeFile(file);
-	        if (row2 != 1) {
-	            throw new RuntimeException("파일입력실패");
-	        }
-	        
-	        // 파일 저장
-	        File emptyFile = new File("c:/upload/" + prefix + suffix);
-	        try {
-	            mf.transferTo(emptyFile);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            throw new RuntimeException("파일업로드 실패");
+		MultipartFile[] mfs = noticeRequest.getFiles();
+    	
+    	if(mfs.length !=0) {
+	    
+	    	for(MultipartFile mf : mfs) {
+	    		String originalFile = FileFormatter.fileFormatter(mf);
+	    		log.debug(TeamColor.PURPLE + "originalFile=>" + originalFile);
+	    		
+	    		  NoticeFileDTO file = NoticeFileDTO.builder()
+		        			.noticeNo(notice.getNoticeNo())
+		        			.originalFile(originalFile)
+		        			.saveFile(mf.getOriginalFilename())
+		        			.type(mf.getContentType())
+		        			.build();
+		        
+		        int row2 = noticeFileMapper.insertNoticeFile(file);
+		        if (row2 != 1) {
+		            throw new RuntimeException("파일입력실패");
+		        }
+		        
+		        // 파일 저장
+		        
+		        String path = request.getServletContext().getRealPath("/WEB-INF/upload/notice_file/");
+		        
+		        File emptyFile = new File(path+ originalFile);
+		        try {
+		            mf.transferTo(emptyFile);
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		            throw new RuntimeException("파일업로드 실패");
+		        }
 	        }
 	    }
-	}
+    }
 	//공지사항 상세보기
     @Override
 	public List<Map<String,Object>> getNoticeOne(int noticeNo){
@@ -169,13 +170,16 @@ public class NoticeServiceImpl implements NoticeService{
     
     //공지사항 내용수정하기
     @Override
-    public void getModifyNoticeList(int noticeNo, NoticeRequest noticeRequest) {
-    	NoticeDTO notice = new NoticeDTO();
-    	notice.setNoticeNo(noticeNo);
-    	notice.setTitle(noticeRequest.getTitle());
-    	notice.setContent(noticeRequest.getContent());
-    	notice.setType(noticeRequest.getType());
-    
+    public void getModifyNoticeList(int noticeNo, 
+    		NoticeRequest noticeRequest,
+    		HttpServletRequest request) {
+    	NoticeDTO notice = NoticeDTO.builder()
+    				.noticeNo(noticeNo)
+    				.title(noticeRequest.getTitle())
+    				.content(noticeRequest.getContent())
+    				.type(noticeRequest.getType())
+    				.build();    	
+    	
     	int update = noticeMapper.updateNotice(notice);
     	
     	if(update != 1) {
@@ -184,46 +188,50 @@ public class NoticeServiceImpl implements NoticeService{
     	
     	MultipartFile[] mfs = noticeRequest.getFiles();
     	
+    	if(mfs.length !=0) {
+    	
     	for(MultipartFile mf : mfs) {
-    		 if (mf.isEmpty()) {
-  	            continue; // 파일이 없는 경우 스킵
-  	        }
-  	        
-  	        NoticeFileDTO file = new NoticeFileDTO();
-  	        file.setNoticeNo(noticeNo);
-  	        file.setOriginalFile(mf.getOriginalFilename());
-  	        file.setType("default"); 
-  	        
-  	      LocalDateTime now = LocalDateTime.now();
-          DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-          String prefix = now.format(formatter);
-
-          String suffix = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
-          file.setSaveFile(prefix + suffix);
-		
+    		String originalFile = FileFormatter.fileFormatter(mf);
+    		
+    		log.debug(TeamColor.PURPLE + "originalFile=>" + originalFile);
+    		
+    	    NoticeFileDTO file = NoticeFileDTO.builder()
+        			.noticeNo(noticeNo)
+        			.originalFile(originalFile)
+        			.saveFile(mf.getOriginalFilename())
+        			.type(mf.getContentType())
+        			.build();
+    	    
           int update2 = noticeFileMapper.insertNoticeFile(file);
          
     	  if (update2 != 1) {
   	            throw new RuntimeException("파일입력실패");
   	      }
     	// 파일 저장
-	        File emptyFile = new File("c:/upload/" + prefix + suffix);
+    	  String path = request.getServletContext().getRealPath("/WEB-INF/upload/notice_file/");
+    	  
+	        File emptyFile = new File(path+ originalFile);
 	        try {
 	            mf.transferTo(emptyFile);
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	            throw new RuntimeException("파일업로드 실패");
 	        }	  
+  	        }
+	  	        
+	    
     	}
     }
+  
    
     //공지사항 파일 삭제하기
     @Override
     public void getDeleteNoticeFile(String fileName, int noticeNo) {
     	//DTO랑 맞춰주는작업
-        NoticeFileDTO noticeFileDTO = new NoticeFileDTO();
-        noticeFileDTO.setNoticeNo(noticeNo);
-        noticeFileDTO.setSaveFile(fileName);
+        NoticeFileDTO noticeFileDTO = NoticeFileDTO.builder()
+        			.noticeNo(noticeNo)
+        			.saveFile(fileName)
+        			.build();
         
         noticeFileMapper.deleteNoticeFile(noticeFileDTO);
     }

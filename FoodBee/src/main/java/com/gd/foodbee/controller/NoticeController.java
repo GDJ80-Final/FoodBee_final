@@ -17,6 +17,7 @@ import com.gd.foodbee.dto.NoticeRequest;
 import com.gd.foodbee.service.NoticeService;
 import com.gd.foodbee.util.TeamColor;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -118,7 +119,9 @@ public class NoticeController {
 	}
 	
 	@GetMapping("/addNotice")//공지사항 추가
-	public String addNotice(Model model, HttpSession session) {
+	public String addNotice(Model model, 
+			HttpSession session, 
+			HttpServletRequest request) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = 0;
 		String dptNo = null;
@@ -143,10 +146,10 @@ public class NoticeController {
 	}
 	
 	@PostMapping("/addNoticeAction")//공지사항 추가action
-	public String addNoticeAction(NoticeRequest noticeRequest) {
+	public String addNoticeAction(NoticeRequest noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest=>" + noticeRequest);
 		
-		noticeService.addNotice(noticeRequest);
+		noticeService.addNotice(noticeRequest, request);
 		
 	return"redirect:/noticeList";
 	}
@@ -191,11 +194,11 @@ public class NoticeController {
 	//공지사항 수정액션
 	@PostMapping("/modifyNoticeAction")
 	public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
-			NoticeRequest noticeRequest) {
+			NoticeRequest noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
 		log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
 		
-		noticeService.getModifyNoticeList(noticeNo, noticeRequest);
+		noticeService.getModifyNoticeList(noticeNo, noticeRequest, request);
 		
 	    return "redirect:/noticeOne?noticeNo=" + noticeNo;
 	}

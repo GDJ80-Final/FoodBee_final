@@ -8,6 +8,7 @@ import com.gd.foodbee.mapper.ScheduleMapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,5 +56,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 		m.put("dptNo", dptNo);
 		
 		return scheduleMapper.businessTripList(m);
+	}
+	
+	@Override
+	public Map<String,ScheduleDTO>scheduleOne(int scheduleNo){
+		Map<String, Object> m = new HashMap<>();
+		
+		m.put("scheduleNo", scheduleNo);
+		
+		return scheduleMapper.scheduleOne(m);
+	}
+	
+	@Override
+	public int modifySchedule(int scheduleNo, ScheduleDTO scheduleDTO) {
+		Map<String,Object> m = new HashMap<>();
+		
+		m.put("scheduleNo", scheduleNo);
+		m.put("scheduleDTO", scheduleDTO);
+		
+		return scheduleMapper.modifySchedule(m);
 	}
 }

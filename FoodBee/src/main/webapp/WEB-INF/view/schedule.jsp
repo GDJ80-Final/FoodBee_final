@@ -37,6 +37,9 @@
        background-color: #BCE55C; 
        color: white; 
      }
+     a{
+     	margin-right: 20px;
+     }
    </style>
  </head>
   <body>
@@ -57,6 +60,8 @@
           <div class="modal-body">
             제목: <p id="personTitle"></p>
             메모: <p id="personMemo"></p>
+			<a id="modifyLink" href="#">수정</a>
+			<a id="deleteLink" href="#">삭제</a>
           </div>
         </div>
       </div>
@@ -125,12 +130,13 @@
           // 개인일정
           <c:forEach var="m" items="${list}">
             {
-              title: '<c:out value="${m.title}" />',
-              start: '<c:out value="${m.startDatetime}" />',
-              end: '<c:out value="${m.endDatetime}" />',
-              color: '<c:out value="${m.type == '개인' ? '#FF6C6C' : '#BCE55C'}" />',
-              type: '개인',
-              description: '<c:out value="${m.content}" />'
+                title: '<c:out value="${m.title}" />',
+                start: '<c:out value="${m.startDatetime}" />',
+                end: '<c:out value="${m.endDatetime}" />',
+                color: '<c:out value="${m.type == '개인' ? '#FF6C6C' : '#BCE55C'}" />',
+                type: '개인',
+                description: '<c:out value="${m.content}" />',
+                scheduleNo: '<c:out value="${m.scheduleNo}" />'
             },
           </c:forEach>
           // 회의실 예약리스트
@@ -150,7 +156,7 @@
           // 팀원 휴가리스트
           <c:forEach var="off" items="${dayOffList}">
             {
-              title: '<c:out value="${off.name}님휴가" />',
+              title: '<c:out value="${off.name}님 휴가" />',
               start: '<c:out value="${off.startDate}" />',
               end: '<c:out value="${off.endDate}" />',
               color: '#BCE55C',
@@ -162,7 +168,7 @@
           // 팀원 출장리스트
             <c:forEach var="trip" items="${businessTripList}">
             {
-              title: '<c:out value="${trip.name}님출장" />',
+              title: '<c:out value="${trip.name}님 출장" />',
               start: '<c:out value="${trip.startDate}" />',
               end: '<c:out value="${trip.endDate}" />',
               color: '#BCE55C',
@@ -214,6 +220,8 @@
               $('#person').modal('show');
               document.getElementById('personTitle').innerHTML = info.event.title;
               document.getElementById('personMemo').innerHTML = info.event.extendedProps.description;
+              document.getElementById('modifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+              document.getElemetnById('deleteLink').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
             }
           }
         });

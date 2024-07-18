@@ -2,11 +2,13 @@ package com.gd.foodbee.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.foodbee.dto.EmpDTO;
@@ -61,5 +63,31 @@ public class ScheduleController {
 	    model.addAttribute("businessTripList", businessTripList);
 	    
 		return"schedule";
+	}
+	
+	//개인일정 수정
+	@GetMapping("/modifySchedule")
+	public String modifySchedule(@RequestParam("scheduleNo") int scheduleNo,
+				Model model) {
+		
+		log.debug(TeamColor.PURPLE + "scheduleNo=>" + scheduleNo);
+		
+		Map<String, ScheduleDTO> one = scheduleService.scheduleOne(scheduleNo);
+		log.debug(TeamColor.PURPLE + "수정하기=>" + one);
+		
+		model.addAttribute("one", one);
+		
+		return "modifySchedule";
+	}
+	//개인일정 수정액션
+	@PostMapping("/modifyScheduleAction")
+	public String modifyScheduleAction(@RequestParam("scheduleNo")int scheduleNo,
+			ScheduleDTO scheduleDTO) {
+		
+			log.debug(TeamColor.PURPLE + "scheduleDTO=> " + scheduleDTO); 
+			
+			int update = scheduleService.modifySchedule(scheduleNo, scheduleDTO);
+		
+		return "redirect:/modifySchedule?scheduleNo="+scheduleNo;
 	}
 }

@@ -23,5 +23,4 @@ public class RoomDTO {
 	private String saveFile;
 	private String originalFiles;
 	private String saveFiles;
-
 }

@@ -25,7 +25,7 @@
 		    (g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
 			AND
 		    n.type = '부서') 
-		OR
+			OR
 			n.type ='전사원';
 	</select>
 	<!-- 전사원공지사항 리스트 -->
@@ -43,9 +43,7 @@
 		FROM 
 			notice n 
 		INNER JOIN 
-			emp e
-		ON 
-			n.writer_emp_no = e.emp_no
+			emp e ON n.writer_emp_no = e.emp_no
 		WHERE 
 			type = '전사원'
 	</select>
@@ -85,7 +83,7 @@
 		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
 		   ( g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
-		AND
+			AND
 		    n.type = '부서')
 		OR 
 			n.type='전사원';
@@ -97,8 +95,7 @@
 			notice n 
 		INNER JOIN 
 			emp e
-		ON 
-			n.writer_emp_no = e.emp_no
+		ON n.writer_emp_no = e.emp_no
 		WHERE 
 			type = '전사원'
     </select>
@@ -113,7 +110,7 @@
 		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
 		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
-		AND
+			AND
 		    n.type = '부서'
     </select>
     <!-- 공지사항 추가 -->

@@ -2,6 +2,7 @@ package com.gd.foodbee.mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,4 +29,14 @@ public interface ScheduleMapper {
 	//파라미터="HashMap"
 	//반환값="HashMap"
 	List<HashMap<String,Object>> businessTripList(HashMap<String,Object>m);
+	
+	//상세보기 리스트
+	//파라미터="Map"
+	//반환값="Map"
+	Map<String, ScheduleDTO> scheduleOne(Map<String,Object>m);
+	
+	//개인일정 수정하기
+	//파라미터="int, scheduleDTO"
+	//반환값="int"
+	int modifySchedule(Map<String,Object>m);
 }

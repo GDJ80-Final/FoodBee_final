@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.gd.foodbee.dto.NoticeRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 public interface NoticeService {
 	//전체 공지사항List
 	List<HashMap<String,Object>> getNoticeList(int currentPage, String dptNo);
@@ -20,11 +22,11 @@ public interface NoticeService {
 	//부서별 공지사항 마지막페이지
 	int allDptLastPage();
 	//공지사항 추가
-	void addNotice(NoticeRequest noticeRequest);
+	void addNotice(NoticeRequest noticeRequest, HttpServletRequest request);
 	//공지사항 상세보기(다중파일때문에 List로)
 	List<Map<String,Object>> getNoticeOne(int noticeNo);
 	//공지사항 내용수정하기
-	void getModifyNoticeList(int noticeNo, NoticeRequest noticeRequest);
+	void getModifyNoticeList(int noticeNo, NoticeRequest noticeRequest, HttpServletRequest request);
 	//공지사항 파일삭제
 	void getDeleteNoticeFile(String fileName, int noticeNo);
 	//공지사항 삭제

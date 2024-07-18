@@ -15,4 +15,8 @@ public interface ScheduleService {
 	List<HashMap<String,Object>>getDayOffList(String dptNo);
 	//팀원 출장리스트
 	List<HashMap<String,Object>>getBusinessTripList(String dptNo);
+	//개일일정 상세
+	Map<String,ScheduleDTO>scheduleOne(int scheduleNo);
+	//개인일정 수정
+	int modifySchedule(int scheduleNo, ScheduleDTO scheduleDTO);
 }
