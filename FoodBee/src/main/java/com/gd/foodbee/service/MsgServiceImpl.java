@@ -45,13 +45,14 @@ public class MsgServiceImpl implements MsgService{
 	//사용클래스 : MsgController.addMsg
 	@Override
 	public void addMsg(MsgRequestDTO msgRequestDTO,
-				HttpServletRequest request) {
+				HttpServletRequest request,
+				int empNo) {
 		//매개값 확인 
 		log.debug(TeamColor.YELLOW + "MsgRequestDTO =>" + msgRequestDTO.toString());
 		
 		//msgDTO 빌드
 		MsgDTO msgDTO = MsgDTO.builder()
-				.senderEmpNo(msgRequestDTO.getSenderEmpNo())
+				.senderEmpNo(empNo)
 				.title(msgRequestDTO.getTitle())
 				.content(msgRequestDTO.getContent())
 				.build();

@@ -4,6 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+	crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
 	body {
     font-family: Arial, sans-serif;
@@ -91,58 +98,6 @@
 	    background-color: #b0b0b0;
 	}
 	
-		/* Modal Styles */
-	.modal {
-	    display: none;
-	    position: fixed;
-	    z-index: 1;
-	    left: 0;
-	    top: 0;
-	    width: 100%;
-	    height: 100%;
-	    overflow: auto;
-	    background-color: rgb(0,0,0);
-	    background-color: rgba(0,0,0,0.4);
-	}
-	
-	.modal-content {
-	    background-color: #fefefe;
-	    margin: 15% auto;
-	    padding: 20px;
-	    border: 1px solid #888;
-	    width: 80%;
-	    max-width: 500px;
-	    border-radius: 10px;
-	}
-	
-	.close {
-	    color: #aaa;
-	    float: right;
-	    font-size: 28px;
-	    font-weight: bold;
-	}
-	
-	.close:hover,
-	.close:focus {
-	    color: black;
-	    text-decoration: none;
-	    cursor: pointer;
-	}
-	
-	#employee-list {
-	    list-style-type: none;
-	    padding: 0;
-	}
-	
-	#employee-list li {
-	    padding: 8px;
-	    border-bottom: 1px solid #ccc;
-	    cursor: pointer;
-	}
-	
-	#employee-list li:hover {
-	    background-color: #f0f0f0;
-	}
 
 </style>
 </head>
@@ -153,22 +108,24 @@
 	            <tr>
 	                <td><label for="recipient">받는사람:</label></td>
 	                <td>
-	                    <input type="text" id="recipient">
-	                    <button class="search-btn" onclick="openModal()" type="button">검색</button>
+	                    <input type="text" name="recipientEmpNos" id="recipient" readonly>
+	                    <button type="button" class="btn btn-primary" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  							검색 
+						</button>
 	                </td>
 	            </tr>
 	            <tr>
-	                <td><label for="subject">제목:</label></td>
-	                <td><input type="text" id="subject"></td>
+	                <td><label for="title">제목:</label></td>
+	                <td><input type="text" name="title" id="title"></td>
 	            </tr>
 	            <tr>
 	                <td><label for="msgFile">첨부파일:</label></td>
-	                <td><input type="file" id="msgFile"></td>
+	                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple"></td>
 	            </tr>
 	            <tr>
 	                <td colspan="2">
 	                    <label for="message">쪽지쓰기:</label>
-	                    <textarea id="message" placeholder="쪽지쓰기 textarea"></textarea>
+	                    <textarea id="message" name="content" placeholder="쪽지쓰기 textarea"></textarea>
 	                </td>
 	            </tr>
 	            <tr>
@@ -180,61 +137,194 @@
 	        </table>
         </form>
     </div>
-    
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>사원 검색</h2>
-            <input type="text" id="search-employee" placeholder="사원 이름 검색">
-            <button onclick="searchEmployee()">검색</button>
-            <ul id="employee-list">
-                <!-- 검색 결과 목록 -->
-            </ul>
-        </div>
-    </div>
-<script>
-	function openModal() {
-	    document.getElementById('modal').style.display = 'block';
-	}
-	
-	function closeModal() {
-	    document.getElementById('modal').style.display = 'none';
-	}
-	
-	function searchEmployee() {
-	    const searchValue = document.getElementById('search-employee').value.toLowerCase();
-	    const employeeList = [
-	        '김철수',
-	        '이영희',
-	        '박민수',
-	        '최지은'
-	    ];
-	
-	    const filteredEmployees = employeeList.filter(employee =>
-	        employee.toLowerCase().includes(searchValue)
-	    );
-	
-	    const employeeListElement = document.getElementById('employee-list');
-	    employeeListElement.innerHTML = '';
-	
-	    filteredEmployees.forEach(employee => {
-	        const li = document.createElement('li');
-	        li.textContent = employee;
-	        li.onclick = () => {
-	            document.getElementById('recipient').value = employee;
-	            closeModal();
-	        };
-	        employeeListElement.appendChild(li);
-	    });
-	}
-	
-	window.onclick = function(event) {
-	    const modal = document.getElementById('modal');
-	    if (event.target === modal) {
-	        closeModal();
-	    }
-	}
-</script>
+    <!-- 모달 -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="staticBackdropLabel">사원검색</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+			  <form>
+				<div>
+					본사/지사
+					<select id="office">
+						<option value="">---본사/지사 선택---</option>
+					</select>
+					부서
+					<select id="dept">
+						<option value="">---부서 선택---</option>
+					</select>
+					팀
+					<select id="team">
+						<option value="">---팀 선택---</option>
+					</select>
+					직급 
+					<select id="rankName" name="rankName">
+						<option value="">---직급 선택---
+						<option value="사원">사원
+						<option value="대리">대리
+						<option value="팀장">팀장
+						<option value="부서장">부서장
+						<option value="지서장">지사장
+						<option value="CEO">CEO
+					</select>
+				</div>
+				<div>
+					사원 번호
+					<input type="number" id="empNo" name="empNo">
+					
+					<button id="searchBtn" type="button">검색</button>
+				</div>
+			</form>
+		    <table class="table">
+		        <thead>
+		            <tr>
+		                <th>본사/지사</th>
+						<th>부서</th>
+						<th>팀</th>
+						<th>직급</th>
+						<th>사원번호</th>
+						<th>사원명</th>
+		                <th>선택</th>
+		            </tr>
+		        </thead>
+		        <tbody id="empList">
+		           
+		        </tbody>
+		   </table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			$.ajax({
+				url:'${pageContext.request.contextPath}/officeList',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						$('#office').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
+					});			
+				}
+			});
+			
+			$.ajax({
+				url:'${pageContext.request.contextPath}/deptList',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						$('#dept').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
+					});			
+				}
+			});
+			
+			$.ajax({
+				url:'${pageContext.request.contextPath}/teamList',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						$('#team').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
+					});			
+				}
+			});
+			
+			$.ajax({
+				url:'${pageContext.request.contextPath}/searchEmp',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						
+						$('#empList').append('<tr>' +
+							'<td>' + item.officeName +'</td>' + 
+							'<td>' + item.deptName +'</td>' + 
+							'<td>' + item.teamName +'</td>' + 
+							'<td>' + item.rankName +'</td>' + 
+							'<td>' + item.empNo +'</td>' + 
+							'<td>' + item.empName +'</td>' + 
+							'<td><button type="button" id="selectEmp" value="' + item.empNo + '">선택</button></td>' +
+							'</tr>');
+					});
+				}
+			});
+			
+			$('#searchBtn').click(function(){
+				$.ajax({
+					url:'${pageContext.request.contextPath}/searchEmp',
+					method:'get',
+					data:{
+						officeName: $('#office').val(),
+						deptName: $('#dept').val(),
+						teamName: $('#team').val(),
+						rankName: $('#rankName').val(),
+						signupYN: $('#signupYN').val(),
+						empNo: $('#empNo').val()
+					},
+					success:function(json){
+						console.log(json);
+						$('#empList').empty();
+						json.forEach(function(item){
+							console.log(item);
+							
+							$('#empList').append('<tr>' +
+								'<td>' + item.officeName +'</td>' + 
+								'<td>' + item.deptName +'</td>' + 
+								'<td>' + item.teamName +'</td>' + 
+								'<td>' + item.rankName +'</td>' + 
+								'<td>' + item.empNo +'</td>' + 
+								'<td>' + item.empName +'</td>' + 
+								'<td><button type="button" id="selectEmp" value="'+ item.empNo + '">선택</button></td>' +
+								'</tr>');
+							
+						});
+					}
+				});
+			});
+			$(document).on('click', '#selectEmp', function() {
+				
+				let empNo = $(this).val();
+			    let recipientField = $('#recipient');
+			    let currentVal = recipientField.val();
+			    let newVal;
+			    let empNosArray = [];
+			    
+			    console.log(empNo);
+			    
+			    if(currentVal){
+		
+			    	empNosArray = currentVal.split(',');
+			    	console.log('empNosArray => '+ empNosArray);
+			    	//중복된 사번 이 없으면 -1반환 -> 수신자로 추가 가능
+			    	if($.inArray(empNo,empNosArray) !== -1){
+			    		alert('이미 추가된 사원입니다.');
+			    		return;
+			    		
+			    	}else{
+			    		newVal = currentVal + ','+empNo;
+			    	}
+			    	
+			    }else{
+			    	newVal = empNo;
+			    }
+			    
+			    recipientField.val(newVal);
+			    $('#staticBackdrop').modal('hide');
+		    });
+			
+		});
+	</script>
 </body>
 </html>

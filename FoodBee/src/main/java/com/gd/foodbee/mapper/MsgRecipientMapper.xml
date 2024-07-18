@@ -6,14 +6,12 @@
 			msg_no,
 			recipient_order,
 			recipient_emp_no,
-			read_YN,
-			read_datetime
+			read_YN
 		) VALUES (
 			#{msgNo},
 			#{recipientOrder},
 			#{recipientEmpNo},
-			'N',
-			NOW()
+			'N'
 		)
 	</insert>
 

@@ -14,7 +14,7 @@ public interface MsgService {
 	//파라미터 : MsgDTO msgDTO, MsgRepicientDTO msgRepicientDTO, MsgFileDTO msgFileDTO,HttpServletRequest request
 	//반환값 : X
 	//사용 클래스 : MsgController.addMsg
-	void addMsg(MsgRequestDTO msgRequestDTO,HttpServletRequest request);
+	void addMsg(MsgRequestDTO msgRequestDTO,HttpServletRequest request, int empNo);
 	
 	//받은쪽지함
 	//파라미터 : int currentPage, int empNo

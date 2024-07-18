@@ -16,7 +16,7 @@
 			#{title},
 			#{content},
 			NOW(),
-			#{msgState}
+			1
 		
 		)
 	</insert>

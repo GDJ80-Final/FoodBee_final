@@ -35,12 +35,15 @@ public class MsgController {
 	
 	@PostMapping("/addMsg")
 	public String addMsg(MsgRequestDTO msgRequestDTO, 
-				HttpServletRequest request) {
+				HttpServletRequest request,
+				HttpSession session,
+				Model model) {
 		
-		log.debug(TeamColor.YELLOW +"signupDTO =>" +msgRequestDTO.toString());
-		
-		
-		msgService.addMsg(msgRequestDTO, request);
+		log.debug(TeamColor.YELLOW +"msgRequestDTO =>" +msgRequestDTO.toString());
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo );
+		msgService.addMsg(msgRequestDTO, request,empNo);
 		
 		return "redirect:/sentMsgBox";
 	}

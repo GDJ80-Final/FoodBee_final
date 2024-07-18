@@ -15,7 +15,7 @@ public class FileFormatter {
 		
 		LocalDateTime now = LocalDateTime.now();
 		//현재 년월일시분초 구하기 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
 		String suffix = mf.getOriginalFilename().substring(mf.getOriginalFilename().lastIndexOf("."));
 		log.debug(TeamColor.YELLOW +"suffix =>"+suffix);
 		
