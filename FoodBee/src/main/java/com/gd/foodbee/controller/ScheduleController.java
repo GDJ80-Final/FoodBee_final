@@ -1,5 +1,6 @@
 package com.gd.foodbee.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
@@ -68,11 +70,31 @@ public class ScheduleController {
 	    
 		return"schedule";
 	}
-	
+	//개인일정 리스트 전체
 	@GetMapping("/scheduleList")
-	public String scheduleList() {
-		return"scheduleList";
+	public String scheduleList(
+	        @RequestParam(name="currentPage", defaultValue="1") int currentPage,
+	        Model model, HttpSession session) {
+	    
+	    EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+	    int empNo = 0;
+	    
+	    if (emp != null) {
+	        log.debug(TeamColor.PURPLE + "emp => " + emp);
+	        empNo = emp.getEmpNo();
+	    } else {
+	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
+	    }
+	    
+	    List<ScheduleDTO> personalList = scheduleService.personalListAll(currentPage, empNo);
+	    
+	    log.debug(TeamColor.PURPLE + "personalList=>" + personalList);
+	    
+	    model.addAttribute("personalList", personalList);
+	    
+	    return "scheduleList";
 	}
+	  
 	//일정 상세보기
 	@GetMapping("/scheduleOne")
 	public String scheduleOne(@RequestParam("scheduleNo") int scheduleNo,
@@ -159,5 +181,7 @@ public class ScheduleController {
 		
 		return "redirect:/schedule";
 	}
+	
+
 	
 }

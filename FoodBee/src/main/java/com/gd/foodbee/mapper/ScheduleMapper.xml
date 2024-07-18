@@ -70,6 +70,7 @@
 		AND 
 		h.cancel_YN = 'N'
 </select>
+<!-- 팀원 출장리스트 -->
 <select id="businessTripList" parameterType="HashMap" resultType="HashMap">
 	SELECT 
 		e.emp_name name, 
@@ -86,6 +87,25 @@
 		AND 
 		b.cancle_YN = 'N'
 </select>
+<!-- 개인일정 전체리스트 -->
+<select id="personalList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
+	SELECT 
+		schedule_no scheduleNo, 
+		emp_no empNo, 
+		title, 
+		content, 
+		type, 
+		start_datetime startDatetime, 
+		end_datetime endDatetime
+	FROM 
+		schedule
+	WHERE 
+		emp_no = #{empNo}
+	ORDER BY 
+		start_datetime DESC
+	LIMIT #{beginRow}, #{rowPerPage}
+</select>
+<!-- 일정 상세보기 -->
 <select id="scheduleOne" parameterType="Map" resultType="Map">
 	SELECT 
 	    s.schedule_no scheduleNo,
@@ -103,6 +123,7 @@
 	WHERE 
 	    s.schedule_no =  #{scheduleNo}
 </select>
+<!-- 일정 수정하기 -->
 <update id="modifySchedule" parameterType="Map">
 	UPDATE 
 		schedule
@@ -114,12 +135,14 @@
 	WHERE
 		emp_no = #{scheduleDTO.empNo} AND schedule_no = #{scheduleNo}
 </update>
+<!-- 일정 삭제 -->
 <delete id="deleteSchedule" parameterType="int">
 	DELETE 
 	FROM 
 		schedule
 	WHERE schedule_no = #{scheduleNo}
 </delete>
+<!-- 일정추가 -->
 <insert id="insertSchedule" parameterType="com.gd.foodbee.dto.ScheduleDTO">
 	<selectKey resultType="int" order="AFTER" keyProperty="scheduleNo">
         SELECT LAST_INSERT_ID()

@@ -35,6 +35,11 @@ public interface ScheduleMapper {
 	//반환값="HashMap"
 	List<HashMap<String,Object>> businessTripList(HashMap<String,Object>m);
 	
+	//개인일정 전체리스트
+	//파라미터="HashMap"
+	//반환값=com.gd.foodbee.dto.ScheduleDTO
+	List<ScheduleDTO>personalList(HashMap<String,Object>m);
+	
 	//상세보기 리스트
 	//파라미터="Map"
 	//반환값="Map"

@@ -19,6 +19,8 @@ public interface ScheduleService {
 	List<HashMap<String,Object>>getBusinessTripList(String dptNo);
 	//개일일정 상세
 	Map<String,ScheduleDTO>scheduleOne(int scheduleNo);
+	//개인일정 전체 리스트
+	List<ScheduleDTO> personalListAll(int currentPage, int empNo);
 	//개인일정 수정
 	int modifySchedule(int scheduleNo, ScheduleDTO scheduleDTO);
 	//개인일정 삭제
