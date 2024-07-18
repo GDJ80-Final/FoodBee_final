@@ -1,6 +1,7 @@
 package com.gd.foodbee.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -59,14 +60,15 @@ public interface EmpMapper {
     String selectEmpEmailByEmpNo(int empNo);
     
     // 사원상세보기(개인 + 인사정보)
-    EmpDTO selectEmp(int EmpNo);
-    
+    Map<String, Object> selectEmpPersnal(int empNo);
     
     // 사원상세보기(인사 정보)
-    EmpDTO selectEmpHr(int EmpNo);
+    Map<String, Object> selectEmpHr(int empNo);
     
     // 사원인사정보 수정(인사팀만)
-    int updateEmpHr(int EmpNo);
+    int updateEmpHr(EmpDTO empDTO);
     
+    // 사원 인원 카운트
+    int selectEmpCount();
     
 }

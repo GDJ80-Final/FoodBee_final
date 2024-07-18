@@ -121,7 +121,14 @@
             <if test="empNo != null and empNo != ''">
                 AND e.emp_no LIKE '%${empNo}%'
             </if>
-		ORDER BY emp_name;	
+		ORDER BY emp_name
+		
+	</select>
+	<select id="selectEmpCount" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			emp;
 	</select>
 	<select id="selectEmpEmailByEmpNo" parameterType="int" resultType="String">
 		SELECT
@@ -131,47 +138,58 @@
 		WHERE
 			emp_no = #{empNo}
 	</select>
-	<select id="selectEmp" parameterType="int" resultType="com.gd.foodbee.dto.EmpDTO">
+	<select id="selectEmpPersnal" parameterType="int" resultType="map">
 		SELECT
-			e.emp_no empNo,
-			e.emp_name empName,
-			e.ext_no extNo,
-			e.start_date startDate,
-			e.emp_state empState,
-			e.dpt_no dptNo,
-			e.contact,
-			e.address,
-			e.emp_email empEmail,
-			i.original_file
+			emp_no empNo,
+			contact,
+			address,
+			emp_email empEmail
 		FROM
-			emp e
-		INNER JOIN
-			profile_img i ON e.emp_no = i.emp_no
+			emp
 		WHERE
 			emp_no = #{empNo}
 	</select>
-	<select id="selectEmpHr" parameterType="int" resultType="com.gd.foodbee.dto.EmpDTO">
+	<select id="selectEmpHr" parameterType="int" resultType="map">
 		SELECT
 			e.emp_no empNo,
 			e.emp_name empName,
 			e.ext_no extNo,
 			e.start_date startDate,
-			e.emp_state empState,
-			e.dpt_no dptNo,
+			e.rank_name rankName,
+			sc.state_code_name empState,
+			sc.state_code empStateCode,
+			g.dpt_name teamName,
+			g.dpt_name teamNo,
+			sg.dpt_name deptName,
+			sg.dpt_name deptNo,
+			ssg.dpt_name officeName,
+			ssg.dpt_name officeNo,
 			i.original_file
 		FROM
 			emp e
-		INNER JOIN
+		LEFT JOIN
 			profile_img i ON e.emp_no = i.emp_no
+		LEFT JOIN
+			`group` g ON g.dpt_no = e.dpt_no
+		INNER JOIN
+			`group` sg ON sg.dpt_no = g.superior_dpt_no
+		INNER JOIN
+			`group` ssg ON ssg.dpt_no = sg.superior_dpt_no
+		INNER JOIN
+			state_code sc ON sc.state_code = e.emp_state
+				AND sc.state_cf_code = 'EMP'
 		WHERE
-			emp_no = #{empNo}
+			e.emp_no = #{empNo}
 	</select>
 	<update id="updateEmpHr" parameterType="com.gd.foodbee.dto.EmpDTO">
 		UPDATE
 			emp
 		SET
-			dpt_no = #{dptNo},
-			emp_state = #{empState}
+			<if test="dptNo != null and dptNo != ''">
+               dpt_no = #{dptNo},
+            </if>
+			emp_state = #{empState},
+			rank_name = #{rankName}
 		WHERE
 			emp_no = #{empNo}
 	</update>
