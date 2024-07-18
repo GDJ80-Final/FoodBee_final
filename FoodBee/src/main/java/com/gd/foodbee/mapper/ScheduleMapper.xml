@@ -14,7 +14,25 @@
 	FROM 
 		schedule
 	WHERE 
-		emp_no = #{empNo}
+		emp_no = #{empNo} AND type='개인'
+</select>
+<!-- 일정 테이블의 팀일정 -->
+<select id="teamScheduleList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
+	SELECT 
+		s.schedule_no scheduleNo, 
+		s.emp_no empNo, 
+		s.title title, 
+		s.content content, 
+		s.type type, 
+		s.start_datetime startDatetime, 
+		s.end_datetime endDatetime 
+	FROM 
+		schedule s
+	LEFT JOIN 
+		emp e
+	ON s.emp_no = e.emp_no
+	WHERE 
+		e.dpt_no = #{dptNo} AND s.`type`='팀';
 </select>
 <!-- 팀별 회의실 예약리스트 -->
 <select id="roomRsvList" parameterType="HashMap" resultType="HashMap">
@@ -96,4 +114,30 @@
 	WHERE
 		emp_no = #{scheduleDTO.empNo} AND schedule_no = #{scheduleNo}
 </update>
+<delete id="deleteSchedule" parameterType="int">
+	DELETE 
+	FROM 
+		schedule
+	WHERE schedule_no = #{scheduleNo}
+</delete>
+<insert id="insertSchedule" parameterType="com.gd.foodbee.dto.ScheduleDTO">
+	<selectKey resultType="int" order="AFTER" keyProperty="scheduleNo">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+	    INSERT INTO schedule (
+	        emp_no,
+	        title,
+	        content,
+	        TYPE,
+	        start_datetime,
+	        end_datetime
+	    ) VALUES (
+	        #{empNo},
+	        #{title},
+	        #{content},
+	        #{type},
+	        #{startDatetime},
+	        #{endDatetime}
+	    );
+</insert>
 </mapper>

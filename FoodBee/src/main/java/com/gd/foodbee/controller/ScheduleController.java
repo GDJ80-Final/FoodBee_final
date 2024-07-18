@@ -44,6 +44,8 @@ public class ScheduleController {
 	    
 	    //개인일정 불러오기 
 	    List<ScheduleDTO> list = scheduleService.getScheduleList(empNo);  
+	    //팀 일정 불러오기
+	    List<ScheduleDTO> teamList = scheduleService.getTeamScheduleList(dptNo);
 	    //회의실 예약리스트 불러오기
 	    List<HashMap<String,Object>> roomRsvList = scheduleService.getRoomRsvList(dptNo);
 	    //팀원 휴가리스트
@@ -51,6 +53,7 @@ public class ScheduleController {
 	    //팀원 출장리스트
 	    List<HashMap<String,Object>> businessTripList = scheduleService.getBusinessTripList(dptNo);
 	    
+	    log.debug(TeamColor.PURPLE + "팀일정list=>" + teamList);
 	    log.debug(TeamColor.PURPLE + "개인일정list=>" + list);//check
 	    log.debug(TeamColor.PURPLE + "회의실예약list=>" + roomRsvList);
 	    log.debug(TeamColor.PURPLE + "팀원휴가내역list=>" + dayOffList);
@@ -58,6 +61,7 @@ public class ScheduleController {
 	    
 	    model.addAttribute("empNo", empNo);
 	    model.addAttribute("list", list);
+	    model.addAttribute("teamList", teamList);
 	    model.addAttribute("roomRsvList", roomRsvList);
 	    model.addAttribute("dayOffList", dayOffList);
 	    model.addAttribute("businessTripList", businessTripList);
@@ -65,7 +69,25 @@ public class ScheduleController {
 		return"schedule";
 	}
 	
-	//개인일정 수정
+	@GetMapping("/scheduleList")
+	public String scheduleList() {
+		return"scheduleList";
+	}
+	//일정 상세보기
+	@GetMapping("/scheduleOne")
+	public String scheduleOne(@RequestParam("scheduleNo") int scheduleNo,
+				Model model) {
+		log.debug(TeamColor.PURPLE + "scheduleNo=>" + scheduleNo);
+		
+		Map<String, ScheduleDTO> one = scheduleService.scheduleOne(scheduleNo);
+		log.debug(TeamColor.PURPLE + "상세보기=>" + one);
+		
+		model.addAttribute("one", one);
+		
+		return "scheduleOne";
+	}
+	
+	//일정 수정
 	@GetMapping("/modifySchedule")
 	public String modifySchedule(@RequestParam("scheduleNo") int scheduleNo,
 				Model model) {
@@ -88,6 +110,54 @@ public class ScheduleController {
 			
 			int update = scheduleService.modifySchedule(scheduleNo, scheduleDTO);
 		
-		return "redirect:/modifySchedule?scheduleNo="+scheduleNo;
+		return "redirect:/scheduleOne?scheduleNo="+scheduleNo;
 	}
+	//일정삭제
+	@GetMapping("/deleteSchedule")
+	public String deleteSchedule(@RequestParam("scheduleNo")int scheduleNo) {
+		log.debug(TeamColor.PURPLE + "일정삭제완료");
+		
+		scheduleService.deleteSchedule(scheduleNo);
+		
+		return "redirect:/schedule";
+	}
+	
+	//일정추가
+	@GetMapping("/addSchedule")
+	public String addSchedule(Model model, HttpSession session) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = 0;
+		String rankName = null;
+		String empName = null;
+		
+	    if (emp != null) {
+	        log.debug(TeamColor.PURPLE + "emp => " + emp);
+	        empNo = emp.getEmpNo();
+	        empName = emp.getEmpName();
+	        rankName = emp.getRankName();
+	        log.debug(TeamColor.PURPLE + "empNo => " + empNo);
+	        log.debug(TeamColor.PURPLE + "empName=>" + empName);
+	        log.debug(TeamColor.PURPLE + "rankName=>" + rankName);
+	    } else {
+	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
+	    }
+	    
+	    model.addAttribute("empNo", empNo);
+	    model.addAttribute("empName", empName);
+	    model.addAttribute("rankName", rankName);
+	    
+		return"addSchedule";
+	}
+	//일정추가
+	@PostMapping("/addScheduleAction")
+	public String addScheduleAction(ScheduleDTO scheduleDTO) {
+		
+		log.debug(TeamColor.PURPLE + "들어왔나?=>" + scheduleDTO);
+		
+		scheduleService.addSchedule(scheduleDTO);
+		
+		return "redirect:/schedule";
+	}
+	
 }
