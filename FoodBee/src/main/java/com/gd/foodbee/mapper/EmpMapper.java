@@ -57,4 +57,16 @@ public interface EmpMapper {
     
     //사원번호로 이메일 찾기
     String selectEmpEmailByEmpNo(int empNo);
+    
+    // 사원상세보기(개인 + 인사정보)
+    EmpDTO selectEmp(int EmpNo);
+    
+    
+    // 사원상세보기(인사 정보)
+    EmpDTO selectEmpHr(int EmpNo);
+    
+    // 사원인사정보 수정(인사팀만)
+    int updateEmpHr(int EmpNo);
+    
+    
 }
