@@ -187,9 +187,12 @@ public class NoticeServiceImpl implements NoticeService{
     	}
     	
     	MultipartFile[] mfs = noticeRequest.getFiles();
-    	
-    	if(mfs.length !=0) {
-    	
+    	//파일이 없는경우
+    	if(mfs.length ==0 || mfs == null) {
+    		log.debug(TeamColor.PURPLE + "수정할 파일없어요");
+    		return;
+    	}
+    	//파일이 있는경우
     	for(MultipartFile mf : mfs) {
     		String originalFile = FileFormatter.fileFormatter(mf);
     		
@@ -217,11 +220,9 @@ public class NoticeServiceImpl implements NoticeService{
 	            e.printStackTrace();
 	            throw new RuntimeException("파일업로드 실패");
 	        }	  
-  	        }
-	  	        
-	    
-    	}
-    }
+        }	
+	}
+
   
    
     //공지사항 파일 삭제하기

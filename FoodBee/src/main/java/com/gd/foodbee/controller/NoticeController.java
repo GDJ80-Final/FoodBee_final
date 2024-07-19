@@ -198,7 +198,11 @@ public class NoticeController {
 		log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
 		log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
 		
-		noticeService.getModifyNoticeList(noticeNo, noticeRequest, request);
+	  try{
+	        noticeService.getModifyNoticeList(noticeNo, noticeRequest, request);
+	    } catch (Exception e) {
+	        log.error("공지사항 수정 중 오류 발생", e);
+	    }
 		
 	    return "redirect:/noticeOne?noticeNo=" + noticeNo;
 	}

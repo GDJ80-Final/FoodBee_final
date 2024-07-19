@@ -66,6 +66,9 @@
                     추가 
                     <br>
                     <input type="file" name="files" multiple="multiple">
+			        <c:if test="${one[0].files == null || one[0].files.isEmpty()}">
+			            <input type="file" name="files" multiple="multiple">
+			        </c:if>
                 </td>
             </tr>
         </table>
