@@ -45,6 +45,8 @@ public class EmpServiceImpl implements EmpService{
 	@Autowired
 	private SendEmail sendEmail;
 	
+	private static final int ROW_PER_PAGE = 2;
+	
 	// 로그인
 	// 파라미터 : LoginDTO
 	// 반환 값 : EmptDTO
@@ -133,6 +135,8 @@ public class EmpServiceImpl implements EmpService{
 		log.debug(TeamColor.YELLOW + "result => "+ result);
 		return result;
 	}
+	
+	// 사원번호 생성
 	@Override
 	public int createEmpNo() {
       
@@ -155,6 +159,8 @@ public class EmpServiceImpl implements EmpService{
       
 	}
 	
+	
+	// 사원 등록
 	@Override
 	public void addEmp(EmpDTO empDTO, EmailDTO emailDTO) {
 		
@@ -195,9 +201,8 @@ public class EmpServiceImpl implements EmpService{
 	// 사원목록
 	@Override
 	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO, int currentPage) {
-		int rowPerPage = 10;
-		
-		return empMapper.selectEmpList(empSearchDTO);
+		int startRow = (currentPage - 1) * ROW_PER_PAGE;
+		return empMapper.selectEmpList(empSearchDTO, startRow, ROW_PER_PAGE);
 	}
 
 	// 사원번호로 이메일 찾기
@@ -226,6 +231,21 @@ public class EmpServiceImpl implements EmpService{
 		if(row != 1) {
 			throw new RuntimeException();
 		}
+	}
+
+	@Override
+	public int getLastPage(EmpSearchDTO empSearchDTO) {
+		
+		int empCount = empMapper.selectEmpCount(empSearchDTO);
+		log.debug(TeamColor.RED + "empCount =>" + empCount);
+		
+		int lastPage = 0;
+		if(empCount % ROW_PER_PAGE == 0) {
+			lastPage = empCount / ROW_PER_PAGE;
+		} else {
+			lastPage = empCount / ROW_PER_PAGE + 1;
+		}
+		return lastPage;
 	}
 	
 }

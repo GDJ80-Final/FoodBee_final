@@ -1,5 +1,6 @@
 package com.gd.foodbee.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -211,8 +212,8 @@ public class EmpController {
 	//사용페이지 : /empList
 	@GetMapping("/searchEmp")
 	@ResponseBody
-	public List<EmpSearchDTO> searhEmpList(EmpSearchDTO empSearchDTO, 
-				@RequestParam int currentPage) {
+	public Map<String, Object> searhEmpList(EmpSearchDTO empSearchDTO, 
+				@RequestParam(name="currentPage", defaultValue = "1") int currentPage) {
 		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
 		log.debug(TeamColor.RED + "deptName =>" + empSearchDTO.getDeptName());
 		log.debug(TeamColor.RED + "teamName =>" + empSearchDTO.getTeamName());
@@ -220,7 +221,10 @@ public class EmpController {
 		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
 		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
 		
-		return empService.getEmpList(empSearchDTO, currentPage);
+		Map<String, Object> map = new HashMap<>();
+		map.put("empList", empService.getEmpList(empSearchDTO, currentPage));
+		map.put("currentPage", currentPage);
+		return map;
 	}
 	
 	//비밀번호 초기화
@@ -334,5 +338,22 @@ public class EmpController {
 		empService.modifyEmpHr(empDTO);
 		
 		return "redirect:/empDetail?empNo=" + empDTO.getEmpNo();
+	}
+	
+	// 총 사원 수로 사원 목록 마지막 페이지 구하기
+	@GetMapping("getLastPage")
+	@ResponseBody
+	public int getLastPage(EmpSearchDTO empSearchDTO) {
+		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
+		log.debug(TeamColor.RED + "deptName =>" + empSearchDTO.getDeptName());
+		log.debug(TeamColor.RED + "teamName =>" + empSearchDTO.getTeamName());
+		log.debug(TeamColor.RED + "rankName =>" + empSearchDTO.getRankName());
+		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
+		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
+		
+		int lastPage = empService.getLastPage(empSearchDTO);
+		
+		log.debug(TeamColor.RED + "lastPage =>" + lastPage);
+		return lastPage;
 	}
 }

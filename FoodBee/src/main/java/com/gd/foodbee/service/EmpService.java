@@ -49,4 +49,6 @@ public interface EmpService {
 	// 사원인사정보 수정
 	void modifyEmpHr(EmpDTO empDTO);
 	
+	// 사원수로 사원 목록 마지막 페이지 구하기
+	int getLastPage(EmpSearchDTO empSearchDTO);
 }

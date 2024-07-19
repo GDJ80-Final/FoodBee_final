@@ -82,7 +82,7 @@
 			#{empEmail}
 		)
 	</insert>
-	<select id="selectEmpList" parameterType="com.gd.foodbee.dto.EmpSearchDTO" resultType="com.gd.foodbee.dto.EmpSearchDTO">
+	<select id="selectEmpList" parameterType="Map" resultType="com.gd.foodbee.dto.EmpSearchDTO">
 		SELECT
 			e.emp_name empName,
 			e.emp_no empNo,
@@ -95,6 +95,40 @@
 			d.dpt_name deptName,
 			t.dpt_name teamName
 		FROM 
+			emp e
+		LEFT JOIN
+			`group` t ON t.dpt_no = e.dpt_no
+		LEFT JOIN
+			`group` d ON t.superior_dpt_no = d.dpt_no
+		LEFT JOIN
+			`group` o ON d.superior_dpt_no = o.dpt_no
+		WHERE
+			1=1
+			<if test="empSearchDTO.officeName != null and empSearchDTO.officeName != ''">
+                AND o.dpt_name = #{empSearchDTO.officeName}
+            </if>
+            <if test="empSearchDTO.deptName != null and empSearchDTO.deptName != ''">
+                AND d.dpt_name = #{empSearchDTO.deptName}
+            </if>
+           <if test="empSearchDTO.teamName != null and empSearchDTO.teamName != ''">
+                AND t.dpt_name = #{empSearchDTO.teamName}
+            </if>
+            <if test="empSearchDTO.rankName != null and empSearchDTO.rankName != ''">
+                AND e.rank_name = #{empSearchDTO.rankName}
+            </if>
+            <if test="empSearchDTO.signupYN != null and empSearchDTO.signupYN != ''">
+                AND e.signup_YN = #{empSearchDTO.signupYN}
+            </if>
+            <if test="empSearchDTO.empNo != null and empSearchDTO.empNo != ''">
+                AND e.emp_no LIKE '%${empSearchDTO.empNo}%'
+            </if>
+		ORDER BY emp_name
+		LIMIT #{startRow}, #{rowPerPage}
+	</select>
+	<select id="selectEmpCount" parameterType="com.gd.foodbee.dto.EmpSearchDTO" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
 			emp e
 		LEFT JOIN
 			`group` t ON t.dpt_no = e.dpt_no
@@ -122,14 +156,6 @@
             <if test="empNo != null and empNo != ''">
                 AND e.emp_no LIKE '%${empNo}%'
             </if>
-		ORDER BY emp_name
-		
-	</select>
-	<select id="selectEmpCount" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			emp;
 	</select>
 	<select id="selectEmpEmailByEmpNo" parameterType="int" resultType="String">
 		SELECT

@@ -8,6 +8,7 @@
 </head>
 <body>
 	<h1>사원목록</h1>
+
 	
 	<form>
 		<div>
@@ -62,8 +63,22 @@
 		</tr>
 	</table>
 	
+	<div id="page">
+        <button type="button" id="first">First</button>
+        <button type="button" id="pre">◁</button>
+        <button type="button" id="next">▶</button>
+        <button type="button" id="last">Last</button>
+	</div>
 	<script>
+		let currentPage = 1;
+		let lastPage = 1;
+
+	
 		$(document).ready(function() {
+			getLastPage();
+			loadEmpList(1);
+			
+			// 본사/지사 데이터
 			$.ajax({
 				url:'${pageContext.request.contextPath}/officeList',
 				method:'get',
@@ -76,6 +91,7 @@
 				}
 			});
 			
+			// 부서 데이터
 			$.ajax({
 				url:'${pageContext.request.contextPath}/deptList',
 				method:'get',
@@ -88,6 +104,7 @@
 				}
 			});
 			
+			// 팀 데이터
 			$.ajax({
 				url:'${pageContext.request.contextPath}/teamList',
 				method:'get',
@@ -100,57 +117,43 @@
 				}
 			});
 			
-			$.ajax({
-				url:'${pageContext.request.contextPath}/searchEmp',
-				method:'get',
-				success:function(json){
-					console.log(json);
-					json.forEach(function(item){
-						console.log(item);
-						
-						empList(item);
-					});
-						
+			
+			$('#searchBtn').click(function(){
+				currentPage = 1
+				getLastPage();
+				loadEmpList(currentPage);
+			});
+			
+			$('#pre').click(function() {
+				if (currentPage > 1) {
+					currentPage = currentPage - 1;
+					loadEmpList(currentPage);
+				}
+			});
+
+			$('#next').click(function() {
+				if (currentPage < lastPage) {
+					currentPage = currentPage + 1;
+					loadEmpList(currentPage);
 				}
 			});
 			
-			$('#searchBtn').click(function(){
-				$.ajax({
-					url:'${pageContext.request.contextPath}/searchEmp',
-					method:'get',
-					data:{
-						officeName: $('#office').val(),
-						deptName: $('#dept').val(),
-						teamName: $('#team').val(),
-						rankName: $('#rankName').val(),
-						signupYN: $('#signupYN').val(),
-						empNo: $('#empNo').val()
-						currentPage: 
-					},
-					success:function(json){
-						console.log(json);
-						$('#empList').empty();
-						$('#empList').append('<tr>' +
-								'<th>본사/지사</th>' +
-								'<th>부서</th>' +
-								'<th>팀</th>' +
-								'<th>직급</th>' +
-								'<th>사원번호</th>' +
-								'<th>사원명</th>' +
-								'<th>내선번호</th>' +
-								'<th>가입일</th>' +
-								'<th>회원가입 유무</th>' +
-								'</tr>');
-						json.forEach(function(item){
-							console.log(item);
-							
-							empList(item);
-							
-						});
-					}
-				});
+			$('#first').click(function() {
+				if (currentPage > 1) {
+					currentPage = 1;
+					loadEmpList(currentPage);
+				}
+			});
+
+			$('#last').click(function() {
+				if (currentPage < lastPage) {
+					currentPage = lastPage
+					loadEmpList(currentPage);
+				}
 			});
 			
+			
+			// 임시 비밀번호 발급, 이메일 발송
 			$('#empList').on('click', '.resetPw', function(){
 				const emp = JSON.parse(this.value);
 			    console.log(emp);
@@ -167,6 +170,7 @@
 			    });
 			});
 			
+			// 회원가입 이메일 재발송
 			$('#empList').on('click', '.sendEmail', function(){
 			    let empNo = $(this).val();
 			    console.log(empNo);
@@ -180,6 +184,59 @@
 			    });
 			});
 			
+			// 버튼 활성화
+			function updateBtnState() {
+				console.log("update");
+		        $('#pre').prop('disabled', currentPage === 1);
+		        $('#next').prop('disabled', currentPage === lastPage);
+		        $('#first').prop('disabled', currentPage === 1);
+		        $('#last').prop('disabled', currentPage === lastPage);
+		    }
+			
+			// 사원 목록 출력
+			function loadEmpList(page){
+				$.ajax({
+					async: false, // 비동기 방식일 경우 updateBtnState가 제대로 작동을 안함
+					url:'${pageContext.request.contextPath}/searchEmp',
+					method:'get',
+					data:{
+						officeName: $('#office').val(),
+						deptName: $('#dept').val(),
+						teamName: $('#team').val(),
+						rankName: $('#rankName').val(),
+						signupYN: $('#signupYN').val(),
+						empNo: $('#empNo').val(),
+						currentPage: page
+					},
+					success:function(json){
+						console.log(json);
+						console.log('curreptPage : ' + currentPage);
+						$('#empList').empty();
+						$('#empList').append('<tr>' +
+								'<th>본사/지사</th>' +
+								'<th>부서</th>' +
+								'<th>팀</th>' +
+								'<th>직급</th>' +
+								'<th>사원번호</th>' +
+								'<th>사원명</th>' +
+								'<th>내선번호</th>' +
+								'<th>가입일</th>' +
+								'<th>회원가입 유무</th>' +
+								'</tr>');
+						json.empList.forEach(function(item){
+							console.log(item);
+							
+							empList(item);
+							
+							
+						});
+						
+						updateBtnState();
+					}
+				});
+			}
+			
+			// 사원 목록 데이터 가져오기
 			function empList(item){
 				
 				 let officeInfo = '';
@@ -204,6 +261,27 @@
 						'</td>' + 
 						'<td><button type="button" class="resetPw" value=\'{"empNo": "' + item.empNo + '", "empEmail": "' + item.empEmail + '"}\'>비밀번호 초기화</button></td>' +
 						'</tr>');
+			}
+			
+			// 마지막 페이지
+			function getLastPage(){
+				$.ajax({
+					async: false,
+					url:'${pageContext.request.contextPath}/getLastPage',
+					method:'get',
+					data:{
+						officeName: $('#office').val(),
+						deptName: $('#dept').val(),
+						teamName: $('#team').val(),
+						rankName: $('#rankName').val(),
+						signupYN: $('#signupYN').val(),
+						empNo: $('#empNo').val()
+					},
+					success:function(json){
+						console.log('lastPage : ' + json);
+						lastPage = json;
+					}
+				});
 			}
 			
 		});

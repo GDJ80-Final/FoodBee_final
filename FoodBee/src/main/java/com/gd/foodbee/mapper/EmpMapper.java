@@ -54,7 +54,7 @@ public interface EmpMapper {
     int insertEmp(EmpDTO empDTO);
     
     // 사원 목록
-    List<EmpSearchDTO> selectEmpList(EmpSearchDTO empSearchDTO);
+    List<EmpSearchDTO> selectEmpList(EmpSearchDTO empSearchDTO, int startRow, int rowPerPage);
     
     //사원번호로 이메일 찾기
     String selectEmpEmailByEmpNo(int empNo);
@@ -69,6 +69,6 @@ public interface EmpMapper {
     int updateEmpHr(EmpDTO empDTO);
     
     // 사원 인원 카운트
-    int selectEmpCount();
+    int selectEmpCount(EmpSearchDTO empSearchDTO);
     
 }
