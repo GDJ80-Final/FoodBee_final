@@ -1,7 +1,7 @@
 package com.gd.foodbee.mapper;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,7 +21,7 @@ public interface MsgMapper {
 	//파라미터 :  int empNo,int beginRow,int rowPerPage
 	//반환값 : List
 	//사용클래스 : MsgService.getReceivedMsgList
-	List<HashMap<String,Object>> selectReceivedMsgList(int empNo,int beginRow,int rowPerPage,String readYN);
+	List<Map<String,Object>> selectReceivedMsgList(int empNo,int beginRow,int rowPerPage,String readYN);
 	
 	//받은쪽지함 전체 갯수
 	//파라미터 : X
@@ -29,5 +29,16 @@ public interface MsgMapper {
 	//사용 클래스 : MsgService.getReceivedMsgList
 	int selectCntReceivedMsg();
 	
+	//받은쪽지함에서 휴지통으로 이동
+	//파라미터 : int msgNo
+	//반환값 : int
+	//사용클래스: MsgService.toTrash
+	int updateMsgToTrash(int msgNo);
+	
+	//보낸쪽지함
+	//파라미터 : int empNo,int beginRow,int rowPerPage
+	//반환값 : List
+	//사용클래스 : MsgService.getSentMsgList
+	List<Map<String,Object>> selectSentMsgList(int empNo,int beginRow, int rowPerPage,String readYN);
 	
 }

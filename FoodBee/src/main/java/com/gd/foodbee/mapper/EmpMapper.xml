@@ -13,7 +13,7 @@
 			emp_no = #{empNo} 
 			AND emp_pw = SHA2(#{empPw},256)
 	</select>
-	<select id="selectEmpByNoAndEmail" parameterType="map" resultType="com.gd.foodbee.dto.EmpDTO">
+	<select id="selectEmpByNoAndEmail" parameterType="Map" resultType="com.gd.foodbee.dto.EmpDTO">
 		SELECT
 			emp_no empNo,
 			emp_name empName,
@@ -24,7 +24,7 @@
 			emp_no = #{empNo} 
 			AND emp_email = #{empEmail}
 	</select>
-	<update id="updateEmpPw" parameterType="map">
+	<update id="updateEmpPw" parameterType="Map">
 		UPDATE 
 			emp
 		SET
@@ -139,7 +139,7 @@
 		WHERE
 			emp_no = #{empNo}
 	</select>
-	<select id="selectEmpPersnal" parameterType="int" resultType="map">
+	<select id="selectEmpPersnal" parameterType="int" resultType="Map">
 		SELECT
 			emp_no empNo,
 			contact,
@@ -151,7 +151,7 @@
 		WHERE
 			emp_no = #{empNo}
 	</select>
-	<select id="selectEmpHr" parameterType="int" resultType="map">
+	<select id="selectEmpHr" parameterType="int" resultType="Map">
 		SELECT
 			e.emp_no empNo,
 			e.emp_name empName,

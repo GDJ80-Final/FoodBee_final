@@ -1,8 +1,9 @@
 package com.gd.foodbee.service;
 
 import java.io.File;
-import java.util.HashMap;
+
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,12 +119,26 @@ public class MsgServiceImpl implements MsgService{
 		
 	}
 	//받은 쪽지함 
+	//파라미터 : int currentPage, int empNo, String readYN 
+	//반환값 : List<Map<String,Object>>
+	//사용클래스  : MsgController.receivedMsg
 	@Override
-	public List<HashMap<String, Object>> getReceivedMsgList(int currentPage, int empNo,String readYN) {
+	public List<Map<String, Object>> getReceivedMsgList(int currentPage, int empNo,String readYN) {
 		int rowPerPage = 15;
         int beginRow = (currentPage -1) * rowPerPage;
-        
+        log.debug(TeamColor.YELLOW + "empNo" + empNo);
 		
 		return msgMapper.selectReceivedMsgList(empNo, beginRow, rowPerPage,readYN);
+	}
+	//보낸 쪽지함
+	//파라미터 : int currentPage, int empNo, String readYN 
+	//반환값 : List<Map<String,Object>>
+	@Override
+	public List<Map<String, Object>> getSentMsgList(int currentPage, int empNo, String readYN) {
+		int rowPerPage = 15;
+		int beginRow = (currentPage - 1) * rowPerPage;
+		log.debug(TeamColor.YELLOW + "empNo" + empNo);
+		
+		return msgMapper.selectSentMsgList(empNo, beginRow, rowPerPage, readYN);
 	}
 }

@@ -20,12 +20,12 @@
 		
 		)
 	</insert>
-	<select id="selectReceivedMsgList" parameterType="HashMap" resultType="HashMap">
+	<select id="selectReceivedMsgList" parameterType="Map" resultType="Map">
 		SELECT
 			m.msg_no msgNo,
 			e.emp_name empName,
 			m.title,
-			m.create_datetime createDateTime
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDateTime
 		FROM
 			msg m
 		INNER JOIN
@@ -34,7 +34,7 @@
 			emp e ON e.emp_no = m.sender_emp_no
 		WHERE
 			mr.recipient_emp_no = #{empNo}
-			AND m.msg_state = 1
+			AND mr.recipient_msg_state = 1
 		<if test='readYN == "Y"'>
 			AND mr.read_YN = 'Y'
 		</if>
@@ -53,7 +53,39 @@
 		WHERE
 			msg_state = 1
 	</select>
-
+	<update id="updateMsgToTrash" parameterType="int">
+		UPDATE
+			msg
+		SET
+			msg_state = 0
+		WHERE
+			msg_no = #{msgNo}
+	</update>
+	<select id="selectSentMsgList" parameterType="Map" resultType="Map">
+		SELECT
+			m.msg_no msgNo,
+			e.emp_name empName,
+			m.title,
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDateTime
+		FROM
+			msg m
+		INNER JOIN
+			msg_recipient mr ON m.msg_no = mr.msg_no
+		INNER JOIN
+			emp e ON e.emp_no = mr.recipient_emp_no
+		WHERE
+			m.sender_emp_no = #{empNo}
+			AND m.msg_state = 1
+		<if test='readYN == "Y"'>
+			AND mr.read_YN = 'Y'
+		</if>
+		<if test='readYN == "N"'>
+			AND mr.read_YN = 'N'
+		</if>
+		LIMIT
+			#{beginRow},
+			#{rowPerPage}
+	</select>
 
 
 

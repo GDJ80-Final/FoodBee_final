@@ -29,12 +29,12 @@
 	</table>
 	<div>
     <c:if test="${currentPage > 1}">
-        <a href="receivedMsgBox?currentPage=1">First</a>
-        <a href="receivedMsgBox?currentPage=${currentPage - 1}">◁</a>
+        <a href="sentMsgBox?currentPage=1">First</a>
+        <a href="sentMsgBox?currentPage=${currentPage - 1}">◁</a>
     </c:if>
     <c:if test="${currentPage < lastPage}">
-        <a href="receivedMsgBox?currentPage=${currentPage + 1}">▶</a>
-        <a href="receivedMsgBox?currentPage=${lastPage}">Last</a>
+        <a href="sentMsgBox?currentPage=${currentPage + 1}">▶</a>
+        <a href="sentMsgBox?currentPage=${lastPage}">Last</a>
     </c:if>
 </div>
 <script>
@@ -43,7 +43,7 @@
 	   //읽음/안읽음 여부에 따라 받은 쪽지함 분기
 	   function loadMsg(readYN){
 		   $.ajax({
-			   url : '${pageContext.request.contextPath}/receivedMsgBox',
+			   url : '${pageContext.request.contextPath}/sentMsgBox',
 			   type: 'post',
 			   data :{
 				   readYN : readYN
@@ -54,7 +54,7 @@
 			   json.forEach(function(item){
 				   console.log(item)
 				   $('#msgTableBody').append('<tr>' +
-							'<td><input type="checkbox" value="'+ item.msgNo +'"></td>'+
+						   	'<td><input type="checkbox" value="'+item.msgNo+'"></td>'+
 							'<td>'+ item.msgNo + '</td>'+
 							'<td>'+ item.empName + '</td>'+
 							'<td><a href="${pageContext.request.contextPath}/msgOne?msgNo='+
