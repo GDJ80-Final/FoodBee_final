@@ -211,7 +211,8 @@ public class EmpController {
 	//사용페이지 : /empList
 	@GetMapping("/searchEmp")
 	@ResponseBody
-	public List<EmpSearchDTO> searhEmpList(EmpSearchDTO empSearchDTO) {
+	public List<EmpSearchDTO> searhEmpList(EmpSearchDTO empSearchDTO, 
+				@RequestParam int currentPage) {
 		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
 		log.debug(TeamColor.RED + "deptName =>" + empSearchDTO.getDeptName());
 		log.debug(TeamColor.RED + "teamName =>" + empSearchDTO.getTeamName());
@@ -219,13 +220,14 @@ public class EmpController {
 		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
 		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
 		
-		return empService.getEmpList(empSearchDTO);
+		return empService.getEmpList(empSearchDTO, currentPage);
 	}
 	
 	//비밀번호 초기화
 	@PostMapping("/resetPw")
 	@ResponseBody
-	public String resetEmpPw(@RequestParam(name = "empNo") int empNo) {
+	public String resetEmpPw(@RequestParam(name = "empNo") int empNo,
+			@RequestParam String empEmail) {
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
 		
 		Random random = new Random();
@@ -250,8 +252,19 @@ public class EmpController {
         
         
         empService.modifyEmpPw(empNo, tmpPw);
+        
+        EmailDTO emailDTO = EmailDTO.builder()
+				 .to(empEmail)
+			     .subject("[FoodBee] 임시 비밀번호")
+			     .message("임시비밀번호 : " + tmpPw)
+			     .build();
+	
+		sendEmail.sendEmail(emailDTO);
+       
+		return "success";
+        
+        
 
-		return tmpPw;
 	}
 	
 	//이메일 재발송

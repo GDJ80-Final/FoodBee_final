@@ -16,6 +16,7 @@ public class EmpSearchDTO {
 	private String signupYN;
 	private Integer empNo;
 	private String empName;
+	private String empEmail;
 	private String extNo;
 	private String startDate;
 	

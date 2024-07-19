@@ -35,7 +35,7 @@ public interface EmpService {
 	int createAuth(int empNo, String empEmail);
 	
 	// 사원 목록
-	List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO); 
+	List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO, int currentPage); 
 	
 	// 사원번호로 이메일 찾기
 	String getEmpEmailByEmpNo(int empNo);

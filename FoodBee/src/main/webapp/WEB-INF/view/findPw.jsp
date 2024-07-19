@@ -76,11 +76,12 @@
 	                				method : 'post', 
 	                				data: {
 	                                	authNum: $('#authNum').val(),
-	                                	empNo: $('#empNo').val()
+	                                	empNo: $('#empNo').val(),
+	                                	empEmail: $('#empEmail').val()
 	                                },
 	                				success : function(json) {
-	                					if(json != 'fail'){
-	                						alert("임시 비밀번호: " + json);
+	                					if(json === 'success'){
+	                						alert('이메일이 발송되었습니다.');
 	    			                        window.location.href = '${pageContext.request.contextPath}/login';
 	                						
 	                					} else {

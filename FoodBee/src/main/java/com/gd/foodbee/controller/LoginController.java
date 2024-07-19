@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.LoginDTO;
 import com.gd.foodbee.service.EmpService;
+import com.gd.foodbee.util.SendEmail;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.Cookie;
@@ -32,6 +34,9 @@ public class LoginController {
 	
 	@Autowired
 	private EmpService empService;
+	
+	@Autowired
+	private SendEmail sendEmail;
 
 	// 로그인 페이지
 	// 파라미터 : HttpServletRequest
@@ -116,12 +121,14 @@ public class LoginController {
 	
 	@PostMapping("/getPw")
 	@ResponseBody
-	public String getPw(int authNum,
+	public String getPw(@RequestParam int authNum,
 			@RequestParam int empNo,
+			@RequestParam String empEmail,
 			HttpServletRequest request) {
 		
 		log.debug(TeamColor.RED + "authNum =>" + authNum);
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
+		log.debug(TeamColor.RED + "empEmail =>" + empEmail);
 		
 		HttpSession session = request.getSession();
 	    int sessionAuthNum = (Integer) session.getAttribute("authNum");
@@ -150,7 +157,15 @@ public class LoginController {
 	        
 	        empService.modifyEmpPw(empNo, tmpPw);
 	        
-	        return tmpPw;
+	        EmailDTO emailDTO = EmailDTO.builder()
+					 .to(empEmail)
+				     .subject("[FoodBee] 임시 비밀번호")
+				     .message("임시비밀번호 : " + tmpPw)
+				     .build();
+		
+			sendEmail.sendEmail(emailDTO);
+	        
+	        return "success";
 	    }
 	    
 		return "fail";

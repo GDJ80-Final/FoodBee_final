@@ -92,6 +92,14 @@
 								</select>
 								<span id="rankMsg" class="msg"></span>
                             </div>
+                            <div class="col-md-6">
+							    <label class="form-label">입사 일자</label>
+							    <input type="text" class="form-control" value="${empHr.startDate}" readonly>
+							</div>
+							<div class="col-md-6">
+							    <label class="form-label">퇴사 일자</label>
+							    <input type="date" id="endDate" name="endDate" class="form-control" value="${empHr.endDate}">
+							</div>
                         </div>
                     </div>
                 </div>
@@ -112,8 +120,7 @@
 		        // 만약 empState가 "가발령"이 아니면 본사/지사, 부서, 팀을 활성화
 		        if ($('#empState').val() != '0') {
 		            $('#office, #dept, #team').prop('disabled', false);  // 활성화
-		            $('#officeMsg, #deptMsg, #teamMsg').text('선택하지않을시 원래 부서로 자동 선택됩니다.'); 
-		            $('#deptMsg, #teamMsg').text('')// 메시지 초기화
+		            $('#officeMsg, #deptMsg, #teamMsg').text(''); 
 		        } else {
 		        	// "가발령"일시 비활성화
 		            $('#office, #dept, #team').prop('disabled', true);
@@ -125,6 +132,13 @@
 		            $('#dept').append('<option value="">---부서 선택---</option>');
 		            $('#office').val('');
 		            
+		        }
+		        
+		        if($('#empState').val() == '9'){
+		        	$('#endDate').prop('disabled', false);
+		        } else {
+		        	$('#endDate').prop('disabled', true);
+		        	$('#endDate').val('');
 		        }
 		    });
 			
@@ -216,7 +230,22 @@
 				success:function(json){
 					console.log(json);
 					$('#empState').val(json.empStateCode).trigger('change');
-					$('#rankName').val(json.rankName);
+					
+					setTimeout(() => {
+					    $('#office').val(json.officeNo).trigger('change');
+					    
+					    setTimeout(() => {
+					        $('#dept').val(json.deptNo).trigger('change');
+					        
+					        setTimeout(() => {
+					            $('#team').val(json.teamNo).trigger('change');
+					            
+					            setTimeout(() => {
+					                $('#rankName').val(json.rankName);
+					            }, 100);
+					        }, 100);
+					    }, 100);
+					}, 100);
 					
 				}
 			});

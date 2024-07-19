@@ -86,6 +86,7 @@
 		SELECT
 			e.emp_name empName,
 			e.emp_no empNo,
+			e.emp_email empEmail,			
 			e.ext_no extNo,
 			e.start_date startDate,
 			e.signup_YN signupYN,
@@ -95,11 +96,11 @@
 			t.dpt_name teamName
 		FROM 
 			emp e
-		INNER JOIN
+		LEFT JOIN
 			`group` t ON t.dpt_no = e.dpt_no
-		INNER JOIN
+		LEFT JOIN
 			`group` d ON t.superior_dpt_no = d.dpt_no
-		INNER JOIN
+		LEFT JOIN
 			`group` o ON d.superior_dpt_no = o.dpt_no
 		WHERE
 			1=1
@@ -142,6 +143,7 @@
 		SELECT
 			emp_no empNo,
 			contact,
+			post_no postNo,
 			address,
 			emp_email empEmail
 		FROM
@@ -155,15 +157,16 @@
 			e.emp_name empName,
 			e.ext_no extNo,
 			e.start_date startDate,
+			e.end_date endDate,
 			e.rank_name rankName,
 			sc.state_code_name empState,
 			sc.state_code empStateCode,
 			g.dpt_name teamName,
-			g.dpt_name teamNo,
+			g.dpt_no teamNo,
 			sg.dpt_name deptName,
-			sg.dpt_name deptNo,
+			sg.dpt_no deptNo,
 			ssg.dpt_name officeName,
-			ssg.dpt_name officeNo,
+			ssg.dpt_no officeNo,
 			i.original_file
 		FROM
 			emp e
@@ -188,6 +191,7 @@
 			<if test="dptNo != null and dptNo != ''">
                dpt_no = #{dptNo},
             </if>
+            end_date = #{endDate},
 			emp_state = #{empState},
 			rank_name = #{rankName}
 		WHERE

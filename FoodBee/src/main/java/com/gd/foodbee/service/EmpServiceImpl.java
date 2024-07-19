@@ -194,7 +194,8 @@ public class EmpServiceImpl implements EmpService{
 	
 	// 사원목록
 	@Override
-	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO) {
+	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO, int currentPage) {
+		int rowPerPage = 10;
 		
 		return empMapper.selectEmpList(empSearchDTO);
 	}

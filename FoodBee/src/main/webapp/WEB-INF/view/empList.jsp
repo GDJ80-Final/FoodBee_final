@@ -108,21 +108,9 @@
 					json.forEach(function(item){
 						console.log(item);
 						
-						$('#empList').append('<tr>' +
-							'<td>' + item.officeName +'</td>' + 
-							'<td>' + item.deptName +'</td>' + 
-							'<td>' + item.teamName +'</td>' + 
-							'<td>' + item.rankName +'</td>' + 
-							'<td>' + item.empNo +'</td>' + 
-							'<td><a href= "${pageContext.request.contextPath}/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
-							'<td>' + item.extNo +'</td>' + 
-							'<td>' + item.startDate +'</td>' + 
-							'<td>' + item.signupYN +
-							(item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') +
-							'</td>' + 
-							'<td><button type="button" class="resetPw" value="' + item.empNo + '">비밀번호 초기화</button></td>' +
-							'</tr>');
+						empList(item);
 					});
+						
 				}
 			});
 			
@@ -137,6 +125,7 @@
 						rankName: $('#rankName').val(),
 						signupYN: $('#signupYN').val(),
 						empNo: $('#empNo').val()
+						currentPage: 
 					},
 					success:function(json){
 						console.log(json);
@@ -155,20 +144,7 @@
 						json.forEach(function(item){
 							console.log(item);
 							
-							$('#empList').append('<tr>' +
-								'<td>' + item.officeName +'</td>' + 
-								'<td>' + item.deptName +'</td>' + 
-								'<td>' + item.teamName +'</td>' + 
-								'<td>' + item.rankName +'</td>' + 
-								'<td>' + item.empNo +'</td>' + 
-								'<td><a href= "${pageContext.request.contextPath}/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
-								'<td>' + item.extNo +'</td>' + 
-								'<td>' + item.startDate +'</td>' + 
-								'<td>' + item.signupYN +
-								(item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') +
-								'</td>' + 
-								'<td><button type="button" class="resetPw" value="' + item.empNo + '">비밀번호 초기화</button></td>' +
-								'</tr>');
+							empList(item);
 							
 						});
 					}
@@ -176,14 +152,17 @@
 			});
 			
 			$('#empList').on('click', '.resetPw', function(){
-			    let empNo = $(this).val();
-			    console.log(empNo);
+				const emp = JSON.parse(this.value);
+			    console.log(emp);
 			    $.ajax({
 			        url: '${pageContext.request.contextPath}/resetPw',
 			        method: 'post',
-			        data: { empNo: empNo },
+			        data: {
+			        	empNo: emp.empNo,
+			        	empEmail: 	emp.empEmail
+		        	},
 			        success: function(json){
-			            alert('비밀번호가 초기화되었습니다. 임시 비밀번호는 ' + json + '입니다');
+			            alert('비밀번호가 초기화되었습니다. 이메일로 임시 비밀번호를 발송했습니다');
 			        }
 			    });
 			});
@@ -200,6 +179,32 @@
 			        }
 			    });
 			});
+			
+			function empList(item){
+				
+				 let officeInfo = '';
+
+			    if (item.officeName !== null) {
+			        officeInfo += '<td>' + item.officeName + '</td>';
+			        officeInfo += '<td>' + item.deptName + '</td>';
+			        officeInfo += '<td>' + item.teamName + '</td>';
+			    } else {
+			        officeInfo += '<td colspan="3">가발령</td>';
+			    }
+				
+				$('#empList').append('<tr>' +
+						officeInfo + 
+						'<td>' + item.rankName +'</td>' + 
+						'<td>' + item.empNo +'</td>' + 
+						'<td><a href= "${pageContext.request.contextPath}/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
+						'<td>' + item.extNo +'</td>' + 
+						'<td>' + item.startDate +'</td>' + 
+						'<td>' + item.signupYN +
+						(item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') +
+						'</td>' + 
+						'<td><button type="button" class="resetPw" value=\'{"empNo": "' + item.empNo + '", "empEmail": "' + item.empEmail + '"}\'>비밀번호 초기화</button></td>' +
+						'</tr>');
+			}
 			
 		});
 	</script>
