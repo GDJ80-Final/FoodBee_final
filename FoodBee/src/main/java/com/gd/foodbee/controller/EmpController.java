@@ -221,9 +221,14 @@ public class EmpController {
 		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
 		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
 		
+		int lastPage = empService.getLastPage(empSearchDTO);
+		
+		log.debug(TeamColor.RED + "lastPage =>" + lastPage);
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("empList", empService.getEmpList(empSearchDTO, currentPage));
-		map.put("currentPage", currentPage);
+		map.put("currentPage", currentPage); 
+		map.put("lastPage", lastPage); 
 		return map;
 	}
 	
@@ -303,7 +308,7 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기(개인 + 인사)
-	@GetMapping("getEmpPersnal")
+	@GetMapping("/getEmpPersnal")
 	@ResponseBody
 	public Map<String, Object> getEmpPersnal(@RequestParam int empNo){
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
@@ -312,7 +317,7 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기(인사)
-	@GetMapping("getEmpHr")
+	@GetMapping("/getEmpHr")
 	@ResponseBody
 	public Map<String, Object> getEmpHr(@RequestParam int empNo){
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
@@ -340,20 +345,24 @@ public class EmpController {
 		return "redirect:/empDetail?empNo=" + empDTO.getEmpNo();
 	}
 	
-	// 총 사원 수로 사원 목록 마지막 페이지 구하기
-	@GetMapping("getLastPage")
-	@ResponseBody
-	public int getLastPage(EmpSearchDTO empSearchDTO) {
-		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
-		log.debug(TeamColor.RED + "deptName =>" + empSearchDTO.getDeptName());
-		log.debug(TeamColor.RED + "teamName =>" + empSearchDTO.getTeamName());
-		log.debug(TeamColor.RED + "rankName =>" + empSearchDTO.getRankName());
-		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
-		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
+	// 마이페이지
+	@GetMapping("/myPage")
+	public String myPage(HttpSession session,
+				Model model) {
 		
-		int lastPage = empService.getLastPage(empSearchDTO);
+		EmpDTO emp = (EmpDTO)session.getAttribute("emp");
+		model.addAttribute("emp", emp);
+		return "myPage";
+	}
+	
+	//
+	@PostMapping("/modifyEmpPwMyPage")
+	public String modifyEmpPwMyPage(@RequestParam int empNo,
+				@RequestParam String oldPw,
+				@RequestParam String newPw) {
 		
-		log.debug(TeamColor.RED + "lastPage =>" + lastPage);
-		return lastPage;
+		empService.modifyEmpPwMyPage(empNo, oldPw, newPw);
+		
+		return "success";
 	}
 }

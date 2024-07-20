@@ -75,7 +75,6 @@
 
 	
 		$(document).ready(function() {
-			getLastPage();
 			loadEmpList(1);
 			
 			// 본사/지사 데이터
@@ -196,7 +195,6 @@
 			// 사원 목록 출력
 			function loadEmpList(page){
 				$.ajax({
-					async: false, // 비동기 방식일 경우 updateBtnState가 제대로 작동을 안함
 					url:'${pageContext.request.contextPath}/searchEmp',
 					method:'get',
 					data:{
@@ -210,6 +208,7 @@
 					},
 					success:function(json){
 						console.log(json);
+						lastPage = json.lastPage;
 						console.log('curreptPage : ' + currentPage);
 						$('#empList').empty();
 						$('#empList').append('<tr>' +
@@ -263,26 +262,6 @@
 						'</tr>');
 			}
 			
-			// 마지막 페이지
-			function getLastPage(){
-				$.ajax({
-					async: false,
-					url:'${pageContext.request.contextPath}/getLastPage',
-					method:'get',
-					data:{
-						officeName: $('#office').val(),
-						deptName: $('#dept').val(),
-						teamName: $('#team').val(),
-						rankName: $('#rankName').val(),
-						signupYN: $('#signupYN').val(),
-						empNo: $('#empNo').val()
-					},
-					success:function(json){
-						console.log('lastPage : ' + json);
-						lastPage = json;
-					}
-				});
-			}
 			
 		});
 	</script>

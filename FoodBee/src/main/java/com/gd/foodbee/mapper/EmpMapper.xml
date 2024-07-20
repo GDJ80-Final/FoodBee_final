@@ -223,4 +223,13 @@
 		WHERE
 			emp_no = #{empNo}
 	</update>
+	<update id="updateEmpPwMyPage" parameterType="Map">
+		UPDATE
+			emp
+		SET
+			emp_pw = SHA2(#{newPw},256)
+		WHERE
+			emp_no = #{empNo}
+			AND emp_pw = SHA2(#{oldPw},256)
+	</update>
 </mapper>

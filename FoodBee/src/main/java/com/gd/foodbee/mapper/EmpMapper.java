@@ -71,4 +71,6 @@ public interface EmpMapper {
     // 사원 인원 카운트
     int selectEmpCount(EmpSearchDTO empSearchDTO);
     
+    // 마이 페이지에서 비밀번호 변경
+    int updateEmpPwMyPage(int empNo, String oldPw, String newPw);
 }

@@ -247,5 +247,16 @@ public class EmpServiceImpl implements EmpService{
 		}
 		return lastPage;
 	}
+
+	@Override
+	public void modifyEmpPwMyPage(int empNo, String oldPw, String newPw) {
+		
+		int row = empMapper.updateEmpPwMyPage(empNo, oldPw, newPw);
+		
+		if(row != 1) {
+			throw new RuntimeException();
+		}
+		
+	}
 	
 }
