@@ -14,7 +14,15 @@
 			'N'
 		)
 	</insert>
-
+	<update id="updateMsgToTrash" parameterType="Map">
+		UPDATE
+			msg_recipient
+		SET
+			recipient_msg_state = 0
+		WHERE
+			msg_no = #{msgNo}
+			AND recipient_emp_no = #{empNo}
+	</update>
 
 
 

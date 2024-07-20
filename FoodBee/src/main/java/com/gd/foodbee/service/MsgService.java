@@ -29,4 +29,16 @@ public interface MsgService {
 	//사용 클래스 : MsgController.sentMsgBox
 	List<Map<String,Object>> getSentMsgList(int currentPage, int empNo, String readYN);
 	
+	//쪽지 휴지통으로 보내기 >>발신자 
+	//파라미터 : int [] msgNos
+	//반환값 : X
+	//사용클래서 : MsgController.toTrash
+	void toTrash(int [] msgNos);
+	
+	//쪽지 휴지통으로 보내기 >>수신자
+	//파라미터 : int [] msgNos, int empNo
+	//반환값 :X
+	//사용클래스 : MsgController.toTrashRecipient
+	void toTrashRecipient(int[] msgNos,int empNo);
+	
 }

@@ -44,7 +44,7 @@
 	   function loadMsg(readYN){
 		   $.ajax({
 			   url : '${pageContext.request.contextPath}/receivedMsgBox',
-			   type: 'post',
+			   method: 'post',
 			   data :{
 				   readYN : readYN
 		   			},
@@ -54,8 +54,8 @@
 			   json.forEach(function(item){
 				   console.log(item)
 				   $('#msgTableBody').append('<tr>' +
-							'<td><input type="checkbox" value="'+ item.msgNo +'"></td>'+
-							'<td>'+ item.msgNo + '</td>'+
+							'<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
+							'<td>'+ item.msgOrder + '</td>'+
 							'<td>'+ item.empName + '</td>'+
 							'<td><a href="${pageContext.request.contextPath}/msgOne?msgNo='+
 									item.msgNo +'">'+ item.title + '</a></td>'+
@@ -85,6 +85,33 @@
 	   
 		// 페이지 첫 로드 시 전체 목록 불러오기
        loadMsg("all"); 
+		
+     	//휴지통 이동
+	   $('#toTrash').click(function(){
+		   let selectedMsgNos = [];
+		  //name이  msgNo+체크된 값만 가져오기 => 배열에 하나씩 넣기 
+		  $('[name="msgNo"]:checked').each(function() {
+			  selectedMsgNos.push($(this).val());
+        	});
+		  console.log(selectedMsgNos[0]);
+		   if(selectedMsgNos.length > 0){
+			   $.ajax({
+			   url: '${pageContext.request.contextPath}/toTrashRecipient',
+			   method: 'post',
+			   traditional:true, 
+			   data:{
+				   msgNos:selectedMsgNos
+			   },
+			   success:function(){
+				   alert('쪽지가 휴지통으로 이동하였습니다.')
+				   loadMsg("all"); // 이동 후 전체 목록 새로고침
+			   }
+		   })
+		   }else {
+			   alert('휴지통으로 이동할 쪽지를 선택해주세요.');
+		   }
+		   
+	   });
 	
 	   
    })

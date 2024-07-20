@@ -178,8 +178,8 @@
 					<button id="searchBtn" type="button">검색</button>
 				</div>
 			</form>
-		    <table class="table">
-		        <thead>
+		    <table class="table" id="empList">
+		        
 		            <tr>
 		                <th>본사/지사</th>
 						<th>부서</th>
@@ -189,11 +189,14 @@
 						<th>사원명</th>
 		                <th>선택</th>
 		            </tr>
-		        </thead>
-		        <tbody id="empList">
-		           
-		        </tbody>
+		        
 		   </table>
+		   <div id="page">
+		        <button type="button" id="first">First</button>
+		        <button type="button" id="pre">◁</button>
+		        <button type="button" id="next">▶</button>
+		        <button type="button" id="last">Last</button>
+		   </div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -203,7 +206,13 @@
 	  </div>
 	</div>
 	<script>
+		let currentPage = 1;
+		let lastPage = 1;
+	
 		$(document).ready(function() {
+			loadEmpList(1);
+			
+			//본사지사 데이터 
 			$.ajax({
 				url:'${pageContext.request.contextPath}/officeList',
 				method:'get',
@@ -215,7 +224,7 @@
 					});			
 				}
 			});
-			
+			//부서데이터 
 			$.ajax({
 				url:'${pageContext.request.contextPath}/deptList',
 				method:'get',
@@ -227,7 +236,7 @@
 					});			
 				}
 			});
-			
+			//팀 리스트 데이터 
 			$.ajax({
 				url:'${pageContext.request.contextPath}/teamList',
 				method:'get',
@@ -240,28 +249,51 @@
 				}
 			});
 			
-			$.ajax({
-				url:'${pageContext.request.contextPath}/searchEmp',
-				method:'get',
-				success:function(json){
-					console.log(json);
-					json.forEach(function(item){
-						console.log(item);
-						
-						$('#empList').append('<tr>' +
-							'<td>' + item.officeName +'</td>' + 
-							'<td>' + item.deptName +'</td>' + 
-							'<td>' + item.teamName +'</td>' + 
-							'<td>' + item.rankName +'</td>' + 
-							'<td>' + item.empNo +'</td>' + 
-							'<td>' + item.empName +'</td>' + 
-							'<td><button type="button" id="selectEmp" value="' + item.empNo + '">선택</button></td>' +
-							'</tr>');
-					});
+			$('#searchBtn').click(function(){
+				currentPage = 1
+				getLastPage();
+				loadEmpList(currentPage);
+			});
+			
+			$('#pre').click(function() {
+				if (currentPage > 1) {
+					currentPage = currentPage - 1;
+					loadEmpList(currentPage);
+				}
+			});
+
+			$('#next').click(function() {
+				if (currentPage < lastPage) {
+					currentPage = currentPage + 1;
+					loadEmpList(currentPage);
 				}
 			});
 			
-			$('#searchBtn').click(function(){
+			$('#first').click(function() {
+				if (currentPage > 1) {
+					currentPage = 1;
+					loadEmpList(currentPage);
+				}
+			});
+
+			$('#last').click(function() {
+				if (currentPage < lastPage) {
+					currentPage = lastPage
+					loadEmpList(currentPage);
+				}
+			});
+			
+			// 버튼 활성화
+			function updateBtnState() {
+				console.log("update");
+		        $('#pre').prop('disabled', currentPage === 1);
+		        $('#next').prop('disabled', currentPage === lastPage);
+		        $('#first').prop('disabled', currentPage === 1);
+		        $('#last').prop('disabled', currentPage === lastPage);
+		    }
+			
+			// 사원 목록 출력
+			function loadEmpList(page){
 				$.ajax({
 					url:'${pageContext.request.contextPath}/searchEmp',
 					method:'get',
@@ -270,29 +302,59 @@
 						deptName: $('#dept').val(),
 						teamName: $('#team').val(),
 						rankName: $('#rankName').val(),
-						signupYN: $('#signupYN').val(),
-						empNo: $('#empNo').val()
+						empNo: $('#empNo').val(),
+						currentPage: page
 					},
 					success:function(json){
 						console.log(json);
+						lastPage = json.lastPage;
+						console.log('curreptPage : ' + currentPage);
 						$('#empList').empty();
-						json.forEach(function(item){
+						$('#empList').append('<tr>' +
+								'<th>본사/지사</th>' +
+								'<th>부서</th>' +
+								'<th>팀</th>' +
+								'<th>직급</th>' +
+								'<th>사원번호</th>' +
+								'<th>사원명</th>' +
+								'</tr>');
+						json.empList.forEach(function(item){
 							console.log(item);
 							
-							$('#empList').append('<tr>' +
-								'<td>' + item.officeName +'</td>' + 
-								'<td>' + item.deptName +'</td>' + 
-								'<td>' + item.teamName +'</td>' + 
-								'<td>' + item.rankName +'</td>' + 
-								'<td>' + item.empNo +'</td>' + 
-								'<td>' + item.empName +'</td>' + 
-								'<td><button type="button" id="selectEmp" value="'+ item.empNo + '">선택</button></td>' +
-								'</tr>');
+							empList(item);
+							
 							
 						});
+						
+						updateBtnState();
 					}
 				});
-			});
+			}
+			
+			// 사원 목록 데이터 가져오기
+			function empList(item){
+				
+				 let officeInfo = '';
+
+			    if (item.officeName !== null) {
+			        officeInfo += '<td>' + item.officeName + '</td>';
+			        officeInfo += '<td>' + item.deptName + '</td>';
+			        officeInfo += '<td>' + item.teamName + '</td>';
+			    } else {
+			        officeInfo += '<td colspan="3">가발령</td>';
+			    }
+				
+				$('#empList').append('<tr>' +
+						officeInfo + 
+						'<td>' + item.rankName +'</td>' + 
+						'<td>' + item.empNo +'</td>' + 
+						'<td>' + item.empName +'</td>' + 
+						'<td><button type="button" id="selectEmp" value="'+ item.empNo + '">선택</button></td>' +
+						'</tr>');
+				}
+			
+			
+			//모달에서 사원 선택 
 			$(document).on('click', '#selectEmp', function() {
 				
 				let empNo = $(this).val();

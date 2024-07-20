@@ -72,7 +72,8 @@ public class MsgServiceImpl implements MsgService{
 			//실패 시 예외 처리
 		}
 		//첨부파일이 들어왔을 경우 
-		if(mfs.length != 0) {
+		log.debug(TeamColor.YELLOW + "mfs isEmpty =>" + mfs[0].isEmpty());
+		if(!mfs[0].isEmpty()) {
 			for(MultipartFile mf:mfs) {
 				String originalFile = FileFormatter.fileFormatter(mf);
 				MsgFileDTO msgFileDTO = MsgFileDTO.builder()
@@ -140,5 +141,37 @@ public class MsgServiceImpl implements MsgService{
 		log.debug(TeamColor.YELLOW + "empNo" + empNo);
 		
 		return msgMapper.selectSentMsgList(empNo, beginRow, rowPerPage, readYN);
+	}
+	//쪽지 휴지통 이동
+	//파라미터 : int msgNo
+	//반환값 : X
+	//사용클래서 : MsgController.toTrash
+	@Override
+	public void toTrash(int [] msgNos) {
+		
+		for(int msgNo : msgNos) {
+			int row = msgMapper.updateMsgToTrash(msgNo);
+			if(row != 1) {
+				throw new RuntimeException();
+			}
+		}
+		
+		
+	}
+	
+	//쪽지 휴지통으로 보내기 >>수신자
+	//파라미터 : int [] msgNos, int empNo
+	//반환값 :X
+	//사용클래스 : MsgController.toTrashRecipient
+	@Override
+	public void toTrashRecipient(int[] msgNos, int empNo) {
+		for(int msgNo : msgNos) {
+			log.debug(TeamColor.YELLOW + "msgNo" + msgNo);
+			int row = msgRepicientMapper.updateMsgToTrash(msgNo, empNo);
+			if(row != 1) {
+				throw new RuntimeException();
+			}
+		}
+		
 	}
 }

@@ -102,4 +102,32 @@ public class MsgController {
 		
 		return msgService.getSentMsgList(currentPage, empNo, readYN);
 	}
+	//휴지통 이동 >> 보낸편지함
+	//파라미터 : int [] msgNos
+	//반환값 : X
+	//사용페이지 : receivedMsgBox, sentMsgBox
+	@PostMapping("/toTrash")
+	@ResponseBody
+	public String toTrash(@RequestParam(name="msgNos")int[] msgNos) {
+		log.debug(TeamColor.YELLOW + "msgNos" + msgNos[0]);
+		msgService.toTrash(msgNos);
+		
+		return "success";
+	}
+	
+	//휴지통 이동 >> 받음편지함 
+	//파라미터 : int [] msgNos,int empNo
+	//반환값 : X
+	//사용페이지 : receivedMsgBox, sentMsgBox
+	@PostMapping("/toTrashRecipient")
+	@ResponseBody
+	public String toTrashRecipient(@RequestParam(name="msgNos")int[] msgNos,
+				HttpSession session) {
+		log.debug(TeamColor.YELLOW + "msgNos" + msgNos[0]);
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		msgService.toTrashRecipient(msgNos, empNo);
+			
+		return "success";
+	}
 }

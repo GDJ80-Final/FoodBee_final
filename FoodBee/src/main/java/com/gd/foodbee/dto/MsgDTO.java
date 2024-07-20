@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MsgDTO {
+	
 	private int msgNo;
 	private int senderEmpNo;
 	private String title;
