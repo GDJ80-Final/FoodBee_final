@@ -16,11 +16,11 @@ public interface NoticeService {
 	//부서별 공지사항List
 	List<HashMap<String,Object>> getAllDptNoticeList(int currentPage, String dptNo);
 	 //전체 공지사항 마지막페이지
-	int allLastPage();
+	int allLastPage(String dptNo);
 	//사원별 공지사항 마지막페이지
 	int allEmpLastPage();
 	//부서별 공지사항 마지막페이지
-	int allDptLastPage();
+	int allDptLastPage(String dptNo);
 	//공지사항 추가
 	void addNotice(NoticeRequest noticeRequest, HttpServletRequest request);
 	//공지사항 상세보기(다중파일때문에 List로)

@@ -45,12 +45,12 @@
             </table>
             
             <a href="noticeList">돌아가기</a>
-            
-            <form action="deleteNotice" method="post">
-                <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">
-                <button type="submit">삭제</button>
-            </form>
-            
+            <c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
+			    <form action="deleteNotice" method="post">
+	                <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">
+	                <button type="submit">삭제</button>
+            	</form>
+			</c:if>
             <!-- 수정 버튼 추가 -->
             <c:if test="${one[0].empName == empName}">
                 <form action="modifyNotice" method="get">

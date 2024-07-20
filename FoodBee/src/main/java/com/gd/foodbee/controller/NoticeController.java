@@ -56,7 +56,7 @@ public class NoticeController {
 		log.debug(TeamColor.PURPLE + "list=>" + list);
 		
 		//공지사항 마지막페이지
-		int lastPage = noticeService.allLastPage();
+		int lastPage = noticeService.allLastPage(dptNo);
 		
 		model.addAttribute("dptNo", dptNo);
 		model.addAttribute("rankName", rankName);
@@ -72,15 +72,17 @@ public class NoticeController {
 		
 	    List<HashMap<String,Object>> list = noticeService.getNoticeList(currentPage, dptNo);
 	    
-	    int lastPage = noticeService.allLastPage();
+	    int lastPage = noticeService.allLastPage(dptNo);
 	    
 	    Map<String,Object> allList = new HashMap<String,Object>();
 	    	allList.put("list", list);
 	    	allList.put("lastPage", lastPage);
+	    	allList.put("currnetPage", currentPage);
 	  
 	    	
     	log.debug(TeamColor.PURPLE + "list=>" + list);
     	log.debug(TeamColor.PURPLE + "lastPage=>" + lastPage);
+
     	
 	    return allList;
 	}
@@ -96,27 +98,29 @@ public class NoticeController {
 		Map<String,Object> empList = new HashMap<String,Object>();
 			empList.put("allEmpList", allEmpList);
 			empList.put("empLastPage", empLastPage);
+			empList.put("currentPage", currentPage);
 			
 		log.debug(TeamColor.PURPLE + "allEmpList=>" + allEmpList);
 			
 		return empList;
 	}
-	@GetMapping("/allDptList")//[버튼]부서별 공지사항
+	@GetMapping("/allDptList")
 	@ResponseBody
-	public Map<String,Object> allDptList(int currentPage, String dptNo) {
-		
-		List<HashMap<String,Object>> allDptList = noticeService.getAllDptNoticeList(currentPage, dptNo);
-		
-		int dptLastPage = noticeService.allDptLastPage();
-		
-		Map<String,Object> dptList = new HashMap<String,Object>();
-			dptList.put("allDptList", allDptList);
-			dptList.put("cntLastPage", dptLastPage);
-		
-		log.debug(TeamColor.PURPLE + "allDptList=>" + allDptList);
-		
-		return dptList;
+	public Map<String, Object> allDptList(int currentPage, String dptNo) {
+	    List<HashMap<String, Object>> allDptList = noticeService.getAllDptNoticeList(currentPage, dptNo);
+	    int dptLastPage = noticeService.allDptLastPage(dptNo);
+
+	    Map<String, Object> dptList = new HashMap<>();
+	    dptList.put("allDptList", allDptList);
+	    dptList.put("dptLastPage", dptLastPage);
+	    dptList.put("currentPage", currentPage);
+
+	    log.debug(TeamColor.PURPLE + "allDptList=>" + allDptList);
+	    log.debug(TeamColor.PURPLE + "dptLastPage=>" + dptLastPage);
+
+	    return dptList;
 	}
+
 	
 	@GetMapping("/addNotice")//공지사항 추가
 	public String addNotice(Model model, 
@@ -149,8 +153,11 @@ public class NoticeController {
 	public String addNoticeAction(NoticeRequest noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest=>" + noticeRequest);
 		
-		noticeService.addNotice(noticeRequest, request);
-		
+		try{
+			noticeService.addNotice(noticeRequest, request);
+	    } catch (Exception e) {
+	        log.error("공지사항 수정 중 오류 발생", e);
+	    }		
 	return"redirect:/noticeList";
 	}
 	@GetMapping("/noticeOne")
@@ -160,11 +167,15 @@ public class NoticeController {
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		String empName = null;
+		String rankName = null;
 		
 	    if (emp != null) {
 	        log.debug(TeamColor.PURPLE + "emp => " + emp);
 	        empName = emp.getEmpName();
+	        rankName = emp.getRankName();
+	        
 	        log.debug(TeamColor.PURPLE + "empName =>" + empName);
+	        log.debug(TeamColor.PURPLE + "rankName=>" + rankName);
 	    } else {
 	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
 	    }
@@ -176,6 +187,7 @@ public class NoticeController {
 		
 		model.addAttribute("one", one);
 		model.addAttribute("empName", empName);
+		model.addAttribute("rankName", rankName);
 		
     return "noticeOne"; 
     }

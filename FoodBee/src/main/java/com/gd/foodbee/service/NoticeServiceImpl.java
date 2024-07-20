@@ -75,8 +75,8 @@ public class NoticeServiceImpl implements NoticeService{
     }
     //전체 공지사항 마지막페이지
     @Override
-    public int allLastPage() {
-    	int count = noticeMapper.countNoticeList();
+    public int allLastPage(String dptNo) {
+    	int count = noticeMapper.countNoticeList(dptNo);
     	int lastPage = (int) Math.ceil((double) count / rowPerPage);
     	
     	if(lastPage % 2 != 0) {
@@ -99,13 +99,14 @@ public class NoticeServiceImpl implements NoticeService{
     }
     //부서별 공지사항 마지막페이지
     @Override
-    public int allDptLastPage() {
-    	int countDpt = noticeMapper.countDptNoticeList();
+    public int allDptLastPage(String dptNo) {
+    	int countDpt = noticeMapper.countDptNoticeList(dptNo);
     	int dptLastPage = (int) Math.ceil((double) countDpt / rowPerPage);
     	
     	if(dptLastPage % 2 != 0) {
 	    	dptLastPage = dptLastPage +1;
 	    }
+    	
     	return dptLastPage;
     }
  

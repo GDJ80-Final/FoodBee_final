@@ -31,7 +31,7 @@ public interface NoticeMapper {
     //전체공지사항의 총갯수 구하기
     //반환값="int"
     //사용클래스=NoticeService.getCountnoticeList
-    int countNoticeList();
+    int countNoticeList(String dptNo);
     
     //전사원별공지사항 총갯수 구하기
     //반환값="int"
@@ -41,7 +41,7 @@ public interface NoticeMapper {
     //부서별공지사항 총갯수 구하기
     //반환값="int"
     //사용클래스=NoticeService.getCountDptNoticeList
-    int countDptNoticeList();
+    int countDptNoticeList(String DptNo);
     
     //공지사항 추가하기
     //반환값="int"

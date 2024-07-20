@@ -26,7 +26,9 @@
 			AND
 		    n.type = '부서') 
 			OR
-			n.type ='전사원';
+			n.type ='전사원'
+		ORDER BY n.create_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 전사원공지사항 리스트 -->
 	<select id="allEmpNoticeList" parameterType="HashMap" resultType="HashMap">
@@ -46,6 +48,8 @@
 			emp e ON n.writer_emp_no = e.emp_no
 		WHERE 
 			type = '전사원'
+		ORDER BY n.create_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 부서별공지사항 리스트 -->
 	<select id="allDptNoticeList" parameterType="HashMap" resultType="HashMap">
@@ -70,7 +74,9 @@
 		WHERE 
 		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
 			AND
-		    n.type = '부서';
+		    n.type = '부서'
+		ORDER BY n.create_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 공지사항의 총갯수 구하기 -->
 	<select id="countNoticeList" resultType="int">

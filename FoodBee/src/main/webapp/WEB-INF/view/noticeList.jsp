@@ -6,17 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<style>
-    .content-div {
-        display: none;
-    }
-</style>
 </head>
 <body>
 <h1>공지사항</h1>
-<button id="list">전체</button>
-<button id="emp">전사원</button>
-<button id="dpt">부서별</button>
+<button id="list" data-url="${pageContext.request.contextPath}/allNoticeList" data-type="list">전체</button>
+<button id="emp" data-url="${pageContext.request.contextPath}/allEmpList" data-type="emp">전사원</button>
+<button id="dpt" data-url="${pageContext.request.contextPath}/allDptList" data-type="dpt">부서별</button>
 
 <table border="1">
     <thead>
@@ -28,136 +23,102 @@
             <th>작성일자</th>
         </tr>
     </thead>
-    <tbody id="first"><!-- 페이지 처음 들어가면 보이는 list -->
-        <c:forEach var="all" items="${list}">
-            <tr>
-                <td>${all.noticeNo}</td>
-                <td>${all.type}</td>
-                <td>
-                    <a href="${pageContext.request.contextPath}/noticeOne?noticeNo=${all.noticeNo}">
-                        ${all.title}
-                    </a>
-                </td>
-                <td>${all.name}</td>
-                <td>${all.createDatetime}</td>
-            </tr>
-        </c:forEach>
-    </tbody>
-    <tbody id="noticeTableBody" style="display:none;">
+    <tbody id="noticeTableBody">
     </tbody>
 </table>
-<div id="first">
-    <c:if test="${currentPage > 1}">
-        <a href="noticeList?currentPage=1">First</a>
-        <a href="noticeList?currentPage=${currentPage - 1}">◁</a>
-    </c:if>
-    <c:if test="${currentPage < lastPage}">
-        <a href="noticeList?currentPage=${currentPage + 1}">▶</a>
-        <a href="noticeList?currentPage=${lastPage}">Last</a>
-    </c:if>
+
+<div id="paginationControls">
+    <!-- 페이지네이션 링크가 여기에 동적으로 추가됩니다 -->
 </div>
-
- <div id="page"></div>
-
-<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
-    <a href="addNotice">공지사항 작성</a>
-</c:if>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // 페이지 로드 시 초기 데이터 보이기 & id가 noticeTableBody인 div숨기기
-        $("#first").show();
-        $("#noticeTableBody").hide();
+$(document).ready(function() {
+    let currentType = 'list'; // 초기 상태는 'list'
+    let currentPage = ${currentPage}; // 서버에서 전달받은 현재 페이지
+    let dptNo = "${dptNo}";
 
-        $("#list").click(function() {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/allNoticeList", // mapping에서 가져옴
-                type: "GET",
-                data: {
-                    currentPage: 1,
-                    rowPerPage: 10,
-                    dptNo: "${dptNo}"
-                },
-                success: function(json) {
-                    updateTable(json.list);
-                    updatePage(json.lastPage);
-                },
-                error: function() {
-                    alert("전체 공지사항 가져올 수 없음.");
-                }
-            });
-        });
+    // 페이지 로드 시 초기 데이터(전체 리스트) 보이기 
+    //id가 noticeTableBody인 div 숨기기
+    fetchPageData(); //아래쪽의 fetchPageData에서 바로 실행해서 따로 안만들어도 된다!
 
-        $("#emp").click(function() {
-            $.ajax({
-                url: "${pageContext.request.contextPath}/allEmpList", // mapping에서 가져옴
-                type: "GET",
-                data: {
-                    currentPage: 1,
-                    rowPerPage: 10
-                },
-                success: function(json) {//callBack함수 json으로 고정!
-                    updateTable(json.allEmpList);
-                	updatePage(json.empLastPage);
-                },
-                error: function() {
-                    alert("전사원 공지사항 가져올 수 없음.");
-                }
-            });
-        });
-
-        $("#dpt").click(function() {
-            let dptNo = "${dptNo}";
-
-            $.ajax({
-                url: "${pageContext.request.contextPath}/allDptList",
-                type: "GET",
-                data: {
-                    currentPage: 1,
-                    rowPerPage: 10,
-                    dptNo: "${dptNo}"
-                },
-                success: function(json) {
-                    updateTable(json.allDptList);
-                    updatePage(json.dptLastPage);
-                },
-                error: function() {
-                    alert("부서별 공지사항 가져올 수 없음");
-                }
-            });
-        });
-
-        function updateTable(json) {
-            let tableBody = $("#noticeTableBody");
-            tableBody.empty();
-
-            $.each(json, function(index, item) { //여기서의 index는 for문의 i같은 개념이라고 생각하면된다.item은 실제값
-                let date = new Date(item.createDatetime);
-                let formattedDate = date.toISOString().split('T')[0]; // yyyy-MM-dd 포맷으로 변환
-
-                let newRow = $("<tr>" +
-                    "<td>" + item.noticeNo + "</td>" +
-                    "<td>" + item.type + "</td>" +
-                    "<td><a href='" + "${pageContext.request.contextPath}/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
-                    "<td>" + item.name + "</td>" +
-                    "<td>" + formattedDate + "</td>" +
-                    "</tr>");
-                tableBody.append(newRow);
-            });
-
-            // 테이블 표시 및 숨김 처리
-            $("#first").hide();
-            tableBody.show();
-        }
-        
-        function updatePage(lastPage, currentPage) {
-            let pagination = $("#page");
-            pagination.empty();
-
-        }
-
+    // 버튼 클릭 이벤트
+    $("button").click(function() {
+        currentType = $(this).data('type');
+        let url = $(this).data('url');
+        fetchPageData(url, currentPage, dptNo);
     });
+
+   //function updatePagination에서 a버튼을 클릭했을때 정상적으로 작동해야한다
+   //탭 분기를 한 곳에서 a태그가 실행될 것이라고 생각했던 것이 잘못이었다...
+    $(document).on('click', '#paginationControls a', function(e) {
+        e.preventDefault();
+        let page = $(this).data('page');
+        if (page) {
+            currentPage = page;
+            fetchPageData();
+        }
+    });
+
+    // 데이터 페칭 함수
+    function fetchPageData() {
+        let url = $("button[data-type='" + currentType + "']").data('url');
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: {
+                currentPage: currentPage,
+                dptNo: dptNo
+            },
+            success: function(json) {
+                if (json) {
+                    let dataKey = currentType === 'emp' ? 'allEmpList' : currentType === 'dpt' ? 'allDptList' : 'list';
+                    updateTable(json[dataKey]);
+                    updatePagination(json.currentPage, json.lastPage || json.empLastPage || json.dptLastPage);
+                } else {
+                    alert("데이터를 가져올 수 없습니다.");
+                }
+            },
+            error: function() {
+                alert("데이터를 가져올 수 없습니다.");
+            }
+        });
+    }
+
+    //여기는 테이블 업데이트(기존에 짜놓은 코드 활용해서 가져왔음)
+    function updateTable(json) {
+        let tableBody = $("#noticeTableBody");
+        tableBody.empty();
+
+        $.each(json, function(index, item) {
+            let date = new Date(item.createDatetime);
+            let formattedDate = date.toISOString().split('T')[0]; // yyyy-MM-dd 포맷으로 변환
+
+            let newRow = $("<tr>" +
+                "<td>" + item.noticeNo + "</td>" +
+                "<td>" + item.type + "</td>" +
+                "<td><a href='" + "${pageContext.request.contextPath}/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
+                "<td>" + item.name + "</td>" +
+                "<td>" + formattedDate + "</td>" +
+                "</tr>");
+            tableBody.append(newRow);
+        });
+    }
+
+	//여기서 페이지 업데이트
+    function updatePagination(currentPage, lastPage) {
+        let paginationControls = $("#paginationControls");
+        paginationControls.empty();
+
+        let paginationHtml = '<a href="#" data-page="1">First</a> ';
+        for (let i = 1; i <= lastPage; i++) {
+            paginationHtml += '<a href="#" data-page="' + i + '">' + i + '</a> ';
+        }
+        paginationHtml += '<a href="#" data-page="' + lastPage + '">Last</a>';
+
+        paginationControls.html(paginationHtml);
+    }
+});
 </script>
 </body>
 </html>
