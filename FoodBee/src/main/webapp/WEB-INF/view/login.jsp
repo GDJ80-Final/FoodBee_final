@@ -33,7 +33,7 @@
 					$('#empNo').focus();
 					return;
 				} else {
-					$('#empNoMsg').text('');
+					$('#noMsg').text('');
 				}
 				
 				if($('#empPw').val().length == 0) {

@@ -231,7 +231,7 @@
 			}
 			
 			if($('#startDate').val() == '') {
-				$('#dateMsg').text('압사일을 선택해주세요 ');
+				$('#dateMsg').text('입사일을 선택해주세요 ');
 				$('#dateMsg').focus();
 				return;
 			} else {
