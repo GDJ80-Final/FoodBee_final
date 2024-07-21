@@ -74,6 +74,28 @@
 				
 				$("#title").text('휴가 내역');
 				
+				$.ajax({
+					url:'${pageContext.request.contextPath}/getDayOff',
+					method:'get',
+					data: {
+						empNo: ${empNo}
+					},
+					success:function(json){
+					
+					}
+				});
+				
+				$.ajax({
+					url:'${pageContext.request.contextPath}/getDayOffHistoryList',
+					method:'get',
+					data: {
+						empNo: ${empNo}
+					},
+					success:function(json){
+					
+					}
+				});
+				
 				$('#content').append('<div class="mt-4">' +
 					    '<div class="row g-3">' +
 					        '<div class="col-12 custom-border">' +

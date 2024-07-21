@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>마이페이지</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .form-container {
@@ -282,19 +283,21 @@
 							        '<div class="row g-3">' +
 							            '<div class="col-md-4">' +
 							                '<label class="form-label">개인 이메일</label>' +
-							                '<input type="email" class="form-control" value="' + json.empEmail + '" readonly>' +
+							                '<input type="email" class="form-control" value="' + json.empEmail + '">' +
 							            '</div>' +
 							            '<div class="col-md-4">' +
 							                '<label class="form-label">휴대폰 번호</label>' +
-							                '<input type="tel" class="form-control" value="' + json.contact + '" readonly> ' +
+							                '<input type="tel" class="form-control" value="' + json.contact + '" > ' +
 							            '</div>' +
 							            '<div class="col-md-4">' +
 		                                    '<label class="form-label">우편번호</label>' +
 		                                    '<input type="tel" class="form-control" value="' + json.postNo + '" readonly> ' +
+		                                    '<div id="postNoError" class="error-message">${postNoErrorMsg}</div>' +
 	                                	'</div>' +
 							            '<div class="col-md-4">' +
 		                                    '<label class="form-label">주소</label>' +
 		                                    '<textarea class="form-control" rows="3" readonly>' + json.address + '</textarea> ' +
+		                                    '<div id="addressError" class="error-message">${addressErrorMsg}</div>' +
 	                                	'</div>' +
 							        '</div>' +
 							    '</div>'

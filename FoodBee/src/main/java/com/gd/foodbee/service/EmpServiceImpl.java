@@ -1,6 +1,8 @@
 package com.gd.foodbee.service;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -257,6 +259,52 @@ public class EmpServiceImpl implements EmpService{
 			throw new RuntimeException();
 		}
 		
+	}
+
+	@Override
+	public double getDayOff(int empNo, String targetYearStr) {
+		
+		Map<String, Object> map = empMapper.selectEmpHr(empNo);
+		
+		
+		LocalDate startDate = LocalDate.parse((map.get("startDate")).toString());
+		LocalDate targetYear = LocalDate.of(Integer.parseInt(targetYearStr), 1, 1);
+		
+		//회계년도 시작일
+		LocalDate fiscalYearStart = LocalDate.of(targetYear.getYear(), 1, 1);
+		
+		//회계년도 종료일
+        LocalDate fiscalYearEnd = LocalDate.of(targetYear.getYear(), 12, 31);
+        
+        //입사일의 1년후
+        LocalDate oneYearAfterStart = startDate.plusYears(1);
+        
+        long daysWorkedBeforeTargetYear = ChronoUnit.DAYS.between(startDate, fiscalYearStart);
+        long daysInTargetYear = ChronoUnit.DAYS.between(fiscalYearStart, fiscalYearEnd) + 1;
+
+        if (daysWorkedBeforeTargetYear < 365) {
+            // 1년 미만 근무자
+            LocalDate leaveStartDate = startDate.isBefore(fiscalYearStart) ? fiscalYearStart : startDate;
+            LocalDate oneYearDate = startDate.plusYears(1);
+            LocalDate leaveEndDate = oneYearDate.isBefore(fiscalYearEnd) ? oneYearDate : fiscalYearEnd;
+            
+            long monthsWorked = ChronoUnit.MONTHS.between(leaveStartDate, leaveEndDate);
+            double DayOffCnt = Math.min(monthsWorked, 11);
+
+            if (oneYearDate.isBefore(fiscalYearEnd)) {
+                // 1년 되는 시점이 해당 연도 내에 있는 경우
+                long daysAfterOneYear = ChronoUnit.DAYS.between(oneYearDate, fiscalYearEnd) + 1;
+                DayOffCnt += 15 * (daysAfterOneYear / (double)daysInTargetYear);
+            }
+
+            return DayOffCnt;
+        } else {
+            // 1년 이상 근무자
+            int yearsWorked = (int) (ChronoUnit.DAYS.between(startDate, fiscalYearStart) / 365);
+            int baseDayOff = 15;
+            int additionalLeave = Math.min(yearsWorked, 10);
+            return baseDayOff + additionalLeave;
+        }
 	}
 	
 }

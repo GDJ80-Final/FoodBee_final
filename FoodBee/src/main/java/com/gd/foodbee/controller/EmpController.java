@@ -355,7 +355,7 @@ public class EmpController {
 		return "myPage";
 	}
 	
-	//
+	// 마이페이지에서 비밀번호 수정
 	@PostMapping("/modifyEmpPwMyPage")
 	public String modifyEmpPwMyPage(@RequestParam int empNo,
 				@RequestParam String oldPw,
@@ -364,5 +364,14 @@ public class EmpController {
 		empService.modifyEmpPwMyPage(empNo, oldPw, newPw);
 		
 		return "success";
+	}
+	
+	//총 연차 개수 구하기
+	@GetMapping("/getDayOff")
+	@ResponseBody
+	public double getDayOff(@RequestParam int empNo,
+				@RequestParam String year) {
+		
+		return empService.getDayOff(empNo, year);
 	}
 }

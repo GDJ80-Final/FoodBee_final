@@ -54,4 +54,7 @@ public interface EmpService {
 	
 	// 마이페이지에서 비밀번호 변경
 	void modifyEmpPwMyPage(int empNo, String oldPw, String newPw);
+	
+	// 해당 연도의 총 휴가 구하기
+	double getDayOff(int empNo, String targetYear);
 }
