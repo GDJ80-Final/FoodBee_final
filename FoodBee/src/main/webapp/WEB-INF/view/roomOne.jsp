@@ -48,20 +48,23 @@
 	<table border="1">
 		<tr>
 			<td style="width:300px; height:50px;">회의실 명</td>
-			<td style="width:25%; height:50px;">이미지</td>
-			<td style="width:25%; height:50px;">위치</td>
-			<td style="width:25%; height:50px;">수용인원</td>
-			<td style="width:25%; height:50px;">비품</td>
+			<td>${roomDTO.roomName}</td>
 		</tr>
-	
 		<tr>
-			<td style="height:200px;">${roomDTO.roomName}</td>				
-			<td style="height:200px;">picture
-				<!-- <img src="FoodBee/img/${roomInfo.originalFiles}" width="100px"></td>  -->
-			<td style="height:200px;">${roomDTO.roomPlace}</td>
-			<td style="height:200px;">최대 ${roomDTO.roomMax}명</td>
-			<td style="height:200px;">${roomDTO.info}</td>
-			
+			<td style="width:25%; height:50px;">이미지</td>
+			<td>picture</td><!-- <img src="FoodBee/img/${roomInfo.originalFiles}" width="100px">  -->
+		</tr>
+		<tr>
+			<td style="width:25%; height:50px;">위치</td>
+			<td>${roomDTO.roomPlace}</td>
+		</tr>
+		<tr>
+			<td style="width:25%; height:50px;">수용인원</td>
+			<td>최대 ${roomDTO.roomMax}명</td>
+		</tr>			
+		<tr>						
+			<td style="width:25%; height:50px;">비품</td>
+			<td>${roomDTO.info}</td>		
 		</tr>
 		<tr>
 			<td>목적</td>
