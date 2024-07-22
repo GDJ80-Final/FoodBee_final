@@ -44,7 +44,7 @@
 	   function loadMsg(readYN){
 		   let msgOrder = 1;
 		   $.ajax({
-			   url : '${pageContext.request.contextPath}/sentMsgBox',
+			   url : '${pageContext.request.contextPath}/msg/sentMsgBox',
 			   method: 'post',
 			   data :{
 				   readYN : readYN
@@ -58,7 +58,7 @@
 						   	'<td><input type="checkbox" id="msgNo" name="msgNo" value="'+item.msgNo+'"></td>'+
 							'<td>'+ item.msgOrder + '</td>'+
 							'<td>'+ item.empName + '</td>'+
-							'<td><a href="${pageContext.request.contextPath}/msgOne?msgNo='+
+							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
 									item.msgNo +'">'+ item.title + '</a></td>'+
 							'<td>'+ item.createDateTime + '</td>'+
 							'</tr>' 
@@ -97,7 +97,7 @@
 		  console.log(selectedMsgNos[0]);
 		   if(selectedMsgNos.length > 0){
 			   $.ajax({
-			   url: '${pageContext.request.contextPath}/toTrash',
+			   url: '${pageContext.request.contextPath}/msg/toTrash',
 			   method: 'post',
 			   traditional:true, 
 			   data:{

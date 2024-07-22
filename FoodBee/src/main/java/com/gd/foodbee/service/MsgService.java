@@ -41,4 +41,23 @@ public interface MsgService {
 	//사용클래스 : MsgController.toTrashRecipient
 	void toTrashRecipient(int[] msgNos,int empNo);
 	
+	//휴지통 리스트
+	//파라미터 : int empNo
+	//반환값: List<Map<STring,Object>>
+	//사용클래스 : MsgController.trashMsgBox
+	List<Map<String,Object>> getTrashList(int empNo);
+	
+	
+	//휴지통 -> 쪽지함 이동 
+	//파라미터 : int[] msgNos,int empNo, String [] result
+	//반환값 :X
+	//사용클래스 : MsgController.toMsgBoxRecipient
+	void updatetoMsgBox(int [] msgNos,int empNo,String [] results);
+	
+	//쪽지 상세보기
+	//파라미터 : int msgNo
+	//반환값 : Map<String,Object>
+	//사용클래스 : MsgController.msgOne
+	Map<String,Object> getMsgOne(int msgNo);
+	
 }

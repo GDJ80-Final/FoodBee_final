@@ -29,13 +29,13 @@ public class MsgController {
 	private MsgService msgService;
 	
 	//새쪽지쓰기
-	@GetMapping("/addMsg")
+	@GetMapping("/msg/addMsg")
 	public String addMsg() {
 		
-		return "addMsg";
+		return "/msg/addMsg";
 	}
 	
-	@PostMapping("/addMsg")
+	@PostMapping("/msg/addMsg")
 	public String addMsg(MsgRequestDTO msgRequestDTO, 
 				HttpServletRequest request,
 				HttpSession session,
@@ -47,21 +47,21 @@ public class MsgController {
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo );
 		msgService.addMsg(msgRequestDTO, request,empNo);
 		
-		return "redirect:/sentMsgBox";
+		return "redirect:/msg/sentMsgBox";
 	}
 	//받은쪽지함
 	//파라미터 : currentPage, String readYN, HttpSession session, Model model
 	//반환값 : 
-	@GetMapping("/receivedMsgBox")
+	@GetMapping("/msg/receivedMsgBox")
 	public String receivedMsgBox() {
 		
-		return "receivedMsgBox";
+		return "/msg/receivedMsgBox";
 	}
 	//받은쪽지함
 	//파라미터 : currentPage, String readYN, HttpSession session,
 	//반환값 : List<Map<String,Object>
 	//사용페이지 
-	@PostMapping("/receivedMsgBox")
+	@PostMapping("/msg/receivedMsgBox")
 	@ResponseBody
 	public List<Map<String,Object>> receivedMsgBox(@RequestParam(name="currentPage", defaultValue = "1")int currentPage,
 				@RequestParam(name="readYN",defaultValue = "all") String readYN,
@@ -80,17 +80,17 @@ public class MsgController {
 	//보낸쪽지함
 	//파라미터 :X
 	//반환값 : "sentMsgBox"
-	@GetMapping("/sentMsgBox")
+	@GetMapping("/msg/sentMsgBox")
 	public String sentMsgBox() {
 			
-		return "sentMsgBox";
+		return "/msg/sentMsgBox";
 	}
 	
 	//보낸쪽지함 
 	//파라미터 : int currentPage,String readYN, HttpSession session
 	//반환값 : List<Map<String,Object>>
 	//사용페이지 : sentMsgBox
-	@PostMapping("/sentMsgBox")
+	@PostMapping("/msg/sentMsgBox")
 	@ResponseBody
 	public List<Map<String,Object>> sentMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
 				@RequestParam(name="readYN",defaultValue = "all") String readYN,
@@ -106,7 +106,7 @@ public class MsgController {
 	//파라미터 : int [] msgNos
 	//반환값 : X
 	//사용페이지 : receivedMsgBox, sentMsgBox
-	@PostMapping("/toTrash")
+	@PostMapping("/msg/toTrash")
 	@ResponseBody
 	public String toTrash(@RequestParam(name="msgNos")int[] msgNos) {
 		log.debug(TeamColor.YELLOW + "msgNos" + msgNos[0]);
@@ -116,10 +116,10 @@ public class MsgController {
 	}
 	
 	//휴지통 이동 >> 받음편지함 
-	//파라미터 : int [] msgNos,int empNo
+	//파라미터 : int [] msgNos,session
 	//반환값 : X
 	//사용페이지 : receivedMsgBox, sentMsgBox
-	@PostMapping("/toTrashRecipient")
+	@PostMapping("/msg/toTrashRecipient")
 	@ResponseBody
 	public String toTrashRecipient(@RequestParam(name="msgNos")int[] msgNos,
 				HttpSession session) {
@@ -129,5 +129,53 @@ public class MsgController {
 		msgService.toTrashRecipient(msgNos, empNo);
 			
 		return "success";
+	}
+	//휴지통 리스트
+	//파라미터 : session => int empNo
+	//반환값 : List<Map<String,Object>> 
+	//사용페이지 : trashMsgBox
+	
+	@GetMapping("/msg/trashMsgBox")
+	public String trashMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
+			HttpSession session,
+			Model model) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		String empName = emp.getEmpName();
+		log.debug(TeamColor.YELLOW + "empName =>" +empName);
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		List<Map<String,Object>> list =  msgService.getTrashList(empNo);
+		log.debug(TeamColor.YELLOW + "list => " + list.toString());
+		model.addAttribute("list", list);
+		model.addAttribute("empName", empName);
+		return "/msg/trashMsgBox";
+		
+	}
+	@PostMapping("/msg/toMsgBox")
+	@ResponseBody
+	public String toMsgBox(@RequestParam(name="msgNos")int[] msgNos,
+				@RequestParam(name="results") String[] results,
+				HttpSession session) {
+		log.debug(TeamColor.YELLOW + "msgNos[0] => " + msgNos[0]);
+		log.debug(TeamColor.YELLOW + "result[0] => " + results[0]);
+		log.debug(TeamColor.YELLOW + "result =>"+results);
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
+		msgService.updatetoMsgBox(msgNos,empNo, results);
+		
+		return "success";
+		
+	
+	}
+	@GetMapping("/msg/msgOne")
+	public String msgOne(@RequestParam(name="msgNo")int msgNo,
+				Model model) {
+		log.debug(TeamColor.YELLOW + "msgNo => "+ msgNo);
+	
+		Map<String,Object> m =msgService.getMsgOne(msgNo);
+		model.addAttribute("m", m);
+		
+		return "/msg/msgOne";
 	}
 }

@@ -174,4 +174,56 @@ public class MsgServiceImpl implements MsgService{
 		}
 		
 	}
+	//휴지통 리스트
+	//파라미터 : int empNo
+	//반환값: List<Map<STring,Object>>
+	//사용클래스 : MsgController.trashMsgBox
+	@Override
+	public List<Map<String, Object>> getTrashList(int empNo) {
+		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
+		
+		return msgMapper.selectTrashMsgList(empNo);
+	}
+		
+	
+	//휴지통 -> 쪽지함 이동 
+	//파라미터 : int[] msgNos, int empNo, String result
+	//반환값 :X
+	//사용클래스 : MsgController.toMsgBox
+	@Override
+	public void updatetoMsgBox(int[] msgNos,int empNo,String [] results) {
+		// 입력된 배열의 길이가 일치하는지 확인
+	    if (msgNos.length != results.length) {
+	        throw new IllegalArgumentException("msgNos와 results 배열의 길이가 일치하지 않습니다.");
+	    }
+	    for (int i = 0; i < msgNos.length; i++) {
+	        int msgNo = msgNos[i];
+	        String result = results[i];
+
+	        if (result.equals("true")) {
+	            // 발신자가 일치하므로 보낸 편지함으로 이동
+	            log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
+	            int row = msgMapper.updateMsgToMsgBox(msgNo);
+	            if (row != 1) {
+	                throw new RuntimeException("메시지 이동 실패: msgNo=" + msgNo);
+	            }
+	        } else if (result.equals("false")) {
+	            // 발신자가 일치하지 않으므로 받은 편지함으로 이동
+	            log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
+	            int row2 = msgRepicientMapper.updatetoMsgBoxRecipient(msgNo, empNo);
+	            if (row2 != 1) {
+	                throw new RuntimeException("받은 편지함 이동 실패: msgNo=" + msgNo);
+	            }
+	        }
+		
+		}
+			
+	}
+	//쪽지상세보기 
+	@Override
+	public Map<String, Object> getMsgOne(int msgNo) {
+		log.debug(TeamColor.YELLOW + "msgNo => "+ msgNo);
+		
+		return msgMapper.selectMsgOne(msgNo);
+	}
 }

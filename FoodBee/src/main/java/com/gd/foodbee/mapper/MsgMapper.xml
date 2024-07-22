@@ -59,7 +59,8 @@
 		UPDATE
 			msg
 		SET
-			msg_state = 0
+			msg_state = 0,
+			state_update_datetime = NOW()
 		WHERE
 			msg_no = #{msgNo}
 	</update>
@@ -92,7 +93,92 @@
 			#{beginRow},
 			#{rowPerPage}
 	</select>
+	<select id="selectMsgOne" parameterType="int" resultType="Map">
+		SELECT
+			m.msg_no msgNo,
+			se.emp_name sender,
+			GROUP_CONCAT(e.emp_name SEPARATOR ',') receivers,
+			m.title,
+			m.content,
+			originalFiles,
+			saveFiles,
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDateTime
+		FROM
+			msg m
+		INNER JOIN
+			msg_recipient mr ON m.msg_no = mr.msg_no
+		INNER JOIN
+			emp e ON e.emp_no = mr.recipient_emp_no
+		INNER JOIN
+			emp se ON se.emp_no = m.sender_emp_no
+		LEFT JOIN 
+			(SELECT
+        		msg_no,
+        		GROUP_CONCAT(original_file SEPARATOR ',') AS originalFiles,
+        		GROUP_CONCAT(save_file SEPARATOR ',') AS saveFiles
+    		 FROM msg_file
+    		 GROUP BY msg_no) mf ON m.msg_no = mf.msg_no
+		WHERE
+			m.msg_no = #{msgNo}
+	</select>
+	<update id="updateMsgToMsgBox" parameterType="int">
+		UPDATE
+			msg
+		SET
+			msg_state = 1
+		WHERE
+			msg_no = #{msgNo}
+	</update>
+	<select id="selectTrashMsgList"  parameterType="int" resultType="Map">
+		SELECT 
+			ROW_NUMBER() OVER(ORDER BY updateTime) AS msgOrder,
+			msgNo,
+			senderName,
+			receiverName,
+			title,
+			updateTime
+		FROM
+			(SELECT
+			    m.msg_no AS msgNo,
+			    sender.emp_name AS senderName,
+			    GROUP_CONCAT(recipient.emp_name SEPARATOR ',') AS receiverName,
+			    m.title,
+			    DATE_FORMAT(m.state_update_datetime, '%Y-%m-%d %H:%i') AS updateTime
+			 FROM
+				msg m
+			 INNER JOIN
+    			emp sender ON m.sender_emp_no = sender.emp_no
+			 INNER JOIN
+    			msg_recipient mr ON m.msg_no = mr.msg_no
+			 INNER JOIN
+   				emp recipient ON mr.recipient_emp_no = recipient.emp_no
+			 WHERE
+    			m.sender_emp_no = #{empNo}
+    			AND m.msg_state = 0
+			 GROUP BY
+   				m.msg_no
+		UNION
+			SELECT
+			    m.msg_no AS msgNo,
+			    sender.emp_name AS senderName,
+			    e.emp_name AS receiverName,
+			    m.title,
+			    DATE_FORMAT(mr.state_update_datetime, '%Y-%m-%d %H:%i') AS updateTime
+			FROM
+			    msg m
+			INNER JOIN
+			    emp sender ON m.sender_emp_no = sender.emp_no
+			INNER JOIN
+			    msg_recipient mr ON m.msg_no = mr.msg_no
+			INNER JOIN
+			    emp e ON mr.recipient_emp_no = e.emp_no
+			WHERE
+			    mr.recipient_emp_no = #{empNo}
+			    AND mr.recipient_msg_state = 0
+			GROUP BY
+			    m.msg_no)s
+		 GROUP BY msgNo
+		 ORDER BY msgOrder DESC
 
-
-
+	</select>
 </mapper>

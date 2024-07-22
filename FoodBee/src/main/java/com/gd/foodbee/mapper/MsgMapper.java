@@ -41,4 +41,21 @@ public interface MsgMapper {
 	//사용클래스 : MsgService.getSentMsgList
 	List<Map<String,Object>> selectSentMsgList(int empNo,int beginRow, int rowPerPage,String readYN);
 	
+	//휴지통
+	//파라미터 : int empNo
+	//반환값 : List
+	//사용클래스 : MsgService.getTrashList
+	List<Map<String,Object>> selectTrashMsgList(int empNo);
+	
+	//쪽지 상세보기
+	//파라미터 : int msgNo
+	//반환값 : Map
+	//사용클래스 : MsgService.getMsgOne
+	Map<String,Object> selectMsgOne(int msgNo);
+	//휴지통에서 쪽지함으로 이동 
+	//파라미터 : int msgNo
+	//반환값 : int
+	//사용클래스: MsgService.toMsgBox
+	int updateMsgToMsgBox(int msgNo);
+	
 }

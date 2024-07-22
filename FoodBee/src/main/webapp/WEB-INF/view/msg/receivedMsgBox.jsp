@@ -43,7 +43,7 @@
 	   //읽음/안읽음 여부에 따라 받은 쪽지함 분기
 	   function loadMsg(readYN){
 		   $.ajax({
-			   url : '${pageContext.request.contextPath}/receivedMsgBox',
+			   url : '${pageContext.request.contextPath}/msg/receivedMsgBox',
 			   method: 'post',
 			   data :{
 				   readYN : readYN
@@ -57,7 +57,7 @@
 							'<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
 							'<td>'+ item.msgOrder + '</td>'+
 							'<td>'+ item.empName + '</td>'+
-							'<td><a href="${pageContext.request.contextPath}/msgOne?msgNo='+
+							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
 									item.msgNo +'">'+ item.title + '</a></td>'+
 							'<td>'+ item.createDateTime + '</td>'+
 							'</tr>' 
@@ -96,7 +96,7 @@
 		  console.log(selectedMsgNos[0]);
 		   if(selectedMsgNos.length > 0){
 			   $.ajax({
-			   url: '${pageContext.request.contextPath}/toTrashRecipient',
+			   url: '${pageContext.request.contextPath}/msg/toTrashRecipient',
 			   method: 'post',
 			   traditional:true, 
 			   data:{

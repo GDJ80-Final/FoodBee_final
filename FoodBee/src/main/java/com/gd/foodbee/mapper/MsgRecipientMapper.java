@@ -17,4 +17,12 @@ public interface MsgRecipientMapper {
 	//반환값 : int
 	//사용서비스 :MsgService.toTrashRecipient
 	int updateMsgToTrash(int msgNo,int empNo);
+	
+	//수신자 -> 휴지통에서 쪽지함으로 복구 
+	//파라미터 : Map-> int msgNo,int empNo
+	//반환값 : int
+	//사용서비스 :MsgService.toMsgBoxRecipient
+	int updatetoMsgBoxRecipient(int msgNo,int empNo);
+	
+	
 }
