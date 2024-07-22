@@ -39,7 +39,7 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.roomOne
 	@Override
 	public RoomDTO getRoomOne(int roomNo) {
-		log.debug(TeamColor.GREEN + "roomNo:" + roomNo);
+		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
 		
 		return roomMapper.selectRoomOne(roomNo); 
 	}
@@ -49,7 +49,7 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.roomRsv
 	@Override
 	public int addRoomRsv(RoomRsvDTO rsv) {
-		log.debug(TeamColor.GREEN + "rsv:" + rsv);
+		log.debug(TeamColor.GREEN + "rsv => " + rsv);
 		
 		return roomMapper.insertRoomRsv(rsv); 
 	}
@@ -60,8 +60,8 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.roomOne
 	@Override
 	public List<RoomRsvDTO> getReservedTimes(int roomNo, String rsvDate) {
-		log.debug(TeamColor.GREEN + "roomNo:" + roomNo);
-		log.debug(TeamColor.GREEN + "rsvDate:" + rsvDate);
+		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		
 		return roomMapper.selectReservedTimes(roomNo, rsvDate); 
 	}
@@ -72,8 +72,8 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.roomRsvList
 	@Override
 	public List<RoomRsvDTO> getRsvListByDate(String rsvDate, int currentPage) {
-		log.debug(TeamColor.GREEN + "rsvDate:" + rsvDate);
-		log.debug(TeamColor.GREEN + "currentPage:" + currentPage);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		int beginRow = 0;
         beginRow = (currentPage -1) * rowPerPage;
         
@@ -91,10 +91,10 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.roomRsvList
 	@Override
 	public int getRsvByDateLastPage (String rsvDate) {
-		log.debug(TeamColor.GREEN + "rsvDate:" + rsvDate);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		
 		int cnt = roomMapper.selectRsvCntByDate(rsvDate);
-		log.debug(TeamColor.GREEN + "cnt:" + cnt);
+		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / rowPerPage);
 		return lastPage; 
@@ -106,8 +106,9 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.MyRoomRsvList
 	@Override
 	public List<RoomRsvDTO> getRsvListByEmpNo(int empNo, int currentPage) {
-		log.debug(TeamColor.GREEN + "empNo:" + empNo);
-		log.debug(TeamColor.GREEN + "currentPage:" + currentPage);
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		
 		int beginRow = 0;
         beginRow = (currentPage -1) * rowPerPage;
         
@@ -125,10 +126,10 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.MyRoomRsvList
 	@Override
 	public int getRsvByEmpNoLastPage (int empNo) {
-		log.debug(TeamColor.GREEN + "empNo:" + empNo);
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		
 		int cnt = roomMapper.selectRsvCntByEmpNo(empNo);
-		log.debug(TeamColor.GREEN + "cnt:" + cnt);
+		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / rowPerPage);
 		return lastPage; 
@@ -140,8 +141,8 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomRestController.getReservedTimes
 	@Override
 	public List<Map<String, Object>> getReservedTime(int roomNo, String rsvDate) {
-		log.debug(TeamColor.GREEN + "roomNo:" + roomNo);
-		log.debug(TeamColor.GREEN + "rsvDate:" + rsvDate);
+		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		
 		return roomMapper.selectReservedTime(roomNo, rsvDate); 
 	}
@@ -151,7 +152,7 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.
 	@Override
 	public int modifyRoomRsv(RoomRsvDTO rsv) {
-		log.debug(TeamColor.GREEN + "rsv:" + rsv);
+		log.debug(TeamColor.GREEN + "rsv => " + rsv);
 		
 		return roomMapper.updateRoomRsv(rsv); 
 	}

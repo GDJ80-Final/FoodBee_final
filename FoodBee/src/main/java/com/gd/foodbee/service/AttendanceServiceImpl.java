@@ -20,7 +20,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	// 근태보고 출력
 	@Override
 	public AttendanceDTO getTime(int empNo) {
-		log.debug(TeamColor.GREEN + "empNo:" + empNo);
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		
 		return attendanceMapper.selectTime(empNo);		
 	}
@@ -28,8 +28,19 @@ public class AttendanceServiceImpl implements AttendanceService {
 	// 근태보고(승인자) 출력
 	@Override
 	public HashMap<String, Object> getTeamLeader(String dptNo) {
-		log.debug(TeamColor.GREEN + "dptNo:" + dptNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
 		
 		return attendanceMapper.selectTeamLeader(dptNo);
+	}
+	
+	// 근태보고 수정
+	@Override
+	public int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo) {
+		log.debug(TeamColor.GREEN + "updateStartTime => " + updateStartTime);
+		log.debug(TeamColor.GREEN + "updateEndTime => " + updateEndTime);
+		log.debug(TeamColor.GREEN + "updateReason => " + updateReason);
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		return attendanceMapper.updateTime(updateStartTime, updateEndTime, updateReason, empNo);
 	}
 }

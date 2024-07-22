@@ -8,9 +8,14 @@ import com.gd.foodbee.dto.AttendanceDTO;
 
 @Mapper
 public interface AttendanceMapper {
+	
 	// 근태보고 출력
 	AttendanceDTO selectTime(int empNo);
+	
 	// 근태보고(승인자) 출력
 	HashMap<String, Object> selectTeamLeader(String dptNo);
+	
+	// 근태보고 수정
+	int updateTime(String updateStartTime, String updateEndTime, String updateReason, int empNo);
 	
 }

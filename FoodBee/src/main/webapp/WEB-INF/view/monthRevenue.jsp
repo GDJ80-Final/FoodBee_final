@@ -1,20 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>¿ùº° ¸ÅÃâ Â÷Æ®</title>
+<meta charset="UTF-8">
+<title>ì›”ë³„ ë§¤ì¶œ ì°¨íŠ¸</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-<h1>¸ÅÃâ Åë°è</h1><hr>
+<h1>ë§¤ì¶œ í†µê³„</h1><hr>
 <canvas id="donutChart" style="max-width: 500px;"></canvas>
 <div id="monthlyTotal"></div>
 <div id="previousMonthTotal"></div><br>
 <div>
-    <label for="monthSelect">¿ù ¼±ÅÃ:</label>
+    <label for="monthSelect">ì›” ì„ íƒ:</label>
     <select id="monthSelect"></select>
 </div>
 <canvas id="totalChart" style="width:100%;max-width:700px"></canvas>
@@ -24,23 +23,23 @@ $(document).ready(function() {
     const categoryName = [];
     const revenue = [];
     const barColors = ["red", "orange", "yellow", "green", "blue"];
-    let preRevenue = []; // ÀÌÀü ´Ş ¸ÅÃâ µ¥ÀÌÅÍ ¹è¿­
+    let preRevenue = []; // ì´ì „ ë‹¬ ë§¤ì¶œ ë°ì´í„° ë°°ì—´
 
-    // ÇöÀç ³¯Â¥¸¦ °¡Á®¿Í 1¿ùºÎÅÍ ÇöÀç ´ŞÀÇ ÀÌÀü ´Ş±îÁö ¼¿·ºÆ® ¹Ú½º¿¡ Ãß°¡
+    // í˜„ì¬ ë‚ ì§œë¥¼ ê°€ì ¸ì™€ 1ì›”ë¶€í„° í˜„ì¬ ë‹¬ì˜ ì´ì „ ë‹¬ê¹Œì§€ ì…€ë ‰íŠ¸ ë°•ìŠ¤ì— ì¶”ê°€
     const currentDate = new Date();
-    const currentYear = currentDate.getFullYear(); // ÇöÀç ³âµµ
-    const currentMonth = currentDate.getMonth() + 1; // ÇöÀç ¿ù (0ºÎÅÍ ½ÃÀÛÇÏ¹Ç·Î +1)
+    const currentYear = currentDate.getFullYear(); // í˜„ì¬ ë…„ë„
+    const currentMonth = currentDate.getMonth() + 1; // í˜„ì¬ ì›” (0ë¶€í„° ì‹œì‘í•˜ë¯€ë¡œ +1)
 
     const monthSelect = $('#monthSelect');
     for (let month = 1; month <= currentMonth - 1; month++) {
-        monthSelect.append(new Option(month + '¿ù', month));
+        monthSelect.append(new Option(month + 'ì›”', month));
     }
 
-    // ÃÊ±â µ¥ÀÌÅÍ È£Ãâ (ÇöÀç ¿ù ±âÁØ Àü¿ù µ¥ÀÌÅÍ)
+    // ì´ˆê¸° ë°ì´í„° í˜¸ì¶œ (í˜„ì¬ ì›” ê¸°ì¤€ ì „ì›” ë°ì´í„°)
     const initialMonth = currentMonth - 1;
     monthSelect.val(initialMonth);
 
-    // Â÷Æ® »ı¼º(¸·´ëÇü ¹Ù Â÷Æ®)
+    // ì°¨íŠ¸ ìƒì„±(ë§‰ëŒ€í˜• ë°” ì°¨íŠ¸)
     function createBarChart(year, month) {
         new Chart("totalChart", {
             type: "bar",
@@ -49,18 +48,18 @@ $(document).ready(function() {
                 datasets: [{
                     backgroundColor: barColors,
                     data: revenue,
-                    barThickness: 40, // ¸·´ë µÎ²² ¼³Á¤
-                    maxBarThickness: 40 // ÃÖ´ë ¸·´ë µÎ²² ¼³Á¤
+                    barThickness: 40, // ë§‰ëŒ€ ë‘ê»˜ ì„¤ì •
+                    maxBarThickness: 40 // ìµœëŒ€ ë§‰ëŒ€ ë‘ê»˜ ì„¤ì •
                 }]
             },
             options: {
-                animation: false, // ¾Ö´Ï¸ŞÀÌ¼Ç ºñÈ°¼ºÈ­
+                animation: false, // ì• ë‹ˆë©”ì´ì…˜ ë¹„í™œì„±í™”
                 legend: {
-                    display: false, // ¹ü·Ê ¼û±â±â
+                    display: false, // ë²”ë¡€ ìˆ¨ê¸°ê¸°
                 },
                 title: {
                     display: true,
-                    text: year + '³â ' + month + '¿ù ¸ÅÃâ'
+                    text: year + 'ë…„ ' + month + 'ì›” ë§¤ì¶œ'
                 },
                 scales: {
                     yAxes: [{
@@ -73,7 +72,7 @@ $(document).ready(function() {
         });
     }
 
-    // Â÷Æ® »ı¼º(µµ³Ó Â÷Æ®)
+    // ì°¨íŠ¸ ìƒì„±(ë„ë„› ì°¨íŠ¸)
     function createDonutChart() {
         let ctx = document.getElementById('donutChart').getContext('2d');
         let myDonutChart = new Chart(ctx, {
@@ -86,10 +85,10 @@ $(document).ready(function() {
                 }]
             },
             options: {
-                animation: false, // ¾Ö´Ï¸ŞÀÌ¼Ç ºñÈ°¼ºÈ­
+                animation: false, // ì• ë‹ˆë©”ì´ì…˜ ë¹„í™œì„±í™”
                 title: {
                     display: true,
-                    text: 'Ä«Å×°í¸®º° ¸ÅÃâ ºñÀ²(%)'
+                    text: 'ì¹´í…Œê³ ë¦¬ë³„ ë§¤ì¶œ ë¹„ìœ¨(%)'
                 },
                 legend: {
                     display: true,
@@ -103,7 +102,7 @@ $(document).ready(function() {
                                 return previousValue + currentValue;
                             });
                             let currentValue = dataset.data[tooltipItem.index];
-                            let percentage = Math.round((currentValue / total) * 100); // ¹éºĞÀ² °è»ê, ¼Ò¼öÁ¡ ¹İ¿Ã¸²
+                            let percentage = Math.round((currentValue / total) * 100); // ë°±ë¶„ìœ¨ ê³„ì‚°, ì†Œìˆ˜ì  ë°˜ì˜¬ë¦¼
                             return categoryName[tooltipItem.index] + ': ' + percentage + '%';
                         }
                     }
@@ -111,7 +110,7 @@ $(document).ready(function() {
             }
         });
 
-        // µµ³Ó Â÷Æ® ¹ü·Ê ¼³Á¤
+        // ë„ë„› ì°¨íŠ¸ ë²”ë¡€ ì„¤ì •
         let legendHtml = '';
         categoryName.forEach(function(label, index) {
             legendHtml += '<div><span style="display:inline-block;width:20px;height:10px;background-color:' + barColors[index] + ';margin-right:5px;"></span>' + label + '</div>';
@@ -119,24 +118,24 @@ $(document).ready(function() {
         $('#donutChartLegend').html(legendHtml);
     }
 
-    // (¼±ÅÃµÈ ¿ù)°ú (¼±ÅÃµÈ ¿ù - 1) ´ŞÀÇ ¸ÅÃâ µ¥ÀÌÅÍ¸¦ ¼­¹ö·ÎºÎÅÍ °¡Á®¿Í Â÷Æ®¸¦ ¾÷µ¥ÀÌÆ®
+    // (ì„ íƒëœ ì›”)ê³¼ (ì„ íƒëœ ì›” - 1) ë‹¬ì˜ ë§¤ì¶œ ë°ì´í„°ë¥¼ ì„œë²„ë¡œë¶€í„° ê°€ì ¸ì™€ ì°¨íŠ¸ë¥¼ ì—…ë°ì´íŠ¸
     function fetchData(year, month) {
-        let formattedMonth = year + '-' + ('0' + month).slice(-2); // ¼±ÅÃµÈ ¿ù yyyy-mm Çü½ÄÀ¸·Î Æ÷¸Ë
-        let formattedPreviousMonth = year + '-' + ('0' + (month - 1 === 0 ? 12 : month - 1)).slice(-2); // (¼±ÅÃµÈ ¿ù - 1) yyyy-mm Çü½ÄÀ¸·Î Æ÷¸Ë / ex) 1 - 1 = 0 ÀÏ¶§ 12 ¹İÈ¯
+        let formattedMonth = year + '-' + ('0' + month).slice(-2); // ì„ íƒëœ ì›” yyyy-mm í˜•ì‹ìœ¼ë¡œ í¬ë§·
+        let formattedPreviousMonth = year + '-' + ('0' + (month - 1 === 0 ? 12 : month - 1)).slice(-2); // (ì„ íƒëœ ì›” - 1) yyyy-mm í˜•ì‹ìœ¼ë¡œ í¬ë§· / ex) 1 - 1 = 0 ì¼ë•Œ 12 ë°˜í™˜
 
-        console.log("³â¿ù(yyyy-mm): " + formattedMonth + " and " + formattedPreviousMonth);
+        console.log("ë…„ì›”(yyyy-mm): " + formattedMonth + " and " + formattedPreviousMonth);
 
-        // µÎ °³ÀÇ µ¥ÀÌÅÍ ¼¼Æ®¸¦ ¼øÂ÷ÀûÀ¸·Î °¡Á®¿Í µ¿½Ã¿¡ ¹İ¿µÇÒ ¼ö ÀÖÀ½(ÀÌ¹ø´Ş ÃÑ±İ¾×, Àú¹ø´Ş ÃÑ±İ¾×À» ±¸ÇÏ±â À§ÇÔ)
+        // ë‘ ê°œì˜ ë°ì´í„° ì„¸íŠ¸ë¥¼ ìˆœì°¨ì ìœ¼ë¡œ ê°€ì ¸ì™€ ë™ì‹œì— ë°˜ì˜í•  ìˆ˜ ìˆìŒ(ì´ë²ˆë‹¬ ì´ê¸ˆì•¡, ì €ë²ˆë‹¬ ì´ê¸ˆì•¡ì„ êµ¬í•˜ê¸° ìœ„í•¨)
         $.ajax({
             url: "${pageContext.request.contextPath}/getMonthRevenue",
             method: 'POST',
-            data: { month: formattedMonth }, // ¼­¹ö¿¡ Àü´ŞÇÒ µ¥ÀÌÅÍ(¼±ÅÃµÈ ¿ù)
+            data: { month: formattedMonth }, // ì„œë²„ì— ì „ë‹¬í•  ë°ì´í„°(ì„ íƒëœ ì›”)
             success: function(json) {
-                console.log("¼­¹ö¿¡¼­ ¹Ş¾Æ¿Â(¼±ÅÃµÈ ¿ù) µ¥ÀÌÅÍ: ", json);
+                console.log("ì„œë²„ì—ì„œ ë°›ì•„ì˜¨(ì„ íƒëœ ì›”) ë°ì´í„°: ", json);
 
-                categoryName.length = 0; // ¹è¿­ ÃÊ±âÈ­
-                revenue.length = 0; // ¹è¿­ ÃÊ±âÈ­
-                // ¹Ş¾Æ¿Â°ªÀ» for¹® µ¹·Á¼­ ÃÊ±âÈ­ÇÑ ¸Å°³º¯¼ö¿¡ ÀúÀå
+                categoryName.length = 0; // ë°°ì—´ ì´ˆê¸°í™”
+                revenue.length = 0; // ë°°ì—´ ì´ˆê¸°í™”
+                // ë°›ì•„ì˜¨ê°’ì„ forë¬¸ ëŒë ¤ì„œ ì´ˆê¸°í™”í•œ ë§¤ê°œë³€ìˆ˜ì— ì €ì¥
                 json.forEach(function(item) {
                     categoryName.push(item.categoryName);
                     revenue.push(item.revenue);
@@ -145,57 +144,57 @@ $(document).ready(function() {
                 console.log(categoryName);
                 console.log(revenue);
 
-                // (¼±ÅÃµÈ ¿ù - 1) µ¥ÀÌÅÍ ¿äÃ»
+                // (ì„ íƒëœ ì›” - 1) ë°ì´í„° ìš”ì²­
                 $.ajax({
                     url: "${pageContext.request.contextPath}/getMonthRevenue",
                     method: 'POST',
-                    data: { month: formattedPreviousMonth }, // ¼­¹ö¿¡ Àü´ŞÇÒ µ¥ÀÌÅÍ(¼±ÅÃµÈ ¿ù - 1)
+                    data: { month: formattedPreviousMonth }, // ì„œë²„ì— ì „ë‹¬í•  ë°ì´í„°(ì„ íƒëœ ì›” - 1)
                     success: function(preJson) {
-                        console.log("¼­¹ö¿¡¼­ ¹Ş¾Æ¿Â(¼±ÅÃµÈ ¿ù - 1) µ¥ÀÌÅÍ: ", preJson);
+                        console.log("ì„œë²„ì—ì„œ ë°›ì•„ì˜¨(ì„ íƒëœ ì›” - 1) ë°ì´í„°: ", preJson);
 
-                        preRevenue.length = 0; // ¹è¿­ ÃÊ±âÈ­
-                        // ¹Ş¾Æ¿Â°ªÀ» for¹® µ¹·Á¼­ ÃÊ±âÈ­ÇÑ ¸Å°³º¯¼ö¿¡ ÀúÀå
+                        preRevenue.length = 0; // ë°°ì—´ ì´ˆê¸°í™”
+                        // ë°›ì•„ì˜¨ê°’ì„ forë¬¸ ëŒë ¤ì„œ ì´ˆê¸°í™”í•œ ë§¤ê°œë³€ìˆ˜ì— ì €ì¥
                         preJson.forEach(function(item) {
                             preRevenue.push(item.revenue);
                         });
 
-                        // Â÷Æ® °»½Å
-                        createBarChart(year, month); // ¸·´ëÇü ¹Ù Â÷Æ® °»½Å
-                        createDonutChart(); // µµ³Ó Â÷Æ® »ı¼º
+                        // ì°¨íŠ¸ ê°±ì‹ 
+                        createBarChart(year, month); // ë§‰ëŒ€í˜• ë°” ì°¨íŠ¸ ê°±ì‹ 
+                        createDonutChart(); // ë„ë„› ì°¨íŠ¸ ìƒì„±
 
-                        // ¼±ÅÃµÈ ¿ùÀÇ ¸ÅÃâ ÇÕ°è ¾÷µ¥ÀÌÆ®
+                        // ì„ íƒëœ ì›”ì˜ ë§¤ì¶œ í•©ê³„ ì—…ë°ì´íŠ¸
                         updateMonthlyTotal(revenue.reduce((acc, val) => acc + val, 0), preRevenue.reduce((acc, val) => acc + val, 0));
                     },
                     error: function(xhr, status, error) {
-                        console.error('(¼±ÅÃµÈ ¿ù - 1) AJAX ¿¡·¯:', error);
+                        console.error('(ì„ íƒëœ ì›” - 1) AJAX ì—ëŸ¬:', error);
                     }
                 });
             },
             error: function(xhr, status, error) {
-                console.error('(¼±ÅÃµÈ ¿ù) AJAX ¿¡·¯:', error);
+                console.error('(ì„ íƒëœ ì›”) AJAX ì—ëŸ¬:', error);
             }
         });
     }
 
-    // ¿ù ¼±ÅÃ ½Ã µ¥ÀÌÅÍ ´Ù½Ã ºÒ·¯¿À±â
+    // ì›” ì„ íƒ ì‹œ ë°ì´í„° ë‹¤ì‹œ ë¶ˆëŸ¬ì˜¤ê¸°
     $('#monthSelect').on('change', function() {
         let selectedMonth = $(this).val();
-        fetchData(currentYear, selectedMonth); // ¼±ÅÃµÈ ³âµµ¿Í ¿ù¿¡ ´ëÇÑ µ¥ÀÌÅÍ ¿äÃ»
+        fetchData(currentYear, selectedMonth); // ì„ íƒëœ ë…„ë„ì™€ ì›”ì— ëŒ€í•œ ë°ì´í„° ìš”ì²­
     });
 
-    // ÆäÀÌÁö ·Îµå ½Ã ÃÊ±â µ¥ÀÌÅÍ È£Ãâ
-    fetchData(currentYear, initialMonth); // ÇöÀç ¿ùÀÇ µ¥ÀÌÅÍ ¿äÃ»
+    // í˜ì´ì§€ ë¡œë“œ ì‹œ ì´ˆê¸° ë°ì´í„° í˜¸ì¶œ
+    fetchData(currentYear, initialMonth); // í˜„ì¬ ì›”ì˜ ë°ì´í„° ìš”ì²­
 
-    // ¿ùº° ¸ÅÃâ ÇÕ°è¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ÇÔ¼ö
+    // ì›”ë³„ ë§¤ì¶œ í•©ê³„ë¥¼ ì—…ë°ì´íŠ¸í•˜ëŠ” í•¨ìˆ˜
     function updateMonthlyTotal(currentMonthTotal, previousMonthTotal) {
-        // ¸ÅÃâÀÌ °¡Àå ³ôÀº Ä«Å×°í¸®¿Í °¡Àå ³·Àº Ä«Å×°í¸®¸¦ Ã£±â À§ÇØ ¹è¿­À» º¹»çÇÏ¿© Á¤·Ä
+        // ë§¤ì¶œì´ ê°€ì¥ ë†’ì€ ì¹´í…Œê³ ë¦¬ì™€ ê°€ì¥ ë‚®ì€ ì¹´í…Œê³ ë¦¬ë¥¼ ì°¾ê¸° ìœ„í•´ ë°°ì—´ì„ ë³µì‚¬í•˜ì—¬ ì •ë ¬
         let sortedRevenue = [...revenue].sort((a, b) => a - b);
         let highestRevenue = sortedRevenue[sortedRevenue.length - 1];
         let lowestRevenue = sortedRevenue[0];
 
         let highestCategory = categoryName[revenue.indexOf(highestRevenue)];
         let lowestCategory = categoryName[revenue.indexOf(lowestRevenue)];
-        // ¸ÅÃâÀÌ ¾ø´Â °æ¿ì Ã³¸®
+        // ë§¤ì¶œì´ ì—†ëŠ” ê²½ìš° ì²˜ë¦¬
         if (revenue.length === 0) {
             highestCategory = '-';
             lowestCategory = '-';
@@ -203,18 +202,18 @@ $(document).ready(function() {
             lowestRevenue = 0;
         }
 
-        // Áõ°¨¾× °è»ê ¹× ½ºÅ¸ÀÏ ¼³Á¤
+        // ì¦ê°ì•¡ ê³„ì‚° ë° ìŠ¤íƒ€ì¼ ì„¤ì •
         let changeAmount = currentMonthTotal - previousMonthTotal;
         let changeAmountStyle = changeAmount > 0 ? 'color:blue;' : (changeAmount < 0 ? 'color:red;' : 'color:black;');
-        let changeAmountText = (changeAmount || changeAmount === 0) ? changeAmount + '¿ø' : '-';
+        let changeAmountText = (changeAmount || changeAmount === 0) ? changeAmount + 'ì›' : '-';
 
-        // ¿ùº° ¸ÅÃâ ÇÕ°è¸¦ div¿¡ Ç¥½Ã
-        let totalHtml = 'ÀÌ¹ø´Ş ÃÑ ¸ÅÃâ: ' + currentMonthTotal + '¿ø<br>' +
-                        'Àú¹ø´Ş ÃÑ ¸ÅÃâ: ' + previousMonthTotal + '¿ø<br>' +
-                        'Àú¹ø´Ş ´ëºñ Áõ°¨¾×: <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><br><br>';
+        // ì›”ë³„ ë§¤ì¶œ í•©ê³„ë¥¼ divì— í‘œì‹œ
+        let totalHtml = 'ì´ë²ˆë‹¬ ì´ ë§¤ì¶œ: ' + currentMonthTotal + 'ì›<br>' +
+                        'ì €ë²ˆë‹¬ ì´ ë§¤ì¶œ: ' + previousMonthTotal + 'ì›<br>' +
+                        'ì €ë²ˆë‹¬ ëŒ€ë¹„ ì¦ê°ì•¡: <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><br><br>';
 
-        totalHtml += '½ÇÀû ¿ì¼ö Ç°¸ñ: ' + highestCategory + ' (' + highestRevenue + '¿ø)<br>';
-        totalHtml += '½ÇÀû ÀúÁ¶ Ç°¸ñ: ' + lowestCategory + ' (' + lowestRevenue + '¿ø)<br>';
+        totalHtml += 'ì‹¤ì  ìš°ìˆ˜ í’ˆëª©: ' + highestCategory + ' (' + highestRevenue + 'ì›)<br>';
+        totalHtml += 'ì‹¤ì  ì €ì¡° í’ˆëª©: ' + lowestCategory + ' (' + lowestRevenue + 'ì›)<br>';
 
         $('#monthlyTotal').html(totalHtml);
     }

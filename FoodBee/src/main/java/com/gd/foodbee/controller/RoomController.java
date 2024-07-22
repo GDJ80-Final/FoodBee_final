@@ -35,7 +35,7 @@ public class RoomController {
 	public String roomList(Model model) {		
 		
 		List<RoomDTO> list = roomService.getRoomList();
-		log.debug(TeamColor.GREEN + list.toString()); 
+		log.debug(TeamColor.GREEN + "list => " + list.toString()); 
 		
 		model.addAttribute("list", list);
 		return "roomList";
@@ -48,15 +48,16 @@ public class RoomController {
 	@GetMapping("/roomOne")
 	public String roomOne(Model model, @RequestParam(name= "roomNo") int roomNo, 
 									   @RequestParam(name = "date", required = false) String rsvDate) {
-		log.debug(TeamColor.GREEN + "roomNo:" + roomNo);
+		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		
 		// 회의실 상세보기 및 예약폼
 		RoomDTO roomDTO = roomService.getRoomOne(roomNo);
-		log.debug(TeamColor.GREEN + roomDTO.toString());
+		log.debug(TeamColor.GREEN + "roomDTO => " + roomDTO.toString());
 		
 		// 선택한 룸번호, 날짜에 예약된 시간을 출력
 		List<RoomRsvDTO> reservedTimes = roomService.getReservedTimes(roomNo, rsvDate);
-		log.debug(TeamColor.GREEN + reservedTimes.toString());
+		log.debug(TeamColor.GREEN + "reservedTimes => " + reservedTimes.toString());
 		
 		model.addAttribute("roomDTO",roomDTO);
 		model.addAttribute("roomNo",roomNo);
@@ -73,8 +74,8 @@ public class RoomController {
 	@ResponseBody
 	public List<Map<String, Object>> getReservedTimes(@RequestParam("roomNo") int roomNo,  
 													  @RequestParam(name = "rsvDate", required = false) String rsvDate) {
-		log.debug(TeamColor.GREEN+"roomNo:"+roomNo);
-		log.debug(TeamColor.GREEN+"rsvDate:"+rsvDate);
+		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		
 	    return roomService.getReservedTime(roomNo, rsvDate);
 	}
@@ -84,16 +85,16 @@ public class RoomController {
 	// 반환 페이지 : /roomList
 	@PostMapping("/roomRsv")
 	public String roomRsv(RoomRsvDTO rsv, HttpSession session) {
-		log.debug(TeamColor.GREEN + "request rsv:" + rsv.toString());
+		log.debug(TeamColor.GREEN + "request rsv => " + rsv.toString());
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
-		log.debug(TeamColor.GREEN + "empNo:" + emp.getEmpNo());
+		log.debug(TeamColor.GREEN + "empNo => " + emp.getEmpNo());
 		
 		int empNo = emp.getEmpNo();
 		rsv.setEmpNo(empNo);
 		
 		int row = roomService.addRoomRsv(rsv);
-		log.debug(TeamColor.GREEN + "row:" + row);
+		log.debug(TeamColor.GREEN + "row => " + row);
 		
 		return "redirect:/roomList";
 	}
@@ -105,8 +106,8 @@ public class RoomController {
 	@GetMapping("/roomRsvList")
 	public String roomRsvList(Model model, @RequestParam(name = "date", required = false) String rsvDate,
 										   @RequestParam(name="currentPage", defaultValue="1") int currentPage) {
-		log.debug(TeamColor.GREEN + "rsvDate:" + rsvDate);
-		log.debug(TeamColor.GREEN + "currentPage:" + currentPage);
+		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		
 		if (rsvDate == null || rsvDate.isEmpty()) {
             // 기본값으로 오늘 날짜 설정
@@ -114,10 +115,10 @@ public class RoomController {
         }
 		
 		List<RoomRsvDTO> rsvListByDate = roomService.getRsvListByDate(rsvDate, currentPage);		
-		log.debug(TeamColor.GREEN + rsvListByDate.toString());
+		log.debug(TeamColor.GREEN + "rsvListByDate => " + rsvListByDate.toString());
 		
 		int lastPage = roomService.getRsvByDateLastPage(rsvDate);
-		log.debug(TeamColor.GREEN + "lastPage:" + lastPage); 
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage); 
 		
 		model.addAttribute("rsvListByDate",rsvListByDate);
 		model.addAttribute("rsvDate", rsvDate);
@@ -134,10 +135,10 @@ public class RoomController {
 	@GetMapping("/myRoomRsvList")
 	public String myRoomRsvList(Model model, HttpSession session,
 			   					@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
-		log.debug(TeamColor.GREEN + "currentPage:" + currentPage);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
-		log.debug(TeamColor.GREEN + "emp:" + emp.toString());
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		
 		int empNo = emp.getEmpNo();
 		
@@ -145,7 +146,7 @@ public class RoomController {
 		log.debug(TeamColor.GREEN + rsvListByEmpNo.toString()); 			
 		
 		int lastPage = roomService.getRsvByEmpNoLastPage(empNo);
-		log.debug(TeamColor.GREEN + "lastPage:" + lastPage);
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
 		model.addAttribute("rsvListByEmpNo",rsvListByEmpNo);
 		model.addAttribute("currentPage",currentPage);
@@ -159,10 +160,10 @@ public class RoomController {
 	// 반환 페이지 : /roomRsvList
 	@PostMapping("/cancleRoomRsv")
 	public String cancleRoomRsv(RoomRsvDTO rsv) {
-		log.debug(TeamColor.GREEN + "request rsv:" + rsv.toString());
+		log.debug(TeamColor.GREEN + "request rsv => " + rsv.toString());
 		
 		int row = roomService.modifyRoomRsv(rsv);
-		log.debug(TeamColor.GREEN + "row:" + row);
+		log.debug(TeamColor.GREEN + "row => " + row);
 		
 		return "redirect:/roomRsvList";
 	}

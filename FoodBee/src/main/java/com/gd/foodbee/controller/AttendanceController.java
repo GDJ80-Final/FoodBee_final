@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.foodbee.dto.AttendanceDTO;
 import com.gd.foodbee.dto.EmpDTO;
@@ -23,7 +24,7 @@ public class AttendanceController {
 	@GetMapping("/attendanceReport")
 	public String attendanceReport(Model model, HttpSession session) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
-		log.debug(TeamColor.GREEN + "emp:" + emp.toString());
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		
 		int empNo = emp.getEmpNo();
 		String dptNo = emp.getDptNo();
@@ -35,5 +36,43 @@ public class AttendanceController {
 		model.addAttribute("map", map);
 		
 		return "attendanceReport";
+	}
+	
+	@GetMapping("/attendanceModify")
+	public String attendanceModify(Model model, HttpSession session) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
+		
+		int empNo = emp.getEmpNo();
+		String dptNo = emp.getDptNo();
+		
+		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo);
+		HashMap<String, Object> map = attendanceService.getTeamLeader(dptNo);
+		
+		model.addAttribute("attendanceDTO", attendanceDTO);
+		model.addAttribute("map", map);
+		
+		return "attendanceModify";
+	}
+	
+	@PostMapping("/attendanceModifyAction")
+	public String attendanceModifyAction(HttpSession session, 
+						@RequestParam(name="updateStartTime") String updateStartTime,
+						@RequestParam(name="updateEndTime") String updateEndTime,
+						@RequestParam(name="updateReason") String updateReason) {
+		
+		log.debug(TeamColor.GREEN + "updateStartTime => " + updateStartTime);
+		log.debug(TeamColor.GREEN + "updateEndTime => " + updateEndTime);
+		log.debug(TeamColor.GREEN + "updateReason => " + updateReason);
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
+		
+		int empNo = emp.getEmpNo();
+		
+		int row = attendanceService.modifyTime(updateStartTime, updateEndTime, updateReason, empNo);
+		log.debug(TeamColor.GREEN + "row => " + row);
+		
+		return "redirect:/attendanceReport";
 	}
 }

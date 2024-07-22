@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,34 +8,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-<h1>2024³â ¸ÅÃâÇöÈ²</h1>
-<!-- ¿¬µµ ¼±ÅÃÀ» À§ÇÑ ¼¿·ºÆ® ¹Ú½º -->
+<h1>2024ë…„ ë§¤ì¶œí˜„í™©</h1>
+<!-- ì—°ë„ ì„ íƒì„ ìœ„í•œ ì…€ë ‰íŠ¸ ë°•ìŠ¤ -->
 <select id="selectYear" onchange="fetchTotalData()">
-    <option value="2022">2022³â</option>
-    <option value="2023">2023³â</option>
-    <option value="2024" selected>2024³â</option>
+    <option value="2022">2022ë…„</option>
+    <option value="2023">2023ë…„</option>
+    <option value="2024" selected>2024ë…„</option>
 </select>
 
 <div id="categoryButtons">
-    <button onclick="fetchTotalData()">ÀüÃ¼</button>
-    <button onclick="fetchCategoryData('°£Æí½Ä')">°£Æí½Ä</button>
-    <button onclick="fetchCategoryData('½Ò/°î¹°')">½Ò/°î¹°</button>
-    <button onclick="fetchCategoryData('À°/¼ö»ê')">À°/¼ö»ê</button>
-    <button onclick="fetchCategoryData('À½·á/ÁÖ·ù')">À½·á/ÁÖ·ù</button>
-    <button onclick="fetchCategoryData('Ã»°ú')">Ã»°ú</button>
+    <button onclick="fetchTotalData()">ì „ì²´</button>
+    <button onclick="fetchCategoryData('ê°„í¸ì‹')">ê°„í¸ì‹</button>
+    <button onclick="fetchCategoryData('ìŒ€/ê³¡ë¬¼')">ìŒ€/ê³¡ë¬¼</button>
+    <button onclick="fetchCategoryData('ìœ¡/ìˆ˜ì‚°')">ìœ¡/ìˆ˜ì‚°</button>
+    <button onclick="fetchCategoryData('ìŒë£Œ/ì£¼ë¥˜')">ìŒë£Œ/ì£¼ë¥˜</button>
+    <button onclick="fetchCategoryData('ì²­ê³¼')">ì²­ê³¼</button>
 </div>
 <canvas id="lineChart" style="width:100%;max-width:700px"></canvas>
 <script>
-//ÀüÃ¼ µ¥ÀÌÅÍ¸¦ ´ãÀ» º¯¼ö
+//ì „ì²´ ë°ì´í„°ë¥¼ ë‹´ì„ ë³€ìˆ˜
 let allData = [];
 const colors = {
-	    "°£Æí½Ä": "red",
-	    "½Ò/°î¹°": "orange",
-	    "À°/¼ö»ê": "yellow",
-	    "À½·á/ÁÖ·ù": "green",
-	    "Ã»°ú": "blue"
+	    "ê°„í¸ì‹": "red",
+	    "ìŒ€/ê³¡ë¬¼": "orange",
+	    "ìœ¡/ìˆ˜ì‚°": "yellow",
+	    "ìŒë£Œ/ì£¼ë¥˜": "green",
+	    "ì²­ê³¼": "blue"
 	};
-// ÀüÃ¼ µ¥ÀÌÅÍ¸¦ °¡Á®¿À´Â ÇÔ¼ö
+// ì „ì²´ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 function fetchTotalData() {
     const selectedYear = document.getElementById('selectYear').value;
 
@@ -46,17 +45,17 @@ function fetchTotalData() {
         dataType: 'json',
         data: { year: selectedYear },
         success: function(data) {
-            console.log(selectedYear + " ÀüÃ¼ µ¥ÀÌÅÍ:", data);
+            console.log(selectedYear + " ì „ì²´ ë°ì´í„°:", data);
             allData = data;
             updateChart(allData);
         },
         error: function(xhr, status, error) {
-            console.error(selectedYear + " ÀüÃ¼ µ¥ÀÌÅÍ AJAX ¿¡·¯:", error);
+            console.error(selectedYear + " ì „ì²´ ë°ì´í„° AJAX ì—ëŸ¬:", error);
         }
     });
 }
 
-// Ä«Å×°í¸®º° µ¥ÀÌÅÍ¸¦ °¡Á®¿À´Â ÇÔ¼ö
+// ì¹´í…Œê³ ë¦¬ë³„ ë°ì´í„°ë¥¼ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
 function fetchCategoryData(category) {
     const selectedYear = document.getElementById('selectYear').value;
 
@@ -66,19 +65,19 @@ function fetchCategoryData(category) {
         dataType: 'json',
         data: { year: selectedYear, category: category },
         success: function(data) {
-            console.log(category + " Ä«Å×°í¸® µ¥ÀÌÅÍ:", data);
+            console.log(category + " ì¹´í…Œê³ ë¦¬ ë°ì´í„°:", data);
             updateChart(data);
         },
         error: function(xhr, status, error) {
-            console.error(category + " Ä«Å×°í¸® µ¥ÀÌÅÍ AJAX ¿¡·¯:", error);
+            console.error(category + " ì¹´í…Œê³ ë¦¬ ë°ì´í„° AJAX ì—ëŸ¬:", error);
         }
     });
 }
 
-// Â÷Æ® ¾÷µ¥ÀÌÆ® ÇÔ¼ö
+// ì°¨íŠ¸ ì—…ë°ì´íŠ¸ í•¨ìˆ˜
 function updateChart(data) {
     if (data && data.length > 0) {
-        // µ¥ÀÌÅÍ¸¦ °¡°øÇÏ¿© Ä«Å×°í¸®º°·Î ¸ÅÃâ µ¥ÀÌÅÍ ºĞ¸®
+        // ë°ì´í„°ë¥¼ ê°€ê³µí•˜ì—¬ ì¹´í…Œê³ ë¦¬ë³„ë¡œ ë§¤ì¶œ ë°ì´í„° ë¶„ë¦¬
         const categories = [...new Set(data.map(item => item.categoryName))];
         const months = [...new Set(data.map(item => item.referenceMonth))].sort();
         const revenueData = categories.map(category => {
@@ -92,7 +91,7 @@ function updateChart(data) {
         console.log("Revenue Data:", revenueData);
         console.log("Months:", months);
 
-        // Â÷Æ® »ı¼º ÄÚµå
+        // ì°¨íŠ¸ ìƒì„± ì½”ë“œ
         const ctx = document.getElementById('lineChart').getContext('2d');
         const lineChart = new Chart(ctx, {
             type: 'line',
@@ -117,27 +116,27 @@ function updateChart(data) {
                     x: {
                         title: {
                             display: true,
-                            text: '¿ù'
+                            text: 'ì›”'
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: '¸ÅÃâ¾×'
+                            text: 'ë§¤ì¶œì•¡'
                         }
                     }
                 }
             }
         });
     } else {
-        console.error('µ¥ÀÌÅÍ°¡ ºñ¾î ÀÖ½À´Ï´Ù.');
+        console.error('ë°ì´í„°ê°€ ë¹„ì–´ ìˆìŠµë‹ˆë‹¤.');
     }
 }
 
 
-// ÆäÀÌÁö ·Îµå ½Ã ÃÊ±â µ¥ÀÌÅÍ È£Ãâ (ÀüÃ¼ Ä«Å×°í¸® µ¥ÀÌÅÍ·Î)
+// í˜ì´ì§€ ë¡œë“œ ì‹œ ì´ˆê¸° ë°ì´í„° í˜¸ì¶œ (ì „ì²´ ì¹´í…Œê³ ë¦¬ ë°ì´í„°ë¡œ)
 $(document).ready(function() {
-    fetchTotalData(); // ÆäÀÌÁö ·Îµå ½Ã ¼±ÅÃµÈ ¿¬µµÀÇ ÀüÃ¼ Ä«Å×°í¸® µ¥ÀÌÅÍ¸¦ ¸ÕÀú ¹Ş¾Æ¿È
+    fetchTotalData(); // í˜ì´ì§€ ë¡œë“œ ì‹œ ì„ íƒëœ ì—°ë„ì˜ ì „ì²´ ì¹´í…Œê³ ë¦¬ ë°ì´í„°ë¥¼ ë¨¼ì € ë°›ì•„ì˜´
 });
 </script>
 </body>

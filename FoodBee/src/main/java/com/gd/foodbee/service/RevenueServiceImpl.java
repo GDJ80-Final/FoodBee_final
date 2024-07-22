@@ -24,7 +24,7 @@ public class RevenueServiceImpl implements RevenueService{
 	// 사용 클래스 : RevenueController.MonthRevenue
 	@Override
 	public List<RevenueDTO> getMonthRevenue(String referenceMonth) {
-		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
 		
 		return revenueMapper.selectMonthRevenue(referenceMonth);
 	}
@@ -32,7 +32,7 @@ public class RevenueServiceImpl implements RevenueService{
 	// 해당년도 전체 매출
 	@Override
 	public List<RevenueDTO> getTotalRevenue(String referenceMonth) {
-		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
 		
 		return revenueMapper.selectTotalRevenue(referenceMonth);
 	}
@@ -40,6 +40,8 @@ public class RevenueServiceImpl implements RevenueService{
 	// 카테고리 별 매출
 	@Override
 	public List<RevenueDTO> getCategoryRevenue(String referenceMonth, String categoryName) {
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
+		log.debug(TeamColor.GREEN + "categoryName => " + categoryName);
 		
 		return revenueMapper.selectCategoryRevenue(referenceMonth, categoryName);
 	}

@@ -7,11 +7,15 @@
 			emp_no, 
 			date, 
 			DATE_FORMAT(start_time, '%H:%i') startTime, 
-			DATE_FORMAT(end_time, '%H:%i') endTime
+			DATE_FORMAT(end_time, '%H:%i') endTime,
+			DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
+			DATE_FORMAT(update_end_time, '%H:%i') updateEndTime
 		FROM 
 			attendance 
 		WHERE 
-			emp_no = #{empNo} AND DATE = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+			emp_no = #{empNo} 
+			AND 
+			date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 		ORDER BY 
 			date DESC;
 	</select>
@@ -28,4 +32,18 @@
 			AND 
 			rank_name = '팀장'
 	</select>
+	
+	<!-- 근태보고 수정 -->
+	<update id="updateTime" parameterType="map">
+		UPDATE 
+			attendance 
+		SET 
+			update_start_time = CONCAT(DATE(update_start_time), ' ', #{updateStartTime}, ':00'), 
+			update_end_time = CONCAT(DATE(update_end_time), ' ', #{updateEndTime}, ':00'),
+			update_reason = #{updateReason}
+		WHERE 
+			emp_no = #{empNo} 
+			AND 
+			date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+	</update>
 </mapper>

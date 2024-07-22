@@ -36,10 +36,10 @@ public class RevenueController {
 	@PostMapping("/getMonthRevenue")
 	@ResponseBody
 	public List<RevenueDTO> getMonthRevenue(@RequestParam(name="month") String referenceMonth) {
-		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
 		
 		List<RevenueDTO> list = revenueService.getMonthRevenue(referenceMonth);
-		log.debug(TeamColor.GREEN + "list:" + list.toString());
+		log.debug(TeamColor.GREEN + "list => " + list.toString());
 		
 		return list;
 	}
@@ -59,10 +59,10 @@ public class RevenueController {
 	@PostMapping("/getTotalRevenue")
 	@ResponseBody
 	public List<RevenueDTO> getTotalRevenue(@RequestParam(name="year") String referenceMonth) {
-		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
 		
 		List<RevenueDTO> list = revenueService.getTotalRevenue(referenceMonth);
-		log.debug(TeamColor.GREEN + "list:" + list.toString());
+		log.debug(TeamColor.GREEN + "list => " + list.toString());
 		
 		return list;
 	}
@@ -75,11 +75,11 @@ public class RevenueController {
 	@ResponseBody
 	public List<RevenueDTO> getCategoryRevenue(@RequestParam(name="year") String referenceMonth,
 											@RequestParam(name="category") String categoryName) {
-		log.debug(TeamColor.GREEN + "referenceMonth:" + referenceMonth);
-		log.debug(TeamColor.GREEN + "categoryName:" + categoryName);
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
+		log.debug(TeamColor.GREEN + "categoryName => " + categoryName);
 		
 		List<RevenueDTO> list = revenueService.getCategoryRevenue(referenceMonth, categoryName);
-		log.debug(TeamColor.GREEN + "list:" + list.toString());
+		log.debug(TeamColor.GREEN + "list => " + list.toString());
 		
 		return list;
 	}
