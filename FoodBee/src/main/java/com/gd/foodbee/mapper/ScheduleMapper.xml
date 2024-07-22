@@ -287,6 +287,24 @@
 	WHERE 
 		day_off_no = #{scheduleNo}
 </select>
+<!-- 출장내역 상세보기 -->
+<select id="tripHistoryOne" parameterType="Map" resultType="com.gd.foodbee.dto.TripHistoryDTO">
+	SELECT 
+		e.emp_name empName, 
+		bth.business_trip_no businessTripNo,
+		bth.start_date startDate,
+		bth.end_date endDate,
+		bth.cancle_YN cancleYN,
+		bth.cancle_reason cancleReason,
+		bth.emergency_contact emergencyContact,
+		bth.business_trip_destination businessTripDestination
+	FROM 
+		business_trip_history bth
+	INNER JOIN emp e ON bth.emp_no = e.emp_no
+	WHERE 
+		bth.business_trip_no = #{scheduleNo}
+</select>
+
 <!-- 일정 수정하기 -->
 <update id="modifySchedule" parameterType="Map">
 	UPDATE 

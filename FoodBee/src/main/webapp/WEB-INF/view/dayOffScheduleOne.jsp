@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +30,7 @@
         </td>
     </tr>
     <tr>
-        <th>사용유형</th>
+        <th>휴가유형</th>
         <td>
             <input type="text" value="${dayOffOne.typeName}" readonly="readonly">
         </td>
@@ -43,9 +44,23 @@
     <tr>
         <th>비상연락처</th>
         <td>
-            <input type="text" value="${dayOffOne.emergencyContact}">
+            <input type="text" value="${dayOffOne.emergencyContact}" readonly="readonly">
         </td>
     </tr>
+    <tr>
+      <th>취소유무</th>
+      <td>
+          <input type="text" value="<c:out value="${dayOffOne.cancleYN}"/>" readonly="readonly">
+      </td>
+  	</tr>
+	<c:if test="${dayOffOne.cancleYN == 'Y'}">
+      <tr>
+          <th>취소 이유</th>
+          <td>
+              <input type="text" value="<c:out value="${dayOffOne.cancleReason}"/>" readonly="readonly">
+          </td>
+      </tr>
+  </c:if>
 </table>
 </body>
 </html>

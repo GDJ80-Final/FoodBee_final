@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
+import com.gd.foodbee.dto.TripHistoryDTO;
 
 @Mapper
 public interface ScheduleMapper {
@@ -80,6 +81,11 @@ public interface ScheduleMapper {
 	//파라미터 ="Map"
 	//반환값="com.gd.foodbee.dto.DayOffDTO"
 	DayOffDTO dayOffOne(Map<String,Object>m);
+	
+	//출장일정 상세보기
+	//파라미터 = "Map"
+	//반환값 = "com.gd.foodbee.dto.TripHistoryDTO"
+	TripHistoryDTO tripHistoryOne(Map<String,Object>m);
 	
 	//개인일정 수정하기
 	//파라미터="Map"

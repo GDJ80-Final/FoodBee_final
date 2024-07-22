@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
+import com.gd.foodbee.dto.TripHistoryDTO;
 import com.gd.foodbee.service.ScheduleService;
 import com.gd.foodbee.util.TeamColor;
 
@@ -113,6 +114,7 @@ public class ScheduleController {
 		return personList;
 	}
 	// 팀일정 전체보기
+	
 	@GetMapping("/teamScheduleList")
 	@ResponseBody
 	public Map<String, Object> teamScheduleList(int currentPage, String dptNo) {
@@ -189,6 +191,18 @@ public class ScheduleController {
 		model.addAttribute("dayOffOne", dayOffOne);
 		
 		return"dayOffScheduleOne";
+	}
+	//출장내역 상세보기
+	@GetMapping("/businessTripScheduleOne")
+	public String businessTripScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
+			Model model) {
+		
+		TripHistoryDTO tripHistoryOne = scheduleService.tripHistoryOne(scheduleNo);
+		log.debug(TeamColor.PURPLE + "출장내역상세보기=>" + tripHistoryOne);
+		
+		model.addAttribute("tripHistoryOne", tripHistoryOne);
+		
+		return"businessTripScheduleOne";
 	}
 	
 	//일정 수정

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
+import com.gd.foodbee.dto.TripHistoryDTO;
 
 public interface ScheduleService {
 	//개인일정테이블 리스트
@@ -24,6 +25,8 @@ public interface ScheduleService {
 	Map<String,ScheduleDTO>teamScheduleOne(int scheduleNo);
 	//휴가내역 상세
 	DayOffDTO dayOffOne(int scheduleNo);
+	//출장내역 상세
+	TripHistoryDTO tripHistoryOne(int scheduleNo);
 	//개인일정 전체 리스트
 	List<ScheduleDTO> personalListAll(int currentPage, int empNo);
 	//팀일정 전체 리스트

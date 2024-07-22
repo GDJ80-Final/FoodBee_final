@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
+import com.gd.foodbee.dto.TripHistoryDTO;
 import com.gd.foodbee.mapper.ScheduleMapper;
 import com.gd.foodbee.util.TeamColor;
 
@@ -158,8 +159,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 	//팀일정 상세보기
 	@Override
 	public Map<String,ScheduleDTO>teamScheduleOne(int scheduleNo){
-		Map<String,Object> m = new HashMap<>();
 		
+		Map<String,Object> m = new HashMap<>();
 		m.put("scheduleNo", scheduleNo);
 		
 		return scheduleMapper.teamScheduleOne(m);
@@ -172,6 +173,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 		m.put("scheduleNo", scheduleNo);
 		
 		return scheduleMapper.dayOffOne(m);
+	}
+	//출장일정 상세보기
+	public TripHistoryDTO tripHistoryOne(int scheduleNo) {
+		
+		Map<String,Object> m = new HashMap<>();
+		m.put("scheduleNo", scheduleNo);
+		
+		return scheduleMapper.tripHistoryOne(m);
 	}
 	
 	//일정수정

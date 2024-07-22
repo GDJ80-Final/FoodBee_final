@@ -251,7 +251,7 @@
             $("#tableBody").show();
             
         }
-
+		
         // 팀일정 리스트
 	    function updateTableForTeam(response) {
 	    let tableBody = $("#tableBody");
@@ -279,7 +279,7 @@
 	                detailUrl = "${pageContext.request.contextPath}/dayOffScheduleOne?scheduleNo="+item.uniqueNo;
 	                break;
 	            case '출장':
-	                detailUrl = `${pageContext.request.contextPath}/businessTripScheduleOne?scheduleNo=${item.uniqueNo}`;
+	                detailUrl = "${pageContext.request.contextPath}/businessTripScheduleOne?scheduleNo="+item.uniqueNo;
 	                break;
 	        }
 	        console.log("url==>"+ detailUrl);
