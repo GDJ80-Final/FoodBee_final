@@ -28,7 +28,7 @@ public interface EmpService {
 	// 사원 번호 생성
 	int createEmpNo();
 	
-	// 사원 등록 및 회원가입 링크 메일 발송
+	// 사원 등록 및 인트라넷 등록 링크 메일 발송
 	void addEmp(EmpDTO empDTO, EmailDTO emailDTO);
 	
 	// 인증번호 생성

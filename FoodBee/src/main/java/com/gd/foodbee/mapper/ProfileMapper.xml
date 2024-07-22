@@ -19,12 +19,17 @@
 		)
 		
 	</insert>
-
-
-
-
-
-
-
+	<select id="updateProfileImg" parameterType="com.gd.foodbee.dto.ProfileDTO">
+		UPDATE
+			profile_img
+		SET
+			original_file = #{originalFile},
+			save_file = #{saveFile},
+			type = #{type},
+			create_datetime = #{createDatetime},
+			update_datetime = #{updateDatetime}
+		WHRER
+			emp_no = #{empNo}
+	</select>
 
 </mapper>
