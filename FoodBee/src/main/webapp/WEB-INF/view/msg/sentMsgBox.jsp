@@ -60,7 +60,7 @@
 							'<td>'+ item.empName + '</td>'+
 							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
 									item.msgNo +'">'+ item.title + '</a></td>'+
-							'<td>'+ item.createDateTime + '</td>'+
+							'<td>'+ item.createDatetime + '</td>'+
 							'</tr>' 
 				   );
 			   })

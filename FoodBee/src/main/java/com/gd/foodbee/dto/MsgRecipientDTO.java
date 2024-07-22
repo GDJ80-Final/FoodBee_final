@@ -14,5 +14,5 @@ public class MsgRecipientDTO {
 	private int recipientOrder;
 	private int recipientEmpNo;
 	private String readYN;
-	private String readDateTime;
+	private String readDatetime;
 }

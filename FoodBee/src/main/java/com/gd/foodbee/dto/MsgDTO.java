@@ -16,6 +16,6 @@ public class MsgDTO {
 	private int senderEmpNo;
 	private String title;
 	private String content;
-	private String createDateTime;
+	private String createDatetime;
 	private String msgState;
 }

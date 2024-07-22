@@ -67,7 +67,7 @@ public class MsgServiceImpl implements MsgService{
 		
 		//쪽지 insert 
 		int msgRow = msgMapper.insertMsg(msgDTO);
-		if(msgRow == 0) {
+		if(msgRow != 1) {
 			throw new RuntimeException();
 			//실패 시 예외 처리
 		}
@@ -84,7 +84,7 @@ public class MsgServiceImpl implements MsgService{
 							.build();
 				log.debug(TeamColor.YELLOW + "MsgFileDTO =>" + msgFileDTO);
 				int msgFileRow = msgFileMapper.insertMsgFile(msgFileDTO);
-				if(msgFileRow == 0) {
+				if(msgFileRow != 1) {
 					throw new RuntimeException();
 				}
 				File emptyFile = new File(path+originalFile);

@@ -30,7 +30,7 @@
 				<td id="senderName">${m.senderName}</td>
 				<td>${m.receiverName }</td>
 				<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo=${m.msgNo}">${m.title}</a></td>
-				<td>${m.updateTime}</td>
+				<td>${m.updateDatetime}</td>
 			</tr>
 		</c:forEach>
 		</tbody>

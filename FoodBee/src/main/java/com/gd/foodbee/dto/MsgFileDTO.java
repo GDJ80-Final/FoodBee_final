@@ -16,6 +16,6 @@ public class MsgFileDTO {
 	private String originalFile;
 	private String saveFile;
 	private String type;
-	private String createDateTime;
-	private String updateDateTime;
+	private String createDatetime;
+	private String updateDatetime;
 }

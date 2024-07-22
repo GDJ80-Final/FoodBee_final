@@ -2,18 +2,21 @@ package com.gd.foodbee.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProfileDTO {
-	private int empNo;
-	private String originalFile;
-	private String saveFile;
-	private String type;
+public class BoardDTO {
+	private int boardNo;
+	private String title;
+	private String boardCategory;
 	private String createDatetime;
 	private String updateDatetime;
+	private int view;
+	private String content;
+	private String boardPw;
+	private int likeCnt;
 }

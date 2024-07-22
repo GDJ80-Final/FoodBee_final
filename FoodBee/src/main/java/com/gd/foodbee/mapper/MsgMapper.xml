@@ -67,11 +67,11 @@
 	
 	<select id="selectSentMsgList" parameterType="Map" resultType="Map">
 		SELECT
-			ROW_NUMBER() OVER(ORDER BY createDateTime) AS msgOrder,
+			ROW_NUMBER() OVER(ORDER BY createDatetime) AS msgOrder,
 			m.msg_no msgNo,
 			GROUP_CONCAT(e.emp_name SEPARATOR ',') empName,
 			m.title,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDateTime
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime
 		FROM
 			msg m
 		INNER JOIN
@@ -102,7 +102,7 @@
 			m.content,
 			originalFiles,
 			saveFiles,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDateTime
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime
 		FROM
 			msg m
 		INNER JOIN
@@ -136,14 +136,14 @@
 			senderName,
 			receiverName,
 			title,
-			updateTime
+			updateDatetime
 		FROM
 			(SELECT
 			    m.msg_no AS msgNo,
 			    sender.emp_name AS senderName,
 			    GROUP_CONCAT(recipient.emp_name SEPARATOR ',') AS receiverName,
 			    m.title,
-			    DATE_FORMAT(m.state_update_datetime, '%Y-%m-%d %H:%i') AS updateTime
+			    DATE_FORMAT(m.state_update_datetime, '%Y-%m-%d %H:%i') AS updateDatetime
 			 FROM
 				msg m
 			 INNER JOIN
@@ -163,7 +163,7 @@
 			    sender.emp_name AS senderName,
 			    e.emp_name AS receiverName,
 			    m.title,
-			    DATE_FORMAT(mr.state_update_datetime, '%Y-%m-%d %H:%i') AS updateTime
+			    DATE_FORMAT(mr.state_update_datetime, '%Y-%m-%d %H:%i') AS updateDatetime
 			FROM
 			    msg m
 			INNER JOIN

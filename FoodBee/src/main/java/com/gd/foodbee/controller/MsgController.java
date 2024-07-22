@@ -173,7 +173,7 @@ public class MsgController {
 				Model model) {
 		log.debug(TeamColor.YELLOW + "msgNo => "+ msgNo);
 	
-		Map<String,Object> m =msgService.getMsgOne(msgNo);
+		Map<String,Object> m = msgService.getMsgOne(msgNo);
 		model.addAttribute("m", m);
 		
 		return "/msg/msgOne";
