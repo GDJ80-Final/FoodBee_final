@@ -1,6 +1,7 @@
 package com.gd.foodbee.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gd.foodbee.dto.ProfileDTO;
 
@@ -14,4 +15,5 @@ public interface ProfileMapper {
 	
 	//프로필 사진 수정
 	int updateProfileImg(ProfileDTO profileDTO);
+
 }

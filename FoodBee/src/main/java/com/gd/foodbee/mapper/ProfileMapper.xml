@@ -19,17 +19,16 @@
 		)
 		
 	</insert>
-	<select id="updateProfileImg" parameterType="com.gd.foodbee.dto.ProfileDTO">
+	<update id="updateProfileImg" parameterType="com.gd.foodbee.dto.ProfileDTO">
 		UPDATE
 			profile_img
 		SET
 			original_file = #{originalFile},
 			save_file = #{saveFile},
 			type = #{type},
-			create_datetime = #{createDatetime},
-			update_datetime = #{updateDatetime}
-		WHRER
+			update_datetime = now()
+		WHERE
 			emp_no = #{empNo}
-	</select>
+	</update>
 
 </mapper>

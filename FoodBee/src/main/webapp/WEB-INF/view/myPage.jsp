@@ -45,13 +45,41 @@
             </div>
         </form>
     </div>
+    
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title naver-green" id="profileModalLabel">프로필 사진 업데이트</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="profileImage" src="${profileImageUrl}" alt="프로필 사진" class="img-fluid rounded mb-3" style="max-width: 200px; max-height: 200px;">
+                    <div class="d-grid gap-2">
+                        <button id="changeImageBtn" class="btn btn-outline-naver">이미지 변경</button>
+                        <input type="file" id="fileInput" accept=".jpg,.png" style="display: none;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button id="updateProfileBtn" class="btn btn-naver" style="display:none;">프로필 수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 	<script>
 		let currentPage = 1;
 		let lastPage = 1;
-	
+		
+		
+		
 		const currentYear = new Date().getFullYear();
 		$(document).ready(function() {
+			
+		 	let originalSrc = $('#profileImage').attr('src');
+	        let newImageSelected = false;
+	        
 			$('#year').hide();
 			const empNo = '${emp.empNo}';
 			$.ajax({
@@ -128,6 +156,58 @@
 			$('#yearSelect').change(function(){
 				dayOffHistoryList(1);
 			});
+			
+			$('#changeImageBtn').on('click', function() {
+                $('#fileInput').click();
+            });
+			
+			$('#fileInput').on('change', function(e) {
+	                let file = e.target.files[0];
+	                if (file) {
+	                    let reader = new FileReader();
+	                    reader.onload = function(e) {
+	                        $('#profileImage').attr('src', e.target.result);
+	                        newImageSelected = true;
+	                        $('#updateProfileBtn').show();
+	                    }
+	                    reader.readAsDataURL(file);
+	                }
+	            });
+			 
+			 $('#profileModal').on('hidden.bs.modal', function () {
+	                $('#profileImage').attr('src', originalSrc);
+	                $('#updateProfileBtn').hide();
+	                $('#fileInput').val('');
+	                newImageSelected = false;
+	         });
+			 
+			 $('#updateProfileBtn').on('click', function() {
+				 
+	                if (newImageSelected) {
+	                    let formData = new FormData();
+	                    formData.append('file', $('#fileInput')[0].files[0]);
+	                    formData.append('empNo', empNo);
+
+	                    $.ajax({
+	                        url: '${pageContext.request.contextPath}/modifyProfileImg',
+	                        type: 'POST',
+	                        data: formData,
+	                        processData: false,
+	                        contentType: false,
+	                        success: function(json) {
+	                            alert('프로필 사진이 성공적으로 업데이트되었습니다.');
+	                            originalSrc = json;
+	                            $('#profileImage').attr('src', originalSrc);
+	                            newImageSelected = false;
+	                            $('#updateProfileBtn').hide();
+	                            $('#profileModal').modal('hide');
+	                        },
+	                        error: function() {
+	                            alert('프로필 사진 업데이트에 실패했습니다.');
+	                        }
+	                    });
+	                }
+	            });
 			
 			$(document).on('click', '#page button', function() {
 		        const buttonId = $(this).attr('id');
@@ -227,6 +307,8 @@
 				
 				});
 			};
+			
+			
 			
 			function dayOffHistory(item){
 				$('#dayOffList').append('<tr>' +
@@ -339,6 +421,9 @@
 					            '<div class="profile-img mb-3">' +
 					                '프로필사진' +
 					            '</div>' +
+					            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profileModal">' +
+					                '프로필 사진 업데이트' +
+					            '</button>' +
 					        '</div>' +
 					        '<div class="col-md-8">' +
 					            '<h5>인사</h5>' +
