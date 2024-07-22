@@ -29,7 +29,13 @@
 <script>
 //전체 데이터를 담을 변수
 let allData = [];
-
+const colors = {
+	    "간편식": "red",
+	    "쌀/곡물": "orange",
+	    "육/수산": "yellow",
+	    "음료/주류": "green",
+	    "청과": "blue"
+	};
 // 전체 데이터를 가져오는 함수
 function fetchTotalData() {
     const selectedYear = document.getElementById('selectYear').value;
@@ -96,7 +102,7 @@ function updateChart(data) {
                     label: category,
                     data: revenueData[index],
                     fill: false,
-                    borderColor: getRandomColor(),
+                    borderColor: colors[category],
                     tension: 0.1
                 }))
             },
@@ -128,15 +134,6 @@ function updateChart(data) {
     }
 }
 
-// 랜덤 색상 생성 함수
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
 
 // 페이지 로드 시 초기 데이터 호출 (전체 카테고리 데이터로)
 $(document).ready(function() {

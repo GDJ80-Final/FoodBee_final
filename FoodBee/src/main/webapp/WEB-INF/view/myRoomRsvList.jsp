@@ -48,13 +48,15 @@
 <script>
 $(document).ready(function() {
     let today = new Date(); // 오늘 날짜 객체를 가져옴
+    today.setHours(0, 0, 0, 0); // 시간을 0으로 설정하여 날짜만 비교
 
     // 각 예약 항목을 순회하며 날짜를 비교하고 취소 링크를 숨김
     $('table tr').each(function() {
         let rsvDateStr = $(this).find('td:eq(1)').text(); // 두 번째 td 요소의 텍스트(예약 날짜)를 가져옴
         let rsvDate = new Date(rsvDateStr); // 예약 날짜를 Date 객체로 변환
+        rsvDate.setHours(0, 0, 0, 0); // 시간을 0으로 설정하여 날짜만 비교
 
-        if (rsvDate <= today) {
+        if (rsvDate < today) {
             $(this).find('#cancel-link').hide(); // 예약 날짜가 오늘 이전인 경우 취소 링크를 숨김
         }
     });
