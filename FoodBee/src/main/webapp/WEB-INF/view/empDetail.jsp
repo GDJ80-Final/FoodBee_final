@@ -35,6 +35,9 @@
             <div>
             	<h4 id="title">개인/인사 정보</h4>
         	</div>
+        	<div id="year">
+        		<select id="yearSelect" class="form-select"></select>
+        	</div>
 			<div id="content">
 	           
             </div>
@@ -42,7 +45,13 @@
     </div>
 
 	<script>
+		let currentPage = 1;
+		let lastPage = 1;
+	
+		const currentYear = new Date().getFullYear();
+		
 		$(document).ready(function() {
+			$('#year').hide();
 			$.ajax({
 				url:'${pageContext.request.contextPath}/getEmpHr',
 				method:'get',
@@ -53,7 +62,9 @@
 				}
 			});
 			
-			$("#empInfo").click(function(){
+			$('#empInfo').click(function(){
+				$('#year').hide();
+				$('#yearSelect').empty();
 				$.ajax({
 					url:'${pageContext.request.contextPath}/getEmpHr',
 					method:'get',
@@ -69,72 +80,153 @@
 				});
 			});
 			
-			$("#dayOffHistory").click(function(){
-				$("#content").empty();
+			$('#dayOffHistory').click(function(){
+				$('#title').text('휴가 내역');
+				$('#year').show();
+				yearSelect();
+				dayOffHistoryList(1);
 				
-				$("#title").text('휴가 내역');
 				
-				$.ajax({
-					url:'${pageContext.request.contextPath}/getDayOff',
-					method:'get',
-					data: {
-						empNo: ${empNo}
-					},
-					success:function(json){
-					
-					}
-				});
-				
+			});
+			
+			$('#yearSelect').change(function(){
+				dayOffHistoryList(1);
+			});
+			
+			$(document).on('click', '#page button', function() {
+		        const buttonId = $(this).attr('id');
+		        switch(buttonId) {
+		            case 'first':
+		                if (currentPage > 1) {
+		                    currentPage = 1; 
+		    				dayOffHistoryList(currentPage);
+		                }
+		                break;
+		            case 'pre':
+		                if (currentPage > 1) {
+		                    currentPage = currentPage - 1;
+		    				dayOffHistoryList(currentPage);
+		                }
+		                break;
+		            case 'next':
+		                if (currentPage < lastPage) {
+		                    currentPage = currentPage + 1;
+		                    dayOffHistoryList(currentPage);
+		                }
+		                break;
+		            case 'last':
+		                if (currentPage < lastPage) {
+		                    currentPage = lastPage;
+		                    dayOffHistoryList(currentPage);
+		                }
+		                break;
+		        }
+		    });
+			
+			
+			function yearSelect() {
+			    let startYear = 0;
+			    $.ajax({
+			    	
+			        url: '${pageContext.request.contextPath}/getEmpHr',
+			        method: 'get',
+			        data: { empNo: ${empNo} },
+			        async: false,
+			        success: function(json) {
+			            console.log(json.startDate.substring(0, 4));
+			            startYear = parseInt(json.startDate.substring(0, 4));
+			            console.log(startYear);
+			            
+			            for (let year = startYear; year <= currentYear; year++) {
+			            	$('#yearSelect').append($('<option>', {
+			                    value: year,
+			                    text: year
+			                }));
+			            }
+			            
+			            $('#yearSelect').val(currentYear);
+			        }
+			    });
+			}
+
+			function dayOffHistoryList(page){
 				$.ajax({
 					url:'${pageContext.request.contextPath}/getDayOffHistoryList',
-					method:'get',
+					method:'post',
 					data: {
-						empNo: ${empNo}
+						empNo: ${empNo},
+						year: $('#yearSelect').val(),
+						currentPage: page
 					},
 					success:function(json){
-					
-					}
-				});
-				
-				$('#content').append('<div class="mt-4">' +
-					    '<div class="row g-3">' +
-					        '<div class="col-12 custom-border">' +
-					            '<h6 class="mb-3">기준연도 선택(디폴트 2024)</h6>' +
-					            '<div class="row">' +
-					                '<div class="col-md-4 mb-2">' +
-					                    '<label class="form-label fw-bold">총연차</label>' +
-					                    '<input type="text" class="form-control bg-light" id="totalDayOff" readonly>' +
+						console.log(json.lastPage);
+						lastPage = json.lastPage;
+						
+						$("#content").empty();
+						
+						$('#content').append('<div class="mt-4">' +
+							    '<div class="row g-3">' +
+							        '<div class="col-12 custom-border">' +
+							            '<div class="row">' +
+							                '<div class="col-md-4 mb-2">' +
+							                    '<label class="form-label fw-bold">총연차</label>' +
+							                    '<input type="text" class="form-control bg-light" id="totalDayOff" value="'+ json.dayOff + '" readonly>' +
+							                '</div>' +
+							                '<div class="col-md-4 mb-2">' +
+							                    '<label class="form-label fw-bold">사용연차</label>' +
+							                    '<input type="text" class="form-control bg-light" id="usedDayOff" value="'+ json.cnt + '"readonly>' +
+							                '</div>' +
+							                '<div class="col-md-4 mb-2">' +
+							                    '<label class="form-label fw-bold">남은 연차</label>' +
+							                    '<input type="text" class="form-control bg-light" id="remainingDayOff" value="'+ (json.dayOff - json.cnt) + '" readonly>' +
+							                '</div>' +
+							            '</div>' +
+							        '</div>' +
+							        '<div class="col-12">' +
+							            '<h6 class="mb-3">연차 내역 조회</h6>' +
+							            '<div class="table-responsive">' +
+							                '<table class="table table-bordered">' +
+							                    '<thead>' +
+							                        '<tr>' +
+							                            '<th>사원번호</th>' +
+							                            '<th>휴가일자</th>' +
+							                            '<th>유형</th>' +
+							                            '<th>상세</th>' +
+							                        '</tr>' +
+							                    '</thead>' +
+							                    '<tbody id="dayOffList">' +
+							                    
+							                    '</tbody>' +
+							                '</table>' +
+						                '</div>' +
 					                '</div>' +
-					                '<div class="col-md-4 mb-2">' +
-					                    '<label class="form-label fw-bold">사용연차</label>' +
-					                    '<input type="text" class="form-control bg-light" id="usedDayOff" readonly>' +
-					                '</div>' +
-					                '<div class="col-md-4 mb-2">' +
-					                    '<label class="form-label fw-bold">남은 연차</label>' +
-					                    '<input type="text" class="form-control bg-light" id="remainingDayOff" readonly>' +
-					                '</div>' +
+					                '<div id="page">' +
+					                	'<button type="button" id="first">First</button>' +
+						                '<button type="button" id="pre">◁</button>' +
+						                '<button type="button" id="next">▶</button>' +
+						               '<button type="button" id="last">Last</button>' +
+						        	'</div>' +
 					            '</div>' +
-					        '</div>' +
-					        '<div class="col-12">' +
-					            '<h6 class="mb-3">연차 내역 조회</h6>' +
-					            '<div class="table-responsive">' +
-					                '<table class="table table-bordered">' +
-					                    '<thead>' +
-					                        '<tr>' +
-					                            '<th>내역번호</th>' +
-					                            '<th>사원번호</th>' +
-					                            '<th>휴가일자</th>' +
-					                            '<th>유형</th>' +
-					                            '<th>상세</th>' +
-					                        '</tr>' +
-					                    '</thead>' +
-					                    '<tbody id="dayOffList">' +
-					                        '<!-- 여기에 휴가 내역이 동적으로 추가됩니다 -->' +
-					                    '</tbody>' +
-					                '</table>'
-		                );
-			});
-
+					        '</div>');
+							
+						
+						json.list.forEach(function(item){
+							dayOffHistory(item);
+		                });
+					}
+				
+				});
+			};
+			
+			function dayOffHistory(item){
+				$('#dayOffList').append('<tr>' +
+						'<td>' + item.empNo + '</td>' +
+						'<td>' + item.startDate + ' ~ ' + item.endDate +'</td>' +
+						'<td>' + item.typeName + '</td>' +
+						'<td>' + item.content + '</td>' +
+						'</tr>')
+				
+			};
 			
 			function empInfo(json){
 				endDate = json.endDate;

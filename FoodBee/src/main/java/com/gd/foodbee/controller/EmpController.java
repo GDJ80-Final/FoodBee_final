@@ -365,13 +365,4 @@ public class EmpController {
 		
 		return "success";
 	}
-	
-	//총 연차 개수 구하기
-	@GetMapping("/getDayOff")
-	@ResponseBody
-	public double getDayOff(@RequestParam int empNo,
-				@RequestParam String year) {
-		
-		return empService.getDayOff(empNo, year);
-	}
 }

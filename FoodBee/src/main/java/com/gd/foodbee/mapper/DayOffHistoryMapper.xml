@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.DayOffHistoryMapper">
+	<select id="selectDayOffHistoryList" parameterType="Map" resultType="Map">
+		SELECT
+			h.emp_no empNo,
+			h.start_date startDate,
+			h.end_date endDate,
+			h.type_name typeName,
+			d.title title,
+			d.content content
+		FROM
+			day_off_history h
+		INNER JOIN
+			draft_doc d ON d.drafter_emp_no = h.emp_no
+				AND d.draft_doc_no = h.draft_doc_no 
+		WHERE
+			h.emp_no = #{empNo}
+			AND h.use_year = #{year}
+		ORDER BY h.start_date DESC
+		LIMIT #{startRow}, #{rowPerPage}
+	</select>
+	<select id="selectDayOffHistoryCnt">
+		SELECT
+			COUNT(*)
+		FROM
+			day_off_history
+		WHERE
+			emp_no = #{empNo}
+			AND use_year = #{year}
+	</select>
+</mapper>

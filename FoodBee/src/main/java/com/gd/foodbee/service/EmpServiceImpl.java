@@ -266,15 +266,18 @@ public class EmpServiceImpl implements EmpService{
 		
 		Map<String, Object> map = empMapper.selectEmpHr(empNo);
 		
+		if(map == null) {
+			throw new RuntimeException();
+		}
 		
 		LocalDate startDate = LocalDate.parse((map.get("startDate")).toString());
-		LocalDate targetYear = LocalDate.of(Integer.parseInt(targetYearStr), 1, 1);
+		LocalDate targetDate = LocalDate.of(Integer.parseInt(targetYearStr), 1, 1);
 		
 		//회계년도 시작일
-		LocalDate fiscalYearStart = LocalDate.of(targetYear.getYear(), 1, 1);
+		LocalDate fiscalYearStart = LocalDate.of(targetDate.getYear(), 1, 1);
 		
 		//회계년도 종료일
-        LocalDate fiscalYearEnd = LocalDate.of(targetYear.getYear(), 12, 31);
+		LocalDate fiscalYearEnd = LocalDate.of(targetDate.getYear(), 12, 31);
         
         //입사일의 1년후
         LocalDate oneYearAfterStart = startDate.plusYears(1);
@@ -284,26 +287,38 @@ public class EmpServiceImpl implements EmpService{
 
         if (daysWorkedBeforeTargetYear < 365) {
             // 1년 미만 근무자
-            LocalDate leaveStartDate = startDate.isBefore(fiscalYearStart) ? fiscalYearStart : startDate;
-            LocalDate oneYearDate = startDate.plusYears(1);
-            LocalDate leaveEndDate = oneYearDate.isBefore(fiscalYearEnd) ? oneYearDate : fiscalYearEnd;
+        	LocalDate leaveStartDate;
+        	if (startDate.isBefore(fiscalYearStart)) {
+        	    leaveStartDate = fiscalYearStart;
+        	} else {
+        	    leaveStartDate = startDate;
+        	}
+
+        	LocalDate oneYearDate = startDate.plusYears(1);
+
+        	LocalDate leaveEndDate;
+        	if (oneYearDate.isBefore(fiscalYearEnd)) {
+        	    leaveEndDate = oneYearDate;
+        	} else {
+        	    leaveEndDate = fiscalYearEnd;
+        	}
             
             long monthsWorked = ChronoUnit.MONTHS.between(leaveStartDate, leaveEndDate);
-            double DayOffCnt = Math.min(monthsWorked, 11);
+            double dayOffCnt = Math.min(monthsWorked, 11);
 
             if (oneYearDate.isBefore(fiscalYearEnd)) {
                 // 1년 되는 시점이 해당 연도 내에 있는 경우
                 long daysAfterOneYear = ChronoUnit.DAYS.between(oneYearDate, fiscalYearEnd) + 1;
-                DayOffCnt += 15 * (daysAfterOneYear / (double)daysInTargetYear);
+                dayOffCnt += 15 * (daysAfterOneYear / (double)daysInTargetYear);
             }
 
-            return DayOffCnt;
+            return Math.round(dayOffCnt * 10.0) / 10.0;
         } else {
             // 1년 이상 근무자
             int yearsWorked = (int) (ChronoUnit.DAYS.between(startDate, fiscalYearStart) / 365);
             int baseDayOff = 15;
             int additionalLeave = Math.min(yearsWorked, 10);
-            return baseDayOff + additionalLeave;
+            return Math.round((baseDayOff + additionalLeave) * 10.0) / 10.0;
         }
 	}
 	
