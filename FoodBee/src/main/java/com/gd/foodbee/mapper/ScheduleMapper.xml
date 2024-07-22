@@ -68,7 +68,7 @@
 	WHERE 
 		e.dpt_no = #{dptNo}
 		AND 
-		h.cancel_YN = 'N'
+		h.cancle_YN = 'N'
 </select>
 <!-- 팀원 출장리스트 -->
 <select id="businessTripList" parameterType="HashMap" resultType="HashMap">
@@ -100,10 +100,140 @@
 	FROM 
 		schedule
 	WHERE 
-		emp_no = #{empNo}
+		emp_no = #{empNo} 
+	AND
+		type = '개인'
 	ORDER BY 
 		start_datetime DESC
 	LIMIT #{beginRow}, #{rowPerPage}
+</select>
+<!-- 팀일정 전체 리스트 -->
+<select id="teamList" parameterType="HashMap" resultType="HashMap">
+	SELECT 
+	    '휴가' category,
+	    '휴가내역' title,
+	    doh.start_date startDate,
+	    doh.end_date endDate,
+	    e.emp_name empName,
+	    doh.day_off_no uniqueNo
+	FROM 
+	    day_off_history doh
+	JOIN 
+	    emp e ON doh.emp_no = e.emp_no
+	WHERE 
+	    e.dpt_no = #{dptNo}
+	UNION ALL
+	SELECT
+	    '출장' AS category,
+	    '출장내역' title,
+	    bth.start_date startDate,
+	    bth.end_date endDate,
+	    e.emp_name empName,
+	    bth.business_trip_no uniqueNo
+	FROM 
+	    business_trip_history bth
+	JOIN 
+	    emp e ON bth.emp_no = e.emp_no
+	WHERE 
+	    e.dpt_no = #{dptNo}
+	UNION ALL
+	SELECT
+	    sc.type category,
+	    sc.title AS title,
+	    sc.start_datetime startDate,
+	    sc.end_datetime endDate,
+	    e.emp_name empName,
+	    sc.schedule_no uniqueNo
+	FROM
+	    schedule sc
+	JOIN 
+	    emp e ON sc.emp_no = e.emp_no
+	WHERE 
+	    sc.type = '팀' 
+	    AND e.dpt_no = #{dptNo}
+	ORDER BY
+	    startDate DESC
+	LIMIT #{beginRow}, #{rowPerPage};
+</select>
+<!-- 회의일정 전체리스트 -->
+<select id="roomList" resultType="HashMap" parameterType="HashMap">
+	SELECT 
+		r.rsv_no rsvNo,
+		r.room_no roomNo, 
+		'팀회의' title, 
+		r.start_datetime startDatetime, 
+		r.end_datetime endDatetime, 
+		e.emp_name empName
+	FROM 
+		room_rsv r
+	INNER JOIN 
+		emp e ON r.emp_no = e.emp_no
+	WHERE 
+		dpt_no = #{dptNo} AND r.rsv_state = 1
+	ORDER BY 
+		start_datetime DESC
+	LIMIT #{beginRow}, #{rowPerPage};
+</select>
+<!-- 개인일정 총갯수 -->
+<select id="countPerson" resultType="int" parameterType="int">
+    SELECT COUNT(*)
+    FROM schedule
+    WHERE emp_no = #{empNo} AND TYPE='개인'
+</select>
+<!-- 팀일정 총갯수 -->
+<select id="countTeam" resultType="int" parameterType="String">
+	SELECT COUNT(*) 
+	FROM (
+	    SELECT 
+	        '휴가' AS category,
+	        doh.start_date AS startDate,
+	        doh.end_date AS endDate,
+	        doh.emp_no AS empNo,
+	        '휴가내역' AS title
+	    FROM 
+	        day_off_history doh
+	    JOIN 
+	        emp e ON doh.emp_no = e.emp_no
+	    WHERE 
+	        e.dpt_no = #{dptNo}
+	    UNION ALL
+	    SELECT
+	        '출장' AS category,
+	        bth.start_date AS startDate,
+	        bth.end_date AS endDate,
+	        bth.emp_no AS empNo,
+	        '출장내역' AS title
+	    FROM 
+	        business_trip_history bth
+	    JOIN 
+	        emp e ON bth.emp_no = e.emp_no
+	    WHERE 
+	        e.dpt_no = #{dptNo}
+	    UNION ALL
+	    SELECT
+	        sc.type AS category,
+	        sc.start_datetime AS startDate,
+	        sc.end_datetime AS endDate,
+	        sc.emp_no AS empNo,
+	        sc.title AS title
+	    FROM
+	        schedule sc
+	    JOIN 
+	        emp e ON sc.emp_no = e.emp_no
+	    WHERE 
+	        sc.type = '팀' 
+	        AND e.dpt_no = #{dptNo}
+	) AS count_result;
+</select>
+<!-- 회의실 예약일정 총갯수 -->
+<select id="countRoom" parameterType="String" resultType="int">
+	SELECT COUNT(*)
+	FROM 
+	    room_rsv r
+	INNER JOIN 
+	    emp e ON r.emp_no = e.emp_no
+	WHERE 
+	    dpt_no = #{dptNo} AND r.rsv_state = 1
 </select>
 <!-- 일정 상세보기 -->
 <select id="scheduleOne" parameterType="Map" resultType="Map">
@@ -122,6 +252,40 @@
 	    emp e ON s.emp_no = e.emp_no
 	WHERE 
 	    s.schedule_no =  #{scheduleNo}
+</select>
+<!-- 팀일정 상세보기 -->
+<select id="teamScheduleOne" parameterType="Map" resultType="Map">
+	SELECT 
+	    e.emp_name empName,
+	    sc.title title,
+	    sc.content content,
+	    sc.type type,
+	    sc.start_datetime startDateTime,
+	    sc.end_datetime endDateTime
+	FROM 
+	    schedule sc
+	LEFT JOIN 
+	    emp e ON sc.emp_no = e.emp_no 
+	WHERE 
+	    sc.type = '팀' 
+	    AND sc.schedule_no = #{scheduleNo}
+</select>
+<!-- 휴가내역 상세보기 -->
+<select id="dayOffOne" parameterType="Map" resultType="com.gd.foodbee.dto.DayOffDTO">
+	SELECT 
+		e.emp_name empName, 
+		doh.start_date startDate, 
+		doh.end_date endDate, 
+		doh.cancle_YN cancleYN, 
+		doh.cancle_reason cancleReason, 
+		doh.use_year useYear, 
+		doh.emergency_contact emergencyContact, 
+		doh.type_name typeName
+	FROM
+		day_off_history doh 
+	LEFT JOIN emp e ON doh.emp_no = e.emp_no
+	WHERE 
+		day_off_no = #{scheduleNo}
 </select>
 <!-- 일정 수정하기 -->
 <update id="modifySchedule" parameterType="Map">

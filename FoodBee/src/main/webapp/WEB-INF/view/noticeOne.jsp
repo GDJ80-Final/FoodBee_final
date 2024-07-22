@@ -29,8 +29,8 @@
                     <th>첨부파일</th>
                     <td>
                         <c:forEach items="${one}" var="one">
-                            <a href="${pageContext.request.contextPath}/download?file=${one.saveFile}" download="${one.originalFile}">
-                                ${one.originalFile}
+                            <a href="${pageContext.request.contextPath}/download?file=${one.originalFile}" download="${one.originalFile}">
+                                ${one.saveFile}
                             </a>
                             <br>
                         </c:forEach>

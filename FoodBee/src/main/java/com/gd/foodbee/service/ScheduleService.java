@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
 
 public interface ScheduleService {
@@ -19,8 +20,22 @@ public interface ScheduleService {
 	List<HashMap<String,Object>>getBusinessTripList(String dptNo);
 	//개일일정 상세
 	Map<String,ScheduleDTO>scheduleOne(int scheduleNo);
+	//팀일정 상세
+	Map<String,ScheduleDTO>teamScheduleOne(int scheduleNo);
+	//휴가내역 상세
+	DayOffDTO dayOffOne(int scheduleNo);
 	//개인일정 전체 리스트
 	List<ScheduleDTO> personalListAll(int currentPage, int empNo);
+	//팀일정 전체 리스트
+	List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo);
+	//회의실 일정 전체 리스트
+	List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo);
+	//개인일정 총갯수
+	int personLastPage(int empNo);
+	//팀일정 총갯수
+	int teamLastPage(String dptNo);
+	//회의 일정 총갯수
+	int roomLastPage(String dptNo);
 	//개인일정 수정
 	int modifySchedule(int scheduleNo, ScheduleDTO scheduleDTO);
 	//개인일정 삭제

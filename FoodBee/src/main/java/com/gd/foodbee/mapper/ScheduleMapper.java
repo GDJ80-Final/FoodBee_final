@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
 
 @Mapper
@@ -40,10 +41,45 @@ public interface ScheduleMapper {
 	//반환값=com.gd.foodbee.dto.ScheduleDTO
 	List<ScheduleDTO>personalList(HashMap<String,Object>m);
 	
-	//상세보기 리스트
+	//팀일정 전체 리스트
+	//파라미터 = "HashMap"
+	//반환값 = "HashMap"
+	List<HashMap<String,Object>>teamList(HashMap<String,Object>m);
+	
+	//회의일정 전체리스트
+	//파라미터 = "HashMap"
+	//반환값 = "HashMap"
+	List<HashMap<String,Object>>roomList(HashMap<String,Object>m);
+	
+	//개인일정 총갯수
+	//파라미터 = "empNo"
+	//반환값 = "int"
+	int countPerson(int empNo);
+	
+	//전체 팀일정 총갯수
+	//파라미터="dtpNo"
+	//반환값 ="int"
+	int countTeam(String dptNo);
+	
+	//전체 팀회의실예약일정 총갯수
+	//파라미터 = "dptNo"
+	//반환값 = "int"
+	int countRoom(String dptNo);
+	
+	//개인일정
 	//파라미터="Map"
 	//반환값="Map"
 	Map<String, ScheduleDTO> scheduleOne(Map<String,Object>m);
+	
+	//팀일정상세보기
+	//파라미터="Map"
+	//반환값="Map"
+	Map<String,ScheduleDTO> teamScheduleOne(Map<String,Object>m);
+	
+	//휴가일정 상세보기
+	//파라미터 ="Map"
+	//반환값="com.gd.foodbee.dto.DayOffDTO"
+	DayOffDTO dayOffOne(Map<String,Object>m);
 	
 	//개인일정 수정하기
 	//파라미터="Map"

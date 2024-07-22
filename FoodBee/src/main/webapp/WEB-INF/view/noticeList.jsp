@@ -30,7 +30,9 @@
 <div id="paginationControls">
     <!-- 페이지네이션 링크가 여기에 동적으로 추가됩니다 -->
 </div>
-
+ <c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
+   	<a href="addNotice">공지사항 작성</a>
+</c:if>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
