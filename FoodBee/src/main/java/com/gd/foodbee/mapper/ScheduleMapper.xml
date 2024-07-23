@@ -122,113 +122,106 @@
 </select>
 <!-- 팀일정 전체 리스트 -->
 <select id="teamList" parameterType="HashMap" resultType="HashMap">
-	SELECT 
-	    '휴가' category,
-	    '휴가내역' title,
-	    doh.start_date startDate,
-	    doh.end_date endDate,
-	    e.emp_name empName,
-	    doh.day_off_no uniqueNo
-	FROM 
-	    day_off_history doh
-	JOIN 
-	    emp e ON doh.emp_no = e.emp_no
-	WHERE 
-	    e.dpt_no = #{dptNo}
-	    <if test="search != null and search != ''">
-		    AND (
-		        '휴가내역' LIKE '%${search}%'
-		        OR DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-	            OR DATE_FORMAT(doh.start_date, '%m-%d') LIKE '%${search}%'
-	            OR DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-	            OR DATE_FORMAT(doh.end_date, '%m-%d') LIKE '%${search}%'
-		        OR e.emp_name LIKE '%${search}%'
-		    )
-		</if>
-	UNION ALL
-	
-	SELECT
-	    '출장' category,
-	    '출장내역' title,
-	    bth.start_date startDate,
-	    bth.end_date endDate,
-	    e.emp_name empName,
-	    bth.business_trip_no uniqueNo
-	FROM 
-	    business_trip_history bth
-	JOIN 
-	    emp e ON bth.emp_no = e.emp_no
-	WHERE 
-	    e.dpt_no = #{dptNo}
-	    <if test="search != null and search != ''">
-		    AND (
-		        '출장내역' LIKE '%${search}%'
-		        OR DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-	            OR DATE_FORMAT(bth.start_date, '%m-%d') LIKE '%${search}%'
-	            OR DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-	            OR DATE_FORMAT(bth.end_date, '%m-%d') LIKE '%${search}%'
-		        OR e.emp_name LIKE '%${search}%'
-		    )
-		</if>
-	UNION ALL
-	
-	SELECT
-	    sc.type category,
-	    sc.title title,
-	    sc.start_datetime startDate,
-	    sc.end_datetime endDate,
-	    e.emp_name empName,
-	    sc.schedule_no uniqueNo
-	FROM
-	    schedule sc
-	JOIN 
-	    emp e ON sc.emp_no = e.emp_no
-	WHERE 
-	    sc.type = '팀' 
-	    AND e.dpt_no = #{dptNo}
-	     <if test="search != null and search != ''">
-		    AND (
-		        '팀' LIKE '%${search}%'
-		        OR sc.title LIKE '%${search}%'
-		        OR DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-	            OR DATE_FORMAT(sc.start_datetime, '%m-%d') LIKE '%${search}%'
-	            OR DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-	            OR DATE_FORMAT(sc.end_datetime, '%m-%d') LIKE '%${search}%'
-		        OR e.emp_name LIKE '%${search}%'
-		    )
-		</if>
-	ORDER BY
-	    startDate DESC
-	LIMIT #{beginRow}, #{rowPerPage};
+	   SELECT 
+        '휴가' AS category,
+        '휴가내역' AS title,
+        DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') AS startDate,
+        DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') AS endDate,
+        e.emp_name AS empName,
+        doh.day_off_no AS uniqueNo
+    FROM 
+        day_off_history doh
+    JOIN 
+        emp e ON doh.emp_no = e.emp_no
+    WHERE 
+        e.dpt_no = #{dptNo}
+        <if test="search != null and search != ''">
+            AND (
+                '휴가내역' LIKE '%${search}%'
+                OR DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR e.emp_name LIKE '%${search}%'
+            )
+        </if>
+    UNION ALL
+    
+    SELECT
+        '출장' AS category,
+        '출장내역' AS title,
+        DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') AS startDate,
+        DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') AS endDate,
+        e.emp_name AS empName,
+        bth.business_trip_no AS uniqueNo
+    FROM 
+        business_trip_history bth
+    JOIN 
+        emp e ON bth.emp_no = e.emp_no
+    WHERE 
+        e.dpt_no = #{dptNo}
+        <if test="search != null and search != ''">
+            AND (
+                '출장내역' LIKE '%${search}%'
+                OR DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR e.emp_name LIKE '%${search}%'
+            )
+        </if>
+    UNION ALL
+    
+    SELECT
+        sc.type AS category,
+        sc.title AS title,
+        DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') AS startDate,
+        DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') AS endDate,
+        e.emp_name AS empName,
+        sc.schedule_no AS uniqueNo
+    FROM
+        schedule sc
+    JOIN 
+        emp e ON sc.emp_no = e.emp_no
+    WHERE 
+        sc.type = '팀' 
+        AND e.dpt_no = #{dptNo}
+        <if test="search != null and search != ''">
+            AND (
+                '팀' LIKE '%${search}%'
+                OR sc.title LIKE '%${search}%'
+                OR DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR e.emp_name LIKE '%${search}%'
+            )
+        </if>
+    ORDER BY
+        startDate DESC
+    LIMIT #{beginRow}, #{rowPerPage};
 </select>
 <!-- 회의일정 전체리스트 -->
 <select id="roomList" resultType="HashMap" parameterType="HashMap">
-	SELECT 
-		r.rsv_no rsvNo,
-		r.room_no roomNo, 
-		'팀회의' title, 
-		r.start_datetime startDatetime, 
-		r.end_datetime endDatetime, 
-		e.emp_name empName
-	FROM 
-		room_rsv r
-	INNER JOIN 
-		emp e ON r.emp_no = e.emp_no
-	WHERE 
-		dpt_no = #{dptNo} AND r.rsv_state = 1
-		<if test="search != null and search != ''">
-        AND (
-            '팀회의' LIKE '%${search}%'
-            OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-            OR DATE_FORMAT(r.start_datetime, '%m-%d') LIKE '%${search}%'
-            OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-            OR DATE_FORMAT(r.end_datetime, '%m-%d') LIKE '%${search}%'
-            OR e.emp_name LIKE '%${search}%'
-        )
-    </if>
-	ORDER BY 
-		start_datetime DESC
-	LIMIT #{beginRow}, #{rowPerPage};
+    SELECT 
+        r.rsv_no AS rsvNo,
+        r.room_no AS roomNo, 
+        '팀회의' AS title, 
+        DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
+        DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
+        e.emp_name AS empName
+    FROM 
+        room_rsv r
+    INNER JOIN 
+        emp e ON r.emp_no = e.emp_no
+    WHERE 
+        e.dpt_no = #{dptNo} 
+        AND r.rsv_state = 1
+        <if test="search != null and search != ''">
+            AND (
+                '팀회의' LIKE '%${search}%'
+                OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR e.emp_name LIKE '%${search}%'
+            )
+        </if>
+    ORDER BY 
+        r.start_datetime DESC
+    LIMIT #{beginRow}, #{rowPerPage};
 </select>
 <!-- 개인일정 총갯수 -->
 <select id="countPerson" resultType="int" parameterType="int">
