@@ -59,7 +59,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="profileImage" src="${profileImageUrl}" alt="프로필 사진" class="img-fluid rounded mb-3" style="max-width: 200px; max-height: 200px;">
+                    <img id="profileImage" src="" alt="프로필 사진" class="img-fluid rounded mb-3" style="max-width: 200px; max-height: 200px;">
                     <div class="d-grid gap-2">
                         <button id="changeImageBtn" class="btn btn-outline-naver">이미지 변경</button>
                         <input type="file" id="fileInput" accept=".jpg,.png" style="display: none;">
@@ -107,8 +107,8 @@
 		const currentYear = new Date().getFullYear();
 		$(document).ready(function() {
 			
-			// 원래 저장된 프로필 사진
-		 	let originalSrc = $('#profileImage').attr('src');
+			// 프로필 사진
+		 	let originalSrc;
 			//새 사진이 선택됐는지 여부
 	        let newImageSelected = false;
 	        
@@ -116,11 +116,14 @@
 			const empNo = '${emp.empNo}';
 			let approvalSign;
 			$.ajax({
-				url:'${pageContext.request.contextPath}/getEmpHr',
+				url:'${pageContext.request.contextPath}/emp/getEmpHr',
 				method:'get',
 				data: {empNo : empNo},
 				success:function(json){
 					console.log(json);
+					
+					console.log(json.originalFile);
+					
 					empInfo(json);
 				}
 			});
@@ -130,7 +133,7 @@
 				$('#year').hide();
 				$('#yearSelect').empty();
 				$.ajax({
-					url:'${pageContext.request.contextPath}/getEmpHr',
+					url:'${pageContext.request.contextPath}/emp/getEmpHr',
 					method:'get',
 					data: {empNo : empNo},
 					success:function(json){
@@ -154,7 +157,7 @@
 				$("#title").text('비밀번호 변경');
 				
 				$('#content').append(
-					'<form method="post" action="${pageContext.request.contextPath}/modifyEmpPwMyPage">' +
+					'<form method="post" action="${pageContext.request.contextPath}/myPage/modifyEmpPwMyPage">' +
 					    '<div">' +
 					        '<div class="mb-3">' +
 					            '<label for="oldPw" class="form-label">현재 비밀번호</label>' +
@@ -229,7 +232,7 @@
 	                    formData.append('empNo', empNo);
 
 	                    $.ajax({
-	                        url: '${pageContext.request.contextPath}/modifyProfileImg',
+	                        url: '${pageContext.request.contextPath}/myPage/modifyProfileImg',
 	                        type: 'POST',
 	                        data: formData,
 	                        processData: false,
@@ -237,7 +240,7 @@
 	                        success: function(json) {
 	                            alert('프로필 사진이 성공적으로 업데이트되었습니다.');
 	                            originalSrc = json;
-	                            $('#profileImage').attr('src', originalSrc);
+	                            $('#profileImage').attr('src', '${pageContext.request.contextPath}/upload/profile_img/' +originalSrc);
 	                            newImageSelected = false;
 	                            $('#updateProfileBtn').hide();
 	                            $('#profileModal').modal('hide');
@@ -377,7 +380,7 @@
                 
                 // 서버에 서명 저장
                 $.ajax({
-                    url: '${pageContext.request.contextPath}/saveApprovalSign',
+                    url: '${pageContext.request.contextPath}/myPage/saveApprovalSign',
                     method: 'POST',
                     data: { 
                     		empNo: empNo,
@@ -411,7 +414,7 @@
 			// 휴가 내역 틀
 			function dayOffHistoryList(page){
 				$.ajax({
-					url:'${pageContext.request.contextPath}/getDayOffHistoryList',
+					url:'${pageContext.request.contextPath}/emp/getDayOffHistoryList',
 					method:'post',
 					data: {
 						empNo: empNo,
@@ -494,7 +497,7 @@
 			function yearSelect() {
 			    let startYear = 0;
 			    $.ajax({
-			        url: '${pageContext.request.contextPath}/getEmpHr',
+			        url: '${pageContext.request.contextPath}/emp/getEmpHr',
 			        method: 'get',
 			        data: { empNo: empNo },
 			        async: false,
@@ -525,7 +528,7 @@
        			
 	       		if ($('.error-message').text() == "") {
 		       		$.ajax({
-						url:'${pageContext.request.contextPath}/modifyEmpPwMyPage',
+						url:'${pageContext.request.contextPath}/myPage/modifyEmpPw',
 						method:'post',
 						data: {
 							empNo : empNo,
@@ -608,6 +611,9 @@
 				endDate = json.endDate;
 				console.log(json.approvalSignFile);
 				approvalSign = json.approvalSignFile;
+				$('#profileImage').attr('src', '${pageContext.request.contextPath}/upload/profile_img/' +json.originalFile);
+				originalSrc = $('#profileImage').attr('src');
+				console.log(json.originalFile);
 				if(endDate == null){
 					endDate = '';
 				}
@@ -617,7 +623,7 @@
 					    '<div class="row">' +
 					        '<div class="col-md-4">' +
 					            '<div class="profile-img mb-3">' +
-					                '프로필사진' +
+					                '<img id="profileImg" src="${pageContext.request.contextPath}/upload/profile_img/' + json.originalFile +'" alt="프로필 사진" class="img-fluid rounded mb-3">' +
 					            '</div>' +
 					            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profileModal">' +
 					                '프로필 사진 업데이트' +
@@ -675,7 +681,7 @@
 				
 				// 개인정보
 				$.ajax({
-					url:'${pageContext.request.contextPath}/getEmpPersnal',
+					url:'${pageContext.request.contextPath}/emp/getEmpPersnal',
 					method:'get',
 					data: {empNo : empNo},
 					success:function(json){
@@ -743,7 +749,7 @@
 			    formData += '&empNo=' + empNo;
 			    if ($('.error-message').text() == "") {
 			        $.ajax({
-			            url: '${pageContext.request.contextPath}/modifyEmpPersnalMyPage',
+			            url: '${pageContext.request.contextPath}/myPage/modifyEmpPersnal',
 			            type: 'POST',
 			            data: formData,
 			            success: function(json) {

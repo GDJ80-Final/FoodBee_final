@@ -96,17 +96,17 @@ public class EmpController {
 	//파라미터 : X
 	//반환값 : String(view)
 	//사용페이지 : /addEmp
-	@GetMapping("/addEmp")
+	@GetMapping("/emp/addEmp")
 	   public String addEmp() {
 	      
-	      return "addEmp";
+	      return "/emp/addEmp";
 	   }
 	
 	//사원 번호 생성
 	//파라미터 : X
 	//반환값 : int
 	//사용페이지 : /addEmp
-	@GetMapping("/createEmpNo")
+	@GetMapping("/emp/createEmpNo")
 	@ResponseBody
 	public int createEmpNo() {
 			int empNo = empService.createEmpNo();
@@ -118,7 +118,7 @@ public class EmpController {
 	//파라미터 : EmpDTO empDTO,  Errors errors,HttpServletRequest request,Model model
 	//반환값 : String(View)
 	//사용페이지 : /addEmp
-	@PostMapping("/addEmp")
+	@PostMapping("/emp/addEmp")
 	public String addEmp(@Valid EmpDTO empDTO,
 			Errors errors,
 			HttpServletRequest request,
@@ -147,8 +147,8 @@ public class EmpController {
 		String url = "http://localhost/foodbee/signup?empNo=" + empDTO.getEmpNo();
 		EmailDTO emailDTO = EmailDTO.builder()
 				 .to(empDTO.getEmpEmail())
-			     .subject("[FoodBee] 회원가입 링크")
-			     .message("회원가입 링크 : <a href=\"" + url + "\">" + url + "</a> 입니다.")
+			     .subject("[FoodBee] 인트라넷 등록 링크")
+			     .message("인트라넷 등록 링크 : <a href=\"" + url + "\">" + url + "</a> 입니다.")
 			     .build();
 	
 		empService.addEmp(empDTO, emailDTO);
@@ -156,7 +156,7 @@ public class EmpController {
 	 
 		    
 		    // 사원 목록으로 이동
-	 	return "redirect:/empList";
+	 	return "redirect:/emp/empList";
 	 }
 	 
 	// 인증번호 메일 발송
@@ -200,17 +200,17 @@ public class EmpController {
 	//파라미터 : X
 	//반환값 : String(view)
 	//사용페이지 : /empList
-	@GetMapping("/empList")
+	@GetMapping("/emp/empList")
 	public String getEmpList() {
 		
-		return "empList";
+		return "emp/empList";
 	}
 	
 	//사원 목록 조회
 	//파라미터 : EmpSearchDTO empSearchDTO
 	//반환값 : List<EmpSearchDTO>
 	//사용페이지 : /empList
-	@GetMapping("/searchEmp")
+	@GetMapping("/emp/searchEmp")
 	@ResponseBody
 	public Map<String, Object> searhEmpList(EmpSearchDTO empSearchDTO, 
 				@RequestParam(name="currentPage", defaultValue = "1") int currentPage) {
@@ -233,7 +233,7 @@ public class EmpController {
 	}
 	
 	//비밀번호 초기화
-	@PostMapping("/resetPw")
+	@PostMapping("/emp/resetPw")
 	@ResponseBody
 	public String resetEmpPw(@RequestParam(name = "empNo") int empNo,
 			@RequestParam String empEmail) {
@@ -277,7 +277,7 @@ public class EmpController {
 	}
 	
 	//이메일 재발송
-	@PostMapping("/resendEmail")
+	@PostMapping("/emp/resendEmail")
 	@ResponseBody
 	public String resendEmail(@RequestParam(name = "empNo") int empNo) {
 		
@@ -298,17 +298,17 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기 페이지
-	@GetMapping("/empDetail")
+	@GetMapping("/emp/empDetail")
 	public String empDetail(@RequestParam int empNo,
 				Model model) {
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
 		
 		model.addAttribute("empNo", empNo);
-		return "empDetail";
+		return "emp/empDetail";
 	}
 	
 	// 사원 상세보기(개인 + 인사)
-	@GetMapping("/getEmpPersnal")
+	@GetMapping("/emp/getEmpPersnal")
 	@ResponseBody
 	public Map<String, Object> getEmpPersnal(@RequestParam int empNo){
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
@@ -317,7 +317,7 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기(인사)
-	@GetMapping("/getEmpHr")
+	@GetMapping("/emp/getEmpHr")
 	@ResponseBody
 	public Map<String, Object> getEmpHr(@RequestParam int empNo){
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
@@ -325,7 +325,7 @@ public class EmpController {
 		return empService.getEmpHr(empNo);
 	}
 	// 사원 수정 페이지
-	@GetMapping("/modifyEmpHr")
+	@GetMapping("/emp/modifyEmpHr")
 	public String modifyEmpHrPage(@RequestParam int empNo,
 				Model model) {
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
@@ -333,16 +333,16 @@ public class EmpController {
 		Map<String, Object> empHr = empService.getEmpHr(empNo);
 		
 		model.addAttribute("empHr", empHr);
-		return "modifyEmpHr";
+		return "emp/modifyEmpHr";
 	}
 	
 	// 사원 수정
-	@PostMapping("/modifyEmpHr")
+	@PostMapping("/emp/modifyEmpHr")
 	public String modifyEmpHr(EmpDTO empDTO) {
 		
 		empService.modifyEmpHr(empDTO);
 		
-		return "redirect:/empDetail?empNo=" + empDTO.getEmpNo();
+		return "redirect:/emp/empDetail?empNo=" + empDTO.getEmpNo();
 	}
 	
 	// 마이페이지
@@ -356,7 +356,7 @@ public class EmpController {
 	}
 	
 	// 마이페이지에서 비밀번호 수정
-	@PostMapping("/modifyEmpPwMyPage")
+	@PostMapping("/myPage/modifyEmpPw")
 	public String modifyEmpPwMyPage(@RequestParam int empNo,
 				@RequestParam String oldPw,
 				@RequestParam String newPw) {
@@ -367,7 +367,7 @@ public class EmpController {
 	}
 	
 	// 마이페이지에서 개인정보 수정
-	@PostMapping("modifyEmpPersnalMyPage")
+	@PostMapping("/myPage/modifyEmpPersnal")
 	@ResponseBody
 	public String modifyEmpPersnalMyPage(@RequestParam int empNo,
 				@RequestParam String empEmail,

@@ -22,7 +22,7 @@ public class DayOffHistoryController {
 	@Autowired
 	private EmpService empService;
 	
-	@PostMapping("getDayOffHistoryList")
+	@PostMapping("/emp/getDayOffHistoryList")
 	@ResponseBody
 	public Map<String, Object> getdayOffHistoryList(@RequestParam int empNo,
 				@RequestParam String year,

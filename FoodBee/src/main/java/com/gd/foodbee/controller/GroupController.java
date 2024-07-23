@@ -21,34 +21,34 @@ public class GroupController {
 	@Autowired
 	private GroupService groupService;
 
-	@GetMapping("/officeList")
+	@GetMapping("/emp/officeList")
 	public List<GroupDTO> getOfficeList(){
 		
 	
 		return groupService.getOfficeList();
 	}
 	
-	@PostMapping("/deptList")
+	@PostMapping("emp/deptList")
 	public List<GroupDTO> getDeptListByOffice(@RequestParam String dptNo){
 		log.debug(TeamColor.RED + "dptNo =>" + dptNo);
 		
 		return groupService.getDeptListByOffice(dptNo);
 	}
 	
-	@PostMapping("/teamList")
+	@PostMapping("/emp/teamList")
 	public List<GroupDTO> getTeamListByDept(@RequestParam String dptNo){
 		log.debug(TeamColor.RED + "dptNo =>" + dptNo);
 		
 		return groupService.getTeamListByDept(dptNo);
 	}
 	
-	@GetMapping("/deptList")
+	@GetMapping("/emp/deptList")
 	public List<GroupDTO> getDeptList(){
 		
 		return groupService.getDeptList();
 	}
 	
-	@GetMapping("/teamList")
+	@GetMapping("/emp/teamList")
 	public List<GroupDTO> getTeamList(){
 		
 		return groupService.getTeamList();

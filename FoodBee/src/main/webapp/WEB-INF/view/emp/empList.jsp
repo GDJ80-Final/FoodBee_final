@@ -79,7 +79,7 @@
 			
 			// 본사/지사 데이터
 			$.ajax({
-				url:'${pageContext.request.contextPath}/officeList',
+				url:'${pageContext.request.contextPath}/emp/officeList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -92,7 +92,7 @@
 			
 			// 부서 데이터
 			$.ajax({
-				url:'${pageContext.request.contextPath}/deptList',
+				url:'${pageContext.request.contextPath}/emp/deptList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -105,7 +105,7 @@
 			
 			// 팀 데이터
 			$.ajax({
-				url:'${pageContext.request.contextPath}/teamList',
+				url:'${pageContext.request.contextPath}/emp/teamList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -156,7 +156,7 @@
 				const emp = JSON.parse(this.value);
 			    console.log(emp);
 			    $.ajax({
-			        url: '${pageContext.request.contextPath}/resetPw',
+			        url: '${pageContext.request.contextPath}/emp/resetPw',
 			        method: 'post',
 			        data: {
 			        	empNo: emp.empNo,
@@ -173,7 +173,7 @@
 			    let empNo = $(this).val();
 			    console.log(empNo);
 			    $.ajax({
-			        url: '${pageContext.request.contextPath}/resendEmail',
+			        url: '${pageContext.request.contextPath}/emp/resendEmail',
 			        method: 'post',
 			        data: { empNo: empNo },
 			        success: function(json){
@@ -194,7 +194,7 @@
 			// 사원 목록 출력
 			function loadEmpList(page){
 				$.ajax({
-					url:'${pageContext.request.contextPath}/searchEmp',
+					url:'${pageContext.request.contextPath}/emp/searchEmp',
 					method:'get',
 					data:{
 						officeName: $('#office').val(),
@@ -251,7 +251,7 @@
 						officeInfo + 
 						'<td>' + item.rankName +'</td>' + 
 						'<td>' + item.empNo +'</td>' + 
-						'<td><a href= "${pageContext.request.contextPath}/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
+						'<td><a href= "${pageContext.request.contextPath}/emp/empDetail?empNo=' + item.empNo +  '">' + item.empName +'</a></td>' + 
 						'<td>' + item.extNo +'</td>' + 
 						'<td>' + item.startDate +'</td>' + 
 						'<td>' + item.signupYN +

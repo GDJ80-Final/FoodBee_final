@@ -193,7 +193,7 @@
 			sg.dpt_no deptNo,
 			ssg.dpt_name officeName,
 			ssg.dpt_no officeNo,
-			i.original_file originalFIle,
+			i.original_file originalFile,
 			s.approval_sign_file approvalSignFile
 		FROM
 			emp e

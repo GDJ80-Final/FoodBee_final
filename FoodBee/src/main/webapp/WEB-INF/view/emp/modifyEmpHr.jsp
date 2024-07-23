@@ -24,7 +24,7 @@
 </head>
 <body>
     <div class="container form-container">
-        <form method="post" id="modifyForm" action="${pageContext.request.contextPath}/modifyEmpHr">
+        <form method="post" id="modifyForm" action="${pageContext.request.contextPath}/emp/modifyEmpHr">
             <div class="mb-4">
                 <h5>사원수정</h5>
                 <div>
@@ -34,7 +34,7 @@
 	           <div class="row">
                     <div class="col-md-4">
                         <div class="profile-img mb-3">
-                            프로필사진
+                            <img id="profileImg" src="${pageContext.request.contextPath}/upload/profile_img/${empHr.originalFile}" alt="프로필 사진" class="img-fluid rounded mb-3">
                         </div>
                     </div>
                     <div class="col-md-8">
@@ -149,7 +149,7 @@
 		    }
 			$('#createNoBtn').click(function(){
 				$.ajax({
-					url : '${pageContext.request.contextPath}/createEmpNo',
+					url : '${pageContext.request.contextPath}/emp/createEmpNo',
 					method : 'get', 
 					success : function(json) {
 						console.log(json);
@@ -159,7 +159,7 @@
 			});
 			
 			$.ajax({
-				url:'${pageContext.request.contextPath}/officeList',
+				url:'${pageContext.request.contextPath}/emp/officeList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -182,7 +182,7 @@
 				}
 				
 				$.ajax({
-					url:'${pageContext.request.contextPath}/deptList',
+					url:'${pageContext.request.contextPath}/emp/deptList',
 					method:'post',
 					data:{'dptNo' : $('#office').val()},
 					success:function(json) {
@@ -207,7 +207,7 @@
 				}
 				
 				$.ajax({
-					url:'${pageContext.request.contextPath}/teamList',
+					url:'${pageContext.request.contextPath}/emp/teamList',
 					method:'post',
 					data:{'dptNo' : $('#dept').val()},
 					success:function(json) {
@@ -224,7 +224,7 @@
 			});
 			
 			$.ajax({
-	    		url:'${pageContext.request.contextPath}/getEmpHr',
+	    		url:'${pageContext.request.contextPath}/emp/getEmpHr',
 	    		method: 'get',
 				data: {empNo : ${empHr.empNo}},
 				success:function(json){

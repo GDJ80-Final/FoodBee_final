@@ -23,7 +23,7 @@ public class ProfileServiceImpl implements ProfileService{
 
 	// 프로필 사진 수정
 	@Override
-	public void modifyProfileImg(int empNo, 
+	public String modifyProfileImg(int empNo, 
 			MultipartFile file, 
 			HttpServletRequest request) {
 		String originalFile = FileFormatter.fileFormatter(file);
@@ -51,6 +51,8 @@ public class ProfileServiceImpl implements ProfileService{
 			e.printStackTrace();
 			throw new RuntimeException();
 		} 
+		
+		return originalFile;
 		
 	}
 	

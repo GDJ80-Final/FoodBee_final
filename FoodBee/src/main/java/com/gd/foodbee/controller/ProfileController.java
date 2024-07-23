@@ -17,15 +17,12 @@ public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
 	
-	@PostMapping("/modifyProfileImg")
+	@PostMapping("/myPage/modifyProfileImg")
 	@ResponseBody
 	public String modifyProfileImg(@RequestParam int empNo,
 				@RequestParam MultipartFile file,
 				HttpServletRequest request) {
 		
-		profileService.modifyProfileImg(empNo, file, request);
-		
-		// 이미지 주소 값(미완성)
-		return "success";
+		return profileService.modifyProfileImg(empNo, file, request);
 	}
 }

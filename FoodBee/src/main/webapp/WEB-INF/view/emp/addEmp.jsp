@@ -104,7 +104,7 @@
 	    }
 		$('#createNoBtn').click(function(){
 			$.ajax({
-				url : '${pageContext.request.contextPath}/createEmpNo',
+				url : '${pageContext.request.contextPath}/emp/createEmpNo',
 				method : 'get', 
 				success : function(json) {
 					console.log(json);
@@ -114,7 +114,7 @@
 		});
 		
 		$.ajax({
-			url:'${pageContext.request.contextPath}/officeList',
+			url:'${pageContext.request.contextPath}/emp/officeList',
 			method:'get',
 			success:function(json){
 				console.log(json);
@@ -137,7 +137,7 @@
 			}
 			
 			$.ajax({
-				url:'${pageContext.request.contextPath}/deptList',
+				url:'${pageContext.request.contextPath}/emp/deptList',
 				method:'post',
 				data:{'dptNo' : $('#office').val()},
 				success:function(json) {
@@ -162,7 +162,7 @@
 			}
 			
 			$.ajax({
-				url:'${pageContext.request.contextPath}/teamList',
+				url:'${pageContext.request.contextPath}/emp/teamList',
 				method:'post',
 				data:{'dptNo' : $('#dept').val()},
 				success:function(json) {
