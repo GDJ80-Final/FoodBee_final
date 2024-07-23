@@ -113,9 +113,9 @@ public class RoomServiceImpl implements RoomService{
         beginRow = (currentPage -1) * rowPerPage;
         
         HashMap<String,Object> m = new HashMap<String,Object>();
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
         m.put("empNo", empNo);
+        m.put("beginRow", beginRow);
+        m.put("rowPerPage", rowPerPage);       
         
 		return roomMapper.selectRsvListByEmpNo(m); 
 	}

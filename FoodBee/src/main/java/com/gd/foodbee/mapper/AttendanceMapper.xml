@@ -49,7 +49,7 @@
 	</update>
 	
 	<!-- 개인 근태 출력 -->
-	<select id="selectAttendancePersonal" resultType="com.gd.foodbee.dto.AttendanceDTO" parameterType="int">
+	<select id="selectAttendancePersonal" resultType="com.gd.foodbee.dto.AttendanceDTO" parameterType="map">
 		SELECT 
 			emp_no empNo, 
 			date, 
@@ -58,12 +58,55 @@
 			DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
 			DATE_FORMAT(update_end_time, '%H:%i') updateEndTime,
 			update_reason updateReason,
-			approval_state approvalState
+			CASE
+		        WHEN 
+		        	approval_state = 0 THEN '미승인'
+		        WHEN 
+		        	approval_state = 1 THEN '승인'
+		        ELSE '알 수 없음'
+		    END approvalState,
+			CASE 
+	            WHEN 
+	            	start_time = update_start_time 
+	            	AND 
+	            	end_time = update_end_time 
+	            THEN 'x'
+	            ELSE 'o'
+        	END updateStatus
 		FROM 
 			attendance 
 		WHERE 
-			emp_no = #{empNo} 
+			emp_no = #{empNo}
+			<if test="startDate != null and endDate != null">
+	           	AND date BETWEEN #{startDate} AND #{endDate}
+	       	</if>	
 		ORDER BY 
 			date DESC
+		<if test="startDate == null and endDate == null">
+        	LIMIT #{beginRow}, #{rowPerPage}
+    	</if>
 	</select>
+	
+	<!-- 개인 근태 cnt -->
+	<select id="selectAttendancePersonalCnt" resultType="int" parameterType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			attendance
+		WHERE 
+			emp_no = #{empNo}
+	</select>
+	
+	<!-- 근태 확정 -->
+	<update id="updateAttendanceFinalTime" parameterType="map">
+		UPDATE 
+			attendance 
+		SET 
+			final_time = NOW()
+		WHERE 
+			date = #{date}
+			AND
+			emp_no = #{empNo}
+	</update>
+	
 </mapper>

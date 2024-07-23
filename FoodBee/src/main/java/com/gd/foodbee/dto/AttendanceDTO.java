@@ -17,6 +17,7 @@ public class AttendanceDTO {
 	private String updateStartTime;
 	private String updateEndTime;
 	private String updateReason;
+	private String updateStatus;
 	private String finalTime;
 	private String approvalState;
 	private String approvalDateTime;

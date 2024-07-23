@@ -6,6 +6,7 @@
 <title>월별 매출 차트</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
 </head>
 <body>
 <h1>매출 통계</h1><hr>
@@ -39,7 +40,7 @@ $(document).ready(function() {
     const initialMonth = currentMonth - 1;
     monthSelect.val(initialMonth);
 
-    // 차트 생성(막대형 바 차트)
+ 	// 차트 생성(막대형 바 차트)
     function createBarChart(year, month) {
         new Chart("totalChart", {
             type: "bar",
@@ -60,6 +61,12 @@ $(document).ready(function() {
                 title: {
                     display: true,
                     text: year + '년 ' + month + '월 매출'
+                },
+               
+                plugins: {
+                    datalabels: {
+                        display: false // 데이터 레이블 비활성화
+                    }
                 },
                 scales: {
                     yAxes: [{
@@ -85,6 +92,21 @@ $(document).ready(function() {
                 }]
             },
             options: {
+                plugins: {
+                    datalabels: {
+                        formatter: (value, ctx) => {
+                            let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                            let percentage = (value / sum * 100).toFixed(1) + "%";
+                            return percentage;
+                        },
+                        color: '#fff',
+                        font: {
+                            weight: 'bold'
+                        },
+                        anchor: 'end',
+                        align: 'start'
+                    }
+                },
                 animation: false, // 애니메이션 비활성화
                 title: {
                     display: true,
@@ -93,29 +115,9 @@ $(document).ready(function() {
                 legend: {
                     display: true,
                     position: 'right'
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            let dataset = data.datasets[tooltipItem.datasetIndex];
-                            let total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                                return previousValue + currentValue;
-                            });
-                            let currentValue = dataset.data[tooltipItem.index];
-                            let percentage = Math.round((currentValue / total) * 100); // 백분율 계산, 소수점 반올림
-                            return categoryName[tooltipItem.index] + ': ' + percentage + '%';
-                        }
-                    }
                 }
             }
         });
-
-        // 도넛 차트 범례 설정
-        let legendHtml = '';
-        categoryName.forEach(function(label, index) {
-            legendHtml += '<div><span style="display:inline-block;width:20px;height:10px;background-color:' + barColors[index] + ';margin-right:5px;"></span>' + label + '</div>';
-        });
-        $('#donutChartLegend').html(legendHtml);
     }
 
     // (선택된 월)과 (선택된 월 - 1) 달의 매출 데이터를 서버로부터 가져와 차트를 업데이트

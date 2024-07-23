@@ -20,5 +20,11 @@ public interface AttendanceMapper {
 	int updateTime(String updateStartTime, String updateEndTime, String updateReason, int empNo);
 	
 	// 개인 근태 출력
-	List<AttendanceDTO> selectAttendancePersonal (int empNo);
+	List<AttendanceDTO> selectAttendancePersonal(HashMap<String,Object> m);
+	
+	// 개인 근태 cnt
+	int selectAttendancePersonalCnt(int empNo);
+	
+	// 근태 확정
+	int updateAttendanceFinalTime(HashMap<String,Object> m);
 }

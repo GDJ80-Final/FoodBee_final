@@ -7,7 +7,8 @@
 </head>
 <body>
 <h1>전일 근태보고</h1>
-<form method="post" action="${pageContext.request.contextPath}/">
+<form method="post" action="${pageContext.request.contextPath}/attendance/attendanceFinalTime">
+	<input type="hidden" name="date" value="${attendanceDTO.date}">
 	<table border="1">
 		<tr>
 			<td>확인일자</td>
@@ -26,7 +27,7 @@
 			<td>${map.rankName} ${map.empName}</td>
 		</tr>	
 	</table>
-	<a href="${pageContext.request.contextPath}/attendance/attendanceModify">수정</a>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceModify'">수정</button>
 	<button type="submit">확정</button>
 </form>
 </body>

@@ -32,8 +32,8 @@
 			<td><textarea name="updateReason"></textarea></td>
 		</tr>
 	</table>
-	<a href="${pageContext.request.contextPath}/attendance/attendanceReport">돌아가기</a>
-	<button type="submit">수정</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceReport'">돌아가기</button>
+	<button type="submit">수정 완료</button>
 </form>
 </body>
 </html>

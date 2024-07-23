@@ -72,7 +72,7 @@
 		</tr>
 	</table>
 		<button type="submit">예약</button>
-		<button type="button"><a href="${pageContext.request.contextPath}/room/roomList">취소</a></button>
+		<button type="button" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>
 		
 </form>	
 <script>
