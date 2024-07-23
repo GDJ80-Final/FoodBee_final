@@ -6,8 +6,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>전일 근태보고 수정</h1>
-<form method="post" action="${pageContext.request.contextPath}/attendanceModifyAction">
+<h1>전일 근태보고</h1>
+<form method="post" action="${pageContext.request.contextPath}/">
 	<table border="1">
 		<tr>
 			<td>확인일자</td>
@@ -16,24 +16,18 @@
 		<tr>
 			<td>출근 시간</td>
 			<td>${attendanceDTO.updateStartTime}</td>
-			<td><input type="datetime" name="updateStartTime" value="${attendanceDTO.updateStartTime}"></td>
 		</tr>
 		<tr>
 			<td>퇴근 시간</td>
 			<td>${attendanceDTO.updateEndTime}</td>
-			<td><input type="datetime" name="updateEndTime" value="${attendanceDTO.updateEndTime}"></td>
 		</tr>
 		<tr>
 			<td>승인자</td>
 			<td>${map.rankName} ${map.empName}</td>
-		</tr>
-		<tr>
-			<td>사유</td>
-			<td><textarea name="updateReason"></textarea></td>
-		</tr>
+		</tr>	
 	</table>
-	<a href="${pageContext.request.contextPath}/attendanceReport">돌아가기</a>
-	<button type="submit">수정</button>
+	<a href="${pageContext.request.contextPath}/attendance/attendanceModify">수정</a>
+	<button type="submit">확정</button>
 </form>
 </body>
 </html>

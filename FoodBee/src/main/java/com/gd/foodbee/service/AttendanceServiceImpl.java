@@ -1,6 +1,7 @@
 package com.gd.foodbee.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,5 +43,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		
 		return attendanceMapper.updateTime(updateStartTime, updateEndTime, updateReason, empNo);
+	}
+	
+	// 개인 근태 출력
+	@Override
+	public List<AttendanceDTO> getAttendancePersonal(int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		return attendanceMapper.selectAttendancePersonal(empNo);
 	}
 }

@@ -9,8 +9,8 @@
 </head>
 <body>
 <h1>내 예약 목록</h1>
-<a href="${pageContext.request.contextPath}/roomRsvList">전체 예약</a>
-<a href="${pageContext.request.contextPath}/myRoomRsvList">내 예약</a>
+<a href="${pageContext.request.contextPath}/room/roomRsvList">전체 예약</a>
+<a href="${pageContext.request.contextPath}/room/myRoomRsvList">내 예약</a>
 <table border="1">
     <tr> 
         <th>회의실</th>
@@ -26,11 +26,11 @@
             <td>${rsv.startTime} ~ ${rsv.endTime}</td>
             <td>${rsv.empName}</td>
             <td>
-            	<form method="post" action="${pageContext.request.contextPath}/cancleRoomRsv"> 
-            	<input type="hidden" name="empNo" value="${rsv.empNo}">
-				<input type="hidden" name="rsvDate" value="${rsv.rsvDate}">
-				<input type="hidden" name="startTime" value="${rsv.startTime}">            	           
-            	<button id="cancel-link" type="submit">취소</button>
+            	<form method="post" action="${pageContext.request.contextPath}/room/cancleRoomRsv"> 
+	            	<input type="hidden" name="empNo" value="${rsv.empNo}">
+					<input type="hidden" name="rsvDate" value="${rsv.rsvDate}">
+					<input type="hidden" name="startTime" value="${rsv.startTime}">            	           
+	            	<button id="cancel-link" type="submit">취소</button>
             	</form> 
             </td>
         </tr>  
@@ -38,11 +38,11 @@
 </table>
 <div>
     <c:if test="${currentPage > 1}">
-        <a href="${pageContext.request.contextPath}/myRoomRsvList?currentPage=${currentPage - 1}">이전</a>
+        <a href="${pageContext.request.contextPath}/room/myRoomRsvList?currentPage=${currentPage - 1}">이전</a>
     </c:if>
     <span>페이지 ${currentPage} / ${lastPage}</span>
     <c:if test="${currentPage < lastPage}">
-        <a href="${pageContext.request.contextPath}/myRoomRsvList?currentPage=${currentPage + 1}">다음</a>
+        <a href="${pageContext.request.contextPath}/room/myRoomRsvList?currentPage=${currentPage + 1}">다음</a>
     </c:if>
 </div>
 <script>

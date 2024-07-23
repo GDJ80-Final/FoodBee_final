@@ -12,7 +12,7 @@
 <body>
 <div id="reserved-times"></div>
 <h1>회의실 예약</h1>
-<form id="reservationForm" method="post" action="${pageContext.request.contextPath}/roomRsv">		
+<form id="reservationForm" method="post" action="${pageContext.request.contextPath}/room/roomRsv">		
 	<input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
 	<input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
 	
@@ -72,7 +72,7 @@
 		</tr>
 	</table>
 		<button type="submit">예약</button>
-		<button type="button"><a href="${pageContext.request.contextPath}/roomList">취소</a></button>
+		<button type="button"><a href="${pageContext.request.contextPath}/room/roomList">취소</a></button>
 		
 </form>	
 <script>
@@ -101,7 +101,7 @@ $(document).ready(function() {
     // 예약된 시간 가져오기
     function fetchReservedTimes(roomNo, rsvDate) {
         $.ajax({
-            url: "${pageContext.request.contextPath}/getReservedTimes",
+            url: "${pageContext.request.contextPath}/room/getReservedTimes",
             method: 'POST',
             data: {
                 roomNo: roomNo,

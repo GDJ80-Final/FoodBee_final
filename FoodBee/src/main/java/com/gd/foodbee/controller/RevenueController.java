@@ -23,17 +23,17 @@ public class RevenueController {
 	
 	// 해당 월 매출액 출력
 	// 사용 페이지 : /monthRevenue
-	@GetMapping("/monthRevenue")
+	@GetMapping("/revenue/monthRevenue")
 	public String monthRevenue() {
 		
-		return "monthRevenue";
+		return "/revenue/monthRevenue";
 	}	
 	
 	// 해당 월 매출액 출력
 	// 파라미터 : String referenceMonth
 	// 반환 값 : RevenueDTO
 	// 사용 페이지 : /monthRevenue
-	@PostMapping("/getMonthRevenue")
+	@PostMapping("/revenue/getMonthRevenue")
 	@ResponseBody
 	public List<RevenueDTO> getMonthRevenue(@RequestParam(name="month") String referenceMonth) {
 		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
@@ -46,17 +46,17 @@ public class RevenueController {
 	
 	// 전체/카테고리 매출액 출력
 	// 사용 페이지 : /categoryRevenue
-	@GetMapping("/categoryRevenue")
+	@GetMapping("/revenue/categoryRevenue")
 	public String categoryRevenue() {
 		
-		return "categoryRevenue";
+		return "/revenue/categoryRevenue";
 	}	
 	
 	// 전체 매출액 출력
 	// 파라미터 : String year
 	// 반환 값 : RevenueDTO
 	// 사용 페이지 : /totalRevenue
-	@PostMapping("/getTotalRevenue")
+	@PostMapping("/revenue/getTotalRevenue")
 	@ResponseBody
 	public List<RevenueDTO> getTotalRevenue(@RequestParam(name="year") String referenceMonth) {
 		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
@@ -71,7 +71,7 @@ public class RevenueController {
 	// 파라미터 : String categoryName
 	// 반환 값 : RevenueDTO
 	// 사용 페이지 : /totalRevenue
-	@PostMapping("/getCategoryRevenue")
+	@PostMapping("/revenue/getCategoryRevenue")
 	@ResponseBody
 	public List<RevenueDTO> getCategoryRevenue(@RequestParam(name="year") String referenceMonth,
 											@RequestParam(name="category") String categoryName) {

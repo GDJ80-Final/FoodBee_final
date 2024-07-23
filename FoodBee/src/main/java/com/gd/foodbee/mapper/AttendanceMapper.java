@@ -1,6 +1,7 @@
 package com.gd.foodbee.mapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface AttendanceMapper {
 	// 근태보고 수정
 	int updateTime(String updateStartTime, String updateEndTime, String updateReason, int empNo);
 	
+	// 개인 근태 출력
+	List<AttendanceDTO> selectAttendancePersonal (int empNo);
 }

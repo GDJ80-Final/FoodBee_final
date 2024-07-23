@@ -127,7 +127,7 @@ $(document).ready(function() {
 
         // 두 개의 데이터 세트를 순차적으로 가져와 동시에 반영할 수 있음(이번달 총금액, 저번달 총금액을 구하기 위함)
         $.ajax({
-            url: "${pageContext.request.contextPath}/getMonthRevenue",
+            url: "${pageContext.request.contextPath}/revenue/getMonthRevenue",
             method: 'POST',
             data: { month: formattedMonth }, // 서버에 전달할 데이터(선택된 월)
             success: function(json) {
@@ -146,7 +146,7 @@ $(document).ready(function() {
 
                 // (선택된 월 - 1) 데이터 요청
                 $.ajax({
-                    url: "${pageContext.request.contextPath}/getMonthRevenue",
+                    url: "${pageContext.request.contextPath}/revenue/getMonthRevenue",
                     method: 'POST',
                     data: { month: formattedPreviousMonth }, // 서버에 전달할 데이터(선택된 월 - 1)
                     success: function(preJson) {

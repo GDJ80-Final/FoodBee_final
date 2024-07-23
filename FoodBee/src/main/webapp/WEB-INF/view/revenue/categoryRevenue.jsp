@@ -40,7 +40,7 @@ function fetchTotalData() {
     const selectedYear = document.getElementById('selectYear').value;
 
     $.ajax({
-        url: "${pageContext.request.contextPath}/getTotalRevenue",
+        url: "${pageContext.request.contextPath}/revenue/getTotalRevenue",
         method: 'POST',
         dataType: 'json',
         data: { year: selectedYear },
@@ -60,7 +60,7 @@ function fetchCategoryData(category) {
     const selectedYear = document.getElementById('selectYear').value;
 
     $.ajax({
-        url: "${pageContext.request.contextPath}/getCategoryRevenue",
+        url: "${pageContext.request.contextPath}/revenue/getCategoryRevenue",
         method: 'POST',
         dataType: 'json',
         data: { year: selectedYear, category: category },

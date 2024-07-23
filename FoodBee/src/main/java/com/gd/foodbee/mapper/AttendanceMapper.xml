@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.AttendanceMapper">
+
 	<!-- 근태보고 출력 -->
 	<select id="selectTime" resultType="com.gd.foodbee.dto.AttendanceDTO" parameterType="int">
 		SELECT 
-			emp_no, 
+			emp_no empNo, 
 			date, 
 			DATE_FORMAT(start_time, '%H:%i') startTime, 
 			DATE_FORMAT(end_time, '%H:%i') endTime,
@@ -17,7 +18,7 @@
 			AND 
 			date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 		ORDER BY 
-			date DESC;
+			date DESC
 	</select>
 	
 	<!-- 근태보고(승인자) 출력 -->
@@ -46,4 +47,23 @@
 			AND 
 			date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 	</update>
+	
+	<!-- 개인 근태 출력 -->
+	<select id="selectAttendancePersonal" resultType="com.gd.foodbee.dto.AttendanceDTO" parameterType="int">
+		SELECT 
+			emp_no empNo, 
+			date, 
+			DATE_FORMAT(start_time, '%H:%i') startTime, 		 
+			DATE_FORMAT(end_time, '%H:%i') endTime,
+			DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
+			DATE_FORMAT(update_end_time, '%H:%i') updateEndTime,
+			update_reason updateReason,
+			approval_state approvalState
+		FROM 
+			attendance 
+		WHERE 
+			emp_no = #{empNo} 
+		ORDER BY 
+			date DESC
+	</select>
 </mapper>

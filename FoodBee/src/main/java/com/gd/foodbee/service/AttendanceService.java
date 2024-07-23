@@ -1,6 +1,7 @@
 package com.gd.foodbee.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.gd.foodbee.dto.AttendanceDTO;
 
@@ -15,4 +16,7 @@ public interface AttendanceService {
 	// 근태보고 수정
 	int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo);
 	
+	// 개인 근태 출력
+	List<AttendanceDTO> getAttendancePersonal(int empNo);
+		
 }

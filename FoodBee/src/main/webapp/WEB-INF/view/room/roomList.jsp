@@ -9,7 +9,7 @@
 <body>
 <h1>회의실 목록</h1>
 <input type="date" id="dateInput">
-<a href="${pageContext.request.contextPath}/roomRsvList">예약 리스트</a>
+<a href="${pageContext.request.contextPath}/room/roomRsvList">예약 리스트</a>
 
 <table border="1">
 	<tr>
@@ -21,7 +21,7 @@
 	<c:forEach var="m" items="${list}">	
 		<tr>
 			<td style="height:200px;">
-				<form action="${pageContext.request.contextPath}/roomOne" method="get">
+				<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
 					<input type="hidden" name="roomNo" value="${m.roomNo}">
 					<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
 					
