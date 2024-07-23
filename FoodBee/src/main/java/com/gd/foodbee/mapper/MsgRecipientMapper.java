@@ -36,5 +36,8 @@ public interface MsgRecipientMapper {
 	//사용클래스 : MsgService.updateReadState
 	int updateReadYN(int msgNo,int empNo);
 	
+	//쪽지자동삭제
+	int updateMsgDeleteAuto();
+	
 	
 }

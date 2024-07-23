@@ -134,7 +134,8 @@
 		UPDATE
 			msg
 		SET
-			msg_state = 1
+			msg_state = 1,
+			state_update_datetime = NOW()
 		WHERE
 			msg_no = #{msgNo}
 	</update>
@@ -194,10 +195,21 @@
 		UPDATE
 			msg
 		SET
-			msg_state = 9
+			msg_state = 9,
+			state_update_datetime = NOW()
 		WHERE 
 			msg_state = 0
 			AND msg_no = #{msgNo}
 	
+	</update>
+	<update id="updateMsgDeleteAuto">
+		UPDATE 
+			msg
+		SET 
+			msg_state = 9,
+			state_update_datetime = NOW()
+		WHERE 
+			CURDATE() >= DATE_FORMAT(state_update_datetime,'%Y-%m-%d') + INTERVAL 15 DAY
+			AND msg_state = 0
 	</update>
 </mapper>

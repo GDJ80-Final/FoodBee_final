@@ -18,21 +18,21 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-	@GetMapping("/community/addBoard")
+	@GetMapping("/community/board/addBoard")
 	public String addBoard() {
-		return "/community/addBoard";
+		return "/community/board/addBoard";
 	}
 	
-	@PostMapping("/community/addBoard")
+	@PostMapping("/community/board/addBoard")
 	public String addBoard(BoardDTO boardRequestDTO) {
 		log.debug(TeamColor.YELLOW + "boardRequestDTO =>" + boardRequestDTO.toString());
 		boardService.addBoard(boardRequestDTO);
 		
-		return "redirect:/community/boardList";
+		return "redirect:/community/board/boardList";
 	}
-	@GetMapping("/community/boardList")
+	@GetMapping("/community/board/boardList")
 	public String boardList() {
 		
-		return "/community/boardList";
+		return "/community/board/boardList";
 	}
 }

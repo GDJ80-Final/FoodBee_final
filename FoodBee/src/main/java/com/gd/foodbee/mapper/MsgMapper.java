@@ -63,4 +63,7 @@ public interface MsgMapper {
 	//사용클래스 : MsgService.deleteMsg
 	int updateMsgDelete(int msgNo);
 	
+	//쪽지 자동 삭제(스케줄러)
+	int updateMsgDeleteAuto();
+	
 }

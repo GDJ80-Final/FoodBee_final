@@ -28,7 +28,8 @@
 		UPDATE
 			msg_recipient
 		SET
-			recipient_msg_state = 1
+			recipient_msg_state = 1,
+			state_update_datetime = NOW()
 		WHERE
 			msg_no = #{msgNo}
 			AND recipient_emp_no = #{empNo}
@@ -37,7 +38,8 @@
 		UPDATE
 			msg_recipient
 		SET
-			recipient_msg_state = 9
+			recipient_msg_state = 9,
+			state_update_datetime = NOW()
 		WHERE 
 			recipient_msg_state = 0
 			AND msg_no = #{msgNo}
@@ -56,6 +58,15 @@
 			AND recipient_emp_no = #{empNo}
 			
 	</update>
-
+	<update id="updateMsgDeleteAuto">
+		UPDATE 
+			msg_recipient
+		SET 
+			recipient_msg_state = 9,
+			state_update_datetime = NOW()
+		WHERE 
+			CURDATE() >= DATE_FORMAT(state_update_datetime,'%Y-%m-%d') + INTERVAL 15 DAY
+			AND recipient_msg_state = 0
+	</update>
 
 </mapper>
