@@ -21,6 +21,10 @@
             align-items: center;
             justify-content: center;
         }
+        
+        canvas {
+            border: 1px solid black;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +50,7 @@
         </form>
     </div>
     
+    <!-- 프로필 사진 변경 모달 -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -67,21 +72,49 @@
             </div>
         </div>
     </div>
+    
+    <!--  전자 서명 모달 -->
+    <div class="modal fade" id="signModal" tabindex="-1" aria-labelledby="signModalLabel" aria-hidden="true">
+    	<div class="modal-dialog">
+        	<div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signModalLabel">전자 서명</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="existingSignContainer">
+                        <h6>기존 서명:</h6>
+                        <img id="existingSign" src="" alt="기존 서명" style="display: none;">
+                    </div>
+                    <h6>새 서명:</h6>
+                    <canvas id="signCanvas" width="400" height="200"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button id="clearBtn" type="button" class="btn btn-warning">지우기</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 	<script>
+		//휴가 내역 페이징
 		let currentPage = 1;
 		let lastPage = 1;
 		
-		
-		
+		//휴가 내역 현재년도
 		const currentYear = new Date().getFullYear();
 		$(document).ready(function() {
 			
+			// 원래 저장된 프로필 사진
 		 	let originalSrc = $('#profileImage').attr('src');
+			//새 사진이 선택됐는지 여부
 	        let newImageSelected = false;
 	        
 			$('#year').hide();
 			const empNo = '${emp.empNo}';
+			let approvalSign;
 			$.ajax({
 				url:'${pageContext.request.contextPath}/getEmpHr',
 				method:'get',
@@ -111,6 +144,7 @@
 				});
 			});
 			
+			// 비밀번호 변경
 			$("#changePw").click(function(){
 				$('#year').hide();
 				$('#yearSelect').empty();
@@ -145,6 +179,7 @@
 				);
 			});
 			
+			// 휴가내역 탭 클릭시
 			$("#dayOffHistory").click(function(){
 				$("#title").text('휴가 내역');
 				$('#year').show();
@@ -153,14 +188,17 @@
 
 			});
 			
+			// 휴가내역 년도 바뀔시
 			$('#yearSelect').change(function(){
 				dayOffHistoryList(1);
 			});
 			
+			// 프로필 사진 변경 버튼 누를시
 			$('#changeImageBtn').on('click', function() {
                 $('#fileInput').click();
             });
 			
+			// 프로필 사진에 파일이 들어왔을때
 			$('#fileInput').on('change', function(e) {
 	                let file = e.target.files[0];
 	                if (file) {
@@ -174,6 +212,7 @@
 	                }
 	            });
 			 
+			// 모달이 꺼졌을때
 			 $('#profileModal').on('hidden.bs.modal', function () {
 	                $('#profileImage').attr('src', originalSrc);
 	                $('#updateProfileBtn').hide();
@@ -181,6 +220,7 @@
 	                newImageSelected = false;
 	         });
 			 
+			// 프로필 사진 수정 버튼 클릭시
 			 $('#updateProfileBtn').on('click', function() {
 				 
 	                if (newImageSelected) {
@@ -209,6 +249,7 @@
 	                }
 	            });
 			
+			// 페이징 버튼
 			$(document).on('click', '#page button', function() {
 		        const buttonId = $(this).attr('id');
 		        switch(buttonId) {
@@ -239,6 +280,135 @@
 		        }
 		    });
 			
+			// 전자 서명
+			const $canvas = $('#signCanvas');
+            const ctx = $canvas[0].getContext('2d');
+            let isDrawing = false;
+            
+            $canvas.on({
+                'mousedown touchstart': startDrawing,
+                'mousemove touchmove': draw,
+                'mouseup mouseout touchend': stopDrawing
+            });
+
+            $('#saveBtn').click(saveSign);
+            $('#clearBtn').click(clearCanvas);
+
+            $('#signModal').on('show.bs.modal', function () {
+                loadExistingSign();
+            });
+
+            function startDrawing(e) {
+                isDrawing = true;
+                draw(e);
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+
+                e.preventDefault();
+                const offset = $canvas.offset();
+                const x = (e.type === 'touchmove') ? e.touches[0].pageX - offset.left : e.pageX - offset.left;
+                const y = (e.type === 'touchmove') ? e.touches[0].pageY - offset.top : e.pageY - offset.top;
+
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = 'black';
+
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+            }
+
+            function stopDrawing() {
+                isDrawing = false;
+                ctx.beginPath();
+            }
+
+            function validateSignature(canvas) {
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                let pixelCount = 0;
+                let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
+
+                // 픽셀 수 및 서명 영역 계산
+                for (let i = 0; i < data.length; i += 4) {
+                    if (data[i] < 255 || data[i + 1] < 255 || data[i + 2] < 255) {
+                        pixelCount++;
+                        const x = (i / 4) % canvas.width;
+                        const y = Math.floor((i / 4) / canvas.width);
+                        minX = Math.min(minX, x);
+                        minY = Math.min(minY, y);
+                        maxX = Math.max(maxX, x);
+                        maxY = Math.max(maxY, y);
+                    }
+                }
+
+                const signatureWidth = maxX - minX;
+                const signatureHeight = maxY - minY;
+                const signatureArea = signatureWidth * signatureHeight;
+                const canvasArea = canvas.width * canvas.height;
+
+                // 검증 조건
+                const minPixelCount = 1000; // 최소 픽셀 수
+                const minAreaRatio = 0.05; // 최소 영역 비율 (5%)
+
+                if (pixelCount < minPixelCount) {
+                    return { valid: false, message: "서명이 너무 짧거나 단순합니다." };
+                }
+
+                if ((signatureArea / canvasArea) < minAreaRatio) {
+                    return { valid: false, message: "서명이 너무 작습니다." };
+                }
+
+                return { valid: true, message: "유효한 서명입니다." };
+            }
+
+            function saveSign() {
+                const result = validateSignature($canvas[0]);
+                if (!result.valid) {
+                    alert(result.message);
+                    return;
+                }
+
+                const dataURL = $canvas[0].toDataURL('image/png');
+                
+                // 서버에 서명 저장
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/saveApprovalSign',
+                    method: 'POST',
+                    data: { 
+                    		empNo: empNo,
+                    		url: dataURL 
+                	},
+                    success: function(json) {
+                        alert('서명이 성공적으로 저장되었습니다.');
+                        $('#existingSign').attr('src', dataURL).show();
+                        approvalSign = json;
+                        clearCanvas();
+                    },
+                    error: function(xhr, status, error) {
+                        alert('서명 저장에 실패했습니다: ' + error);
+                    }
+                });
+            }
+
+            function clearCanvas() {
+                ctx.clearRect(0, 0, $canvas[0].width, $canvas[0].height);
+                ctx.beginPath();
+            }
+
+            function loadExistingSign() {
+                if (approvalSign) {
+                    $('#existingSign').attr('src', approvalSign).show();
+                } else {
+                    $('#existingSign').hide();
+                }
+            }
+			
+			// 휴가 내역 틀
 			function dayOffHistoryList(page){
 				$.ajax({
 					url:'${pageContext.request.contextPath}/getDayOffHistoryList',
@@ -309,7 +479,7 @@
 			};
 			
 			
-			
+			//휴가 내역 리스트
 			function dayOffHistory(item){
 				$('#dayOffList').append('<tr>' +
 						'<td>' + item.empNo + '</td>' +
@@ -320,6 +490,7 @@
 				
 			};
 			
+			// 휴가 내역 년도 셀렉트 생성
 			function yearSelect() {
 			    let startYear = 0;
 			    $.ajax({
@@ -346,6 +517,7 @@
 			    });
 			}
 			
+			// 비밀번호 변경
 			$("#content").on("click", "#modifyPwBtn", function() {
 				validateOldPw();
 				validateNewPw();
@@ -410,6 +582,8 @@
 			// 사원정보 가져오기
 			function empInfo(json){
 				endDate = json.endDate;
+				console.log(json.approvalSignFile);
+				approvalSign = json.approvalSignFile;
 				if(endDate == null){
 					endDate = '';
 				}
@@ -464,6 +638,11 @@
 					                '<div class="col-md-6">' +
 					                    '<label class="form-label">퇴사 일자</label>' +
 					                    '<input type="text" class="form-control" value="' + endDate + '" readonly>' +
+					                '</div>' +
+					                '<div class="col-md-6">' +
+						                '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signModal">' +
+							                '전자 서명 수정' +
+							            '</button>' +
 					                '</div>' +
 					            '</div>' +
 					        '</div>' +

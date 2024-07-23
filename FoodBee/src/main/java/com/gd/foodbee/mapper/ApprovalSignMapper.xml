@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.ApprovalSignMapper">
-	<insert id="insertApprovalSign">
+	<insert id="insertApprovalSign" parameterType="Map">
 		INSERT INTO approval_sign(
 			emp_no,
-			approval_sign
+			approval_sign_file
 		) VALUES (
 			#{empNo},
 			#{approvalSign}
 		)
 	</insert>
-	<update id="updateApprovalSign">
+	<update id="updateApprovalSign" parameterType="Map">
 		UPDATE
 			approval_sign
 		SET
-			approval_sign = #{approvalSign},
-			update_datetime = #{updateDatetime}
+			approval_sign_file = #{approvalSign},
+			update_datetime = now()
 		WHERE
 			emp_no = #{empNo}
 	</update>
+	<select id="selectApprovalSign" parameterType="int" resultType="String">
+		SELECT
+			approval_sign_file approvalSignFile
+		FROM
+			approval_sign
+		WHERE
+			emp_no = #{empNo}
+	</select>
 </mapper>
