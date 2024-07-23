@@ -218,7 +218,7 @@
           headerToolbar: {
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridDay,listWeek'
+            right: 'dayGridMonth,timeGridDay'
           },
           expandRows: true,
           events: events,
@@ -235,7 +235,7 @@
               document.getElementById('meetingRoom').innerHTML = info.event.extendedProps.roomNo;
               document.getElementById('meetingStartTime').innerHTML = info.event.start.toLocaleString();
               document.getElementById('meetingEndTime').innerHTML = info.event.end.toLocaleString();
-            } else if (info.event.title.includes('님휴가')) {
+            } else if (info.event.title.includes('님 휴가')) {
               $('#dayOff').modal('show');
               document.getElementById('dayOffEmp').innerHTML = info.event.extendedProps.dayOffEmp;
               document.getElementById('startDate').innerHTML = info.event.start.toLocaleString();

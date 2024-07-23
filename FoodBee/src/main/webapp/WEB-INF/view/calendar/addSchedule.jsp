@@ -9,6 +9,7 @@
 </head>
 <body>
 <h3>일정추가</h3>
+<a href="schedule">돌아가기</a>
 <body>
 	<form method="post" action="addScheduleAction">
 		<table border="1">

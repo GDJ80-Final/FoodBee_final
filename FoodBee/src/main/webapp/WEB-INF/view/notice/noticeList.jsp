@@ -9,9 +9,9 @@
 </head>
 <body>
 <h1>공지사항</h1>
-<button id="list" data-url="${pageContext.request.contextPath}/allNoticeList" data-type="list">전체</button>
-<button id="emp" data-url="${pageContext.request.contextPath}/allEmpList" data-type="emp">전사원</button>
-<button id="dpt" data-url="${pageContext.request.contextPath}/allDptList" data-type="dpt">부서별</button>
+<button id="list" data-url="${pageContext.request.contextPath}/notice/allNoticeList" data-type="list">전체</button>
+<button id="emp" data-url="${pageContext.request.contextPath}/notice/allEmpList" data-type="emp">전사원</button>
+<button id="dpt" data-url="${pageContext.request.contextPath}/notice/allDptList" data-type="dpt">부서별</button>
 
 <table border="1">
     <thead>
@@ -99,7 +99,7 @@ $(document).ready(function() {
             let newRow = $("<tr>" +
                 "<td>" + item.noticeNo + "</td>" +
                 "<td>" + item.type + "</td>" +
-                "<td><a href='" + "${pageContext.request.contextPath}/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
+                "<td><a href='" + "${pageContext.request.contextPath}/notice/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
                 "<td>" + item.name + "</td>" +
                 "<td>" + formattedDate + "</td>" +
                 "</tr>");
