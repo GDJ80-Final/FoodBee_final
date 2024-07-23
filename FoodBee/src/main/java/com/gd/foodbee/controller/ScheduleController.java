@@ -99,9 +99,9 @@ public class ScheduleController {
 	//개인일정 전체보기
 	@GetMapping("/calendar/personalScheduleList")
 	@ResponseBody
-	public Map<String,Object> personalScheduleList(int currentPage, int empNo){
+	public Map<String,Object> personalScheduleList(int currentPage, int empNo, String search){
 		
-		List<ScheduleDTO> personalList = scheduleService.personalListAll(currentPage, empNo);
+		List<ScheduleDTO> personalList = scheduleService.personalListAll(currentPage, empNo, search);
 		int personLastPage = scheduleService.personLastPage(empNo);
 		
 		Map<String,Object> personList = new HashMap<String,Object>();
@@ -110,6 +110,7 @@ public class ScheduleController {
 		personList.put("personLastPage", personLastPage);
 		
 		log.debug(TeamColor.PURPLE + "개인일정전체list=>" + personalList);
+		log.debug(TeamColor.PURPLE + "개인일정lastPage" + personLastPage);
 		
 		return personList;
 	}
@@ -117,8 +118,8 @@ public class ScheduleController {
 	
 	@GetMapping("/calendar/teamScheduleList")
 	@ResponseBody
-	public Map<String, Object> teamScheduleList(int currentPage, String dptNo) {
-	    List<HashMap<String, Object>> teamListAll = scheduleService.teamListAll(currentPage, dptNo);
+	public Map<String, Object> teamScheduleList(int currentPage, String dptNo, String search) {
+	    List<HashMap<String, Object>> teamListAll = scheduleService.teamListAll(currentPage, dptNo, search);
 	    int teamLastPage = scheduleService.teamLastPage(dptNo);
 
 	    Map<String, Object> teamList = new HashMap<>();
@@ -138,9 +139,9 @@ public class ScheduleController {
 	//회의실 예약 전체보기
 	@GetMapping("/calendar/roomScheduleList")
 	@ResponseBody
-	public Map<String,Object> roomScheduleList(int currentPage, String dptNo){
+	public Map<String,Object> roomScheduleList(int currentPage, String dptNo, String search){
 		
-		List<HashMap<String,Object>> roomListAll = scheduleService.roomListAll(currentPage, dptNo);
+		List<HashMap<String,Object>> roomListAll = scheduleService.roomListAll(currentPage, dptNo, search);
 		int roomLastPage = scheduleService.roomLastPage(dptNo);
 		
 		Map<String,Object> roomList = new HashMap<String,Object>();

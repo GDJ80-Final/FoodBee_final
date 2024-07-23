@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>팀일정 상세보기</h1>
-<a href="schedule">돌아가기</a>
+<a href="scheduleList">돌아가기</a>
 		<table border="1">
 			<tr>
 				<th>작성자</th>

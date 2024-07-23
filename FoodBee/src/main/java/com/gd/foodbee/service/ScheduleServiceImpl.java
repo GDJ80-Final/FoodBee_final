@@ -71,21 +71,23 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 	//개인일정 전체리스트
 	@Override
-	public List<ScheduleDTO> personalListAll(int currentPage, int empNo){
+	public List<ScheduleDTO> personalListAll(int currentPage, int empNo, String search){
 		log.debug(TeamColor.PURPLE + "empNo=>" + empNo);
+		log.debug(TeamColor.PURPLE + "currentPage=>" + currentPage);
 		
 		HashMap<String,Object> m = new HashMap<>();
-		int beginRow = (currentPage -1)*this.rowPerPage;
+		int beginRow = (currentPage-1)*this.rowPerPage;
 		
 		m.put("beginRow", beginRow);
 		m.put("empNo", empNo);
 		m.put("rowPerPage", rowPerPage);
+		m.put("search", search);
 		
 		return scheduleMapper.personalList(m);
 	}
 	//팀일정 전체리스트
 	@Override
-	public List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo){
+	public List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo, String search){
 		log.debug(TeamColor.PURPLE + "dptNo=>" + dptNo);
 		
 		HashMap<String,Object> m = new HashMap<>();
@@ -94,13 +96,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 		m.put("dptNo", dptNo);
 		m.put("beginRow", beginRow);
 		m.put("rowPerPage", rowPerPage);
+		m.put("search", search);
 		
 		return scheduleMapper.teamList(m);
 	}
 	
 	//팀 회의 전체 리스트
 	@Override
-	public List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo){
+	public List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo, String search){
 		
 		HashMap<String,Object>m = new HashMap<>();
 		int beginRow = (currentPage -1)*this.rowPerPage;
@@ -108,6 +111,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 		m.put("dptNo", dptNo);
 		m.put("beginRow", beginRow);
 		m.put("rowPerPage", rowPerPage);
+		m.put("search", search);
 		
 		return scheduleMapper.roomList(m);
 	}
@@ -116,10 +120,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public int personLastPage(int empNo) {
 		int count = scheduleMapper.countPerson(empNo);
     	int lastPage = (int) Math.ceil((double) count / rowPerPage);
-    	
-    	if(lastPage % 2 != 0) {
-	    	lastPage = lastPage +1;
-	    }
+
     	return lastPage;
 	}
 	
@@ -128,10 +129,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public int teamLastPage(String dptNo) {
 		int count = scheduleMapper.countTeam(dptNo);
     	int lastPage = (int) Math.ceil((double) count / rowPerPage);
-    	
-    	if(lastPage % 2 != 0) {
-	    	lastPage = lastPage +1;
-	    }
+
     	return lastPage;
 	}
 	
@@ -141,9 +139,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 		int count = scheduleMapper.countRoom(dptNo);
     	int lastPage = (int) Math.ceil((double) count / rowPerPage);
     	
-    	if(lastPage % 2 != 0) {
-	    	lastPage = lastPage +1;
-	    }
     	return lastPage;
 	}
 	

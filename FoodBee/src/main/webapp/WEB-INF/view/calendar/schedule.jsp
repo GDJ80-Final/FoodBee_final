@@ -9,8 +9,8 @@
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
    <style>
      #calendar {
-       max-width: 700px; 
-       height: 600px; 
+       max-width: 750px; 
+       height: 700px; 
        margin: 0 auto; 
        font-size: 10px;
      }
@@ -93,7 +93,9 @@
           </div>
           <div class="modal-body">
             <p>예약자: <span id="meetingEmp"></span></p>
-            <p>회의실: <span id="meetingRoom"></span></p>
+            <p>회의실: <span id="meetingRoom"></span>  
+           <!--  <button id="meetingLocation">위치</button></p>
+             <p>회의실 장소: <span id="meetingPlace" style="display:none;"></span></p> -->
             <p>시작시간: <span id="meetingStartTime"></span></p>
             <p>종료시간: <span id="meetingEndTime"></span></p>
           </div>
@@ -167,8 +169,7 @@
                 description: '<c:out value="${team.content}" />',
                 scheduleNo: '<c:out value="${team.scheduleNo}" />',
                 empNo:'<c:out value="${team.empNo}" />'
-                
-                
+
             },
           </c:forEach>
           // 회의실 예약리스트
@@ -177,12 +178,22 @@
               title: '<c:out value="회의" />',
               start: '<c:out value="${room.startDatetime}" />',
               end: '<c:out value="${room.endDatetime}" />',
-              <c:if test="${room.type == '1'}">
+              <c:if test="${room.type == 'team'}">
                 color: '#BCE55C',
               </c:if>
-              type: '팀',
+              <c:if test="${room.type == 'personal'}">
+              color: '#FF6C6C',
+             </c:if>
+              //
+              <c:if test="${room.type == 'team'}">
+               	type : '팀',
+              </c:if>
+              <c:if test="${room.type == 'personal'}">
+              	type : '개인',
+             </c:if>
               rsvEmp: '<c:out value="${room.empName}"/>',
-              roomNo: '<c:out value="Bee${room.roomNo}"/>'
+              roomNo: '<c:out value="Bee${room.roomNo}"/>',
+              roomPlace:'<c:out value="${room.roomPlace}"/>'
             },
           </c:forEach>
           // 팀원 휴가리스트
@@ -265,7 +276,6 @@
           }
          
         });
-        
 	        document.getElementById('addEvent').addEventListener('click', function() {
 	    	    window.location.href = 'addSchedule';
 	   	  	});

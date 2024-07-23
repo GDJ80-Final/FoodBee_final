@@ -10,16 +10,8 @@
 </head>
 <body>
 <h1>일정 리스트</h1>
-<a href="schedule">◀달력📅</a>
-<br>
-<span>일정검색</span>
-<select id="searchType">
-    <option value="personal">개인</option>
-    <option value="team">팀</option>
-    <option value="room">회의실</option>
-</select>
-<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
-<button id="searchBtn">검색</button>
+<button id="calendar">달력📅</button>
+<button id="addEvent">일정추가</button>
 <br>
 <button id="personBtn">개인</button>
 <button id="teamBtn">팀</button>
@@ -36,13 +28,16 @@
     </table>
 </div>
 <input type="hidden" id="hiddenPage" value="person">
-
+<!--히든 구역을 이용해서 페이징 상태를 저장해둔다 -->
 <div id="page">
     <button type="button" id="first">First</button>
     <button type="button" id="pre">◁</button>
     <button type="button" id="next">▶</button>
     <button type="button" id="last">Last</button>
 </div>
+<br>
+<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
+<button id="searchBtn">검색</button>
 
 <script>
     let currentPage = 1;
@@ -55,72 +50,58 @@
         <!-- currentPage 값은 현재 맨 위에 전역변수 1 -->
         loadPersonSchedule(currentPage);
         
-        <!-- ㅎ-->
-        <!--3. ㅎ-->
+        <!--히든필드를 가져와서 -->
         let hiddenFieldValue = $('#hiddenPage').val();
         console.log(hiddenFieldValue);
         
         // 검색 버튼 클릭 시
         $("#searchBtn").click(function() {
-            let query = $("#searchText").val();
-            let type = $("#searchType").val();
-         
-            searchSchedules(type, query);
+            let search = $("#searchText").val();
+            
+            if (hiddenFieldValue === "person") {
+				  console.log("person");
+				  loadPersonSchedule(1, search); //검색하면 1페이지 유지 ->그 다음 넘김
+		      } else if (hiddenFieldValue === "team") {
+				  console.log("team");
+		          loadTeamSchedule(1, search);
+		      } else if (hiddenFieldValue === "room") {
+				  console.log("room");
+		          loadroomSchedule(1, search);
+		      }
+            console.log("검색기능-=>" + search);
         });
-        
-        function searchSchedules(type, query) {
-            $.ajax({
-                url: `${pageContext.request.contextPath}/searchSchedules`,
-                type: "GET",
-                data: {
-                    searchType: type,
-                    searchQuery: query,
-                    currentPage: currentPage
-                },
-                success: function(response) {
-                    if (type === 'personal') {
-                        updateTableForPersonal(response);
-                    } else if (type === 'team') {
-                        updateTableForTeam(response);
-                    } else if (type === 'room') {
-                        updateTableForRoom(response);
-                    }
-                },
-                error: function() {
-                    alert("검색 결과를 가져올 수 없습니다.");
-                }
-            });
-        }
-        
+       
         // 개인 일정 버튼 클릭 시
         $("#personBtn").click(function() {
-        	loadPersonSchedule(currentPage);
+        	loadPersonSchedule(1);
         });
 
         // 팀 일정 버튼 클릭 시
         $("#teamBtn").click(function() {
-        	loadTeamSchedule(currentPage);
+        	loadTeamSchedule(1);
         });
 
         // 회의실 일정 버튼 클릭 시
         $("#roomBtn").click(function() {
-        	loadroomSchedule(currentPage);
+        	loadroomSchedule(1);
         });
         
         <!-- 3. 개인 일정 리스트 가져옴 -->
-        function loadPersonSchedule(currentPage) {
+        function loadPersonSchedule(currentPage, search) { //currentPag옆에 검색값이 하나 더 들어와준다
             $.ajax({
                 url: "${pageContext.request.contextPath}/calendar/personalScheduleList",
                 type: "GET",
                 data: {
                     currentPage: currentPage,
-                    empNo: "${empNo}"
+                    empNo: "${empNo}",
+                    search: search
                 },
-                success: function(response) {
+                success: function(json) {
   					console.log('personBtn curreptPage : ' + currentPage);
 
-  			        <!-- 4. updateTableForPersonal 함수 실행, ajax통신으로 가져온 데이터 값(response) 던져줌-->
-                    updateTableForPersonal(response);
+  			        <!-- 4. updateTableForPersonal 함수 실행, ajax통신으로 가져온 데이터 값(json) 던져줌-->
+                    updateTableForPersonal(json);
+              
                 },
                 error: function() {
                     alert("개인일정 데이터를 가져올 수 없습니다.");
@@ -129,19 +110,20 @@
         }
         
         <!-- 팀 일정 리스트 가져옴 -->
-        function loadTeamSchedule(currentPage) {
+        function loadTeamSchedule(currentPage, search) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/calendar/teamScheduleList",
                 type: "GET",
                 data: {
                     currentPage: currentPage,
-                    dptNo: "${dptNo}"
+                    dptNo: "${dptNo}",
+                    search: search
                 },
-                success: function(response) {
-                    console.log("AJAX Data:", response); // 응답 데이터 확인
+                success: function(json) {
+                    console.log("AJAX Data:", json); // 응답 데이터 확인
   					console.log('teamBtn curreptPage : ' + currentPage);
-  			        <!-- updateTableForTeam 함수 실행, ajax통신으로 가져온 데이터 값(response) 던져줌-->
-                    updateTableForTeam(response);
+  			        <!-- updateTableForTeam 함수 실행, ajax통신으로 가져온 데이터 값(json) 던져줌-->
+                    updateTableForTeam(json);
                 },
                 error: function() {
                     alert("팀일정 데이터를 가져올 수 없습니다.");
@@ -150,18 +132,19 @@
         }
         
         <!-- 회의실 일정 리스트 가져옴 -->
-        function loadroomSchedule(currentPage) {
+        function loadroomSchedule(currentPage, search) {
       	  $.ajax({
                 url: "${pageContext.request.contextPath}/calendar/roomScheduleList",
                 type: "GET",
                 data: {
                     currentPage: currentPage,
-                    dptNo: "${dptNo}"
+                    dptNo: "${dptNo}",
+                    search: search
                 },
-                success: function(response) {
+                success: function(json) {
   					console.log(' roomBtn curreptPage : ' + currentPage);
-  			        <!-- updateTableForRoom 함수 실행, ajax통신으로 가져온 데이터 값(response) 던져줌-->
-                    updateTableForRoom(response);
+  			        <!-- updateTableForRoom 함수 실행, ajax통신으로 가져온 데이터 값(json) 던져줌-->
+                    updateTableForRoom(json);
                 },
                 error: function() {
                     alert("회의실 일정을 가져올 수 없습니다.");
@@ -169,11 +152,11 @@
             });
         }
         
-        <!-- 4. response 받은 값으로 페이지 재구성 (개인 일정 리스트 화면에 붙여주기) -->
+        <!-- 4. json 받은 값으로 페이지 재구성 (개인 일정 리스트 화면에 붙여주기) -->
         // 개인일정 리스트 
-        function updateTableForPersonal(response) {
+        function updateTableForPersonal(json) {
         	<!-- DB 조회해온 last 페이지 순번 -->
-        	lastPage = response.personLastPage;
+        	lastPage = json.personLastPage;
 			console.log('lastPage : ' + lastPage);
             <!-- hiddenFieldValue 값을 개인으로 세팅 -->
         	hiddenFieldValue = "person"
@@ -193,7 +176,7 @@
                 </tr>
             `);
             
-            $.each(response.personalList, function(index, item) {
+            $.each(json.personalList, function(index, item) {
                 let newRow = $("<tr>" +
                         "<td>" + item.scheduleNo + "</td>" +
                         "<td><a href='" + "${pageContext.request.contextPath}/calendar/scheduleOne?scheduleNo=" + item.scheduleNo + "'>" + item.title + "</a></td>" +
@@ -206,10 +189,10 @@
             
             $("#tableBody").show();
         }
-        <!-- response 받은 값으로 페이지 재구성 (팀 일정 리스트 화면에 붙여주기) -->
+        <!-- json 받은 값으로 페이지 재구성 (팀 일정 리스트 화면에 붙여주기) -->
         // 팀일정 리스트
-       function updateTableForTeam(response) {
-    	   lastPage = response.teamLastPage;
+       function updateTableForTeam(json) {
+    	   lastPage = json.teamLastPage;
      	   console.log('lastPage : ' + lastPage);
 
            <!-- hiddenFieldValue 값을 팀으로 세팅 -->
@@ -231,7 +214,7 @@
 	           </tr>
 	       `);
 	          
-	       $.each(response.teamListAll, function(index, item) {
+	       $.each(json.teamListAll, function(index, item) {
 	           // 상세보기 링크 URL 설정
 	           console.log("uniqueNo=>" + item.uniqueNo); // 디버깅용 로그
 	           let detailUrl;
@@ -243,7 +226,7 @@
 	                   detailUrl = "${pageContext.request.contextPath}/calendar/dayOffScheduleOne?scheduleNo="+item.uniqueNo;
 	                   break;
 	               case '출장':
-	                   detailUrl = "${pageContext.request.contextPath}/businessTripScheduleOne?scheduleNo="+item.uniqueNo;
+	                   detailUrl = "${pageContext.request.contextPath}/calendar/businessTripScheduleOne?scheduleNo="+item.uniqueNo;
 	                   break;
 	           }
 	           console.log("url==>"+ detailUrl);
@@ -261,10 +244,10 @@
        
              $("#tableBody").show();
        }
-       <!-- response 받은 값으로 페이지 재구성 (회의실 일정 리스트 화면에 붙여주기) -->
+       <!-- json 받은 값으로 페이지 재구성 (회의실 일정 리스트 화면에 붙여주기) -->
         // 회의실 일정 리스트
-        function updateTableForRoom(response) {
-        	lastPage = response.roomLastPage;
+        function updateTableForRoom(json) {
+        	lastPage = json.roomLastPage;
       	    console.log('lastPage : ' + lastPage);
             <!-- hiddenFieldValue 값을 회의실로 세팅 -->
         	hiddenFieldValue = "room"
@@ -285,7 +268,7 @@
                 </tr>
             `);
 
-            $.each(response.roomListAll, function(index, item) {
+            $.each(json.roomListAll, function(index, item) {
                 let newRow = $("<tr>" +
                         "<td>" + item.rsvNo + "</td>" +
                         "<td> BEE " + item.roomNo + "</td>" +
@@ -382,12 +365,20 @@
       function updateBtnState() {
          console.log("update");
          <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
+         <!-- prop은 설정의 속성-->
            $('#pre').prop('disabled', currentPage === 1);
            $('#next').prop('disabled', currentPage === lastPage);
            $('#first').prop('disabled', currentPage === 1);
            $('#last').prop('disabled', currentPage === lastPage);
        }
-      
+      //일정추가 버튼
+      document.getElementById('addEvent').addEventListener('click', function() {
+  	    window.location.href = 'addSchedule';
+ 	  	});
+      //달력으로 돌아가기버튼
+      document.getElementById('calendar').addEventListener('click', function(){
+    	  window.location.href='schedule';
+      })
     });
 </script>
 </body>

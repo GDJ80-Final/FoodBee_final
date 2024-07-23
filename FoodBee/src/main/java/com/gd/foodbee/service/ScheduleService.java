@@ -28,11 +28,11 @@ public interface ScheduleService {
 	//출장내역 상세
 	TripHistoryDTO tripHistoryOne(int scheduleNo);
 	//개인일정 전체 리스트
-	List<ScheduleDTO> personalListAll(int currentPage, int empNo);
+	List<ScheduleDTO> personalListAll(int currentPage, int empNo, String search);
 	//팀일정 전체 리스트
-	List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo);
+	List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo, String search);
 	//회의실 일정 전체 리스트
-	List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo);
+	List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo, String search);
 	//개인일정 총갯수
 	int personLastPage(int empNo);
 	//팀일정 총갯수

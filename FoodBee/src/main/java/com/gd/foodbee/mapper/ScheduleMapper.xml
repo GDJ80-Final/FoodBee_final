@@ -36,7 +36,7 @@
 </select>
 <!-- 팀별 회의실 예약리스트 -->
 <select id="roomRsvList" parameterType="HashMap" resultType="HashMap">
-	SELECT 
+	SELECT  
 		r.rsv_no rsvNo, 
 		r.room_no roomNo, 
 		r.emp_no empNo, 
@@ -45,14 +45,18 @@
 		r.end_datetime endDatetime, 
 		r.`type` type, 
 		r.rsv_state rsvState,
+		ri.room_place roomPlace,
 		e.dpt_no dptNo, 
 		e.emp_name empName
 	FROM 
 		room_rsv r
 	INNER JOIN 
 		emp e ON r.emp_no = e.emp_no
+	INNER JOIN 
+		room_info ri ON r.room_no = ri.room_no
 	WHERE 
-		e.dpt_no = #{dptNo}
+		e.dpt_no = #{dptNo} AND r.rsv_state = 1
+
 </select>
 <!-- 팀원 휴가내역리스트 -->
 <select id="dayOffList" parameterType="HashMap" resultType="HashMap">
@@ -100,9 +104,18 @@
 	FROM 
 		schedule
 	WHERE 
-		emp_no = #{empNo} 
-	AND
-		type = '개인'
+    	emp_no = #{empNo} 
+    <if test="search != null and search != ''">
+        AND (
+            title LIKE '%${search}%'
+            OR content LIKE '%${search}%'
+            OR DATE_FORMAT(start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+            OR DATE_FORMAT(start_datetime, '%m-%d') LIKE '%${search}%'
+            OR DATE_FORMAT(end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+            OR DATE_FORMAT(end_datetime, '%m-%d') LIKE '%${search}%'
+        )
+    </if>
+    AND type = '개인'
 	ORDER BY 
 		start_datetime DESC
 	LIMIT #{beginRow}, #{rowPerPage}
@@ -122,9 +135,20 @@
 	    emp e ON doh.emp_no = e.emp_no
 	WHERE 
 	    e.dpt_no = #{dptNo}
+	    <if test="search != null and search != ''">
+		    AND (
+		        '휴가내역' LIKE '%${search}%'
+		        OR DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(doh.start_date, '%m-%d') LIKE '%${search}%'
+	            OR DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(doh.end_date, '%m-%d') LIKE '%${search}%'
+		        OR e.emp_name LIKE '%${search}%'
+		    )
+		</if>
 	UNION ALL
+	
 	SELECT
-	    '출장' AS category,
+	    '출장' category,
 	    '출장내역' title,
 	    bth.start_date startDate,
 	    bth.end_date endDate,
@@ -136,10 +160,21 @@
 	    emp e ON bth.emp_no = e.emp_no
 	WHERE 
 	    e.dpt_no = #{dptNo}
+	    <if test="search != null and search != ''">
+		    AND (
+		        '출장내역' LIKE '%${search}%'
+		        OR DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(bth.start_date, '%m-%d') LIKE '%${search}%'
+	            OR DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(bth.end_date, '%m-%d') LIKE '%${search}%'
+		        OR e.emp_name LIKE '%${search}%'
+		    )
+		</if>
 	UNION ALL
+	
 	SELECT
 	    sc.type category,
-	    sc.title AS title,
+	    sc.title title,
 	    sc.start_datetime startDate,
 	    sc.end_datetime endDate,
 	    e.emp_name empName,
@@ -151,6 +186,17 @@
 	WHERE 
 	    sc.type = '팀' 
 	    AND e.dpt_no = #{dptNo}
+	     <if test="search != null and search != ''">
+		    AND (
+		        '팀' LIKE '%${search}%'
+		        OR sc.title LIKE '%${search}%'
+		        OR DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(sc.start_datetime, '%m-%d') LIKE '%${search}%'
+	            OR DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(sc.end_datetime, '%m-%d') LIKE '%${search}%'
+		        OR e.emp_name LIKE '%${search}%'
+		    )
+		</if>
 	ORDER BY
 	    startDate DESC
 	LIMIT #{beginRow}, #{rowPerPage};
@@ -170,6 +216,16 @@
 		emp e ON r.emp_no = e.emp_no
 	WHERE 
 		dpt_no = #{dptNo} AND r.rsv_state = 1
+		<if test="search != null and search != ''">
+        AND (
+            '팀회의' LIKE '%${search}%'
+            OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+            OR DATE_FORMAT(r.start_datetime, '%m-%d') LIKE '%${search}%'
+            OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+            OR DATE_FORMAT(r.end_datetime, '%m-%d') LIKE '%${search}%'
+            OR e.emp_name LIKE '%${search}%'
+        )
+    </if>
 	ORDER BY 
 		start_datetime DESC
 	LIMIT #{beginRow}, #{rowPerPage};
