@@ -365,4 +365,27 @@ public class EmpController {
 		
 		return "success";
 	}
+	
+	// 마이페이지에서 개인정보 수정
+	@PostMapping("modifyEmpPersnalMyPage")
+	@ResponseBody
+	public String modifyEmpPersnalMyPage(@RequestParam int empNo,
+				@RequestParam String empEmail,
+				@RequestParam String contact, 
+				@RequestParam String postNo,
+				@RequestParam String address,
+				@RequestParam String addressDetail) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("empNo", empNo);
+		map.put("empEmail", empEmail);
+		map.put("contact", contact);
+		map.put("postNo", postNo);
+		map.put("address", address);
+		map.put("addressDetail", addressDetail);
+		
+		empService.modifyEmpPersnalMyPage(map);
+		
+		return "success";
+	}
 }

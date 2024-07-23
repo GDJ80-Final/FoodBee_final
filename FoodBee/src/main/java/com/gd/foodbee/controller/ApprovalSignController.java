@@ -21,7 +21,6 @@ public class ApprovalSignController {
 	private ApprovalSignService approvalSignService;
 	
 	@PostMapping("/saveApprovalSign")
-	@ResponseBody
 	public String saveApprovalSign(@RequestParam int empNo, 
 				@RequestParam String url,
 				HttpServletRequest request) {

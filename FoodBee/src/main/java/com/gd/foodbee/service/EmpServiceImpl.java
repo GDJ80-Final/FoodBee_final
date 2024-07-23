@@ -84,7 +84,7 @@ public class EmpServiceImpl implements EmpService{
 				.empNo(signupDTO.getEmpNo())
 				.contact(signupDTO.getContact())
 				.postNo(signupDTO.getPostNo())
-				.address(signupDTO.getAddress() +" "+ signupDTO.getAddressDetail())
+				.address(signupDTO.getAddress() +" | "+ signupDTO.getAddressDetail())
 				.empPw(signupDTO.getEmpPw())
 				.build();
 		//emp 테이블 사원정보 업데이트 
@@ -320,6 +320,24 @@ public class EmpServiceImpl implements EmpService{
             int additionalLeave = Math.min(yearsWorked, 10);
             return Math.round((baseDayOff + additionalLeave) * 10.0) / 10.0;
         }
+	}
+
+	@Override
+	public void modifyEmpPersnalMyPage(Map map) {
+		
+		EmpDTO empDTO = EmpDTO.builder()
+				.empNo((int)map.get("empNo"))
+				.contact((String)map.get("contact"))
+				.postNo((String)map.get("postNo"))
+				.address(map.get("address") +" | "+ map.get("addressDetail"))
+				.empEmail((String) map.get("empEmail"))
+				.build();
+		
+		int row = empMapper.updateEmpPersnalMyPage(empDTO);
+		if(row == 0) {
+			throw new RuntimeException();
+		}
+		
 	}
 	
 }

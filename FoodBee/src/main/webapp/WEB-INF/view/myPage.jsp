@@ -542,6 +542,30 @@
 	       		}
 			});
 			
+			//주소검색 버튼 클릭 시 다음주소api 팝업 호출
+	        $(document).on('click', '#selectAddr', function() {
+	               new daum.Postcode({
+	                   oncomplete: function(data) {
+	                       // 각 주소의 노출 규칙에 따라 주소를 조합
+	                       
+	                       let addr; // 주소 변수
+	                       // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져옴 
+	                       if (data.userSelectedType === 'R') { 
+	                    	   // 사용자가 도로명 주소를 선택했을 경우
+	                           addr = data.roadAddress;
+	                       } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                           addr = data.jibunAddress;
+	                       }
+
+	                       // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                       $('#postNo').val(data.zonecode);
+	                       $('#address').val(addr);
+	                       // 커서를 상세주소 필드로 이동한다.
+	                       $('#addressDetail').focus();
+	                   }
+	               }).open();
+	        });
+			
 			//비밀번호 공백검사 
 			function validateOldPw() {
 				const empPw = $('#oldPw').val().trim();
@@ -656,35 +680,134 @@
 					data: {empNo : empNo},
 					success:function(json){
 						console.log(json);
+						const addressArr = json.address.split("|");
+						const address = addressArr[0];
+						const addressDetail = addressArr[1];
+						console.log(addressDetail)
 						$('#content').append(
-							    '<div class="mt-4">' +
-							        '<h5>개인</h5>' +
-							        '<div class="row g-3">' +
-							            '<div class="col-md-4">' +
-							                '<label class="form-label">개인 이메일</label>' +
-							                '<input type="email" class="form-control" value="' + json.empEmail + '">' +
-							            '</div>' +
-							            '<div class="col-md-4">' +
-							                '<label class="form-label">휴대폰 번호</label>' +
-							                '<input type="tel" class="form-control" value="' + json.contact + '" > ' +
-							            '</div>' +
-							            '<div class="col-md-4">' +
-		                                    '<label class="form-label">우편번호</label>' +
-		                                    '<input type="tel" class="form-control" value="' + json.postNo + '" readonly> ' +
-		                                    '<div id="postNoError" class="error-message">${postNoErrorMsg}</div>' +
-	                                	'</div>' +
-							            '<div class="col-md-4">' +
-		                                    '<label class="form-label">주소</label>' +
-		                                    '<textarea class="form-control" rows="3" readonly>' + json.address + '</textarea> ' +
-		                                    '<div id="addressError" class="error-message">${addressErrorMsg}</div>' +
-	                                	'</div>' +
-							        '</div>' +
-							    '</div>'
+								'<div class="mt-4">' +
+								    '<h5>개인</h5>' +
+								    '<form id="EmpPersnalForm">' +
+								        '<div class="row g-3">' +
+								            '<div class="col-md-6">' +
+								                '<label class="form-label">개인 이메일</label>' +
+								                '<input type="email" class="form-control" id="empEmail" name="empEmail" value="' + json.empEmail + '">' +
+								                '<div id="empEmailError" class="error-message"></div>' +
+							                '</div>' +
+								            '<div class="col-md-6">' +
+								                '<label class="form-label">휴대폰 번호</label>' +
+								                '<input type="tel" class="form-control" id="contact" name="contact" value="' + json.contact + '">' +
+								                '<div id="contactError" class="error-message"></div>' +
+							                '</div>' +
+								        '</div>' +
+								        '<div class="mt-3">' +
+								            '<div class="row mb-3">' +
+								                '<div class="col-md-9">' +
+								                    '<label for="postNo" class="form-label">우편번호</label>' +
+								                    '<input type="number" class="form-control" id="postNo" name="postNo" id="postNo" placeholder="우편번호" readonly value="' + json.postNo + '">' +
+								                    '<div id="postNoError" class="error-message"></div>' +
+								                '</div>' +
+								                '<div class="col-md-3 d-flex align-items-end">' +
+								                    '<button type="button" id="selectAddr" class="btn btn-secondary">주소검색</button>' +
+								                '</div>' +
+								            '</div>' +
+								            '<div class="mb-3">' +
+								                '<label for="address" class="form-label">주소</label>' +
+								                '<input type="text" class="form-control" name="address" id="address" placeholder="주소" readonly value="' + address + '">' +
+								                '<div id="addressError" class="error-message"></div>' +
+								            '</div>' +
+								            '<div class="mb-3">' +
+								                '<label for="addressDetail" class="form-label">상세주소</label>' +
+								                '<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소를 입력해주세요" value="' + addressDetail + '">' +
+								                '<div id="addressDetailError" class="error-message"></div>' +
+								            '</div>' +
+								        '</div>' +
+								        '<button type="submit" id="modifyBtn" class="btn btn-danger">수정</button>' +
+								    '</form>' +
+								'</div>'
 							);
 					}
 				});
 			}
 			
+			$(document).on('click', '#modifyBtn', function(e) {
+			    e.preventDefault();
+			    
+			    validateEmail()
+			    validateContact();
+			    validatePostNo()
+			    validateAddress()
+			    validateAddrDetail()
+			    
+			    let formData = $('#EmpPersnalForm').serialize();
+			    formData += '&empNo=' + empNo;
+			    if ($('.error-message').text() == "") {
+			        $.ajax({
+			            url: '${pageContext.request.contextPath}/modifyEmpPersnalMyPage',
+			            type: 'POST',
+			            data: formData,
+			            success: function(json) {
+			                    alert('개인정보가 수정되었습니다.');
+			            },
+			            error: function(xhr, status, error) {
+			                alert('개인정보 수정에 실패했습니다');
+			            }
+			        });
+			    }
+		    });
+			
+			//유효성 검사
+			function validateEmail() {
+			    const email = $('#empEmail').val().trim();
+			    // 이메일 정규식 확인
+			    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+			    
+			    if (email === "") {
+			        $('#empEmailError').text("이메일을 입력해주세요.");
+			    } else if (!emailPattern.test(email)) {
+			        $('#empEmailError').text("이메일 형식이 올바르지 않습니다.");
+			    } else {
+			        $('#empEmailError').text("");
+			    }
+			}
+			function validateContact() {
+	            const contact = $('#contact').val().trim();
+	            //전화번호 정규식 확인 
+	            const contactPattern = /^\d{3}-\d{4}-\d{4}$/;
+	            if (contact === "") {
+	                $('#contactError').text("연락처를 입력해주세요.");
+	            } else if (!contactPattern.test(contact)) {
+	                $('#contactError').text("연락처 형식이 올바르지 않습니다.");
+	            } else {
+	                $('#contactError').text("");
+	            }
+           	}
+			function validatePostNo() {
+			    const postNo = $('#postNo').val().trim();
+			    if (postNo === "") {
+			        $('#postNoError').text("우편번호를 입력해주세요.");
+			    } else {
+			        $('#postNoError').text("");
+			    }
+			}
+
+			function validateAddress() {
+			    const address = $('#address').val().trim();
+			    if (address === "") {
+			        $('#addressError').text("주소를 입력해주세요.");
+			    } else {
+			        $('#addressError').text("");
+			    }
+			}
+           	function validateAddrDetail() {
+	            const addressDetail = $('#addressDetail').val().trim();
+	            
+	            if (addressDetail === "") {
+	                $('#addressDetailError').text("상세주소를 입력해주세요.");
+	            } else {
+	                $('#addressDetailError').text("");
+	            }
+           	}
 		});
 	</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

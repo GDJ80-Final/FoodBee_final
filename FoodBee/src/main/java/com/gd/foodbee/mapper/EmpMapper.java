@@ -73,4 +73,7 @@ public interface EmpMapper {
     
     // 마이 페이지에서 비밀번호 변경
     int updateEmpPwMyPage(int empNo, String oldPw, String newPw);
+    
+    // 사원 개인정보 수정(마이페이지)
+    int updateEmpPersnalMyPage(EmpDTO empDTO);
 }

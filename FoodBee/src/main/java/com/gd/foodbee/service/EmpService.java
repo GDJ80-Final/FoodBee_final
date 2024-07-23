@@ -57,4 +57,7 @@ public interface EmpService {
 	
 	// 해당 연도의 총 휴가 구하기
 	double getDayOff(int empNo, String targetYear);
+	
+	// 사원 개인정보수정(마이페이지)
+	void modifyEmpPersnalMyPage(Map map);
 }

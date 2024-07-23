@@ -235,4 +235,15 @@
 			emp_no = #{empNo}
 			AND emp_pw = SHA2(#{oldPw},256)
 	</update>
+	<update id="updateEmpPersnalMyPage" parameterType="com.gd.foodbee.dto.EmpDTO">
+		UPDATE
+			emp
+		SET
+			emp_email = #{empEmail},
+			contact = #{contact},
+			post_no = #{postNo},
+			address = #{address}
+		WHERE
+			emp_no = #{empNo}
+	</update>
 </mapper>
