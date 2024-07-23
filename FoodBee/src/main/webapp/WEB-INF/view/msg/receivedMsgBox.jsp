@@ -49,28 +49,28 @@
 			   data :{
 				   readYN : readYN
 		   			},
-		   		success:function(json){
-			   console.log(json)
-			   $('#msgTableBody').empty();
-			   json.forEach(function(item){
-				   console.log(item)
-				   $('#msgTableBody').append('<tr>' +
-							'<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
-							'<td>'+ item.msgOrder + '</td>'+
-							'<td>'+ item.empName + '</td>'+
-							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
-									item.msgNo +'">'+ item.title + '</a></td>'+
-							'<td>'+ item.createDatetime + '</td>'+
-							'<td id="readYN">'+ item.readYN + '</td>'+
-							'</tr>' 
-				   );
-			   });
-			   //로드된 데이터에 대해 볼드체 강조
-			   $('.readYN').each(function() {
-				   if ($(this).text() === '안읽음') {
-					   $(this).css('font-weight', 'bold');
-				   }
-			   });
+		   	   success:function(json){
+				   console.log(json)
+				   $('#msgTableBody').empty();
+				   json.forEach(function(item){
+					   console.log(item)
+					   $('#msgTableBody').append('<tr>' +
+								'<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
+								'<td>'+ item.msgOrder + '</td>'+
+								'<td>'+ item.empName + '</td>'+
+								'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+										item.msgNo +'">'+ item.title + '</a></td>'+
+								'<td>'+ item.createDatetime + '</td>'+
+								'<td id="readYN">'+ item.readYN + '</td>'+
+								'</tr>' 
+					   );
+				   });
+				   //로드된 데이터에 대해 볼드체 강조
+				   $('.readYN').each(function() {
+					   if ($(this).text() === '안읽음') {
+						   $(this).css('font-weight', 'bold');
+					   }
+				   });
 		   }
 	   });
 	   };

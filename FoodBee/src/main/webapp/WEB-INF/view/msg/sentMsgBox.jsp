@@ -51,21 +51,21 @@
 				   readYN : readYN
 		   			},
 		   	   success:function(json){
-			   console.log(json)
-			   $('#msgTableBody').empty();
-			   json.forEach(function(item){
-				   console.log(item)
-				   $('#msgTableBody').append('<tr>' +
-						   	'<td><input type="checkbox" id="msgNo" name="msgNo" value="'+item.msgNo+'"></td>'+
-							'<td>'+ item.msgOrder + '</td>'+
-							'<td>'+ item.empName + '</td>'+
-							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
-									item.msgNo +'">'+ item.title + '</a></td>'+
-							'<td>'+ item.createDatetime + '</td>'+
-							'<td>'+ item.readYN + '</td>'+
-							'</tr>' 
-				   );
-			   })
+				   console.log(json)
+				   $('#msgTableBody').empty();
+				   json.forEach(function(item){
+					   console.log(item)
+					   $('#msgTableBody').append('<tr>' +
+							   	'<td><input type="checkbox" id="msgNo" name="msgNo" value="'+item.msgNo+'"></td>'+
+								'<td>'+ item.msgOrder + '</td>'+
+								'<td>'+ item.empName + '</td>'+
+								'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+										item.msgNo +'">'+ item.title + '</a></td>'+
+								'<td>'+ item.createDatetime + '</td>'+
+								'<td>'+ item.readYN + '</td>'+
+								'</tr>' 
+					   );
+				   })
 		   }
 	   });
 	   };

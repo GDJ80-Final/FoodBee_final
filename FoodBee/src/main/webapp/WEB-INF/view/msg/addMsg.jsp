@@ -214,7 +214,7 @@
 			
 			//본사지사 데이터 
 			$.ajax({
-				url:'${pageContext.request.contextPath}/officeList',
+				url:'${pageContext.request.contextPath}/emp/officeList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -226,7 +226,7 @@
 			});
 			//부서데이터 
 			$.ajax({
-				url:'${pageContext.request.contextPath}/deptList',
+				url:'${pageContext.request.contextPath}/emp/deptList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -238,7 +238,7 @@
 			});
 			//팀 리스트 데이터 
 			$.ajax({
-				url:'${pageContext.request.contextPath}/teamList',
+				url:'${pageContext.request.contextPath}/emp/teamList',
 				method:'get',
 				success:function(json){
 					console.log(json);
@@ -295,7 +295,7 @@
 			// 사원 목록 출력
 			function loadEmpList(page){
 				$.ajax({
-					url:'${pageContext.request.contextPath}/searchEmp',
+					url:'${pageContext.request.contextPath}/emp/searchEmp',
 					method:'get',
 					data:{
 						officeName: $('#office').val(),

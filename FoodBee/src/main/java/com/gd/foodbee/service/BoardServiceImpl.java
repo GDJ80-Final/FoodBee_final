@@ -39,9 +39,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getBoardList() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Map<String, Object>> getBoardList(int currentPage,String category, String keyword) {
+		int rowPerPage = 10;
+		int beginRow = (currentPage - 1) * rowPerPage;
+		
+		return boardMapper.selectBoardList(beginRow, rowPerPage, category,keyword);
 	}
 
 }

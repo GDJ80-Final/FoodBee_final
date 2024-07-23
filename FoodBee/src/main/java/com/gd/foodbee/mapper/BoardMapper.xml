@@ -22,16 +22,33 @@
 	</insert>
 	<select id="selectBoardList" resultType="Map">
 		SELECT 
+			ROW_NUMBER() OVER(ORDER BY createDatetime) boardOrder,
 			b.board_no boardNo,
 			b.title,
 			b.board_category boardCategory, 
 			b.view,
-			COUNT(bc.comment_no)AS commentCnt,
-			DATE_FORMAT(b.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime 
+			COUNT(bc.comment_no) commentCnt,
+			DATE_FORMAT(b.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
+			b.like_cnt likeCnt
 		FROM board b 
 		LEFT JOIN board_comment bc ON b.board_no = bc.board_no 
+		WHERE
+			1=1
+			<if test='category == "chat"'>
+				AND b.board_category = '잡담' 
+			</if>
+			<if test='category == "company"'>
+				AND b.board_category = '회사이야기' 
+			</if>
+			<if test='category == "question"'>
+				AND b.board_category = '질문' 
+			</if>
+			<if test='keyword != null and keyword != ""'>
+        		AND b.title LIKE CONCAT('%', #{keyword}, '%')
+   			</if>
 		GROUP BY b.board_no
-	
+		ORDER BY boardOrder DESC
+		LIMIT #{beginRow},#{rowPerPage}
 	</select>
 
 

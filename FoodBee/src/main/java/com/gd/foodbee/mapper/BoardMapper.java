@@ -16,7 +16,7 @@ public interface BoardMapper {
 	int insertBoard(BoardDTO boardDTO);
 	
 	//게시글 리스트 + 검색 
-	List<Map<String,Object>> selectBoardList();
+	List<Map<String,Object>> selectBoardList(int beginRow, int rowPerPage, String category,String keyword);
 	
 	//게시글 상세보기 
 	Map<String,Object> selectBoardOne(int boardNo);

@@ -22,11 +22,11 @@
 	</insert>
 	<select id="selectReceivedMsgList" parameterType="Map" resultType="Map">
 		SELECT
-			ROW_NUMBER() OVER(ORDER BY createDatetime) AS msgOrder,
+			ROW_NUMBER() OVER(ORDER BY createDatetime) msgOrder,
 			m.msg_no msgNo,
 			e.emp_name empName,
 			m.title,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime,
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
 			CASE
         		WHEN mr.read_YN = 'Y' THEN '읽음'
         		WHEN mr.read_YN = 'N' THEN '안읽음'
@@ -71,15 +71,15 @@
 	
 	<select id="selectSentMsgList" parameterType="Map" resultType="Map">
 		SELECT
-			ROW_NUMBER() OVER(ORDER BY createDatetime) AS msgOrder,
+			ROW_NUMBER() OVER(ORDER BY createDatetime) msgOrder,
 			m.msg_no msgNo,
 			GROUP_CONCAT(e.emp_name SEPARATOR ',') empName,
 			m.title,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime,
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
 			CASE
         		WHEN mr.read_YN = 'Y' THEN '읽음'
         		WHEN mr.read_YN = 'N' THEN '안읽음'
-    			END AS readYN
+    			END readYN
 		FROM
 			msg m
 		INNER JOIN
@@ -111,7 +111,7 @@
 			mr.read_YN readYN,
 			originalFiles,
 			saveFiles,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') createDatetime
 		FROM
 			msg m
 		INNER JOIN
@@ -123,8 +123,8 @@
 		LEFT JOIN 
 			(SELECT
         		msg_no,
-        		GROUP_CONCAT(original_file SEPARATOR ',') AS originalFiles,
-        		GROUP_CONCAT(save_file SEPARATOR ',') AS saveFiles
+        		GROUP_CONCAT(original_file SEPARATOR ',') originalFiles,
+        		GROUP_CONCAT(save_file SEPARATOR ',') saveFiles
     		 FROM msg_file
     		 GROUP BY msg_no) mf ON m.msg_no = mf.msg_no
 		WHERE
@@ -141,7 +141,7 @@
 	</update>
 	<select id="selectTrashMsgList"  parameterType="int" resultType="Map">
 		SELECT 
-			ROW_NUMBER() OVER(ORDER BY updateDatetime) AS msgOrder,
+			ROW_NUMBER() OVER(ORDER BY updateDatetime) msgOrder,
 			msgNo,
 			senderName,
 			receiverName,
@@ -149,11 +149,11 @@
 			updateDatetime
 		FROM
 			(SELECT
-			    m.msg_no AS msgNo,
-			    sender.emp_name AS senderName,
-			    GROUP_CONCAT(recipient.emp_name SEPARATOR ',') AS receiverName,
+			    m.msg_no msgNo,
+			    sender.emp_name senderName,
+			    GROUP_CONCAT(recipient.emp_name SEPARATOR ',') receiverName,
 			    m.title,
-			    DATE_FORMAT(m.state_update_datetime, '%Y-%m-%d %H:%i') AS updateDatetime
+			    DATE_FORMAT(m.state_update_datetime, '%Y-%m-%d %H:%i') updateDatetime
 			 FROM
 				msg m
 			 INNER JOIN
@@ -169,11 +169,11 @@
    				m.msg_no
 		UNION
 			SELECT
-			    m.msg_no AS msgNo,
-			    sender.emp_name AS senderName,
-			    e.emp_name AS receiverName,
+			    m.msg_no msgNo,
+			    sender.emp_name senderName,
+			    e.emp_name receiverName,
 			    m.title,
-			    DATE_FORMAT(mr.state_update_datetime, '%Y-%m-%d %H:%i') AS updateDatetime
+			    DATE_FORMAT(mr.state_update_datetime, '%Y-%m-%d %H:%i') updateDatetime
 			FROM
 			    msg m
 			INNER JOIN
