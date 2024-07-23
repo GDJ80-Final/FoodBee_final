@@ -21,6 +21,7 @@
 				<td>받는이</td>
 				<td>제목</td>
 				<td>보낸일시</td>
+				<td>읽음여부</td>
 			</tr>
 		</thead>
 		<tbody id="msgTableBody">
@@ -49,7 +50,7 @@
 			   data :{
 				   readYN : readYN
 		   			},
-		   		success:function(json){
+		   	   success:function(json){
 			   console.log(json)
 			   $('#msgTableBody').empty();
 			   json.forEach(function(item){
@@ -61,6 +62,7 @@
 							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
 									item.msgNo +'">'+ item.title + '</a></td>'+
 							'<td>'+ item.createDatetime + '</td>'+
+							'<td>'+ item.readYN + '</td>'+
 							'</tr>' 
 				   );
 			   })
@@ -97,16 +99,16 @@
 		  console.log(selectedMsgNos[0]);
 		   if(selectedMsgNos.length > 0){
 			   $.ajax({
-			   url: '${pageContext.request.contextPath}/msg/toTrash',
-			   method: 'post',
-			   traditional:true, 
-			   data:{
-				   msgNos:selectedMsgNos
-			   },
-			   success:function(){
-				   alert('쪽지가 휴지통으로 이동하였습니다.')
-				   loadMsg("all"); // 이동 후 전체 목록 새로고침
-			   }
+				   url: '${pageContext.request.contextPath}/msg/toTrash',
+				   method: 'post',
+				   traditional:true, 
+				   data:{
+					   msgNos:selectedMsgNos
+				   },
+				   success:function(){
+					   alert('쪽지가 휴지통으로 이동하였습니다.')
+					   loadMsg("all"); // 이동 후 전체 목록 새로고침
+				   }
 		   })
 		   }else {
 			   alert('휴지통으로 이동할 쪽지를 선택해주세요.');

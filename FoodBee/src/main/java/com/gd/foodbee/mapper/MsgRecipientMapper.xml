@@ -33,8 +33,29 @@
 			msg_no = #{msgNo}
 			AND recipient_emp_no = #{empNo}
 	</update>
-
-
+	<update id="updateMsgDelete" parameterType="Map">
+		UPDATE
+			msg_recipient
+		SET
+			recipient_msg_state = 9
+		WHERE 
+			recipient_msg_state = 0
+			AND msg_no = #{msgNo}
+			AND recipient_emp_no = #{empNo}
+		
+	
+	</update>
+	<update id="updateReadYN" parameterType="Map">
+		UPDATE
+			msg_recipient
+		SET
+			read_YN = 'Y',
+			read_datetime = NOW()
+		WHERE
+			msg_no = #{msgNo}
+			AND recipient_emp_no = #{empNo}
+			
+	</update>
 
 
 </mapper>

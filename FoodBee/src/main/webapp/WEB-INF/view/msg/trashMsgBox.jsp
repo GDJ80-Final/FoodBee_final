@@ -9,7 +9,7 @@
 </head>
 <body>
 	
-	<button type="button" name="delete" id="delete">삭제</button>
+	<button type="button" name="deleteMsg" id="deleteMsg">삭제</button>
 	<button type="button" name="toMsgBox" id="toMsgBox">쪽지함으로 복구</button>
 	<table border="1">
 		<thead>
@@ -57,21 +57,65 @@
 	            	selectedResult.push('false');
 	            }
 	        })
-			$.ajax({
-			url: '${pageContext.request.contextPath}/msg/toMsgBox',
-			method: 'post',
-			traditional:true, 
-			data:{
-				   msgNos:selectedMsgNos,
-				   results:selectedResult
-			},
-			success:function(){
-				alert('쪽지가 쪽지함으로 복구되었습니다.')
-				location.reload();
-			   }
-			})
+	        if(selectedMsgNos.length > 0){
+	        	$.ajax({
+				url: '${pageContext.request.contextPath}/msg/toMsgBox',
+				method: 'post',
+				traditional:true, 
+				data:{
+					   msgNos:selectedMsgNos,
+					   results:selectedResult
+				},
+				success:function(){
+					alert('쪽지가 쪽지함으로 복구되었습니다.')
+					location.reload();
+				   }
+				})
+	        }else{
+	        	alert('복구할 쪽지를 선택해주세요.');
+	        }
+			
 		})
 		
+		
+		//쪽지 삭제
+		$('#deleteMsg').click(function(){
+			let empName = '${empName}';
+			let selectedMsgNos = [];
+			let selectedResult = [];
+			$('#msgTableBody input[name="msgNo"]:checked').each(function() {
+				selectedMsgNos.push($(this).val());
+				console.log(selectedMsgNos[0]);
+	            
+	            let row = $(this).closest('tr');
+	            // 해당 행의 senderName 값을 가져오기
+	            let senderName = row.find('#senderName').text();
+	            
+	            if (empName === senderName) {
+	            	selectedResult.push('true');
+	            } else {
+	            	selectedResult.push('false');
+	            }
+	        })
+	        if(selectedMsgNos.length > 0){
+	        	$.ajax({
+					url: '${pageContext.request.contextPath}/msg/deleteMsg',
+					method: 'post',
+					traditional:true, 
+					data:{
+						   msgNos:selectedMsgNos,
+						   results:selectedResult
+					},
+					success:function(){
+						alert('쪽지가 삭제되었습니다.')
+						location.reload();
+					   }
+					})
+	        }else{
+	        	alert('삭제할 쪽지를 선택해주세요.');
+	        }
+			
+		})
 	})
 
 </script>

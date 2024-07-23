@@ -37,7 +37,7 @@ public class MsgServiceImpl implements MsgService{
 	private MsgFileMapper msgFileMapper;
 	
 	@Autowired
-	private MsgRecipientMapper msgRepicientMapper;
+	private MsgRecipientMapper msgRecipientMapper;
 	
 	
 	//새 쪽지 작성
@@ -109,7 +109,7 @@ public class MsgServiceImpl implements MsgService{
 							.recipientOrder(recipientOrder)
 							.recipientEmpNo(msgRecipient)
 							.build();
-				int msgRecipientRow = msgRepicientMapper.insertMsgRecipient(msgRecipientDTO);
+				int msgRecipientRow = msgRecipientMapper.insertMsgRecipient(msgRecipientDTO);
 				if(msgRecipientRow == 0) {
 					throw new RuntimeException();
 				}
@@ -167,7 +167,7 @@ public class MsgServiceImpl implements MsgService{
 	public void toTrashRecipient(int[] msgNos, int empNo) {
 		for(int msgNo : msgNos) {
 			log.debug(TeamColor.YELLOW + "msgNo" + msgNo);
-			int row = msgRepicientMapper.updateMsgToTrash(msgNo, empNo);
+			int row = msgRecipientMapper.updateMsgToTrash(msgNo, empNo);
 			if(row != 1) {
 				throw new RuntimeException();
 			}
@@ -194,7 +194,7 @@ public class MsgServiceImpl implements MsgService{
 	public void updatetoMsgBox(int[] msgNos,int empNo,String [] results) {
 		// 입력된 배열의 길이가 일치하는지 확인
 	    if (msgNos.length != results.length) {
-	        throw new IllegalArgumentException("msgNos와 results 배열의 길이가 일치하지 않습니다.");
+	        throw new RuntimeException("msgNos와 results 배열의 길이가 일치하지 않습니다.");
 	    }
 	    for (int i = 0; i < msgNos.length; i++) {
 	        int msgNo = msgNos[i];
@@ -210,7 +210,7 @@ public class MsgServiceImpl implements MsgService{
 	        } else if (result.equals("false")) {
 	            // 발신자가 일치하지 않으므로 받은 편지함으로 이동
 	            log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
-	            int row2 = msgRepicientMapper.updatetoMsgBoxRecipient(msgNo, empNo);
+	            int row2 = msgRecipientMapper.updatetoMsgBoxRecipient(msgNo, empNo);
 	            if (row2 != 1) {
 	                throw new RuntimeException("받은 편지함 이동 실패: msgNo=" + msgNo);
 	            }
@@ -225,5 +225,52 @@ public class MsgServiceImpl implements MsgService{
 		log.debug(TeamColor.YELLOW + "msgNo => "+ msgNo);
 		
 		return msgMapper.selectMsgOne(msgNo);
+	}
+	//쪽지 삭제 
+	@Override
+	public void deleteMsg(int[] msgNos, int empNo, String[] results) {
+		log.debug(TeamColor.YELLOW + "msgNos[0] =>" + msgNos[0]);
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		log.debug(TeamColor.YELLOW + "result[0] =>" + results[0]);
+		// 입력된 배열의 길이가 일치하는지 확인
+	    if (msgNos.length != results.length) {
+	        throw new RuntimeException("msgNos와 results 배열의 길이가 일치하지 않습니다.");
+	    }
+	    //발신자 일치 시 msg >> msg_state값을 업데이트
+	    //불일치 시 msg_recipient >> recipient_msg_state 값을 업데이트
+	    for (int i = 0; i < msgNos.length; i++) {
+	        int msgNo = msgNos[i];
+	        String result = results[i];
+
+	        if (result.equals("true")) {
+	            // 발신자가 일치하므로 msg 테이블을 업데이트 
+	            log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
+	            int row = msgMapper.updateMsgDelete(msgNo);
+	            if (row != 1) {
+	                throw new RuntimeException("메시지 삭제 실패: msgNo=" + msgNo);
+	            }
+	        } else if (result.equals("false")) {
+	            // 발신자가 일치하지 않으므로 msg_recipient 테이블을 업데이트 
+	            log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
+	            int row2 = msgRecipientMapper.updateMsgDelete(msgNo, empNo);
+	            if (row2 != 1) {
+	                throw new RuntimeException("받은 편지함 이동 실패: msgNo=" + msgNo);
+	            }
+	        }
+		
+		}
+		
+	}
+	//쪽지 읽음 여부 
+	@Override
+	public void updateReadState(int msgNo, int empNo) {
+		log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		
+		int row = msgRecipientMapper.updateReadYN(msgNo, empNo);
+		if(row != 1) {
+			throw new RuntimeException();
+		}
+		
 	}
 }

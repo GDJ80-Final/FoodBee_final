@@ -21,6 +21,7 @@
 				<td>보낸이</td>
 				<td>제목</td>
 				<td>보낸일시</td>
+				<td>읽음여부</td>
 			</tr>
 		</thead>
 		<tbody id="msgTableBody">
@@ -60,9 +61,16 @@
 							'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
 									item.msgNo +'">'+ item.title + '</a></td>'+
 							'<td>'+ item.createDatetime + '</td>'+
+							'<td id="readYN">'+ item.readYN + '</td>'+
 							'</tr>' 
 				   );
-			   })
+			   });
+			   //로드된 데이터에 대해 볼드체 강조
+			   $('.readYN').each(function() {
+				   if ($(this).text() === '안읽음') {
+					   $(this).css('font-weight', 'bold');
+				   }
+			   });
 		   }
 	   });
 	   };
@@ -96,23 +104,23 @@
 		  console.log(selectedMsgNos[0]);
 		   if(selectedMsgNos.length > 0){
 			   $.ajax({
-			   url: '${pageContext.request.contextPath}/msg/toTrashRecipient',
-			   method: 'post',
-			   traditional:true, 
-			   data:{
-				   msgNos:selectedMsgNos
-			   },
-			   success:function(){
-				   alert('쪽지가 휴지통으로 이동하였습니다.')
-				   loadMsg("all"); // 이동 후 전체 목록 새로고침
-			   }
+				   url: '${pageContext.request.contextPath}/msg/toTrashRecipient',
+				   method: 'post',
+				   traditional:true, 
+				   data:{
+					   msgNos:selectedMsgNos
+				   },
+				   success:function(){
+					   alert('쪽지가 휴지통으로 이동하였습니다.')
+					   loadMsg("all"); // 이동 후 전체 목록 새로고침
+				   }
 		   })
 		   }else {
 			   alert('휴지통으로 이동할 쪽지를 선택해주세요.');
 		   }
 		   
 	   });
-	
+     	
 	   
    })
 </script>

@@ -34,7 +34,10 @@ public class MsgController {
 		
 		return "/msg/addMsg";
 	}
-	
+	//새쪽지쓰기
+	//파라미터 : msgRequestDTO, HttpServletRequest, HttpSsession, Model
+	//반환값 : redirect:/msg/sentMsgBox
+	//사용 페이지 : /msg/addMsg
 	@PostMapping("/msg/addMsg")
 	public String addMsg(MsgRequestDTO msgRequestDTO, 
 				HttpServletRequest request,
@@ -151,6 +154,10 @@ public class MsgController {
 		return "/msg/trashMsgBox";
 		
 	}
+	//휴지통 >> 쪽지함 으로 복구
+	//파라미터 : int[] msgNos, String [] results, HttpSession
+	//반환값 : string "success"
+	//사용페이지 : /msg/trashMsgBox
 	@PostMapping("/msg/toMsgBox")
 	@ResponseBody
 	public String toMsgBox(@RequestParam(name="msgNos")int[] msgNos,
@@ -168,14 +175,57 @@ public class MsgController {
 		
 	
 	}
+	//쪽지 상세보기
+	//파라미터 : int msgNo,session, model 
+	//반환값 : "/msg/msgOne"
+	//사용페이지 : /msg/msgOne
 	@GetMapping("/msg/msgOne")
 	public String msgOne(@RequestParam(name="msgNo")int msgNo,
+				HttpSession session,
 				Model model) {
 		log.debug(TeamColor.YELLOW + "msgNo => "+ msgNo);
-	
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		String empName = emp.getEmpName();
+		log.debug(TeamColor.YELLOW + "empName =>" +empName);
 		Map<String,Object> m = msgService.getMsgOne(msgNo);
 		model.addAttribute("m", m);
+		model.addAttribute("empName", empName);
 		
 		return "/msg/msgOne";
+	}
+	//쪽지 삭제
+	//파라미터 : int [] msgNos,String [] results, HttpSession
+	//반환값 : String "success"
+	@PostMapping("/msg/deleteMsg")
+	@ResponseBody
+	public String deleteMsg(@RequestParam(name="msgNos")int[] msgNos,
+				@RequestParam(name="results")String[]results,
+				HttpSession session) {
+		log.debug(TeamColor.YELLOW + "msgNos[0] => " + msgNos[0]);
+		log.debug(TeamColor.YELLOW + "result[0] => " + results[0]);
+		log.debug(TeamColor.YELLOW + "result =>"+results);
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
+		msgService.deleteMsg(msgNos, empNo, results);
+		
+		return "success";
+		
+	}
+	//쪽지 읽음 여부 업데이트
+	//파라미터 : int msgNo, int empNo
+	//반환값 : String success
+	@PostMapping("/msg/updateReadYN")
+	@ResponseBody
+	public String updateReadYN(@RequestParam(name="msgNo")int msgNo,
+				HttpSession session) {
+		log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
+		msgService.updateReadState(msgNo, empNo);
+		
+		return "success";
+		
 	}
 }

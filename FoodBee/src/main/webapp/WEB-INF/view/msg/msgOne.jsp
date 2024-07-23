@@ -47,5 +47,32 @@
 			</tr>
 				
 	</table>
+<script>
+	$(document).ready(function(){
+		let empName = '${empName}';
+		let receivers = '${m.receivers}';
+		let currentState = '${m.readYN}';
+		console.log(empName);
+		console.log(receivers);
+		if(receivers.includes(empName) && currentState === 'N' ){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/msg/updateReadYN',
+				method:'post',
+				data : {
+					msgNo : '${m.msgNo}'
+				},
+				success:function(json){
+					console.log('읽음상태 업데이트 완료');
+				}
+		})
+		
+		}else{
+			console.log('업데이트 되지 않음');
+		}
+		
+	})
+
+
+</script>
 </body>
 </html>

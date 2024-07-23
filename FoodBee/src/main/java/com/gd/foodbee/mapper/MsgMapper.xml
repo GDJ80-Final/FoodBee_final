@@ -22,11 +22,15 @@
 	</insert>
 	<select id="selectReceivedMsgList" parameterType="Map" resultType="Map">
 		SELECT
-			ROW_NUMBER() OVER(ORDER BY createDateTime) AS msgOrder,
+			ROW_NUMBER() OVER(ORDER BY createDatetime) AS msgOrder,
 			m.msg_no msgNo,
 			e.emp_name empName,
 			m.title,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDateTime
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime,
+			CASE
+        		WHEN mr.read_YN = 'Y' THEN '읽음'
+        		WHEN mr.read_YN = 'N' THEN '안읽음'
+    			END AS readYN
 		FROM
 			msg m
 		INNER JOIN
@@ -71,7 +75,11 @@
 			m.msg_no msgNo,
 			GROUP_CONCAT(e.emp_name SEPARATOR ',') empName,
 			m.title,
-			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime
+			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime,
+			CASE
+        		WHEN mr.read_YN = 'Y' THEN '읽음'
+        		WHEN mr.read_YN = 'N' THEN '안읽음'
+    			END AS readYN
 		FROM
 			msg m
 		INNER JOIN
@@ -100,6 +108,7 @@
 			GROUP_CONCAT(e.emp_name SEPARATOR ',') receivers,
 			m.title,
 			m.content,
+			mr.read_YN readYN,
 			originalFiles,
 			saveFiles,
 			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') AS createDatetime
@@ -131,7 +140,7 @@
 	</update>
 	<select id="selectTrashMsgList"  parameterType="int" resultType="Map">
 		SELECT 
-			ROW_NUMBER() OVER(ORDER BY updateTime) AS msgOrder,
+			ROW_NUMBER() OVER(ORDER BY updateDatetime) AS msgOrder,
 			msgNo,
 			senderName,
 			receiverName,
@@ -181,4 +190,14 @@
 		 ORDER BY msgOrder DESC
 
 	</select>
+	<update id="updateMsgDelete" parameterType="int">
+		UPDATE
+			msg
+		SET
+			msg_state = 9
+		WHERE 
+			msg_state = 0
+			AND msg_no = #{msgNo}
+	
+	</update>
 </mapper>

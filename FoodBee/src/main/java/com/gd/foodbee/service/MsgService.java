@@ -49,7 +49,7 @@ public interface MsgService {
 	
 	
 	//휴지통 -> 쪽지함 이동 
-	//파라미터 : int[] msgNos,int empNo, String [] result
+	//파라미터 : int[] msgNos,int empNo, String [] results
 	//반환값 :X
 	//사용클래스 : MsgController.toMsgBoxRecipient
 	void updatetoMsgBox(int [] msgNos,int empNo,String [] results);
@@ -59,5 +59,17 @@ public interface MsgService {
 	//반환값 : Map<String,Object>
 	//사용클래스 : MsgController.msgOne
 	Map<String,Object> getMsgOne(int msgNo);
+	
+	//쪽지 완전삭제
+	//파라미터 : int[] msgNos,int empNo, String [] results
+	//반환값 : X
+	//사용클래스 : MsgController.deleteMsg
+	void deleteMsg(int [] msgNos,int empNo,String [] results);
+	
+	//쪽지 읽음 여부 업데이트
+	//파라미터 : int msgNo, int empNo
+	//반환값 : X
+	//사용클래스 : MsgController.updateReadState
+	void updateReadState(int msgNo,int empNo);
 	
 }

@@ -57,5 +57,10 @@ public interface MsgMapper {
 	//반환값 : int
 	//사용클래스: MsgService.toMsgBox
 	int updateMsgToMsgBox(int msgNo);
+	//쪽지 삭제 (state = 9로 업데이트)
+	//파라미터 : int msgNo
+	//반환값 : int
+	//사용클래스 : MsgService.deleteMsg
+	int updateMsgDelete(int msgNo);
 	
 }

@@ -21,8 +21,20 @@ public interface MsgRecipientMapper {
 	//수신자 -> 휴지통에서 쪽지함으로 복구 
 	//파라미터 : Map-> int msgNo,int empNo
 	//반환값 : int
-	//사용서비스 :MsgService.toMsgBoxRecipient
+	//사용서비스 :MsgService.toMsgBox
 	int updatetoMsgBoxRecipient(int msgNo,int empNo);
+	
+	//쪽지 삭제 (state = 9로 업데이트)
+	//파라미터 : int msgNo, int empNo;
+	//반환값 : int
+	//사용클래스 : MsgService.deleteMsg
+	int updateMsgDelete(int msgNo,int empNo);
+	
+	//읽음여부 업데이트 (N -> Y)
+	//파라미터 : int msgNo, int empNo
+	//반환값 : int
+	//사용클래스 : MsgService.updateReadState
+	int updateReadYN(int msgNo,int empNo);
 	
 	
 }
