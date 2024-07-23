@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ScheduleController {
 	@Autowired ScheduleService scheduleService;
 	
-	@GetMapping("/schedule")
+	@GetMapping("/calendar/schedule")
 	public String schdule(
 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
 			Model model, HttpSession session) {
@@ -71,10 +71,10 @@ public class ScheduleController {
 	    model.addAttribute("dayOffList", dayOffList);
 	    model.addAttribute("businessTripList", businessTripList);
 	    
-		return"schedule";
+		return"/calendar/schedule";
 	}
 	//리스트 페이지
-	@GetMapping("/scheduleList")
+	@GetMapping("/calendar/scheduleList")
 	public String scheduleList(
 	        @RequestParam(name="currentPage", defaultValue="1") int currentPage,
 	        Model model, HttpSession session) {
@@ -94,10 +94,10 @@ public class ScheduleController {
 	    model.addAttribute("empNo", empNo);
 	    model.addAttribute("dptNo", dptNo);
 	    
-	    return "scheduleList";
+	    return "/calendar/scheduleList";
 	}
 	//개인일정 전체보기
-	@GetMapping("/personalScheduleList")
+	@GetMapping("/calendar/personalScheduleList")
 	@ResponseBody
 	public Map<String,Object> personalScheduleList(int currentPage, int empNo){
 		
@@ -115,7 +115,7 @@ public class ScheduleController {
 	}
 	// 팀일정 전체보기
 	
-	@GetMapping("/teamScheduleList")
+	@GetMapping("/calendar/teamScheduleList")
 	@ResponseBody
 	public Map<String, Object> teamScheduleList(int currentPage, String dptNo) {
 	    List<HashMap<String, Object>> teamListAll = scheduleService.teamListAll(currentPage, dptNo);
@@ -136,7 +136,7 @@ public class ScheduleController {
 	    return teamList;
 	}
 	//회의실 예약 전체보기
-	@GetMapping("/roomScheduleList")
+	@GetMapping("/calendar/roomScheduleList")
 	@ResponseBody
 	public Map<String,Object> roomScheduleList(int currentPage, String dptNo){
 		
@@ -154,7 +154,7 @@ public class ScheduleController {
 	}
 	  
 	//일정 상세보기
-	@GetMapping("/scheduleOne")
+	@GetMapping("/calendar/scheduleOne")
 	public String scheduleOne(@RequestParam("scheduleNo") int scheduleNo,
 				Model model) {
 		log.debug(TeamColor.PURPLE + "scheduleNo=>" + scheduleNo);
@@ -164,10 +164,10 @@ public class ScheduleController {
 		
 		model.addAttribute("one", one);
 		
-		return "scheduleOne";
+		return "/calendar/scheduleOne";
 	}
 	//팀일정 상세보기
-	@GetMapping("/teamScheduleOne")
+	@GetMapping("/calendar/teamScheduleOne")
 	public String teamScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
 			Model model) {
 		
@@ -178,10 +178,10 @@ public class ScheduleController {
 		model.addAttribute("teamOne", teamOne);
 		
 		
-		return"teamScheduleOne";
+		return"/calendar/teamScheduleOne";
 	}
 	//휴가내역 상세보기
-	@GetMapping("/dayOffScheduleOne")
+	@GetMapping("/calendar/dayOffScheduleOne")
 	public String dayOffScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
 			Model model) {
 		
@@ -190,10 +190,10 @@ public class ScheduleController {
 		
 		model.addAttribute("dayOffOne", dayOffOne);
 		
-		return"dayOffScheduleOne";
+		return"/calendar/dayOffScheduleOne";
 	}
 	//출장내역 상세보기
-	@GetMapping("/businessTripScheduleOne")
+	@GetMapping("/calendar/businessTripScheduleOne")
 	public String businessTripScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
 			Model model) {
 		
@@ -202,11 +202,11 @@ public class ScheduleController {
 		
 		model.addAttribute("tripHistoryOne", tripHistoryOne);
 		
-		return"businessTripScheduleOne";
+		return"/calendar/businessTripScheduleOne";
 	}
 	
 	//일정 수정
-	@GetMapping("/modifySchedule")
+	@GetMapping("/calendar/modifySchedule")
 	public String modifySchedule(@RequestParam("scheduleNo") int scheduleNo,
 				Model model) {
 		
@@ -217,10 +217,10 @@ public class ScheduleController {
 		
 		model.addAttribute("one", one);
 		
-		return "modifySchedule";
+		return "/calendar/modifySchedule";
 	}
 	//개인일정 수정액션
-	@PostMapping("/modifyScheduleAction")
+	@PostMapping("/calendar/modifyScheduleAction")
 	public String modifyScheduleAction(@RequestParam("scheduleNo")int scheduleNo,
 			ScheduleDTO scheduleDTO) {
 		
@@ -228,20 +228,20 @@ public class ScheduleController {
 			
 			int update = scheduleService.modifySchedule(scheduleNo, scheduleDTO);
 		
-		return "redirect:/scheduleOne?scheduleNo="+scheduleNo;
+		return "redirect:/calendar/scheduleOne?scheduleNo="+scheduleNo;
 	}
 	//일정삭제
-	@GetMapping("/deleteSchedule")
+	@GetMapping("/calendar/deleteSchedule")
 	public String deleteSchedule(@RequestParam("scheduleNo")int scheduleNo) {
 		log.debug(TeamColor.PURPLE + "일정삭제완료");
 		
 		scheduleService.deleteSchedule(scheduleNo);
 		
-		return "redirect:/schedule";
+		return "redirect:/calendar/schedule";
 	}
 	
 	//일정추가
-	@GetMapping("/addSchedule")
+	@GetMapping("/calendar/addSchedule")
 	public String addSchedule(Model model, HttpSession session) {
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
@@ -265,17 +265,17 @@ public class ScheduleController {
 	    model.addAttribute("empName", empName);
 	    model.addAttribute("rankName", rankName);
 	    
-		return"addSchedule";
+		return"/calendar/addSchedule";
 	}
 	//일정추가
-	@PostMapping("/addScheduleAction")
+	@PostMapping("/calendar/addScheduleAction")
 	public String addScheduleAction(ScheduleDTO scheduleDTO) {
 		
 		log.debug(TeamColor.PURPLE + "들어왔나?=>" + scheduleDTO);
 		
 		scheduleService.addSchedule(scheduleDTO);
 		
-		return "redirect:/schedule";
+		return "redirect:/calendar/schedule";
 	}
 	
 	

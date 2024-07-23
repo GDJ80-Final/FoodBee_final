@@ -39,7 +39,7 @@
                 <tr>
                     <th>내용</th>
                     <td>
-                        <textarea rows="7" cols="50">${one[0].content}</textarea> 
+                        <textarea rows="7" cols="50" readonly="readonly">${one[0].content}</textarea> 
                     </td>
                 </tr>
             </table>

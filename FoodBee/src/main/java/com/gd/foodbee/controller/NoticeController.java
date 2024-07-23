@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeController {
 	@Autowired NoticeService noticeService;
 	
-	@GetMapping("/noticeList")//전체List
+	@GetMapping("/notice/noticeList")//전체List
 	public String noticeList(
 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
 			Model model, HttpSession session) {
@@ -63,10 +63,10 @@ public class NoticeController {
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPage", lastPage);
-	return "noticeList";
+	return "/notice/noticeList";
 	}
 	
-	@GetMapping("/allNoticeList") // [버튼] 전체 공지사항
+	@GetMapping("/notice/allNoticeList") // [버튼] 전체 공지사항
 	@ResponseBody
 	public Map<String,Object> allNoticeList(int currentPage, String dptNo) {
 		
@@ -87,7 +87,7 @@ public class NoticeController {
 	    return allList;
 	}
 	
-	@GetMapping("/allEmpList")//[버튼]전사원 공지사항
+	@GetMapping("/notice/allEmpList")//[버튼]전사원 공지사항
 	@ResponseBody
 	public Map<String,Object> allEmpList(int currentPage) {
 		
@@ -104,7 +104,7 @@ public class NoticeController {
 			
 		return empList;
 	}
-	@GetMapping("/allDptList")
+	@GetMapping("/notice/allDptList")
 	@ResponseBody
 	public Map<String, Object> allDptList(int currentPage, String dptNo) {
 	    List<HashMap<String, Object>> allDptList = noticeService.getAllDptNoticeList(currentPage, dptNo);
@@ -122,7 +122,7 @@ public class NoticeController {
 	}
 
 	
-	@GetMapping("/addNotice")//공지사항 추가
+	@GetMapping("/notice/addNotice")//공지사항 추가
 	public String addNotice(Model model, 
 			HttpSession session, 
 			HttpServletRequest request) {
@@ -146,10 +146,10 @@ public class NoticeController {
 	    model.addAttribute("dptNo", dptNo);
 	    model.addAttribute("empNo", empNo);
 	    model.addAttribute("empName", empName);
-	return "addNotice";
+	return "/notice/addNotice";
 	}
 	
-	@PostMapping("/addNoticeAction")//공지사항 추가action
+	@PostMapping("/notice/addNoticeAction")//공지사항 추가action
 	public String addNoticeAction(NoticeRequest noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest=>" + noticeRequest);
 		
@@ -158,9 +158,9 @@ public class NoticeController {
 	    } catch (Exception e) {
 	        log.error("공지사항 수정 중 오류 발생", e);
 	    }		
-	return"redirect:/noticeList";
+	return"redirect:/notice/noticeList";
 	}
-	@GetMapping("/noticeOne")
+	@GetMapping("/notice/noticeOne")
     public String noticeOne(
     		@RequestParam("noticeNo") int noticeNo,
     		Model model, HttpSession session) {
@@ -189,10 +189,10 @@ public class NoticeController {
 		model.addAttribute("empName", empName);
 		model.addAttribute("rankName", rankName);
 		
-    return "noticeOne"; 
+    return "/notice/noticeOne"; 
     }
 	//공지사항 수정
-	@GetMapping("/modifyNotice")
+	@GetMapping("/notice/modifyNotice")
 	public String modifyNotice(@RequestParam("noticeNo") int noticeNo,
 				Model model) {
 		log.debug(TeamColor.PURPLE + "changeNotice.noticeNo=>" + noticeNo);
@@ -201,10 +201,10 @@ public class NoticeController {
 		log.debug(TeamColor.PURPLE + "noticeOne.one=>" + one);
 		
 		model.addAttribute("one", one);
-		return "modifyNotice";
+		return "/notice/modifyNotice";
 	}
 	//공지사항 수정액션
-	@PostMapping("/modifyNoticeAction")
+	@PostMapping("/notice/modifyNoticeAction")
 	public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
 			NoticeRequest noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
@@ -216,7 +216,7 @@ public class NoticeController {
 	        log.error("공지사항 수정 중 오류 발생", e);
 	    }
 		
-	    return "redirect:/noticeOne?noticeNo=" + noticeNo;
+	    return "redirect:/notice/noticeOne?noticeNo=" + noticeNo;
 	}
 	
 	//공지사항 파일삭제
@@ -226,15 +226,15 @@ public class NoticeController {
 	    
 	    noticeService.getDeleteNoticeFile(fileName, noticeNo);
 	    
-	    return "redirect:/modifyNotice?noticeNo=" + noticeNo;
+	    return "redirect:/notice/modifyNotice?noticeNo=" + noticeNo;
 	}
 	
 	//공지사항 삭제
-	@PostMapping("/deleteNotice")
+	@PostMapping("/notice/deleteNotice")
 	public String deleteNotice(@RequestParam("noticeNo") int noticeNo) {
 		log.debug(TeamColor.PURPLE + "delete.noticeNo=>" + noticeNo);
 		
 		noticeService.getDeleteNotice(noticeNo);
-	return"redirect:/noticeList";
+	return"redirect:/notice/noticeList";
 	}
 }
