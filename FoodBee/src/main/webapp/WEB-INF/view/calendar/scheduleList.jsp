@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,37 +9,38 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>일정 리스트</h1>
-<button id="calendar">달력📅</button>
-<button id="addEvent">일정추가</button>
-<br>
-<button id="personBtn">개인</button>
-<button id="teamBtn">팀</button>
-<button id="roomBtn">회의실</button>
+	<h1>일정 리스트</h1>
+	<button id="calendar">달력📅</button>
+	<button id="addEvent">일정추가</button>
+	<br>
+	<button id="personBtn">내 일정</button>
+	<button id="teamBtn">팀 일정</button>
+	<button id="roomBtn">회의 일정</button>
 
-<div>
-    <table border="1" id="scheduleTable">
-        <thead id="tableHeader">
-            <!-- 버튼클릭시 변경되게 -->
-        </thead>
-        <tbody id="tableBody">
-            <!-- 여기도 버튼 클릭하면 변경되게 -->
-        </tbody>
-    </table>
-</div>
-<input type="hidden" id="hiddenPage" value="person">
-<!--히든 구역을 이용해서 페이징 상태를 저장해둔다 -->
-<div id="page">
-    <button type="button" id="first">First</button>
-    <button type="button" id="pre">◁</button>
-    <button type="button" id="next">▶</button>
-    <button type="button" id="last">Last</button>
-</div>
-<br>
-<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
-<button id="searchBtn">검색</button>
+	<div>
+		<table border="1" id="scheduleTable">
+			<thead id="tableHeader">
+				<!-- 버튼클릭시 변경되게 -->
+			</thead>
+			<tbody id="tableBody">
+				<!-- 여기도 버튼 클릭하면 변경되게 -->
+			</tbody>
+		</table>
+	</div>
+	<input type="hidden" id="hiddenPage" value="person">
+	<!--히든 구역을 이용해서 페이징 상태를 저장해둔다 -->
+	<div id="page">
+		<button type="button" id="first">First</button>
+		<button type="button" id="pre">◁</button>
+		<button type="button" id="next">▶</button>
+		<button type="button" id="last">Last</button>
+	</div>
+	<br>
+	<span id="searchType">일정검색</span>
+	<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
+	<button id="searchBtn">검색</button>
 
-<script>
+	<script>
     let currentPage = 1;
     let lastPage = 1;
 
@@ -49,6 +50,7 @@
         <!--2. 페이지 맨 처음 접속 시 실행 loadPersonSchedule 라는 함수에 currentPage 값 주면서 실행-->
         <!-- currentPage 값은 현재 맨 위에 전역변수 1 -->
         loadPersonSchedule(currentPage);
+        document.getElementById('searchType').innerHTML = '내일정';
         
         <!--히든필드를 가져와서 -->
         let hiddenFieldValue = $('#hiddenPage').val();
@@ -74,16 +76,19 @@
         // 개인 일정 버튼 클릭 시
         $("#personBtn").click(function() {
         	loadPersonSchedule(1);
+        	document.getElementById('searchType').innerHTML = '내일정';
         });
 
         // 팀 일정 버튼 클릭 시
         $("#teamBtn").click(function() {
         	loadTeamSchedule(1);
+        	document.getElementById('searchType').innerHTML = '팀일정'
         });
 
         // 회의실 일정 버튼 클릭 시
         $("#roomBtn").click(function() {
         	loadroomSchedule(1);
+        	document.getElementById('searchType').innerHTML = '회의일정'
         });
         
         <!-- 3. 개인 일정 리스트 가져옴 -->
@@ -138,6 +143,7 @@
                 type: "GET",
                 data: {
                     currentPage: currentPage,
+                    empNo: "${empNo}",
                     dptNo: "${dptNo}",
                     search: search
                 },
@@ -229,11 +235,23 @@
 	                   detailUrl = "${pageContext.request.contextPath}/calendar/businessTripScheduleOne?scheduleNo="+item.uniqueNo;
 	                   break;
 	           }
+	           
+	           let detailTitle = item.title;
+	           switch(item.title) {
+	               case '휴가내역':
+	                   detailTitle = item.empName + "님 휴가일정";
+	                   break;
+	               case '출장내역':
+	                   detailTitle = item.empName + "님 출장일정";
+	                   break;
+	               default:
+	                   detailTitle = item.title; // 예외 처리로 기본값 설정
+	           }
 	           console.log("url==>"+ detailUrl);
 	           
 	           let newRow = $("<tr>" +
 	                   "<td>" + item.category + "</td>" +
-	                   "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+	                   "<td><a href='" + detailUrl + "'>" + detailTitle + "</a></td>" +
 	                   "<td>" + item.startDate + "</td>" +
 	                   "<td>" + item.endDate + "</td>" +
 	                   "<td>" + item.empName + "</td>" +
@@ -260,8 +278,9 @@
              
             $("#tableHeader").html(`
                 <tr>
-                  <th>예약NO</th>
-                    <th>회의실NO</th>
+                    <th>유형</th>
+                    <th>제목</th>
+                    <th>회의실</th>
                     <th>시작시간</th>
                     <th>종료시간</th>
                     <th>예약자이름</th>
@@ -270,8 +289,9 @@
 
             $.each(json.roomListAll, function(index, item) {
                 let newRow = $("<tr>" +
-                        "<td>" + item.rsvNo + "</td>" +
-                        "<td> BEE " + item.roomNo + "</td>" +
+                        "<td>" + item.category + "</td>" +
+                        "<td>" + item.meetingTitle + "</td>" +
+                        "<td>" + item.roomName + "("+item.roomPlace+")" + "</td>" +
                         "<td>" + item.startDatetime + "</td>" +
                         "<td>" + item.endDatetime + "</td>" +
                         "<td>" + item.empName + "</td>" +

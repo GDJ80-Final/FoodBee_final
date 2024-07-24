@@ -10,7 +10,7 @@
 <body>
 <h1>출장상세보기</h1>
 <div>
-<a href="schedule">돌아가기</a>
+<a href="scheduleList">돌아가기</a>
     <table border="1">
         <tr>
             <th>출장자</th>
@@ -56,6 +56,12 @@
                 </td>
             </tr>
         </c:if>
+        <tr>
+            <th>목적/사유</th>
+            <td>
+                <textarea rows="4" cols="50" readonly="readonly"><c:out value="${tripHistoryOne.content}"/></textarea>
+            </td>
+        </tr>
     </table>
 </div>
 </body>

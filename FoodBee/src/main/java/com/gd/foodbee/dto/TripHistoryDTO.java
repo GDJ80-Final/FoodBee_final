@@ -20,6 +20,7 @@ public class TripHistoryDTO {
 	private String cancleReason;
 	private String emergencyContact;
 	private int draftDocNo;
+	private String content;
 	
 	public String getFormattedStartDate() {
         return startDate + "T00:00";

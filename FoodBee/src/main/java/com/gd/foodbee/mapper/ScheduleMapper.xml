@@ -197,10 +197,13 @@
 </select>
 <!-- 회의일정 전체리스트 -->
 <select id="roomList" resultType="HashMap" parameterType="HashMap">
-    SELECT 
+     SELECT 
+        '개인' AS category,
         r.rsv_no AS rsvNo,
-        r.room_no AS roomNo, 
-        '팀회의' AS title, 
+        ri.room_name AS roomName,
+        r.meeting_title AS meetingTitle,
+        ri.room_place AS roomPlace,
+        r.`type` AS type,
         DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
         DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
         e.emp_name AS empName
@@ -208,19 +211,57 @@
         room_rsv r
     INNER JOIN 
         emp e ON r.emp_no = e.emp_no
+    INNER JOIN 
+        room_info ri ON ri.room_no = r.room_no
     WHERE 
-        e.dpt_no = #{dptNo} 
-        AND r.rsv_state = 1
+        r.rsv_state = 1
+        AND r.`type` = 'personal'
+        AND e.emp_no = #{empNo}
         <if test="search != null and search != ''">
             AND (
-                '팀회의' LIKE '%${search}%'
+                '개인' LIKE '%${search}%'
+                OR r.meeting_title LIKE '%${search}%'
+                OR ri.room_name LIKE '%${search}%'
+                OR ri.room_place LIKE '%${search}%'
+                OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+                OR e.emp_name LIKE '%${search}%'
+            )
+        </if>
+        
+    UNION ALL
+    
+    SELECT 
+        '팀' AS category,
+        r.rsv_no AS rsvNo,
+        ri.room_name AS roomName,
+        r.meeting_title AS meetingTitle,
+        ri.room_place AS roomPlace,
+        r.`type` AS type,
+        DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
+        DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
+        e.emp_name AS empName
+    FROM 
+        room_rsv r
+    INNER JOIN 
+        emp e ON r.emp_no = e.emp_no
+    INNER JOIN 
+        room_info ri ON ri.room_no = r.room_no
+    WHERE 
+        r.rsv_state = 1 AND r.`type` = 'team' AND e.dpt_no = #{dptNo}
+        <if test="search != null and search != ''">
+            AND (
+                '팀' LIKE '%${search}%'
+                OR r.meeting_title LIKE '%${search}%'
+                OR ri.room_name LIKE '%${search}%'
+                OR ri.room_place LIKE '%${search}%'
                 OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
                 OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
                 OR e.emp_name LIKE '%${search}%'
             )
         </if>
     ORDER BY 
-        r.start_datetime DESC
+    	startDatetime DESC
     LIMIT #{beginRow}, #{rowPerPage};
 </select>
 <!-- 개인일정 총갯수 -->
@@ -322,17 +363,22 @@
 <!-- 휴가내역 상세보기 -->
 <select id="dayOffOne" parameterType="Map" resultType="com.gd.foodbee.dto.DayOffDTO">
 	SELECT 
+		doh.day_off_no dayOffNo,
 		e.emp_name empName, 
 		doh.start_date startDate, 
-		doh.end_date endDate, 
-		doh.cancle_YN cancleYN, 
-		doh.cancle_reason cancleReason, 
-		doh.use_year useYear, 
+		doh.end_date endDate,
 		doh.emergency_contact emergencyContact, 
-		doh.type_name typeName
-	FROM
-		day_off_history doh 
-	LEFT JOIN emp e ON doh.emp_no = e.emp_no
+		doh.cancle_YN cancleYN,
+		doh.cancle_reason cancleReason,
+		doh.use_year useYear,
+		doh.type_name typeName,
+		dd.content content
+	FROM 
+		day_off_history doh
+	LEFT JOIN 
+		draft_doc dd ON dd.draft_doc_no = doh.draft_doc_no
+	LEFT JOIN 
+		emp e ON doh.emp_no = e.emp_no
 	WHERE 
 		day_off_no = #{scheduleNo}
 </select>
@@ -340,16 +386,20 @@
 <select id="tripHistoryOne" parameterType="Map" resultType="com.gd.foodbee.dto.TripHistoryDTO">
 	SELECT 
 		e.emp_name empName, 
-		bth.business_trip_no businessTripNo,
+		e.emp_no empNo, 
+		bth.business_trip_destination businessTripDestination,
 		bth.start_date startDate,
 		bth.end_date endDate,
 		bth.cancle_YN cancleYN,
 		bth.cancle_reason cancleReason,
 		bth.emergency_contact emergencyContact,
-		bth.business_trip_destination businessTripDestination
+		dd.content
 	FROM 
 		business_trip_history bth
-	INNER JOIN emp e ON bth.emp_no = e.emp_no
+	LEFT JOIN 
+		draft_doc dd ON bth.draft_doc_no = dd.draft_doc_no
+	LEFT JOIN 
+		emp e ON bth.emp_no = e.emp_no
 	WHERE 
 		bth.business_trip_no = #{scheduleNo}
 </select>

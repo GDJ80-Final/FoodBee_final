@@ -30,7 +30,7 @@
         </td>
     </tr>
     <tr>
-        <th>휴가유형</th>
+        <th>유형</th>
         <td>
             <input type="text" value="${dayOffOne.typeName}" readonly="readonly">
         </td>
@@ -60,7 +60,13 @@
               <input type="text" value="<c:out value="${dayOffOne.cancleReason}"/>" readonly="readonly">
           </td>
       </tr>
-  </c:if>
+  	</c:if>
+  	<tr>
+        <th>사유/목적</th>
+        <td>
+        	<textarea rows="4" cols="50" readonly="readonly" ><c:out value="${dayOffOne.content}"/></textarea>
+        </td>
+    </tr>
 </table>
 </body>
 </html>

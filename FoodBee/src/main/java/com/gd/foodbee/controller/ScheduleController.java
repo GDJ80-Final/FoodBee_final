@@ -139,9 +139,9 @@ public class ScheduleController {
 	//회의실 예약 전체보기
 	@GetMapping("/calendar/roomScheduleList")
 	@ResponseBody
-	public Map<String,Object> roomScheduleList(int currentPage, String dptNo, String search){
+	public Map<String,Object> roomScheduleList(int currentPage, int empNo, String dptNo, String search){
 		
-		List<HashMap<String,Object>> roomListAll = scheduleService.roomListAll(currentPage, dptNo, search);
+		List<HashMap<String,Object>> roomListAll = scheduleService.roomListAll(currentPage, empNo,dptNo, search);
 		int roomLastPage = scheduleService.roomLastPage(dptNo);
 		
 		Map<String,Object> roomList = new HashMap<String,Object>();

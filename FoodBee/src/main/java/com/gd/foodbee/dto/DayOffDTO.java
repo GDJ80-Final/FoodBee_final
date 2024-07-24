@@ -21,6 +21,7 @@ public class DayOffDTO {
 	private String useYear;
 	private String emergencyContact;
 	private String typeName;
+	private String content;
 	
 	 public String getFormattedStartDate() {
 	        return startDate + "T00:00";

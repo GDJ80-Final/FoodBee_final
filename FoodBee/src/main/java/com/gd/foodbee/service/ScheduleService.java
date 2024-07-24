@@ -32,7 +32,7 @@ public interface ScheduleService {
 	//팀일정 전체 리스트
 	List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo, String search);
 	//회의실 일정 전체 리스트
-	List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo, String search);
+	List<HashMap<String,Object>> roomListAll(int currentPage, int empNo, String dptNo, String search);
 	//개인일정 총갯수
 	int personLastPage(int empNo);
 	//팀일정 총갯수

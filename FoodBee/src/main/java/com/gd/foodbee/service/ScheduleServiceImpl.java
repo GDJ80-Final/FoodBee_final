@@ -103,12 +103,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	//팀 회의 전체 리스트
 	@Override
-	public List<HashMap<String,Object>> roomListAll(int currentPage, String dptNo, String search){
+	public List<HashMap<String,Object>> roomListAll(int currentPage, int empNo, String dptNo, String search){
 		
 		HashMap<String,Object>m = new HashMap<>();
 		int beginRow = (currentPage -1)*this.rowPerPage;
 		
 		m.put("dptNo", dptNo);
+		m.put("empNo", empNo);
 		m.put("beginRow", beginRow);
 		m.put("rowPerPage", rowPerPage);
 		m.put("search", search);
