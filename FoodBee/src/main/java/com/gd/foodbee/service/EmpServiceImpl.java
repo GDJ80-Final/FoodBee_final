@@ -312,13 +312,13 @@ public class EmpServiceImpl implements EmpService{
                 dayOffCnt += 15 * (daysAfterOneYear / (double)daysInTargetYear);
             }
 
-            return Math.round(dayOffCnt * 10.0) / 10.0;
+            return Math.round(dayOffCnt * 2.0) / 2.0;
         } else {
             // 1년 이상 근무자
             int yearsWorked = (int) (ChronoUnit.DAYS.between(startDate, fiscalYearStart) / 365);
             int baseDayOff = 15;
-            int additionalLeave = Math.min(yearsWorked, 10);
-            return Math.round((baseDayOff + additionalLeave) * 10.0) / 10.0;
+            int additionalLeave = Math.min(yearsWorked / 2, 10);
+            return Math.round((baseDayOff + additionalLeave) * 2.0) / 2.0;
         }
 	}
 

@@ -357,6 +357,7 @@ public class EmpController {
 	
 	// 마이페이지에서 비밀번호 수정
 	@PostMapping("/myPage/modifyEmpPw")
+	@ResponseBody
 	public String modifyEmpPwMyPage(@RequestParam int empNo,
 				@RequestParam String oldPw,
 				@RequestParam String newPw) {

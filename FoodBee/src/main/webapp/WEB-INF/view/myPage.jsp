@@ -157,7 +157,7 @@
 				$("#title").text('비밀번호 변경');
 				
 				$('#content').append(
-					'<form method="post" action="${pageContext.request.contextPath}/myPage/modifyEmpPwMyPage">' +
+					'<form method="post" action="${pageContext.request.contextPath}/myPage/modifyEmpPw">' +
 					    '<div">' +
 					        '<div class="mb-3">' +
 					            '<label for="oldPw" class="form-label">현재 비밀번호</label>' +

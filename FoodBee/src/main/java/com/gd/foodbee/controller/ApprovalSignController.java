@@ -20,7 +20,8 @@ public class ApprovalSignController {
 	@Autowired
 	private ApprovalSignService approvalSignService;
 	
-	@PostMapping("/saveApprovalSign")
+	@PostMapping("/myPage/saveApprovalSign")
+	@ResponseBody
 	public String saveApprovalSign(@RequestParam int empNo, 
 				@RequestParam String url,
 				HttpServletRequest request) {
