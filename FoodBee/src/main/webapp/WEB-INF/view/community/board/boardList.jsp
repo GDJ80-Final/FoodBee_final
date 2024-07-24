@@ -173,7 +173,7 @@
             </div>
             <button class="page-button">Next</button>
         </div>
-        <button class="write-button">글쓰기</button>
+        <button class="write-button" id="writeButton">글쓰기</button>
     </div>
 <script>
 	$(document).ready(function(){
@@ -192,8 +192,8 @@
 						   $('#boardBody').append('<tr>' +
 									'<td>'+ item.boardOrder +'</td>'+
 									'<td>'+ item.boardCategory + '</td>'+
-									'<td><a href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
-											item.boardNo +'">'+ item.title +' ['+item.commentCnt+'] '+'</a></td>'+
+									'<td><a id="title" href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
+											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
 									'<td>'+ item.createDatetime + '</td>'+
 									'<td>'+ item.view + '</td>'+
 									'<td>'+ item.likeCnt + '</td>'+
@@ -203,6 +203,20 @@
 				}
 			});
 		}
+		$(document).on('click','#title',function(){
+			let boardNo = $(this).data('board-no');
+			$.ajax({
+				url:'${pageContext.request.contextPath}/community/board/updateViewCnt',
+				method : 'post',
+				data :{
+					boardNo:boardNo
+				},
+				success:function(json){
+					console.log(json)
+					console.log('조회수 업데이트 완료')
+				}
+			})
+		})
 		
 		$('#all').click(function(){
 			loadBoardList("all","");
@@ -237,6 +251,10 @@
 			let keyword = $('#search').val();
 			loadBoardList(selectedCategory, keyword);
 		});
+		
+	    $('#writeButton').click(function(){
+	        window.location.href = '${pageContext.request.contextPath}/community/board/addBoard';
+	    });
 	})
 </script>
 </body>

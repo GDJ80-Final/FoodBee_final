@@ -21,4 +21,10 @@ public interface BoardMapper {
 	//게시글 상세보기 
 	Map<String,Object> selectBoardOne(int boardNo);
 	
+	//조회수 카운팅
+	int updateViewCnt(int boardNo);
+	
+	//좋아요 수 카운팅
+	int updateLikeCnt(int boardNo);
+	
 }

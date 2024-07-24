@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.BoardCommentMapper">
+	<select id="selectCommentList" parameterType="int" resultType="Map">
+		SELECT
+			ROW_NUMBER() OVER(ORDER BY createDatetime) commentOrder,
+			comment_no commentNo,
+			content,
+			DATE_FORMAT(create_datetime,'%Y-%m-%d %H:%i') createDatetime
+		FROM board_comment
+		WHERE 
+			board_no = #{boardNo}
+			AND delete_YN = 'N'
+		ORDER BY 
+			commentOrder DESC
 	
-
+	</select>
+	<insert id="insertComment" parameterType="com.gd.foodbee.dto.BoardCommentDTO">
+	<selectKey resultType="int" order="AFTER" keyProperty="commentNo">
+		SELECT LAST_INSERT_ID()
+	</selectKey>
+		INSERT INTO board_comment(
+			board_no,
+			content,
+			create_datetime,
+			comment_pw
+		) VALUES (
+			#{boardNo},
+			#{content},
+			NOW(),
+			SHA2(#{commentPw},256)
+		)
+	
+	
+	</insert>
 
 
 

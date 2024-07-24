@@ -103,7 +103,7 @@
 </head>
 <body>
 	 <div class="form-container">
-	 	<form method="post" action="${pageContext.request.contextPath}/addMsg" id="addMsgForm" enctype="multipart/form-data">
+	 	<form method="post" action="${pageContext.request.contextPath}/msg/addMsg" id="addMsgForm" enctype="multipart/form-data">
 	        <table>
 	            <tr>
 	                <td><label for="recipient">받는사람:</label></td>

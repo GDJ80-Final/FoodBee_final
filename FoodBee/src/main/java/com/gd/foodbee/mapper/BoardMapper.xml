@@ -50,7 +50,33 @@
 		ORDER BY boardOrder DESC
 		LIMIT #{beginRow},#{rowPerPage}
 	</select>
-
-
-
+	<select id="selectBoardOne" parameterType="int" resultType="Map">
+		SELECT
+			board_no boardNo,
+	 		board_category boardCategory,
+	 		title,
+	 		content,
+	 		create_datetime createDatetime,
+	 		view,
+	 		like_cnt likeCnt
+		FROM board
+		WHERE board_no = #{boardNo}
+	
+	</select>
+	<update id="updateViewCnt" parameterType="int">
+		UPDATE 
+			board
+		SET
+			view = view + 1
+		WHERE board_no = #{boardNo}
+	
+	</update>
+	<update id="updateLikeCnt" parameterType="int">
+		UPDATE 
+			board
+		SET
+			like_cnt = like_cnt + 1
+		WHERE board_no = #{boardNo}
+	
+	</update>
 </mapper>

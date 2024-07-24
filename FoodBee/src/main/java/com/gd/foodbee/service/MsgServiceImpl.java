@@ -1,7 +1,8 @@
 package com.gd.foodbee.service;
 
 import java.io.File;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import com.gd.foodbee.mapper.MsgRecipientMapper;
 import com.gd.foodbee.util.FileFormatter;
 import com.gd.foodbee.util.TeamColor;
 
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,6 +40,8 @@ public class MsgServiceImpl implements MsgService{
 	
 	@Autowired
 	private MsgRecipientMapper msgRecipientMapper;
+	
+	
 	
 	
 	//새 쪽지 작성
@@ -63,6 +67,7 @@ public class MsgServiceImpl implements MsgService{
 		log.debug(TeamColor.YELLOW + "Multipartfiel mfs =>" + mfs.toString() );
 		
 		String path = request.getServletContext().getRealPath("/WEB-INF/upload/msg_file/");
+		
 		log.debug(TeamColor.YELLOW +"path =>"+ path);
 		
 		//쪽지 insert 
@@ -88,6 +93,7 @@ public class MsgServiceImpl implements MsgService{
 					throw new RuntimeException();
 				}
 				File emptyFile = new File(path+originalFile);
+				
 				try {
 					mf.transferTo(emptyFile);
 				} catch (Exception e) {

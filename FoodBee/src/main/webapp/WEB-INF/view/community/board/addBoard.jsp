@@ -3,7 +3,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>익명게시판 새 글 작성</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,16 +51,22 @@
         .button-row button:hover {
             background-color: #555;
         }
+        
+        .error{
+        	color:red;
+        }
 </style>
 </head>
 <body>
 	<div class="container">
         <h2>익명게시판 작성</h2>
-        <form method="post" action="${pageContext.request.contextPath}/community/addBoard">
+        <form method="post" action="${pageContext.request.contextPath}/community/board/addBoard">
             <table>
                 <tr>
                     <td>제목:</td>
-                    <td><input type="text" name="title" class="input-full"></td>
+                    <td><input type="text" name="title" id="title" class="input-full">
+                    	<div id="error" class="error"></div>
+                    </td>
                 </tr>
                 <tr>
                     <td>카테고리:</td>
@@ -83,11 +90,27 @@
                 <tr class="button-row">
                     <td colspan="2">
                         <button type="submit">작성</button>
-                        <button type="reset">취소</button>
+                        <button type="reset" id="resetButton">취소</button>
                     </td>
                 </tr>
             </table>
         </form>
     </div>
+<script>
+	$(document).ready(function(){
+	    $('#resetButton').click(function(){
+	        window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
+	    });
+	    
+	    $('#title').blur(function() {
+	        let title = $(this).val();
+	        if (title.length > 300) {
+	            $('#error').text('제목은 300자를 초과할 수 없습니다.');
+	        } else {
+	        	$('#error').text('');
+	        }
+	    });
+	})
+</script>
 </body>
 </html>

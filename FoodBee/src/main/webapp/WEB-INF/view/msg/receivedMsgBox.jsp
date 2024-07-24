@@ -13,6 +13,7 @@
 	<button type="button" name="readYN" id="N" value="N">안 읽음</button>
 	
 	<button type="button" name="toTrash" id="toTrash">휴지통</button>
+	<a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통으로 이동</a>
 	<table border="1">
 		<thead>
 			<tr>
