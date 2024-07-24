@@ -252,6 +252,7 @@
 	                }
 	            });
 			
+			
 			// 페이징 버튼
 			$(document).on('click', '#page button', function() {
 		        const buttonId = $(this).attr('id');
@@ -283,6 +284,14 @@
 		        }
 		    });
 			
+			// 버튼 활성화
+			function updateBtnState() {
+				console.log("update");
+		        $('#pre').prop('disabled', currentPage === 1);
+		        $('#next').prop('disabled', currentPage === lastPage);
+		        $('#first').prop('disabled', currentPage === 1);
+		        $('#last').prop('disabled', currentPage === lastPage);
+		    }
 			// 전자 서명
 			const $canvas = $('#signCanvas');
             const ctx = $canvas[0].getContext('2d');
@@ -476,6 +485,8 @@
 						json.list.forEach(function(item){
 							dayOffHistory(item);
 		                });
+						
+						updateBtnState();
 					}
 				
 				});
