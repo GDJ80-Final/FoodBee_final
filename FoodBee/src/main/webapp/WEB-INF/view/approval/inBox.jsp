@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>수신함</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>수신함</h1>
@@ -34,20 +35,106 @@
             <th>결재상태</th>
             <th>기안일시</th>
         </tr>
-        <!-- c:forEach를 사용하여 referrerList의 항목을 반복 출력 -->
-        <c:forEach var="item" items="${referrerList}">
-            <tr>
-                <td><c:out value="${item.tmpName}"></c:out></td>
-                <td><c:out value="${item.empName}"></c:out></td>
-                <td><a href="">
-                		<c:out value="${item.title}"></c:out>
-                	</a>
-                </td>
-                <td><c:out value="${item.docApproverStateNo}"></c:out></td>
-                <td><c:out value="${item.createDatetime}"></c:out></td>
-            </tr>
-        </c:forEach>
+        <tbody id="t">
+            <!-- 여기서 리스트출력 -->
+        </tbody>
     </table>
+<div id="page">
+    <button type="button" id="first">First</button>
+    <button type="button" id="pre">◁</button>
+    <button type="button" id="next">▶</button>
+    <button type="button" id="last">Last</button>
+</div>
+<script>
+	let currentPage = 1;
+	let lastPage = 1;
+	
+	$(document).ready(function(){
+		loadAllList(currentPage);
+		
+		function loadAllList(currentPage){
+			$.ajax({
+				url: "${pageContext.request.contextPath}/approval/inBoxList",
+				type: "GET",
+				data: {
+					currentPage : currentPage,
+					empNo: "${empNo}"
+				},
+				success: function(json){
+					updateAllList(json);
+				},
+				error: function(){
+					alert("수신함의 리스트를 가져올 수 없습니다");
+				}
+			})
+		}
+		
+		function updateAllList(json){
+			lastPage = json.listLastPage;
+			console.log('lastPage : '+ lastPage);
+			
+			let tableBody = $("#t");
+			tableBody.empty();
+			
+			$.each(json.referrerList, function(index, item){
+				
+				let newRow = $("<tr>" +
+                        "<td>" + item.tmpName + "</td>" +
+                        "<td>" + item.empName + "</td>" +
+                        "<td>" + item.title + "</td>" +
+                        "<td>" + item.docApproverStateNo + "</td>" +
+                        "<td>" + item.createDatetime + "</td>" +
+                        "</tr>");
+				tableBody.append(newRow);
+			});
+			
+			$("#tableBody").show();
+		}
+		
+		$('#pre').click(function() {
+			console.log('pre click : ' + currentPage);
+			if (currentPage > 1) {
+				currentPage = currentPage - 1;
+				loadAllList(currentPage)
+			}
+		});
+
+		$('#next').click(function() {
+			console.log('next click : ' + currentPage);
+			if (currentPage < lastPage) {
+				currentPage = currentPage + 1;
+				loadAllList(currentPage)
+			}
+		});
+
+		$('#first').click(function() {
+			console.log('first click : ' + currentPage);
+			
+			if (currentPage > 1) {
+				currentPage = 1;
+				loadAllList(currentPage)
+			}
+		});
+		
+		$('#last').click(function() {
+			console.log('last click : ' + currentPage);
+			if (currentPage < lastPage) {
+				currentPage = lastPage
+				loadAllList(currentPage)
+			}
+		});
+		// 버튼 활성화
+        function updateBtnState() {
+           console.log("update");
+           <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
+           <!-- prop은 설정의 속성-->
+             $('#pre').prop('disabled', currentPage === 1);
+             $('#next').prop('disabled', currentPage === lastPage);
+             $('#first').prop('disabled', currentPage === 1);
+             $('#last').prop('disabled', currentPage === lastPage);
+         }
+	})
+</script>
 </div>
 </body>
 </html>

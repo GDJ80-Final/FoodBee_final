@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gd.foodbee.dto.DraftBoxDTO;
 import com.gd.foodbee.dto.DraftBoxStateDTO;
 import com.gd.foodbee.dto.EmpDTO;
+import com.gd.foodbee.dto.InBoxStateDTO;
 import com.gd.foodbee.service.DraftBoxService;
 import com.gd.foodbee.util.TeamColor;
 
@@ -47,8 +48,16 @@ public class DraftBoxController {
 	    } else {
 	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
 	    }
-	    
+	    //기안문서가 없고 null인 경우 대비
 		DraftBoxStateDTO stateBox = draftBoxService.getStateBox(empNo);
+		if (stateBox == null) {
+	        stateBox = new DraftBoxStateDTO();
+	        stateBox.setZeroState(0);
+	        stateBox.setOneState(0);
+	        stateBox.setTwoState(0);
+	        stateBox.setNineState(0);
+	    }
+		
 		log.debug(TeamColor.PURPLE + "stateBox=>"+stateBox);
 		
 		model.addAttribute("empNo", empNo);
@@ -66,9 +75,10 @@ public class DraftBoxController {
 		
 		//전체 기안서 리스트
 		List<DraftBoxDTO> allDocList = draftBoxService.getAllDocList(currentPage, empNo);
-		log.debug(TeamColor.PURPLE + "allDocList=>" + allDocList);
 		//마지막 페이지자리
 		int allDocLastPage = draftBoxService.getAllDocLastPage(empNo);
+		
+		log.debug(TeamColor.PURPLE + "allDocList=>" + allDocList);
 		log.debug(TeamColor.PURPLE + "allDocLastPage=>" + allDocLastPage);
 		
 		Map<String,Object> docList = new HashMap<String,Object>();
@@ -87,9 +97,10 @@ public class DraftBoxController {
 		
 		//결재대기 기안서리스트
 		List<DraftBoxDTO> zeroDocList = draftBoxService.getZeroDocList(currentPage, empNo);
-		log.debug(TeamColor.PURPLE + "zeroDocList=>" + zeroDocList);
 		//마지막 페이지자리
 		int zeroDocLastPage = draftBoxService.getZeroDocLastPage(empNo);
+		
+		log.debug(TeamColor.PURPLE + "zeroDocList=>" + zeroDocList);
 		log.debug(TeamColor.PURPLE + "zeroDocLastPage=>" + zeroDocLastPage);
 		
 		Map<String,Object>zeroTypeList = new HashMap<String,Object>();
