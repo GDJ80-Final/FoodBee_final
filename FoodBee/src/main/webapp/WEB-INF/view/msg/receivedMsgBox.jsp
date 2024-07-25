@@ -30,16 +30,16 @@
 		</tbody>
 	</table>
 	<div>
-    <c:if test="${currentPage > 1}">
-        <a href="receivedMsgBox?currentPage=1">First</a>
-        <a href="receivedMsgBox?currentPage=${currentPage - 1}">◁</a>
-    </c:if>
-    <c:if test="${currentPage < lastPage}">
-        <a href="receivedMsgBox?currentPage=${currentPage + 1}">▶</a>
-        <a href="receivedMsgBox?currentPage=${lastPage}">Last</a>
-    </c:if>
+	<div id="page">
+        <button type="button" id="first">First</button>
+        <button type="button" id="pre">◁</button>
+        <button type="button" id="next">▶</button>
+        <button type="button" id="last">Last</button>
+	</div>
 </div>
 <script>
+	let currentPage = 1;
+	let lastPage = 1;
 	//탭 분리 
    $(document).ready(function(){
 	   //읽음/안읽음 여부에 따라 받은 쪽지함 분기
@@ -75,6 +75,14 @@
 		   }
 	   });
 	   };
+		// 버튼 활성화
+		function updateBtnState() {
+			console.log("update");
+	        $('#pre').prop('disabled', currentPage === 1);
+	        $('#next').prop('disabled', currentPage === lastPage);
+	        $('#first').prop('disabled', currentPage === 1);
+	        $('#last').prop('disabled', currentPage === lastPage);
+	    }
 	  
 	   
 	   $('#all').click(function(){

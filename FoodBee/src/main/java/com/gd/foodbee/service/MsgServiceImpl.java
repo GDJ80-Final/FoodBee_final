@@ -19,6 +19,7 @@ import com.gd.foodbee.mapper.MsgFileMapper;
 import com.gd.foodbee.mapper.MsgMapper;
 import com.gd.foodbee.mapper.MsgRecipientMapper;
 import com.gd.foodbee.util.FileFormatter;
+import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.ServletContext;
@@ -44,10 +45,10 @@ public class MsgServiceImpl implements MsgService{
 	
 	
 	
-	//새 쪽지 작성
-	//파라미터 : MsgRequestDTO
-	//반환값 : int
-	//사용클래스 : MsgController.addMsg
+	// 새 쪽지 작성
+	// 파라미터 : MsgRequestDTO msgRequestDTO,HttpServeltReqeust request, int empNo
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.addMsg
 	@Override
 	public void addMsg(MsgRequestDTO msgRequestDTO,
 				HttpServletRequest request,
@@ -66,8 +67,8 @@ public class MsgServiceImpl implements MsgService{
 		MultipartFile [] mfs = msgRequestDTO.getMsgFiles();
 		log.debug(TeamColor.YELLOW + "Multipartfiel mfs =>" + mfs.toString() );
 		
-		String path = request.getServletContext().getRealPath("/WEB-INF/upload/msg_file/");
-		
+		//파일 저장 경로 설정
+		String path = FilePath.getFilePath() + "msg_file/";
 		log.debug(TeamColor.YELLOW +"path =>"+ path);
 		
 		//쪽지 insert 
@@ -92,18 +93,13 @@ public class MsgServiceImpl implements MsgService{
 				if(msgFileRow != 1) {
 					throw new RuntimeException();
 				}
-				File emptyFile = new File(path+originalFile);
-				
-				try {
-					mf.transferTo(emptyFile);
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw new RuntimeException();
-				} 
+				//파일 경로에 저장
+				FilePath.saveFile(path, originalFile, mf);
 			}
 		}else {
 			log.debug(TeamColor.YELLOW + "첨부파일이 없습니다.");
 		}
+		
 		int [] msgRecipients = msgRequestDTO.getRecipientEmpNos();
 		
 		if(msgRecipients.length != 0) {
@@ -125,10 +121,10 @@ public class MsgServiceImpl implements MsgService{
 		
 		
 	}
-	//받은 쪽지함 
-	//파라미터 : int currentPage, int empNo, String readYN 
-	//반환값 : List<Map<String,Object>>
-	//사용클래스  : MsgController.receivedMsg
+	// 받은 쪽지함 
+	// 파라미터 : int currentPage, int empNo, String readYN 
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 클래스  : MsgController.receivedMsg
 	@Override
 	public List<Map<String, Object>> getReceivedMsgList(int currentPage, int empNo,String readYN) {
 		int rowPerPage = 15;
@@ -137,9 +133,10 @@ public class MsgServiceImpl implements MsgService{
 		
 		return msgMapper.selectReceivedMsgList(empNo, beginRow, rowPerPage,readYN);
 	}
-	//보낸 쪽지함
-	//파라미터 : int currentPage, int empNo, String readYN 
-	//반환값 : List<Map<String,Object>>
+	// 보낸 쪽지함
+	// 파라미터 : int currentPage, int empNo, String readYN 
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 클래스 : MsgConrtoller.sentMsgBox
 	@Override
 	public List<Map<String, Object>> getSentMsgList(int currentPage, int empNo, String readYN) {
 		int rowPerPage = 15;
@@ -148,10 +145,10 @@ public class MsgServiceImpl implements MsgService{
 		
 		return msgMapper.selectSentMsgList(empNo, beginRow, rowPerPage, readYN);
 	}
-	//쪽지 휴지통 이동
-	//파라미터 : int msgNo
-	//반환값 : X
-	//사용클래서 : MsgController.toTrash
+	// 쪽지 휴지통 이동
+	// 파라미터 : int msgNo
+	// 반환 값 : X
+	// 사용 클래스 : MsgController.toTrash
 	@Override
 	public void toTrash(int [] msgNos) {
 		
@@ -165,10 +162,10 @@ public class MsgServiceImpl implements MsgService{
 		
 	}
 	
-	//쪽지 휴지통으로 보내기 >>수신자
-	//파라미터 : int [] msgNos, int empNo
-	//반환값 :X
-	//사용클래스 : MsgController.toTrashRecipient
+	// 쪽지 휴지통으로 보내기 >>수신자
+	// 파라미터 : int [] msgNos, int empNo
+	// 반환 값 :X
+	// 사용 클래스 : MsgController.toTrashRecipient
 	@Override
 	public void toTrashRecipient(int[] msgNos, int empNo) {
 		for(int msgNo : msgNos) {
@@ -180,10 +177,10 @@ public class MsgServiceImpl implements MsgService{
 		}
 		
 	}
-	//휴지통 리스트
-	//파라미터 : int empNo
-	//반환값: List<Map<STring,Object>>
-	//사용클래스 : MsgController.trashMsgBox
+	// 휴지통 리스트
+	// 파라미터 : int empNo
+	// 반환 값: List<Map<STring,Object>>
+	// 사용 클래스 : MsgController.trashMsgBox
 	@Override
 	public List<Map<String, Object>> getTrashList(int empNo) {
 		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
@@ -192,10 +189,10 @@ public class MsgServiceImpl implements MsgService{
 	}
 		
 	
-	//휴지통 -> 쪽지함 이동 
-	//파라미터 : int[] msgNos, int empNo, String result
-	//반환값 :X
-	//사용클래스 : MsgController.toMsgBox
+	// 휴지통 -> 쪽지함 이동 
+	// 파라미터 : int[] msgNos, int empNo, String result
+	// 반환 값 :X
+	// 사용 클래스 : MsgController.toMsgBox
 	@Override
 	public void updatetoMsgBox(int[] msgNos,int empNo,String [] results) {
 		// 입력된 배열의 길이가 일치하는지 확인
@@ -225,14 +222,21 @@ public class MsgServiceImpl implements MsgService{
 		}
 			
 	}
-	//쪽지상세보기 
+	
+	// 쪽지 상세보기 
+	// 파라미터 : int msgNo
+	// 반환 값 : Map<String,Object>
+	// 사용 클래스 : MsgController.msgOne
 	@Override
 	public Map<String, Object> getMsgOne(int msgNo) {
 		log.debug(TeamColor.YELLOW + "msgNo => "+ msgNo);
 		
 		return msgMapper.selectMsgOne(msgNo);
 	}
-	//쪽지 삭제 
+	// 쪽지 삭제 
+	// 파라미터 : int[] msgNos, int empNo, String[] results
+	// 반환 값 : X
+	// 사용 클래스 : MsgController.deleteMsg
 	@Override
 	public void deleteMsg(int[] msgNos, int empNo, String[] results) {
 		log.debug(TeamColor.YELLOW + "msgNos[0] =>" + msgNos[0]);
@@ -267,7 +271,11 @@ public class MsgServiceImpl implements MsgService{
 		}
 		
 	}
-	//쪽지 읽음 여부 
+
+	// 쪽지 읽음 여부 업데이트
+	// 파라미터 : int msgNo, int empNo
+	// 반환 값 : X
+	// 사용 클래스 : MsgController.updateReadState
 	@Override
 	public void updateReadState(int msgNo, int empNo) {
 		log.debug(TeamColor.YELLOW + "msgNo =>" + msgNo);

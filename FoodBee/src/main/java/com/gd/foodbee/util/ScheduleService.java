@@ -17,10 +17,10 @@ import com.gd.foodbee.mapper.MsgRecipientMapper;
 public class ScheduleService {
 	
 	@Autowired
-	MsgMapper msgMapper;
+	private MsgMapper msgMapper;
 	
 	@Autowired
-	MsgRecipientMapper msgRecipientMapper;
+	private MsgRecipientMapper msgRecipientMapper;
 	
 	//cron = "초 분 시 일 월 년"
 	//매일 자정에 스케쥴러 실행

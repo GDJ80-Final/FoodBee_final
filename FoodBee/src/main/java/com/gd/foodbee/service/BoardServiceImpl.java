@@ -21,11 +21,15 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
-	BoardMapper boardMapper;
+	private BoardMapper boardMapper;
 	
 	@Autowired
-	BoardCommentMapper boardCommentMapper;
+	private BoardCommentMapper boardCommentMapper;
 	
+	// 새 글 작성
+	// 파라미터 : BoardDTO boardDTO
+	// 반환 값 : X
+	// 사용 클래스 : BoardController.addBoard
 	@Override
 	public void addBoard(BoardDTO boardRequestDTO) {
 		BoardDTO boardDTO = BoardDTO.builder()
@@ -42,7 +46,10 @@ public class BoardServiceImpl implements BoardService{
 		}
 		
 	}
-
+	// 글 리스트
+	// 파라미터 : int currentPage,String category,String keyword
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 클래스 : BoardController.boardList
 	@Override
 	public List<Map<String, Object>> getBoardList(int currentPage,String category, String keyword) {
 		int rowPerPage = 10;
@@ -50,19 +57,32 @@ public class BoardServiceImpl implements BoardService{
 		
 		return boardMapper.selectBoardList(beginRow, rowPerPage, category,keyword);
 	}
+	// 글 상세보기 
+	// 파라미터 : int boardNo
+	// 반환 값 : Map<String,Object>
+	// 사용 클래스 : BoardController.boardOne
 	@Override
 	public Map<String, Object> getBoardOne(int boardNo) {
 		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
 		
 		return boardMapper.selectBoardOne(boardNo);
 	}
-	
+	// 댓글 리스트 
+	// 파라미터 : int boardNo
+	// 반환 값 : Map<String,Object>
+	// 사용 클래스 : BoardController.boardOne
+
 	@Override
 	public List<Map<String, Object>> getCommentList(int boardNo) {
 		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
 		
 		return boardCommentMapper.selectCommentList(boardNo);
 	}
+	
+	// 좋아요 수 업데이트 
+	// 파라미터 : int boardNo
+	// 반환 값 : Map<String,Object>
+	// 사용 클래스 : BoardController.updateLikeCnt
 	@Override
 	public void updateLikeCnt(int boardNo) {
 		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
@@ -73,6 +93,10 @@ public class BoardServiceImpl implements BoardService{
 		
 	}
 	
+	// 조회수 업데이트  
+	// 파라미터 : int boardNo
+	// 반환 값 : Map<String,Object>
+	// 사용 클래스 : BoardController.updateViewCnt
 	@Override
 	public void updateViewCnt(int boardNo) {
 		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
@@ -82,6 +106,10 @@ public class BoardServiceImpl implements BoardService{
 		}
 	}
 	
+	// 댓글 추가
+	// 파라미터 : int boardNo
+	// 반환 값 : Map<String,Object>
+	// 사용 클래스 : BoardController.addComment
 	@Override
 	public void addComment(BoardCommentDTO boardCommentRequestDTO,int boardNo) {
 		BoardCommentDTO boardCommentDTO = BoardCommentDTO.builder()

@@ -32,13 +32,14 @@
 			</tr>
 		<!-- 파일 다운로드 -->
 		
-		<c:set var="saveFiles" value="${fn:split(m.saveFiles, ',')}" />
+			<c:set var="originalFiles" value="${fn:split(m.originalFiles, ',')}" />
+			<c:set var="saveFiles" value="${fn:split(m.saveFiles, ',')}" />
 			<tr>
 				<td>첨부파일</td>
 				<td>
-				<c:forEach var="file" items="${saveFiles}" varStatus="status">
-					 <a href="${pageContext.request.contextPath}/download?file=${file}" download="${file}">
-					  ${file}
+				<c:forEach var="file" items="${originalFiles}" varStatus="status">
+					 <a href="${pageContext.request.contextPath}/msg/download?file=${file}" download="${file}">
+					  ${saveFiles[status.index]}
 					 </a>
 
 	                 <br>

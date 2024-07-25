@@ -31,16 +31,16 @@ public interface EmpMapper {
 	// 사용 클래스 : LoginServiceImpl.modifyEmpPw
 	int updateEmpPw(int empNo, String empPw);
 	
-	//회원가입
-	//파라미터 : EmpDTO empDTO
-	//반환 값 : int
-	//사용 클래스 : EmpServiceImpl.updateEmpSignup
+	// 회원가입
+	// 파라미터 : EmpDTO empDTO
+	// 반환 값 : int
+	// 사용 클래스 : EmpServiceImpl.updateEmpSignup
 	int updateEmpSignup(EmpDTO empDTO);
 	
-	//사번 중복 체크
-	//파라미터 : int empNo
-	//반환값: String
-	//사용클래스 : EmpServiceImpl.selectEmpNoDuplicate
+	// 사번 중복 체크
+	// 파라미터 : int empNo
+	// 반환 값: String
+	// 사용 클래스 : EmpServiceImpl.selectEmpNoDuplicate
 	String selectEmpNoDuplicate(int empNo);
 	
 	// 마지막 사원 번호 찾기

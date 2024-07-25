@@ -1,10 +1,17 @@
 package com.gd.foodbee.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.MsgRequestDTO;
 import com.gd.foodbee.service.MsgService;
+import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,16 +36,21 @@ public class MsgController {
 	@Autowired
 	private MsgService msgService;
 	
-	//새쪽지쓰기
+
+	
+	// 새 쪽지 쓰기
+	// 파라미터 : X
+	// 반환 값 : String(view)
+	// 사용 페이지 : /msg/addMsg
 	@GetMapping("/msg/addMsg")
 	public String addMsg() {
 		
 		return "/msg/addMsg";
 	}
-	//새쪽지쓰기
-	//파라미터 : msgRequestDTO, HttpServletRequest, HttpSsession, Model
-	//반환값 : redirect:/msg/sentMsgBox
-	//사용 페이지 : /msg/addMsg
+	// 새 쪽지 쓰기
+	// 파라미터 : msgRequestDTO msgRequestDTO, HttpServletRequest request, HttpSession session, Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /msg/addMsg
 	@PostMapping("/msg/addMsg")
 	public String addMsg(MsgRequestDTO msgRequestDTO, 
 				HttpServletRequest request,
@@ -52,18 +65,19 @@ public class MsgController {
 		
 		return "redirect:/msg/sentMsgBox";
 	}
-	//받은쪽지함
-	//파라미터 : currentPage, String readYN, HttpSession session, Model model
-	//반환값 : 
+	// 받은 쪽지함
+	// 파라미터 : int currentPage, String readYN, HttpSession session, Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /msg/receivedMsgBox
 	@GetMapping("/msg/receivedMsgBox")
 	public String receivedMsgBox() {
 		
 		return "/msg/receivedMsgBox";
 	}
-	//받은쪽지함
-	//파라미터 : currentPage, String readYN, HttpSession session,
-	//반환값 : List<Map<String,Object>
-	//사용페이지 
+	// 받은 쪽지함
+	// 파라미터 : int currentPage, String readYN, HttpSession session
+	// 반환 값 : List<Map<String,Object>
+	// 사용 페이지 : /msg/receivedMsgBox
 	@PostMapping("/msg/receivedMsgBox")
 	@ResponseBody
 	public List<Map<String,Object>> receivedMsgBox(@RequestParam(name="currentPage", defaultValue = "1")int currentPage,
@@ -80,19 +94,20 @@ public class MsgController {
 		return msgService.getReceivedMsgList(currentPage, empNo,readYN);
 	}
 	
-	//보낸쪽지함
-	//파라미터 :X
-	//반환값 : "sentMsgBox"
+	// 보낸 쪽지함
+	// 파라미터 : X
+	// 반환 값 : String(view)
+	// 사용 페이지 : /msg/sentMsgBox
 	@GetMapping("/msg/sentMsgBox")
 	public String sentMsgBox() {
 			
 		return "/msg/sentMsgBox";
 	}
 	
-	//보낸쪽지함 
-	//파라미터 : int currentPage,String readYN, HttpSession session
-	//반환값 : List<Map<String,Object>>
-	//사용페이지 : sentMsgBox
+	// 보낸 쪽지함 
+	// 파라미터 : int currentPage,String readYN, HttpSession session
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 페이지 : /msg/sentMsgBox
 	@PostMapping("/msg/sentMsgBox")
 	@ResponseBody
 	public List<Map<String,Object>> sentMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
@@ -105,10 +120,10 @@ public class MsgController {
 		
 		return msgService.getSentMsgList(currentPage, empNo, readYN);
 	}
-	//휴지통 이동 >> 보낸편지함
-	//파라미터 : int [] msgNos
-	//반환값 : X
-	//사용페이지 : receivedMsgBox, sentMsgBox
+	// 휴지통 이동 >> 보낸 편지함
+	// 파라미터 : int [] msgNos
+	// 반환 값 : String
+	// 사용 페이지 : /msg/receivedMsgBox
 	@PostMapping("/msg/toTrash")
 	@ResponseBody
 	public String toTrash(@RequestParam(name="msgNos")int[] msgNos) {
@@ -118,10 +133,10 @@ public class MsgController {
 		return "success";
 	}
 	
-	//휴지통 이동 >> 받음편지함 
-	//파라미터 : int [] msgNos,session
-	//반환값 : X
-	//사용페이지 : receivedMsgBox, sentMsgBox
+	// 휴지통 이동 >> 받음 편지함 
+	// 파라미터 : int [] msgNos,HttpSession session
+	// 반환 값 : String
+	// 사용 페이지 : /msg/sentMsgBox
 	@PostMapping("/msg/toTrashRecipient")
 	@ResponseBody
 	public String toTrashRecipient(@RequestParam(name="msgNos")int[] msgNos,
@@ -133,11 +148,10 @@ public class MsgController {
 			
 		return "success";
 	}
-	//휴지통 리스트
-	//파라미터 : session => int empNo
-	//반환값 : List<Map<String,Object>> 
-	//사용페이지 : trashMsgBox
-	
+	// 휴지통 리스트
+	// 파라미터 : int currentPage,HttpSession session,Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /msg/trashMsgBox
 	@GetMapping("/msg/trashMsgBox")
 	public String trashMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
 			HttpSession session,
@@ -151,13 +165,14 @@ public class MsgController {
 		log.debug(TeamColor.YELLOW + "list => " + list.toString());
 		model.addAttribute("list", list);
 		model.addAttribute("empName", empName);
+		
 		return "/msg/trashMsgBox";
 		
 	}
-	//휴지통 >> 쪽지함 으로 복구
-	//파라미터 : int[] msgNos, String [] results, HttpSession
-	//반환값 : string "success"
-	//사용페이지 : /msg/trashMsgBox
+	// 휴지통 >> 쪽지함 으로 복구
+	// 파라미터 : int[] msgNos, String [] results, HttpSession session
+	// 반환 값 : String
+	// 사용 페이지 : /msg/trashMsgBox
 	@PostMapping("/msg/toMsgBox")
 	@ResponseBody
 	public String toMsgBox(@RequestParam(name="msgNos")int[] msgNos,
@@ -175,10 +190,10 @@ public class MsgController {
 		
 	
 	}
-	//쪽지 상세보기
-	//파라미터 : int msgNo,session, model 
-	//반환값 : "/msg/msgOne"
-	//사용페이지 : /msg/msgOne
+	// 쪽지 상세보기
+	// 파라미터 : int msgNo,HttpSession session, Model model 
+	// 반환 값 : String(view)
+	// 사용 페이지 : /msg/msgOne
 	@GetMapping("/msg/msgOne")
 	public String msgOne(@RequestParam(name="msgNo")int msgNo,
 				HttpSession session,
@@ -193,9 +208,10 @@ public class MsgController {
 		
 		return "/msg/msgOne";
 	}
-	//쪽지 삭제
-	//파라미터 : int [] msgNos,String [] results, HttpSession
-	//반환값 : String "success"
+	// 쪽지 삭제
+	// 파라미터 : int [] msgNos,String [] results, HttpSession session
+	// 반환 값 : String 
+	// 사용 페이지 : /msg/trashMsgBox
 	@PostMapping("/msg/deleteMsg")
 	@ResponseBody
 	public String deleteMsg(@RequestParam(name="msgNos")int[] msgNos,
@@ -212,9 +228,10 @@ public class MsgController {
 		return "success";
 		
 	}
-	//쪽지 읽음 여부 업데이트
-	//파라미터 : int msgNo, int empNo
-	//반환값 : String success
+	// 쪽지 읽음 여부 업데이트
+	// 파라미터 : int msgNo, HttpSession session
+	// 반환 값 : String 
+	// 사용 페이지 : /msg/msgOne
 	@PostMapping("/msg/updateReadYN")
 	@ResponseBody
 	public String updateReadYN(@RequestParam(name="msgNo")int msgNo,
@@ -228,4 +245,32 @@ public class MsgController {
 		return "success";
 		
 	}
+	// 파일 다운로드
+	@GetMapping("/msg/download")
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(name="file") String filename) {
+		
+        // 실제 파일이 저장된 경로
+        String path = FilePath.getFilePath()+"msg_file/";
+        File file = new File(path + File.separator + filename);
+
+        // 로그로 경로 확인
+        log.debug(TeamColor.YELLOW + "file =>" + file.getAbsolutePath());
+
+        // 파일 존재 여부 확인
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentLength(file.length())
+                    .body(resource);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
 }

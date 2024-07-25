@@ -17,6 +17,7 @@ public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
 	
+	
 	@PostMapping("/myPage/modifyProfileImg")
 	@ResponseBody
 	public String modifyProfileImg(@RequestParam int empNo,

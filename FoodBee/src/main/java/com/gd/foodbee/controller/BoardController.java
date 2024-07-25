@@ -23,13 +23,20 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardController {
 	
 	@Autowired
-	BoardService boardService;
+	private BoardService boardService;
 	
+	// 새 게시글 작성 폼
+	// 파라미터 : X
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/addBoard
 	@GetMapping("/community/board/addBoard")
 	public String addBoard() {
 		return "/community/board/addBoard";
 	}
-	
+	// 새 게시글 작성
+	// 파라미터 : BoardDTO boardRequestDTO
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/addBoard
 	@PostMapping("/community/board/addBoard")
 	public String addBoard(BoardDTO boardRequestDTO) {
 		log.debug(TeamColor.YELLOW + "boardRequestDTO =>" + boardRequestDTO.toString());
@@ -37,12 +44,19 @@ public class BoardController {
 		
 		return "redirect:/community/board/boardList";
 	}
+	// 게시글 리스트
+	// 파라미터 : X
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/boardList
 	@GetMapping("/community/board/boardList")
 	public String boardList() {
 		
 		return "/community/board/boardList";
 	}
-	
+	// 게시글 리스트 데이터 뿌리기
+	// 파라미터 : int currentPage, String category, String keyword
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 페이지 : /community/board/boardList
 	@PostMapping("/community/board/boardList")
 	@ResponseBody
 	public List<Map<String,Object>> boardList(@RequestParam(name="currentPage",defaultValue = "1")int currentPage,
@@ -53,7 +67,10 @@ public class BoardController {
 		
 		return boardService.getBoardList(currentPage, category, keyword);
 	}
-	
+	// 게시글 상세보기 
+	// 파라미터 : int boardNo, Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/boardOne
 	@GetMapping("/community/board/boardOne")
 	public String boardOne(@RequestParam(name="boardNo")int boardNo,
 				Model model) {
@@ -65,7 +82,10 @@ public class BoardController {
 		return "/community/board/boardOne";
 	}
 	
-	
+	// 게시글 조회수 업데이트
+	// 파라미터 : int boardNo
+	// 반환 값 : String
+	// 사용 페이지 : /community/board/boardList
 	@PostMapping("/community/board/updateViewCnt")
 	@ResponseBody
 	public String updateViewCnt(@RequestParam(name="boardNo")int boardNo) {
@@ -75,6 +95,10 @@ public class BoardController {
 		
 		return "success";
 	}
+	// 게시글 좋아요 업데이트 
+	// 파라미터 : int boardNo
+	// 반환 값 : int
+	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/updateLikeCnt")
 	@ResponseBody
 	public int updateLikeCnt(@RequestParam(name="boardNo")int boardNo) {
@@ -88,7 +112,10 @@ public class BoardController {
 		
 		return likeCnt;
 	}
-	
+	// 게시글 댓글 추가 
+	// 파라미터 : BoardCommentDTO boardCommentRequestDTO,int boardNo
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/addComment")
 	public String addComment(BoardCommentDTO boardCommentRequestDTO,
 				@RequestParam(name="boardNo") int boardNo) {
