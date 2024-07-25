@@ -15,7 +15,7 @@ import java.util.UUID;
 
 import com.gd.foodbee.dto.NoticeDTO;
 import com.gd.foodbee.dto.NoticeFileDTO;
-import com.gd.foodbee.dto.NoticeRequest;
+import com.gd.foodbee.dto.NoticeRequestDTO;
 import com.gd.foodbee.mapper.NoticeFileMapper;
 import com.gd.foodbee.mapper.NoticeMapper;
 import com.gd.foodbee.util.FileFormatter;
@@ -101,7 +101,7 @@ public class NoticeServiceImpl implements NoticeService{
  
     //공지사항 내용추가
     @Override
-	public void addNotice(NoticeRequest noticeRequest, HttpServletRequest request) {
+	public void addNotice(NoticeRequestDTO noticeRequest, HttpServletRequest request) {
 		NoticeDTO notice = NoticeDTO.builder()
 					.writerEmpNo(noticeRequest.getWriterEmpNo())
 					.title(noticeRequest.getTitle())
@@ -161,7 +161,7 @@ public class NoticeServiceImpl implements NoticeService{
     //공지사항 내용수정하기
     @Override
     public void getModifyNoticeList(int noticeNo, 
-    		NoticeRequest noticeRequest,
+    		NoticeRequestDTO noticeRequest,
     		HttpServletRequest request) {
     	NoticeDTO notice = NoticeDTO.builder()
     				.noticeNo(noticeNo)

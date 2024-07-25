@@ -18,7 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class ScheduleServiceImpl implements ScheduleService {
-	@Autowired ScheduleMapper scheduleMapper;
+	@Autowired 
+	ScheduleMapper scheduleMapper;
 	final int rowPerPage= 10;
 	
 	//개인일정 캘린더리스트

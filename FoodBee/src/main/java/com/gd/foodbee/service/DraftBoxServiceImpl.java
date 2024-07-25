@@ -16,7 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class DraftBoxServiceImpl implements DraftBoxService {
-	@Autowired DraftBoxMapper draftBoxMapper;
+	@Autowired 
+	DraftBoxMapper draftBoxMapper;
 	final int rowPerPage= 10;
 	 
 	//전체 기안리스트
@@ -58,18 +59,19 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
         return draftBoxMapper.zeroTypeDocList(m);
 	}
-	//결재대기 리스트 총갯수
+	//*결재대기 리스트 총갯수
 	@Override
-	public int countZeroDcoList(int empNo) {
+	public int countZeroDocList(int empNo) {
 		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
         return stateBox.getZeroState();
 	}
-	//결재대기 리스트 LastPage
+	//*결재대기 리스트 LastPage
 	@Override
 	public int getZeroDocLastPage(int empNo) {
-		int zeroStateCount = countZeroDcoList(empNo);
+		int zeroStateCount = countZeroDocList(empNo);
         return (int) Math.ceil((double) zeroStateCount / rowPerPage);
 	}
+	
 	//승인중 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getOneDocList(int currentPage, int empNo){
@@ -83,6 +85,20 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
         return draftBoxMapper.oneTypeDocList(m);
 	}
+	//*승인중 리스트 총갯수
+	@Override
+	public int countOneDocList(int empNo) {
+		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
+        return stateBox.getOneState();
+	}
+	//*승인중 리스트 LastPage
+	@Override
+	public int getOneDocLastPage(int empNo) {
+		int oneStateCount = countOneDocList(empNo);
+        return (int) Math.ceil((double) oneStateCount / rowPerPage);
+	}
+
+	
 	//승인완료 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getTwoDocList(int currentPage, int empNo){
@@ -96,6 +112,19 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
         return draftBoxMapper.twoTypeDocList(m);
 	}
+	//*승인완료 리스트 총갯수
+	@Override
+	public int countTwoDocList(int empNo) {
+		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
+        return stateBox.getTwoState();
+	}
+	//*승인완료 리스트 LastPage
+	@Override
+	public int getTwoDocLastPage(int empNo) {
+		int twoStateCount = countTwoDocList(empNo);
+        return (int) Math.ceil((double) twoStateCount / rowPerPage);
+	}
+	
 	//반려 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getNineDocList(int currentPage, int empNo){
@@ -108,6 +137,18 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         m.put("rowPerPage", rowPerPage);
         
         return draftBoxMapper.nineTypeDocList(m);
+	}
+	//*반려 리스트 총갯수
+	@Override
+	public int countNineDocList(int empNo) {
+		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
+        return stateBox.getNineState();
+	}
+	//*반려 리스트 LastPage
+	@Override
+	public int getNineDocLastPage(int empNo) {
+		int twoStateCount = countNineDocList(empNo);
+        return (int) Math.ceil((double) twoStateCount / rowPerPage);
 	}
 	
 	//결제상태 건수(결제대기,결제진행중,결제완료,반려)

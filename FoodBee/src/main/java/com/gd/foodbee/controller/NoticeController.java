@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.EmpDTO;
-import com.gd.foodbee.dto.NoticeRequest;
+import com.gd.foodbee.dto.NoticeRequestDTO;
 import com.gd.foodbee.service.NoticeService;
 import com.gd.foodbee.util.TeamColor;
 
@@ -24,9 +24,14 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class NoticeController {
-	@Autowired NoticeService noticeService;
+	@Autowired 
+	private NoticeService noticeService;
 	
-	@GetMapping("/community/notice/noticeList")//전체List
+	// 전체List
+	// 파라미터 : int currentPage, Model model, Httpsession session
+	// 반환값 : String
+	// 사용페이지
+	@GetMapping("/community/notice/noticeList")
 	public String noticeList(
 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
 			Model model, HttpSession session) {
@@ -63,10 +68,14 @@ public class NoticeController {
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPage", lastPage);
+		
 	return "/community/notice/noticeList";
 	}
-	
-	@GetMapping("/community/notice/allNoticeList") // [버튼] 전체 공지사항
+	// [버튼] 전체 공지사항
+	// 파라미터 : int currentPage, String dptNo
+	// 반환값 : Map<>allList
+	// 사용페이지
+	@GetMapping("/community/notice/allNoticeList") 
 	@ResponseBody
 	public Map<String,Object> allNoticeList(int currentPage, String dptNo) {
 		
@@ -86,8 +95,11 @@ public class NoticeController {
     	
 	    return allList;
 	}
-	
-	@GetMapping("/community/notice/allEmpList")//[버튼]전사원 공지사항
+	// [버튼]전사원 공지사항
+	// 파라미터 : int currentPage
+	// 반환값 : Map<>empList
+	// 사용페이지
+	@GetMapping("/community/notice/allEmpList")
 	@ResponseBody
 	public Map<String,Object> allEmpList(int currentPage) {
 		
@@ -104,6 +116,10 @@ public class NoticeController {
 			
 		return empList;
 	}
+	// 모든 공지사항리스트
+	// 파라미터 : int currentPage, String dptNo
+	// 반환값 : Map<> dptList
+	// 사용페이지 
 	@GetMapping("/community/notice/allDptList")
 	@ResponseBody
 	public Map<String, Object> allDptList(int currentPage, String dptNo) {
@@ -121,8 +137,11 @@ public class NoticeController {
 	    return dptList;
 	}
 
-	
-	@GetMapping("/community/notice/addNotice")//공지사항 추가
+	// 공지사항 추가
+	// 파라미터 : Model model, HttpSession session, HttpServeltReqest request
+	// 반환값 : String
+	// 사용페이지
+	@GetMapping("/community/notice/addNotice")
 	public String addNotice(Model model, 
 			HttpSession session, 
 			HttpServletRequest request) {
@@ -146,11 +165,15 @@ public class NoticeController {
 	    model.addAttribute("dptNo", dptNo);
 	    model.addAttribute("empNo", empNo);
 	    model.addAttribute("empName", empName);
+	    
 	return "/community/notice/addNotice";
 	}
-	
-	@PostMapping("/community/notice/addNoticeAction")//공지사항 추가action
-	public String addNoticeAction(NoticeRequest noticeRequest, HttpServletRequest request) {
+	// 공지사항 추가action
+	// 파라미터  : NoticeRequest noticeRequest, HttpServletRequest request
+	// 반환값 : /community/notice/noticeList
+	// 사용페이지
+	@PostMapping("/community/notice/addNoticeAction")
+	public String addNoticeAction(NoticeRequestDTO noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest=>" + noticeRequest);
 		
 		try{
@@ -160,6 +183,10 @@ public class NoticeController {
 	    }		
 	return"redirect:/community/notice/noticeList";
 	}
+	// 공지사항 상세보기
+	// 파라미터 : int noticeNo, Model model, HttpSession session
+	// 반환값 : String
+	// 사용페이지 
 	@GetMapping("/community/notice/noticeOne")
     public String noticeOne(
     		@RequestParam("noticeNo") int noticeNo,
@@ -191,7 +218,10 @@ public class NoticeController {
 		
     return "/community/notice/noticeOne"; 
     }
-	//공지사항 수정
+	// 공지사항 수정
+	// 파라미터 : int noticeNo, Model model
+	// 반환값 : List<>one
+	// 사용페이지
 	@GetMapping("/community/notice/modifyNotice")
 	public String modifyNotice(@RequestParam("noticeNo") int noticeNo,
 				Model model) {
@@ -203,10 +233,13 @@ public class NoticeController {
 		model.addAttribute("one", one);
 		return "/community/notice/modifyNotice";
 	}
-	//공지사항 수정액션
+	// 공지사항 수정액션
+	// 파라미터 : int noticeNo, NoticeRequest noticeRequest, HttpServletRequest request
+	// 반혼값 : /community/notice/noticeOne
+	// 사용페이지 modifyNotice
 	@PostMapping("/community/notice/modifyNoticeAction")
 	public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
-			NoticeRequest noticeRequest, HttpServletRequest request) {
+			NoticeRequestDTO noticeRequest, HttpServletRequest request) {
 		log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
 		log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
 		
@@ -219,7 +252,10 @@ public class NoticeController {
 	    return "redirect:/community/notice/noticeOne?noticeNo=" + noticeNo;
 	}
 	
-	//공지사항 파일삭제
+	// 공지사항 파일삭제
+	// 파라미터 : String fileName, int noticeNo
+	// 반환값 : /community/notice/modifyNotice
+	// 사용페이지 : modifyNotice
 	@PostMapping("/deleteNoticeFile")
 	public String deleteNoticeFile(@RequestParam("file") String fileName, 
 			@RequestParam("noticeNo") int noticeNo) {
@@ -229,7 +265,10 @@ public class NoticeController {
 	    return "redirect:/community/notice/modifyNotice?noticeNo=" + noticeNo;
 	}
 	
-	//공지사항 삭제
+	// 공지사항 삭제
+	// 파라미터 : int noticeNo
+	// 반환값 : /community/notice/noticeList
+	// 사용페이지 : noticeOne
 	@PostMapping("/community/notice/deleteNotice")
 	public String deleteNotice(@RequestParam("noticeNo") int noticeNo) {
 		log.debug(TeamColor.PURPLE + "delete.noticeNo=>" + noticeNo);

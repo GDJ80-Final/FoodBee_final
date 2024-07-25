@@ -20,6 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoticeFileController {
     
+	// 파일 다운로드
+	// 파라미터 : String fileName , HttpRequest request
+	// 반환값 : ResponseEntity
+	// 사용페이지 : noticeOne
     @GetMapping("/download")
     public ResponseEntity<InputStreamResource> downloadFile(@RequestParam("file") String filename, HttpServletRequest request) {
         // 실제 파일이 저장된 경로

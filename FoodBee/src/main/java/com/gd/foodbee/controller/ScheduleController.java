@@ -27,8 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class ScheduleController {
-	@Autowired ScheduleService scheduleService;
+	@Autowired 
+	private ScheduleService scheduleService;
 	
+	// 캘린더 달력
+	// 파라미터 : int currentPage, Model model, HttpSession session
+	// 반환값 : List<>
+	// 사용페이지 
 	@GetMapping("/calendar/schedule")
 	public String schdule(
 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
@@ -73,7 +78,10 @@ public class ScheduleController {
 	    
 		return"/calendar/schedule";
 	}
-	//리스트 페이지
+	// 일정리스트 페이지
+	// 파라미터 : int currentPage, Model model, HttpSession session
+	// 반환값 : String
+	// 사용페이지 
 	@GetMapping("/calendar/scheduleList")
 	public String scheduleList(
 	        @RequestParam(name="currentPage", defaultValue="1") int currentPage,
@@ -96,7 +104,10 @@ public class ScheduleController {
 	    
 	    return "/calendar/scheduleList";
 	}
-	//개인일정 전체보기
+	// 개인일정 전체보기
+	// 파라미터 : int currentPage, int empNo, String search
+	// 반환값 : Map<>personList
+	// 사용페이지 
 	@GetMapping("/calendar/personalScheduleList")
 	@ResponseBody
 	public Map<String,Object> personalScheduleList(int currentPage, int empNo, String search){
@@ -115,7 +126,9 @@ public class ScheduleController {
 		return personList;
 	}
 	// 팀일정 전체보기
-	
+	// 파라미터 : int currentPage, int dptNo, String search
+	// 반환값 : Map<>teamList
+	// 사용페이지
 	@GetMapping("/calendar/teamScheduleList")
 	@ResponseBody
 	public Map<String, Object> teamScheduleList(int currentPage, String dptNo, String search) {
@@ -136,7 +149,10 @@ public class ScheduleController {
 
 	    return teamList;
 	}
-	//회의실 예약 전체보기
+	// 회의실 예약 전체보기
+	// 파라미터 : int currentPage, int empNo, String search
+	// 반환값 : List<>roomList
+	// 사용페이지 
 	@GetMapping("/calendar/roomScheduleList")
 	@ResponseBody
 	public Map<String,Object> roomScheduleList(int currentPage, int empNo, String dptNo, String search){
@@ -154,7 +170,10 @@ public class ScheduleController {
 		return roomList;
 	}
 	  
-	//일정 상세보기
+	// 일정 상세보기
+	// 파라미터 : int scheduleNo, Model model
+	// 반환값 : Map<>one
+	// 사용페이지 
 	@GetMapping("/calendar/scheduleOne")
 	public String scheduleOne(@RequestParam("scheduleNo") int scheduleNo,
 				Model model) {
@@ -167,7 +186,10 @@ public class ScheduleController {
 		
 		return "/calendar/scheduleOne";
 	}
-	//팀일정 상세보기
+	// 팀일정 상세보기
+	// 파라미터 : int scheduleNo,Model model
+	// 반환값 : Map<ScheduleDTO>
+	// 사용페이지
 	@GetMapping("/calendar/teamScheduleOne")
 	public String teamScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
 			Model model) {
@@ -181,7 +203,10 @@ public class ScheduleController {
 		
 		return"/calendar/teamScheduleOne";
 	}
-	//휴가내역 상세보기
+	// 휴가내역 상세보기
+	// 파라미터 : int scheduleNo, Model model
+	// 반환값 : dayOffOne
+	// 사용페이지 
 	@GetMapping("/calendar/dayOffScheduleOne")
 	public String dayOffScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
 			Model model) {
@@ -193,7 +218,10 @@ public class ScheduleController {
 		
 		return"/calendar/dayOffScheduleOne";
 	}
-	//출장내역 상세보기
+	// 출장내역 상세보기
+	// 파라미터 : int scheduleNo, Model model
+	// 반환값 : tripHistoryOne
+	// 사용페이지 
 	@GetMapping("/calendar/businessTripScheduleOne")
 	public String businessTripScheduleOne(@RequestParam("scheduleNo")int scheduleNo,
 			Model model) {
@@ -206,7 +234,10 @@ public class ScheduleController {
 		return"/calendar/businessTripScheduleOne";
 	}
 	
-	//일정 수정
+	// 일정 수정
+	// 파라미터 : int shceduleNo, Model model
+	// 반환값 : Map<>one
+	// 사용페이지 
 	@GetMapping("/calendar/modifySchedule")
 	public String modifySchedule(@RequestParam("scheduleNo") int scheduleNo,
 				Model model) {
@@ -220,7 +251,10 @@ public class ScheduleController {
 		
 		return "/calendar/modifySchedule";
 	}
-	//개인일정 수정액션
+	// 개인일정 수정액션
+	// 파라미터 : int schdeulNo, ScheduleDTO scheduleDTO
+	// 반환값 : int 
+	// 사용페이지 : modifySchedule
 	@PostMapping("/calendar/modifyScheduleAction")
 	public String modifyScheduleAction(@RequestParam("scheduleNo")int scheduleNo,
 			ScheduleDTO scheduleDTO) {
@@ -231,7 +265,10 @@ public class ScheduleController {
 		
 		return "redirect:/calendar/scheduleOne?scheduleNo="+scheduleNo;
 	}
-	//일정삭제
+	// 일정삭제
+	// 파라미터 : int schdeulNo
+	// 반환값 : /calendar/schedule
+	// 사용페이지 
 	@GetMapping("/calendar/deleteSchedule")
 	public String deleteSchedule(@RequestParam("scheduleNo")int scheduleNo) {
 		log.debug(TeamColor.PURPLE + "일정삭제완료");
@@ -241,7 +278,10 @@ public class ScheduleController {
 		return "redirect:/calendar/schedule";
 	}
 	
-	//일정추가
+	// 일정추가
+	// 파라미터 : Model model, HttpSession session
+	// 반환값 : String
+	// 사용페이지
 	@GetMapping("/calendar/addSchedule")
 	public String addSchedule(Model model, HttpSession session) {
 		
@@ -267,8 +307,11 @@ public class ScheduleController {
 	    model.addAttribute("rankName", rankName);
 	    
 		return"/calendar/addSchedule";
-	}
-	//일정추가
+	} 
+	// 일정추가
+	// 파라미터 : ScheduleDTO scheduleDTO
+	// 반환값 : /calendar/schedule
+	// 사용페이지 : /calendar/addScheduleAction
 	@PostMapping("/calendar/addScheduleAction")
 	public String addScheduleAction(ScheduleDTO scheduleDTO) {
 		

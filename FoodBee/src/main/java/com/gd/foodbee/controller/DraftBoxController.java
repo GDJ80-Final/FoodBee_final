@@ -23,9 +23,14 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class DraftBoxController {
-	@Autowired DraftBoxService draftBoxService;
 	
-	//기안함
+	@Autowired 
+	private DraftBoxService draftBoxService;
+	
+	// 기안함
+	// 파라미터 : int currentPage, Model model, HttpSession session
+	// 반환값 : DraftBoxStateDTO stateBox
+	// 사용페이지 : 
 	@GetMapping("/approval/draftBox")
 	public String draftBox(
 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
@@ -51,11 +56,15 @@ public class DraftBoxController {
 		
 		return "/approval/draftBox";
 	}
-	//기안서 전체보기
+	// 기안서 전체보기
+	// 파라미터 : currentPage, empNo
+	// 반환값 : Map<>docList
+	// 사용페이지 : draftBox
 	@GetMapping("/approval/allDocList")
 	@ResponseBody
 	public Map<String,Object> allDocList(int currentPage, int empNo) {
-	
+		
+		//전체 기안서 리스트
 		List<DraftBoxDTO> allDocList = draftBoxService.getAllDocList(currentPage, empNo);
 		log.debug(TeamColor.PURPLE + "allDocList=>" + allDocList);
 		//마지막 페이지자리
@@ -68,7 +77,10 @@ public class DraftBoxController {
 		
 		return docList;
 	}
-	//결재대기상태 리스트
+	// 결재대기상태 리스트
+	// 파라미터 : currentPage, empNo
+	// 반환값 : Map<>zeroTypeList
+	// 사용페이지 : draftBox
 	@GetMapping("/approval/zeroDocList")
 	@ResponseBody
 	public Map<String,Object> zeroDocList(int currentPage, int empNo){
@@ -86,41 +98,58 @@ public class DraftBoxController {
 		
 		return zeroTypeList;
 	}
-	//승인중상태 리스트
+	// 승인중상태 리스트
+	// 파라미터 : currentPage, empNo
+	// 반환값 : Map<>oneTypeList
+	// 사용페이지 : draftBox
 	@GetMapping("/approval/oneDocList")
 	@ResponseBody
 	public Map<String,Object> oneDocList(int currentPage, int empNo){
 		
 		//승인중 기안서리스트
 		List<DraftBoxDTO> oneDocList = draftBoxService.getOneDocList(currentPage, empNo);
+		//승인중 기안서리스트 마지막 페이지
+		int oneDocLastPage = draftBoxService.getOneDocLastPage(empNo);
 		
 		Map<String,Object>oneTypeList = new HashMap<String,Object>();
 		oneTypeList.put("oneDocList", oneDocList);
+		oneTypeList.put("oneDocLastpage", oneDocLastPage);
 		
 		return oneTypeList;
 	}
-	//승인완료상태 리스트
+	// 승인완료상태 리스트
+	// 파라미터 : currentPage, empNo
+	// 반환값 : Map<>twoTypeList
+	// 사용페이지 : draftBox
 	@GetMapping("/approval/twoDocList")
 	@ResponseBody
 	public Map<String,Object> twoDocList(int currentPage, int empNo){
 		
-		//승인중 기안서리스트
+		//승인완료 기안서리스트
 		List<DraftBoxDTO> twoDocList = draftBoxService.getTwoDocList(currentPage, empNo);
 		log.debug(TeamColor.PURPLE + "twoDocList=>" + twoDocList);
+		//승인완료상태 마지막 페이지
+		int twoDocLastPage = draftBoxService.getTwoDocLastPage(empNo);
 		
 		Map<String,Object>twoTypeList = new HashMap<String,Object>();
 		twoTypeList.put("twoDocList", twoDocList);
 		
 		return twoTypeList;
 	}
-	//반려상태 리스트
+	// 반려상태 리스트
+	// 파라미터 : currentPage, empNo
+	// 반환값 : Map<>nineTypeList
+	// 사용페이지 : draftBox
 	@GetMapping("/approval/nineDocList")
 	@ResponseBody
 	public Map<String,Object> nineDocList(int currentPage, int empNo){
 		
-		//승인중 기안서리스트
+		//반려 기안서리스트
 		List<DraftBoxDTO> nineDocList = draftBoxService.getNineDocList(currentPage, empNo);
 		log.debug(TeamColor.PURPLE + "nineDocList=>" + nineDocList);
+		//반려상태 마지막페이지
+		int nineDocLastPage = draftBoxService.getNineDocLastPage(empNo);
+		
 		
 		Map<String,Object>nineTypeList = new HashMap<String,Object>();
 		nineTypeList.put("nineDocList", nineDocList);
