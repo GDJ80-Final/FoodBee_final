@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class RevenueController {
-	@Autowired RevenueService revenueService;
+	
+	@Autowired 
+	private RevenueService revenueService;
 	
 	// 해당 월 매출액 출력
 	// 사용 페이지 : /monthRevenue
@@ -31,7 +32,7 @@ public class RevenueController {
 	
 	// 해당 월 매출액 출력
 	// 파라미터 : String referenceMonth
-	// 반환 값 : RevenueDTO
+	// 반환 값 : List<RevenueDTO>
 	// 사용 페이지 : /monthRevenue
 	@PostMapping("/revenue/getMonthRevenue")
 	@ResponseBody
@@ -53,8 +54,8 @@ public class RevenueController {
 	}	
 	
 	// 전체 매출액 출력
-	// 파라미터 : String year
-	// 반환 값 : RevenueDTO
+	// 파라미터 : String referenceMonth (매출 해당 년도)
+	// 반환 값 : List<RevenueDTO>
 	// 사용 페이지 : /totalRevenue
 	@PostMapping("/revenue/getTotalRevenue")
 	@ResponseBody
@@ -68,8 +69,8 @@ public class RevenueController {
 	}
 	
 	// 카테고리 별 매출액 출력
-	// 파라미터 : String categoryName
-	// 반환 값 : RevenueDTO
+	// 파라미터 : String referenceMonth, String categoryName
+	// 반환 값 : List<RevenueDTO>
 	// 사용 페이지 : /totalRevenue
 	@PostMapping("/revenue/getCategoryRevenue")
 	@ResponseBody

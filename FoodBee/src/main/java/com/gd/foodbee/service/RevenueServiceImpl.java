@@ -20,7 +20,7 @@ public class RevenueServiceImpl implements RevenueService{
 	
 	// 해당 월 매출액 출력
 	// 파라미터 : String referenceMonth
-	// 반환 값 : RevenueDTO
+	// 반환 값 : List<RevenueDTO>
 	// 사용 클래스 : RevenueController.MonthRevenue
 	@Override
 	public List<RevenueDTO> getMonthRevenue(String referenceMonth) {

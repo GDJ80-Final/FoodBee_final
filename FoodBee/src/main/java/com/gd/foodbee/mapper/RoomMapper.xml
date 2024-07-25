@@ -38,23 +38,30 @@
 	
 	<!-- 회의실 예약 -->
 	<insert id="insertRoomRsv" parameterType="com.gd.foodbee.dto.RoomRsvDTO">
-		INSERT INTO room_rsv (
-			room_no, 
-			emp_no, 
-			rsv_date, 
-			start_datetime, 
-			end_datetime, 
-			type)
-		VALUES (
- 			#{roomNo}, 
- 			#{empNo}, 
- 			#{rsvDate}, 
- 			CONCAT(#{rsvDate}, ' ', #{startTime}),
-        	CONCAT(#{rsvDate}, ' ', #{endTime}),
- 			#{type})
+		INSERT INTO 
+			room_rsv (
+				room_no, 
+				emp_no, 
+				rsv_date, 
+				start_datetime, 
+				end_datetime, 
+				type,
+				meeting_title,
+				meeting_reason,
+				users)
+			VALUES (
+	 			#{roomNo}, 
+	 			#{empNo}, 
+	 			#{rsvDate}, 
+	 			CONCAT(#{rsvDate}, ' ', #{startTime}),
+	        	CONCAT(#{rsvDate}, ' ', #{endTime}),
+	 			#{type},
+	 			#{meetingTitle},
+				#{meetingReason},
+				#{users})
 	</insert>
 	
-	<!-- 선택된 날짜에 예약된 시간을 출력 -->
+	<!-- 회의실 번호, 선택된 날짜에 예약된 시간을 출력 -->
 	<select id="selectReservedTimes" resultType="Map" parameterType="com.gd.foodbee.dto.RoomRsvDTO">
 		SELECT 
 		 	rsv_date rsvDate, 
@@ -69,35 +76,26 @@
 			room_no = #{roomNo}
 	</select>
 	
-	<!-- 회의실 번호, 선택된 날짜에 예약된 시간을 출력 -->
-	<select id="selectReservedTime" resultType="Map" parameterType="Map">
-		SELECT
-			DATE_FORMAT(start_dateTime, '%H:%i') startTime, 
-			DATE_FORMAT(end_dateTime, '%H:%i') endTime
-		FROM
-			room_rsv rsv
-		WHERE
-			room_no = #{roomNo} 
-			AND 
-			rsv_date = #{rsvDate}		 	
-	</select>
-	
 	<!-- 선택된 날짜별 전체 예약리스트 출력 -->
 	<select id="selectRsvListByDate" resultType="Map" parameterType="Map">
 		SELECT 
+		    rsv.rsv_no rsvNo,
 		    emp.emp_no empNo, 
 		    emp.emp_name empName, 
 		    info.room_name roomName, 
 		    rsv.rsv_date rsvDate, 
 		    DATE_FORMAT(rsv.start_dateTime, '%H:%i') startTime, 
 		    DATE_FORMAT(rsv.end_dateTime, '%H:%i') endTime, 
-		    rsv.rsv_state rsvState
+		    rsv.rsv_state rsvState,
+		    rsv.meeting_title meetingTitle,
+		    rsv.meeting_reason meetingReason,
+		    rsv.users users
 		FROM 
 		    room_rsv rsv 
 		INNER JOIN 
 			emp	ON rsv.emp_no = emp.emp_no 
 		INNER JOIN 
-			room_info info ON rsv.room_no = info.room_no
+			room_info info	ON rsv.room_no = info.room_no
 		WHERE 
 			rsv.rsv_date = #{rsvDate}
 		ORDER BY
@@ -119,13 +117,17 @@
 	<!-- 내 예약리스트 출력 -->
 	<select id="selectRsvListByEmpNo" resultType="Map" parameterType="Map">
 		SELECT 
+			rsv.rsv_no rsvNo,
 		    emp.emp_no empNo, 
 		    emp.emp_name empName, 
 		    info.room_name roomName, 
 		    rsv.rsv_date rsvDate, 
 		    DATE_FORMAT(rsv.start_dateTime, '%H:%i') startTime, 
 		    DATE_FORMAT(rsv.end_dateTime, '%H:%i') endTime,  
-		    rsv.rsv_state rsvState
+		    rsv.rsv_state rsvState,
+   		    rsv.meeting_title meetingTitle,
+		    rsv.meeting_reason meetingReason,
+		    rsv.users users
 		FROM 
 			room_rsv rsv 
 		INNER JOIN 

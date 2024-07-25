@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>근태 조회</title>
 </head>
 <body>
 <h1>근태 조회</h1>
@@ -30,8 +30,8 @@
 		<tr>
 			<td>${m.empNo}</td>
 			<td>${m.date}</td>
-			<td>${m.updateStartTime}</td>
-			<td>${m.updateEndTime}</td>
+			<td>&nbsp;&nbsp;&nbsp;${m.updateStartTime}<br>등록:${m.startTime}</td>
+			<td>&nbsp;&nbsp;&nbsp;${m.updateEndTime}<br>등록:${m.endTime}</td>
 			<td>${map.rankName} ${map.empName}</td>
 			<td>${m.approvalState}</td>
 			<td>${m.updateStatus}</td>

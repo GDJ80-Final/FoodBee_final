@@ -32,9 +32,6 @@ public interface RoomService {
 	// 내 예약 총 갯수
 	int getRsvByEmpNoLastPage(int empNo);
 	
-	// 회의실 번호, 선택된 날짜에 예약된 시간을 출력
-	List<Map<String, Object>> getReservedTime(int roomNo, String rsvDate);
-	
 	// 예약 취소
 	int modifyRoomRsv(RoomRsvDTO rsv);
 }

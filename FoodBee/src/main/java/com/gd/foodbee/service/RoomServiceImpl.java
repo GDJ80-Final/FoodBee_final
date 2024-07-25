@@ -21,11 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomServiceImpl implements RoomService{
 	@Autowired RoomMapper roomMapper;
 	
-	int rowPerPage = 10;
+	private static final int ROW_PER_PAGE = 10;
 	
 	// 회의실 목록
 	// 파라미터 : X
-	// 반환 값 : RoomDTO
+	// 반환 값 : List<RoomDTO>
 	// 사용 클래스 : RoomController.roomList
 	@Override
 	public List<RoomDTO> getRoomList() {
@@ -45,7 +45,8 @@ public class RoomServiceImpl implements RoomService{
 	}
 	
 	// 회의실 예약
-	// 파라미터 : RoomRsvDTO
+	// 파라미터 : RoomRsvDTO rsv
+	// 반환 값 : X
 	// 사용 클래스 : RoomController.roomRsv
 	@Override
 	public int addRoomRsv(RoomRsvDTO rsv) {
@@ -55,8 +56,8 @@ public class RoomServiceImpl implements RoomService{
 	}
 	
 	// 선택한 룸번호, 날짜에 예약된 시간을 출력
-	// 파라미터 : String rsvDate
-	// 반환 값 : RoomRsvDTO
+	// 파라미터 : int roomNo, String rsvDate
+	// 반환 값 : List<RoomRsvDTO>
 	// 사용 클래스 : RoomController.roomOne
 	@Override
 	public List<RoomRsvDTO> getReservedTimes(int roomNo, String rsvDate) {
@@ -67,19 +68,19 @@ public class RoomServiceImpl implements RoomService{
 	}
 	
 	// 선택된 날짜별 전체 예약리스트 출력
-	// 파라미터 : String rsvDate
-	// 반환 값 : RoomRsvDTO
+	// 파라미터 : String rsvDate, int currentPage
+	// 반환 값 : List<RoomRsvDTO>
 	// 사용 클래스 : RoomController.roomRsvList
 	@Override
 	public List<RoomRsvDTO> getRsvListByDate(String rsvDate, int currentPage) {
 		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
         HashMap<String,Object> m = new HashMap<String,Object>();
         m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
+        m.put("rowPerPage", ROW_PER_PAGE);
         m.put("rsvDate", rsvDate);
         
 		return roomMapper.selectRsvListByDate(m); 
@@ -96,13 +97,13 @@ public class RoomServiceImpl implements RoomService{
 		int cnt = roomMapper.selectRsvCntByDate(rsvDate);
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
-		int lastPage = (int) Math.ceil((double) cnt / rowPerPage);
+		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
 		return lastPage; 
 	}
 	
 	// 내 예약리스트 출력
-	// 파라미터 : int empNo
-	// 반환 값 : RoomRsvDTO
+	// 파라미터 : int empNo, int currentPage
+	// 반환 값 : List<RoomRsvDTO>
 	// 사용 클래스 : RoomController.MyRoomRsvList
 	@Override
 	public List<RoomRsvDTO> getRsvListByEmpNo(int empNo, int currentPage) {
@@ -110,12 +111,12 @@ public class RoomServiceImpl implements RoomService{
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
         HashMap<String,Object> m = new HashMap<String,Object>();
         m.put("empNo", empNo);
         m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);       
+        m.put("rowPerPage", ROW_PER_PAGE);       
         
 		return roomMapper.selectRsvListByEmpNo(m); 
 	}
@@ -131,24 +132,13 @@ public class RoomServiceImpl implements RoomService{
 		int cnt = roomMapper.selectRsvCntByEmpNo(empNo);
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
-		int lastPage = (int) Math.ceil((double) cnt / rowPerPage);
+		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
 		return lastPage; 
 	}
 	
-	// 회의실 번호, 선택된 날짜에 예약된 시간을 출력
-	// 파라미터 : int roomNo, String rsvDate
-	// 반환 값 : String startTime, String endTime
-	// 사용 클래스 : RoomRestController.getReservedTimes
-	@Override
-	public List<Map<String, Object>> getReservedTime(int roomNo, String rsvDate) {
-		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
-		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
-		
-		return roomMapper.selectReservedTime(roomNo, rsvDate); 
-	}
-	
 	// 예약 취소
-	// 파라미터 : RoomRsvDTO
+	// 파라미터 : RoomRsvDTO rsv
+	// 반환 값 : X
 	// 사용 클래스 : RoomController.
 	@Override
 	public int modifyRoomRsv(RoomRsvDTO rsv) {

@@ -20,11 +20,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class AttendanceController {
-	@Autowired AttendanceService attendanceService;
+	
+	@Autowired 
+	private AttendanceService attendanceService;
 	
 	// 근태보고
-	// 파라미터 : session
-	// 반환 값 : attendanceDTO, map
+	// 파라미터 : HttpSession session
+	// 반환 값 : attendanceDTO, HashMap<String, Object> map
 	// 사용 페이지 : /attendance/attendanceReport
 	@GetMapping("/attendance/attendanceReport")
 	public String attendanceReport(Model model, HttpSession session) {
@@ -44,8 +46,8 @@ public class AttendanceController {
 	}
 
 	// 근태보고 수정 폼
-	// 파라미터 : session
-	// 반환 값 : attendanceDTO, map
+	// 파라미터 : HttpSession session
+	// 반환 값 : attendanceDTO, HashMap<String, Object> map
 	// 사용 페이지 : /attendance/attendanceModify
 	@GetMapping("/attendance/attendanceModify")
 	public String attendanceModify(Model model, HttpSession session) {
@@ -65,8 +67,9 @@ public class AttendanceController {
 	}
 	
 	// 근태보고 수정 액션
-	// 파라미터 : session, String updateStartTime, String updateEndTime, String updateReason
+	// 파라미터 : HttpSession session, String updateStartTime, String updateEndTime, String updateReason
 	// 반환 페이지 : /attendance/attendanceReport
+	// 사용 페이지 : /attendance/attendanceModify
 	@PostMapping("/attendance/attendanceModifyAction")
 	public String attendanceModifyAction(HttpSession session, 
 						@RequestParam(name="updateStartTime") String updateStartTime,
@@ -89,8 +92,8 @@ public class AttendanceController {
 	}
 	
 	// 개인 근태
-	// 파라미터 : session, int currentPage, String startDate, String endDate
-	// 반환 값 : list, map, currentPage, lastPage
+	// 파라미터 : HttpSession session, int currentPage, String startDate, String endDate
+	// 반환 값 : List<AttendanceDTO> list, HashMap<String, Object> map, int currentPage, int lastPage
 	// 사용 페이지 : /attendance/attendancePersonal
 	@GetMapping("/attendance/attendancePersonal")
 	public String attendancePersonal(Model model, HttpSession session, 
@@ -123,8 +126,9 @@ public class AttendanceController {
 	}
 	
 	// 근태 확정
-	// 파라미터 : session, String date
+	// 파라미터 : HttpSession session, String date
 	// 반환 페이지 : /attendance/attendancePersonal
+	// 사용 페이지 : /attendance/attendanceReport
 	@PostMapping("/attendance/attendanceFinalTime")
 	public String attendanceFinalTime(HttpSession session, 
 						@RequestParam(name="date")String date) {

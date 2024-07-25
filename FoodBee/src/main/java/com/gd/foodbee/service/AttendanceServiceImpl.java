@@ -17,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class AttendanceServiceImpl implements AttendanceService {
 	@Autowired AttendanceMapper attendanceMapper;
-	int rowPerPage = 10;
+	
+	private static final int ROW_PER_PAGE = 10;
 	
 	// 근태보고 출력
 	// 파라미터 : int empNo
@@ -31,7 +32,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 	
 	// 근태보고(승인자) 출력
-	// 파라미터 : int dptNo
+	// 파라미터 : String dptNo
 	// 반환 값 : HashMap<String, Object> 
 	// 사용 클래스 : AttendanceController.attendanceReport & attendanceModify
 	@Override
@@ -43,7 +44,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	
 	// 근태보고 수정
 	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo
-	// 반환 값 : int
+	// 반환 값 : X
 	// 사용 클래스 : AttendanceController.attendanceModify
 	@Override
 	public int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo) {
@@ -67,12 +68,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "endDate => " + endDate);
 		
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
         HashMap<String,Object> m = new HashMap<String,Object>();        
         m.put("empNo", empNo);
         m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
+        m.put("rowPerPage", ROW_PER_PAGE);
         m.put("startDate", startDate);
         m.put("endDate", endDate);
         
@@ -81,7 +82,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 	
 	// 개인 근태 cnt
 	// 파라미터 : int empNo
-	// 반환 값 : int
+	// 반환 값 : X
 	// 사용 클래스 : AttendanceController.attendancePersonal
 	@Override
 	public int getAttendancePersonalCnt(int empNo) {
@@ -90,14 +91,14 @@ public class AttendanceServiceImpl implements AttendanceService {
 		int cnt = attendanceMapper.selectAttendancePersonalCnt(empNo);
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
-		int lastPage = (int) Math.ceil((double) cnt / rowPerPage);
+		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
 
 		return lastPage;
 	}
 	
 	// 근태 확정
 	// 파라미터 : String date, int empNo
-	// 반환 값 : int
+	// 반환 값 : X
 	// 사용 클래스 : AttendanceController.attendanceFinalTime
 	@Override
 	public int modifyAttendanceFinalTime(String date, int empNo) {

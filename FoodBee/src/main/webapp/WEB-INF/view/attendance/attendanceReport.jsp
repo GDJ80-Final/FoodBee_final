@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>전일 근태보고</title>
 </head>
 <body>
 <h1>전일 근태보고</h1>

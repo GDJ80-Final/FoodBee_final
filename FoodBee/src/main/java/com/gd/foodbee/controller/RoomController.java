@@ -25,11 +25,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class RoomController {
-@Autowired RoomService roomService;
+	
+	@Autowired 
+	private RoomService roomService;
 
 	// 회의실 목록
 	// 파라미터 : X
-	// 반환 값 : RoomDTO
+	// 반환 값 : List<RoomDTO>
 	// 사용 페이지 : /room/roomList
 	@GetMapping("/room/roomList")	
 	public String roomList(Model model) {		
@@ -43,7 +45,7 @@ public class RoomController {
 	
 	// 회의실 상세보기 및 예약폼
 	// 파라미터 : int roomNo, String rsvDate
-	// 반환 값 : RoomDTO, roomNo, rsvDate, RoomRsvDTO
+	// 반환 값 : RoomDTO, int roomNo, String rsvDate
 	// 사용 페이지 : /room/roomOne
 	@GetMapping("/room/roomOne")
 	public String roomOne(Model model, @RequestParam(name= "roomNo") int roomNo, 
@@ -55,14 +57,9 @@ public class RoomController {
 		RoomDTO roomDTO = roomService.getRoomOne(roomNo);
 		log.debug(TeamColor.GREEN + "roomDTO => " + roomDTO.toString());
 		
-		// 선택한 룸번호, 날짜에 예약된 시간을 출력
-		List<RoomRsvDTO> reservedTimes = roomService.getReservedTimes(roomNo, rsvDate);
-		log.debug(TeamColor.GREEN + "reservedTimes => " + reservedTimes.toString());
-		
 		model.addAttribute("roomDTO",roomDTO);
 		model.addAttribute("roomNo",roomNo);
 		model.addAttribute("rsvDate",rsvDate);
-		model.addAttribute("reservedTimes",reservedTimes);
 		return "/room/roomOne";
 	}
 	
@@ -72,17 +69,18 @@ public class RoomController {
 	// 사용 페이지 : /room/roomOne
 	@PostMapping("/room/getReservedTimes")
 	@ResponseBody
-	public List<Map<String, Object>> getReservedTimes(@RequestParam("roomNo") int roomNo,  
-													  @RequestParam(name = "rsvDate", required = false) String rsvDate) {
+	public List<RoomRsvDTO> getReservedTimes(@RequestParam("roomNo") int roomNo,  
+											@RequestParam(name = "rsvDate", required = false) String rsvDate) {
 		log.debug(TeamColor.GREEN + "roomNo => " + roomNo);
 		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		
-	    return roomService.getReservedTime(roomNo, rsvDate);
+	    return roomService.getReservedTimes(roomNo, rsvDate);
 	}
 	
 	// 회의실 예약
 	// 파라미터 : RoomRsvDTO
 	// 반환 페이지 : /room/roomList
+	// 사용 페이지 : /room/roomOne
 	@PostMapping("/room/roomRsv")
 	public String roomRsv(RoomRsvDTO rsv, HttpSession session) {
 		log.debug(TeamColor.GREEN + "request rsv => " + rsv.toString());
@@ -100,8 +98,8 @@ public class RoomController {
 	}
 	
 	// 날짜별 예약목록
-	// 파라미터 : String rsvDate
-	// 반환 값 : rsvDate, RoomRsvDTO
+	// 파라미터 : String rsvDate,  int currentPage
+	// 반환 값 : List<RoomRsvDTO> rsvListByDate, String rsvDate, int currentPage, int lastPage
 	// 사용 페이지 : /room/roomRsvList
 	@GetMapping("/room/roomRsvList")
 	public String roomRsvList(Model model, @RequestParam(name = "date", required = false) String rsvDate,
@@ -129,8 +127,8 @@ public class RoomController {
 	}
 	
 	// 내 예약목록
-	// 파라미터 : int empNo
-	// 반환 값 : rsvDate, RoomRsvDTO
+	// 파라미터 : HttpSession session, int currentPage
+	// 반환 값 : List<RoomRsvDTO> rsvListByEmpNo, int lastPage, int currentPage
 	// 사용 페이지 : /room/myRoomRsvList
 	@GetMapping("/room/myRoomRsvList")
 	public String myRoomRsvList(Model model, HttpSession session,
@@ -158,6 +156,7 @@ public class RoomController {
 	// 예약 취소
 	// 파라미터 : RoomRsvDTO
 	// 반환 페이지 : /room/roomRsvList
+	// 사용 페이지 : /room/myRoomRsvList
 	@PostMapping("/room/cancleRoomRsv")
 	public String cancleRoomRsv(RoomRsvDTO rsv) {
 		log.debug(TeamColor.GREEN + "request rsv => " + rsv.toString());
