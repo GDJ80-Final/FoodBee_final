@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
@@ -36,10 +35,13 @@
     <table border="1">
         <tr>
             <th>양식유형</th>
-            <th>제목</th>
-            <th>결재상태</th>
-            <th>최종결재일</th>
-            <th>작성일 </th>
+			<th>제목</th>
+			<th>현재상태</th>
+			<th>중간결재일</th>
+			<th>중간상태</th>
+			<th>최종결재일</th>
+			<th>최종상태</th>
+			<th>작성일 </th>
         </tr>
         <tbody id="tableBody">
             <!-- 여기서 리스트출력 -->
@@ -67,23 +69,23 @@
         
         // 전체 버튼 클릭 시 전체 기안 리스트 로드
         $("#allBtn").click(function() {
-            loadAllDocList(currentPage);
+            loadAllDocList(1);
         });
         //결재대기 버튼 클릭시 결재대기 기안리스트 로드
 		$("#zeroBtn").click(function() {
-			loadZeroDocList(currentPage);
+			loadZeroDocList(1);
         });
         //승인중 버튼 클릭시 승인중 기안리스트 로드
 		$("#oneBtn").click(function() {
-			loadOneDocList(currentPage);        
+			loadOneDocList(1);        
         });
         //승인완료 버튼 클릭시 승인완료 기안리스트 로드
 		$("#twoBtn").click(function() {
-			loadtwoDocList(currentPage);
+			loadtwoDocList(1);
 		});
         //반려 버튼 클릭시 반려 기안리스트 로드
 		$("#nineBtn").click(function() {
-			loadNineDocList(currentPage);
+			loadNineDocList(1);
 		});
         
     	//전체기안서 데이터 
@@ -178,6 +180,15 @@
      	 
 		//전체
         function updateAllDocList(json) {
+        	<!-- DB 조회해온 last 페이지 순번 -->
+        	lastPage = json.allDocLastPage;
+			console.log('lastPage : ' + lastPage);
+            <!-- hiddenFieldValue 값을 개인으로 세팅 -->
+        	hiddenFieldValue = "allTypeDoc"
+            console.log("hiddenFieldValue : " + hiddenFieldValue);
+            <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
+			updateBtnState();
+			
             let tableBody = $("#tableBody");
             tableBody.empty();
             
@@ -205,7 +216,10 @@
                         "<td>" + item.tmpName + "</td>" +
                         "<td>" + item.title + "</td>" +
                         "<td>" + approvalStateText + "</td>" +
+                        "<td>" + item.midApprovalDatetime + "</td>" +
+                        "<td>" + item.midApprovalState + "</td>" +
                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                        "<td>" + item.finalApprovalState + "</td>" +
                         "<td>" + item.createDatetime + "</td>" +
                         "</tr>");
                 
@@ -216,17 +230,30 @@
         }
         //결재대기상태
         function updateZeroTypeDocList(json) {
+        	<!-- DB 조회해온 last 페이지 순번 -->
+        	lastPage = json.zeroDocLastPage;
+			console.log('lastPage : ' + lastPage);
+            <!-- hiddenFieldValue 값을 개인으로 세팅 -->
+        	hiddenFieldValue = "zeroTypeDoc"
+            console.log("hiddenFieldValue : " + hiddenFieldValue);
+            <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
+			updateBtnState();
+			
+			
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             $.each(json.zeroDocList, function(index, item) {
                 let newRow = $("<tr>" +
-                        "<td>" + item.tmpName + "</td>" +
-                        "<td>" + item.title + "</td>" +
-                        "<td>" + "결재대기" + "</td>" +
-                        "<td>" + item.finalApprovalDatetime + "</td>" +
-                        "<td>" + item.createDatetime + "</td>" +
-                        "</tr>");
+                		 "<td>" + item.tmpName + "</td>" +
+                         "<td>" + item.title + "</td>" +
+                         "<td>" + "결재대기" + "</td>" +
+                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + item.createDatetime + "</td>" +
+                         "</tr>");
                 
                 tableBody.append(newRow);
             });
@@ -235,17 +262,29 @@
         }
         //승인중상태
         function updateOneTypeDocList(json) {
+        	<!-- DB 조회해온 last 페이지 순번 -->
+        	lastPage = json.oneDocLastPage;
+			console.log('lastPage : ' + lastPage);
+            <!-- hiddenFieldValue 값을 개인으로 세팅 -->
+        	hiddenFieldValue = "oneTypeDoc"
+            console.log("hiddenFieldValue : " + hiddenFieldValue);
+            <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
+			updateBtnState();
+			
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             $.each(json.oneDocList, function(index, item) {
                 let newRow = $("<tr>" +
-                        "<td>" + item.tmpName + "</td>" +
-                        "<td>" + item.title + "</td>" +
-                        "<td>" + "승인중" + "</td>" +
-                        "<td>" + item.finalApprovalDatetime + "</td>" +
-                        "<td>" + item.createDatetime + "</td>" +
-                        "</tr>");
+                		 "<td>" + item.tmpName + "</td>" +
+                         "<td>" + item.title + "</td>" +
+                         "<td>" + "승인중" + "</td>" +
+                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + item.createDatetime + "</td>" +
+                         "</tr>");
                 
                 tableBody.append(newRow);
             });
@@ -254,17 +293,30 @@
         }
         //승인완료상태
         function updateTwoTypeDocList(json) {
+        	<!-- DB 조회해온 last 페이지 순번 -->
+        	lastPage = json.twoDocLastPage;
+			console.log('lastPage : ' + lastPage);
+            <!-- hiddenFieldValue 값을 개인으로 세팅 -->
+        	hiddenFieldValue = "twoTypeDoc"
+            console.log("hiddenFieldValue : " + hiddenFieldValue);
+            <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
+			updateBtnState();
+			
+			
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             $.each(json.twoDocList, function(index, item) {
                 let newRow = $("<tr>" +
-                        "<td>" + item.tmpName + "</td>" +
-                        "<td>" + item.title + "</td>" +
-                        "<td>" + "승인완료" + "</td>" +
-                        "<td>" + item.finalApprovalDatetime + "</td>" +
-                        "<td>" + item.createDatetime + "</td>" +
-                        "</tr>");
+                		 "<td>" + item.tmpName + "</td>" +
+                         "<td>" + item.title + "</td>" +
+                         "<td>" + "승인완료" + "</td>" +
+                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + item.createDatetime + "</td>" +
+                         "</tr>");
                 
                 tableBody.append(newRow);
             });
@@ -273,23 +325,144 @@
         }
         //반려상태
         function updateNineTypeDocList(json) {
+        	<!-- DB 조회해온 last 페이지 순번 -->
+        	lastPage = json.nineDocLastPage;
+			console.log('lastPage : ' + lastPage);
+            <!-- hiddenFieldValue 값을 개인으로 세팅 -->
+        	hiddenFieldValue = "nineTypeDoc"
+            console.log("hiddenFieldValue : " + hiddenFieldValue);
+            <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
+			updateBtnState();
+			
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             $.each(json.nineDocList, function(index, item) {
                 let newRow = $("<tr>" +
-                        "<td>" + item.tmpName + "</td>" +
-                        "<td>" + item.title + "</td>" +
-                        "<td>" + "반려" + "</td>" +
-                        "<td>" + item.finalApprovalDatetime + "</td>" +
-                        "<td>" + item.createDatetime + "</td>" +
-                        "</tr>");
+                		 "<td>" + item.tmpName + "</td>" +
+                         "<td>" + item.title + "</td>" +
+                         "<td>" + "반려" + "</td>" +
+                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + item.createDatetime + "</td>" +
+                         "</tr>");
                 
                 tableBody.append(newRow);
             });
             
             $("#tableBody").show();
         }
+        
+        <!-- pre 버튼 클릭 시 동작 -->
+        $('#pre').click(function() {
+  		   console.log('pre click : ' + currentPage);
+  		 if (currentPage > 1) {
+     		  currentPage = currentPage - 1;
+     		 if (hiddenFieldValue === "allTypeDoc") {
+				  console.log("allTypeDoc");
+				  loadAllDocList(currentPage);
+		      } else if (hiddenFieldValue === "zeroTypeDoc") {
+				  console.log("zeroTypeDoc");
+				  loadZeroDocList(currentPage);
+		      } else if (hiddenFieldValue === "oneTypeDoc") {
+				  console.log("oneTypeDoc");
+				  loadOneDocList(currentPage);
+		      } else if (hiddenFieldValue === "twoTypeDoc") {
+				  console.log("twoTypeDoc");
+				  loadtwoDocList(currentPage);
+		      } else if (hiddenFieldValue === "nineTypeDoc") {
+				  console.log("nineTypeDoc");
+				  loadNineDocList(currentPage);
+		      }
+		   }
+        });
+
+        <!-- next 버튼 클릭 시 동작 -->
+        $('#next').click(function() {
+  			console.log('next click : ' + currentPage);
+
+  			 if (currentPage < lastPage) {
+  	            currentPage = currentPage + 1;
+	  	          if (hiddenFieldValue === "allTypeDoc") {
+	 				  console.log("allTypeDoc");
+	 				  loadAllDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "zeroTypeDoc") {
+	 				  console.log("zeroTypeDoc");
+	 				  loadZeroDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "oneTypeDoc") {
+	 				  console.log("oneTypeDoc");
+	 				  loadOneDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "twoTypeDoc") {
+	 				  console.log("twoTypeDoc");
+	 				  loadtwoDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "nineTypeDoc") {
+	 				  console.log("nineTypeDoc");
+	 				  loadNineDocList(currentPage);
+	 		      }
+  	         }
+        });
+        <!-- first 버튼 클릭 시 동작 -->
+        $('#first').click(function() {
+  			console.log('first click : ' + currentPage);
+
+  		  if (currentPage > 1) {
+              currentPage = 1;
+              if (hiddenFieldValue === "allTypeDoc") {
+ 				  console.log("allTypeDoc");
+ 				  loadAllDocList(currentPage);
+ 		      } else if (hiddenFieldValue === "zeroTypeDoc") {
+ 				  console.log("zeroTypeDoc");
+ 				  loadZeroDocList(currentPage);
+ 		      } else if (hiddenFieldValue === "oneTypeDoc") {
+ 				  console.log("oneTypeDoc");
+ 				  loadOneDocList(currentPage);
+ 		      } else if (hiddenFieldValue === "twoTypeDoc") {
+ 				  console.log("twoTypeDoc");
+ 				  loadtwoDocList(currentPage);
+ 		      } else if (hiddenFieldValue === "nineTypeDoc") {
+ 				  console.log("nineTypeDoc");
+ 				  loadNineDocList(currentPage);
+ 		      }
+           }
+        });
+        <!-- last 버튼 클릭 시 동작 -->
+        $('#last').click(function() {
+      	  
+  			console.log('last click : ' + currentPage);
+
+  			 if (currentPage < lastPage) {
+  	            currentPage = lastPage
+	  	          if (hiddenFieldValue === "allTypeDoc") {
+	 				  console.log("allTypeDoc");
+	 				  loadAllDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "zeroTypeDoc") {
+	 				  console.log("zeroTypeDoc");
+	 				  loadZeroDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "oneTypeDoc") {
+	 				  console.log("oneTypeDoc");
+	 				  loadOneDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "twoTypeDoc") {
+	 				  console.log("twoTypeDoc");
+	 				  loadtwoDocList(currentPage);
+	 		      } else if (hiddenFieldValue === "nineTypeDoc") {
+	 				  console.log("nineTypeDoc");
+	 				  loadNineDocList(currentPage);
+	 		      }
+  	         }
+        });
+        
+        // 버튼 활성화
+        function updateBtnState() {
+           console.log("update");
+           <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
+           <!-- prop은 설정의 속성-->
+             $('#pre').prop('disabled', currentPage === 1);
+             $('#next').prop('disabled', currentPage === lastPage);
+             $('#first').prop('disabled', currentPage === 1);
+             $('#last').prop('disabled', currentPage === lastPage);
+         }
     });
 </script>
 </body>

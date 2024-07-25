@@ -19,6 +19,7 @@ import com.gd.foodbee.dto.NoticeRequestDTO;
 import com.gd.foodbee.mapper.NoticeFileMapper;
 import com.gd.foodbee.mapper.NoticeMapper;
 import com.gd.foodbee.util.FileFormatter;
+import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -137,16 +138,11 @@ public class NoticeServiceImpl implements NoticeService{
 		        }
 		        
 		        // 파일 저장
+		        String path = FilePath.getFilePath() + "notice_file/";
+		        log.debug(TeamColor.PURPLE + "path => "+path);
 		        
-		        String path = request.getServletContext().getRealPath("/WEB-INF/upload/notice_file/");
-		        
-		        File emptyFile = new File(path+ originalFile);
-		        try {
-		            mf.transferTo(emptyFile);
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		            throw new RuntimeException("파일업로드 실패");
-		        }
+		        //경로에 저장
+				FilePath.saveFile(path, originalFile, mf);
 	        }
 	    }
     }
@@ -197,19 +193,15 @@ public class NoticeServiceImpl implements NoticeService{
     	    
           int update2 = noticeFileMapper.insertNoticeFile(file);
          
-    	  if (update2 != 1) {
-  	            throw new RuntimeException("파일입력실패");
-  	      }
-    	// 파일 저장
-    	  String path = request.getServletContext().getRealPath("/WEB-INF/upload/notice_file/");
+	    	  if (update2 != 1) {
+	  	            throw new RuntimeException("파일입력실패");
+	  	      }
     	  
-	        File emptyFile = new File(path+ originalFile);
-	        try {
-	            mf.transferTo(emptyFile);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            throw new RuntimeException("파일업로드 실패");
-	        }	  
+    	  	// 파일 저장
+			String path = FilePath.getFilePath() + "notice_file/";
+			log.debug(TeamColor.PURPLE + "path => "+path);
+			//경로에 저장
+			FilePath.saveFile(path, originalFile, mf);
         }	
 	}
 

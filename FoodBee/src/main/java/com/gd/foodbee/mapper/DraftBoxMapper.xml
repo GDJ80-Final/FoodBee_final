@@ -9,8 +9,11 @@
 		dt.tmp_name tmpName,
 		dd.title title,
 		dd.doc_approver_state_no approvalStateNo,
-		dd.final_approval_datetime finalApprovalDatetime,
-		dd.create_datetime createDatetime
+		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+		dd.mid_approval_state midApprovalState,
+		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+		dd.final_approval_state finalApprovalState,
+		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
 	FROM 
 		draft_doc dd
 	INNER JOIN 
@@ -29,8 +32,11 @@
 		dt.tmp_name tmpName,
 		dd.title title,
 		dd.doc_approver_state_no approvalStateNo,
-		dd.final_approval_datetime finalApprovalDatetime,
-		dd.create_datetime createDatetime
+		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+		dd.mid_approval_state midApprovalState,
+		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+		dd.final_approval_state finalApprovalState,
+		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
 	FROM 
 		draft_doc dd
 	INNER JOIN 
@@ -49,8 +55,11 @@
 		dt.tmp_name tmpName,
 		dd.title title,
 		dd.doc_approver_state_no approvalStateNo,
-		dd.final_approval_datetime finalApprovalDatetime,
-		dd.create_datetime createDatetime
+		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+		dd.mid_approval_state midApprovalState,
+		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+		dd.final_approval_state finalApprovalState,
+		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
 	FROM 
 		draft_doc dd
 	INNER JOIN 
@@ -69,8 +78,11 @@
 		dt.tmp_name tmpName,
 		dd.title title,
 		dd.doc_approver_state_no approvalStateNo,
-		dd.final_approval_datetime finalApprovalDatetime,
-		dd.create_datetime createDatetime
+		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+		dd.mid_approval_state midApprovalState,
+		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+		dd.final_approval_state finalApprovalState,
+		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
 	FROM 
 		draft_doc dd
 	INNER JOIN 
@@ -89,8 +101,11 @@
 		dt.tmp_name tmpName,
 		dd.title title,
 		dd.doc_approver_state_no approvalStateNo,
-		dd.final_approval_datetime finalApprovalDatetime,
-		dd.create_datetime createDatetime
+		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+		dd.mid_approval_state midApprovalState,
+		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+		dd.final_approval_state finalApprovalState,
+		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
 	FROM 
 		draft_doc dd
 	INNER JOIN 

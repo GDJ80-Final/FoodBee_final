@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.gd.foodbee.util.FilePath;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,7 +31,7 @@ public class NoticeFileController {
         // 실제 파일이 저장된 경로
     	log.info("Requested file: " + filename);
     	
-        String path = request.getServletContext().getRealPath("/WEB-INF/upload/notice_file/");
+    	String path = FilePath.getFilePath() + "notice_file/";
         File file = new File(path + File.separator + filename);
 
         // 로그로 경로 확인

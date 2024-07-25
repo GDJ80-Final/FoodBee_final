@@ -110,10 +110,11 @@ public class DraftBoxController {
 		List<DraftBoxDTO> oneDocList = draftBoxService.getOneDocList(currentPage, empNo);
 		//승인중 기안서리스트 마지막 페이지
 		int oneDocLastPage = draftBoxService.getOneDocLastPage(empNo);
+		log.debug(TeamColor.PURPLE + "oneDocLastpage=>" + oneDocLastPage);
 		
 		Map<String,Object>oneTypeList = new HashMap<String,Object>();
 		oneTypeList.put("oneDocList", oneDocList);
-		oneTypeList.put("oneDocLastpage", oneDocLastPage);
+		oneTypeList.put("oneDocLastPage", oneDocLastPage);
 		
 		return oneTypeList;
 	}
@@ -130,9 +131,11 @@ public class DraftBoxController {
 		log.debug(TeamColor.PURPLE + "twoDocList=>" + twoDocList);
 		//승인완료상태 마지막 페이지
 		int twoDocLastPage = draftBoxService.getTwoDocLastPage(empNo);
+		log.debug(TeamColor.PURPLE + "twoDocLastPage=>" + twoDocLastPage);
 		
 		Map<String,Object>twoTypeList = new HashMap<String,Object>();
 		twoTypeList.put("twoDocList", twoDocList);
+		twoTypeList.put("twoDocLastPage", twoDocLastPage);
 		
 		return twoTypeList;
 	}
@@ -149,10 +152,11 @@ public class DraftBoxController {
 		log.debug(TeamColor.PURPLE + "nineDocList=>" + nineDocList);
 		//반려상태 마지막페이지
 		int nineDocLastPage = draftBoxService.getNineDocLastPage(empNo);
-		
+		log.debug(TeamColor.PURPLE + "nineDocLastPage=>" + nineDocLastPage);
 		
 		Map<String,Object>nineTypeList = new HashMap<String,Object>();
 		nineTypeList.put("nineDocList", nineDocList);
+		nineTypeList.put("nineDocLastPage", nineDocLastPage);
 		
 		return nineTypeList;
 	}
