@@ -76,22 +76,26 @@ public class MsgController {
 	}
 	// 받은 쪽지함
 	// 파라미터 : int currentPage, String readYN, HttpSession session
-	// 반환 값 : List<Map<String,Object>
+	// 반환 값 : Map<String,Object>
 	// 사용 페이지 : /msg/receivedMsgBox
 	@PostMapping("/msg/receivedMsgBox")
 	@ResponseBody
-	public List<Map<String,Object>> receivedMsgBox(@RequestParam(name="currentPage", defaultValue = "1")int currentPage,
+	public Map<String,Object> receivedMsgBox(@RequestParam(name="currentPage", defaultValue = "1")int currentPage,
 				@RequestParam(name="readYN",defaultValue = "all") String readYN,
 				HttpSession session) {
 		log.debug(TeamColor.YELLOW + "currentPage" + currentPage);
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
-		
 		log.debug(TeamColor.YELLOW + "empNo" + empNo);
+		int lastPage = msgService.getLastPageReceivedBox(empNo, readYN);
+		Map<String, Object> map = new HashMap<>();
+		map.put("msgList", msgService.getReceivedMsgList(currentPage, empNo,readYN));
+		map.put("currentPage", currentPage); 
+		map.put("lastPage", lastPage); 
 		//받은 쪽지 리스트 출력 
 		
-		return msgService.getReceivedMsgList(currentPage, empNo,readYN);
+		return map;
 	}
 	
 	// 보낸 쪽지함
@@ -106,19 +110,23 @@ public class MsgController {
 	
 	// 보낸 쪽지함 
 	// 파라미터 : int currentPage,String readYN, HttpSession session
-	// 반환 값 : List<Map<String,Object>>
+	// 반환 값 : Map<String,Object>
 	// 사용 페이지 : /msg/sentMsgBox
 	@PostMapping("/msg/sentMsgBox")
 	@ResponseBody
-	public List<Map<String,Object>> sentMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
+	public Map<String,Object> sentMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
 				@RequestParam(name="readYN",defaultValue = "all") String readYN,
 				HttpSession session) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
-		
 		log.debug(TeamColor.YELLOW + "empNo" + empNo);
+		int lastPage = msgService.getLastPageSentBox(empNo, readYN);
+		Map<String, Object> map = new HashMap<>();
+		map.put("msgList", msgService.getSentMsgList(currentPage, empNo, readYN));
+		map.put("currentPage", currentPage); 
+		map.put("lastPage", lastPage); 
 		
-		return msgService.getSentMsgList(currentPage, empNo, readYN);
+		return map;
 	}
 	// 휴지통 이동 >> 보낸 편지함
 	// 파라미터 : int [] msgNos
@@ -159,12 +167,18 @@ public class MsgController {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
 		String empName = emp.getEmpName();
+		
 		log.debug(TeamColor.YELLOW + "empName =>" +empName);
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
-		List<Map<String,Object>> list =  msgService.getTrashList(empNo);
+		
+		List<Map<String,Object>> list =  msgService.getTrashList(currentPage, empNo);
 		log.debug(TeamColor.YELLOW + "list => " + list.toString());
+		
+		int lastPage = msgService.getLastPageTrashBox(empNo);
+		
 		model.addAttribute("list", list);
 		model.addAttribute("empName", empName);
+		model.addAttribute("lastPage", lastPage);
 		
 		return "/msg/trashMsgBox";
 		

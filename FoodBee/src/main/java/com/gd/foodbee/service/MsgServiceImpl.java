@@ -42,7 +42,7 @@ public class MsgServiceImpl implements MsgService{
 	@Autowired
 	private MsgRecipientMapper msgRecipientMapper;
 	
-	
+	private static final int ROW_PER_PAGE = 2;
 	
 	
 	// 새 쪽지 작성
@@ -124,14 +124,14 @@ public class MsgServiceImpl implements MsgService{
 	// 받은 쪽지함 
 	// 파라미터 : int currentPage, int empNo, String readYN 
 	// 반환 값 : List<Map<String,Object>>
-	// 사용 클래스  : MsgController.receivedMsg
+	// 사용 클래스  : MsgController.receivedMsgBox
 	@Override
 	public List<Map<String, Object>> getReceivedMsgList(int currentPage, int empNo,String readYN) {
-		int rowPerPage = 15;
-        int beginRow = (currentPage -1) * rowPerPage;
-        log.debug(TeamColor.YELLOW + "empNo" + empNo);
+		log.debug(TeamColor.YELLOW + "empNo" + empNo);
+        int beginRow = (currentPage -1) * ROW_PER_PAGE;
+        
 		
-		return msgMapper.selectReceivedMsgList(empNo, beginRow, rowPerPage,readYN);
+		return msgMapper.selectReceivedMsgList(empNo, beginRow, ROW_PER_PAGE,readYN);
 	}
 	// 보낸 쪽지함
 	// 파라미터 : int currentPage, int empNo, String readYN 
@@ -139,11 +139,11 @@ public class MsgServiceImpl implements MsgService{
 	// 사용 클래스 : MsgConrtoller.sentMsgBox
 	@Override
 	public List<Map<String, Object>> getSentMsgList(int currentPage, int empNo, String readYN) {
-		int rowPerPage = 15;
-		int beginRow = (currentPage - 1) * rowPerPage;
 		log.debug(TeamColor.YELLOW + "empNo" + empNo);
+		int beginRow = (currentPage - 1) * ROW_PER_PAGE;
 		
-		return msgMapper.selectSentMsgList(empNo, beginRow, rowPerPage, readYN);
+		
+		return msgMapper.selectSentMsgList(empNo, beginRow, ROW_PER_PAGE, readYN);
 	}
 	// 쪽지 휴지통 이동
 	// 파라미터 : int msgNo
@@ -182,10 +182,11 @@ public class MsgServiceImpl implements MsgService{
 	// 반환 값: List<Map<STring,Object>>
 	// 사용 클래스 : MsgController.trashMsgBox
 	@Override
-	public List<Map<String, Object>> getTrashList(int empNo) {
+	public List<Map<String, Object>> getTrashList(int currentPage,int empNo) {
 		log.debug(TeamColor.YELLOW + "empNo =>" +empNo);
+		int beginRow = (currentPage -1) * ROW_PER_PAGE;
 		
-		return msgMapper.selectTrashMsgList(empNo);
+		return msgMapper.selectTrashMsgList(empNo, beginRow, ROW_PER_PAGE);
 	}
 		
 	
@@ -286,5 +287,57 @@ public class MsgServiceImpl implements MsgService{
 			throw new RuntimeException();
 		}
 		
+	}
+	// 마지막 페이지 구하기 받은 쪽지함
+	// 파라미터 :int empNo, String readYN
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.receivedMsgBox
+	@Override
+	public int getLastPageReceivedBox(int empNo, String readYN) {
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		log.debug(TeamColor.YELLOW + "readYN =>" + readYN);
+		
+		int lastPage = 0;
+		int msgCount = msgMapper.selectMsgCntReceivedBox(readYN, empNo);
+		if(msgCount % ROW_PER_PAGE == 0) {
+			lastPage = msgCount / ROW_PER_PAGE;
+		} else {
+			lastPage = msgCount / ROW_PER_PAGE + 1;
+		}
+		
+		return lastPage;
+	}
+	// 마지막 페이지 구하기 보낸 쪽지함
+	// 파라미터 : int currentPage, int empNo, String readYN
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.sentMsgBox
+	@Override
+	public int getLastPageSentBox(int empNo, String readYN) {
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		log.debug(TeamColor.YELLOW + "readYN =>" + readYN);
+		int lastPage = 0 ;
+		int msgCount = msgMapper.selectMsgCntSentBox(readYN, empNo);
+		if(msgCount % ROW_PER_PAGE == 0) {
+			lastPage = msgCount / ROW_PER_PAGE;
+		} else {
+			lastPage = msgCount / ROW_PER_PAGE + 1;
+		}
+		return lastPage;
+	}
+	// 마지막 페이지 구하기 휴지통
+	// 파라미터 : int empNo
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.trashMsgBox
+	@Override
+	public int getLastPageTrashBox(int empNo) {
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		int lastPage = 0;
+		int msgCount = msgMapper.selectMsgcntTrashBox(empNo);
+		if(msgCount % ROW_PER_PAGE == 0) {
+			lastPage = msgCount / ROW_PER_PAGE;
+		} else {
+			lastPage = msgCount / ROW_PER_PAGE + 1;
+		}
+		return lastPage;
 	}
 }

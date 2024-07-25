@@ -23,11 +23,6 @@ public interface MsgMapper {
 	// 사용 클래스 : MsgService.getReceivedMsgList
 	List<Map<String,Object>> selectReceivedMsgList(int empNo,int beginRow,int rowPerPage,String readYN);
 	
-	// 받은쪽지함 전체 갯수
-	// 파라미터 : X
-	// 반환 값 : int
-	// 사용 클래스 : MsgService.getReceivedMsgList
-	int selectCntReceivedMsg();
 	
 	// 받은쪽지함에서 휴지통으로 이동
 	// 파라미터 : int msgNo
@@ -42,10 +37,10 @@ public interface MsgMapper {
 	List<Map<String,Object>> selectSentMsgList(int empNo,int beginRow, int rowPerPage,String readYN);
 	
 	// 휴지통
-	// 파라미터 : int empNo
+	// 파라미터 : int empNo, int beginRow, int rowPerPage
 	// 반환 값 : List<Map<String,Object>>
 	// 사용 클래스 : MsgService.getTrashList
-	List<Map<String,Object>> selectTrashMsgList(int empNo);
+	List<Map<String,Object>> selectTrashMsgList(int empNo, int beginRow, int rowPerPage);
 	
 	// 쪽지 상세보기
 	// 파라미터 : int msgNo
@@ -70,5 +65,23 @@ public interface MsgMapper {
 	// 반환 값 : int
 	// 사용 클래스 : ScheduleService.deleteMsgAuto
 	int updateMsgDeleteAuto();
+	
+	// 받은 쪽지함 총 쪽지수 구하기
+	// 파라미터 : String readYN,int empNo
+	// 반환 값 : int
+	// 사용 클래스 : MsgService.getLastPageReceivedBox
+	int selectMsgCntReceivedBox(String readYN,int empNo);
+	
+	// 보낸 쪽지함 총 쪽지수 구하기
+	// 파라미터 : String readYN,int empNo
+	// 반환 값 : int
+	// 사용 클래스 : MsgService.getLastPageSentBox
+	int selectMsgCntSentBox(String readYN,int empNo);
+	
+	// 휴지통 총 쪽지수 구하기
+	// 파라미터 : int empNo
+	// 반환 값 : int
+	// 사용 클래스 : getLastPageTrashBox
+	int selectMsgcntTrashBox(int empNo);
 	
 }

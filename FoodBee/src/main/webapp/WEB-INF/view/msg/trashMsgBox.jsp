@@ -35,7 +35,16 @@
 		</c:forEach>
 		</tbody>
 	</table>
+	<div id="page">
+        <button type="button" id="first">First</button>
+        <button type="button" id="pre">◁</button>
+        <button type="button" id="next">▶</button>
+        <button type="button" id="last">Last</button>
+	</div>
 <script>
+	let currentPage = 1;
+	let lastPage = '${lastPage}';
+	
 	$(document).ready(function(){
 		//세션에 empName 이랑 senderNamevalue가 똑같으면 내가 보낸 사람 => 즉 updateToMsgBox 실행 
 		//그렇지 않다면 updateToMsgBoxRecipient 실행 
@@ -76,6 +85,49 @@
 	        }
 			
 		})
+		// --- 페이징 ---
+		// 페이징 버튼 활성화
+        function updateBtnState() {
+            console.log("update");
+            $('#pre').prop('disabled', currentPage === 1);
+            $('#next').prop('disabled', currentPage === lastPage);
+            $('#first').prop('disabled', currentPage === 1);
+            $('#last').prop('disabled', currentPage === lastPage);
+        }
+		// 이전 
+        $('#pre').click(function() {
+            if (currentPage > 1) {
+                currentPage -= 1;
+                updateBtnState()
+            }
+        });
+		// 다음 
+        $('#next').click(function() {
+            if (currentPage < lastPage) {
+                currentPage += 1;
+                updateBtnState()
+                
+            }
+        });
+		// 첫페이지 이동 
+        $('#first').click(function() {
+            if (currentPage > 1) {
+                currentPage = 1;
+                updateBtnState()
+                
+            }
+        });
+		// 마지막 페이지 
+        $('#last').click(function() {
+            if (currentPage < lastPage) {
+                currentPage = lastPage;
+                updateBtnState()
+               
+            }
+        });
+		
+		
+		
 		
 		
 		//쪽지 삭제

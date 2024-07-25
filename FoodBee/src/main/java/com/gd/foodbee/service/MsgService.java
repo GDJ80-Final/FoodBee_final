@@ -27,7 +27,7 @@ public interface MsgService {
 	void toTrashRecipient(int[] msgNos,int empNo);
 	
 	//휴지통 리스트
-	List<Map<String,Object>> getTrashList(int empNo);
+	List<Map<String,Object>> getTrashList(int currentPage,int empNo);
 	
 	//휴지통 -> 쪽지함 이동 
 	void updatetoMsgBox(int [] msgNos,int empNo,String [] results);
@@ -41,4 +41,12 @@ public interface MsgService {
 	//쪽지 읽음 여부 업데이트
 	void updateReadState(int msgNo,int empNo);
 	
+	//쪽지 수 구하기 받은 편지함
+	int getLastPageReceivedBox(int empNo,String readYN);
+	
+	//쪽지 수 구하기 보낸 편지함
+	int getLastPageSentBox(int empNo,String readYN);
+	
+	//쪽지 수 구하기 휴지통
+	int getLastPageTrashBox(int empNo);
 }

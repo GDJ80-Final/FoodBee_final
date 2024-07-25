@@ -36,102 +36,130 @@
         <button type="button" id="next">▶</button>
         <button type="button" id="last">Last</button>
 	</div>
-</div>
+	</div>
 <script>
-	let currentPage = 1;
-	let lastPage = 1;
-	//탭 분리 
-   $(document).ready(function(){
-	   //읽음/안읽음 여부에 따라 받은 쪽지함 분기
-	   function loadMsg(readYN){
-		   $.ajax({
-			   url : '${pageContext.request.contextPath}/msg/receivedMsgBox',
-			   method: 'post',
-			   data :{
-				   readYN : readYN
-		   			},
-		   	   success:function(json){
-				   console.log(json)
-				   $('#msgTableBody').empty();
-				   json.forEach(function(item){
-					   console.log(item)
-					   $('#msgTableBody').append('<tr>' +
-								'<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
-								'<td>'+ item.msgOrder + '</td>'+
-								'<td>'+ item.empName + '</td>'+
-								'<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
-										item.msgNo +'">'+ item.title + '</a></td>'+
-								'<td>'+ item.createDatetime + '</td>'+
-								'<td id="readYN">'+ item.readYN + '</td>'+
-								'</tr>' 
-					   );
-				   });
-				   //로드된 데이터에 대해 볼드체 강조
-				   $('.readYN').each(function() {
-					   if ($(this).text() === '안읽음') {
-						   $(this).css('font-weight', 'bold');
-					   }
-				   });
-		   }
-	   });
-	   };
-		// 버튼 활성화
-		function updateBtnState() {
-			console.log("update");
-	        $('#pre').prop('disabled', currentPage === 1);
-	        $('#next').prop('disabled', currentPage === lastPage);
-	        $('#first').prop('disabled', currentPage === 1);
-	        $('#last').prop('disabled', currentPage === lastPage);
-	    }
-	  
-	   
-	   $('#all').click(function(){
-		   loadMsg("all");
-		   //전체목록
-	   });
-	   
-	   $('#Y').click(function(){
-		   loadMsg("Y");
-		   //읽은 쪽지 
-	   });
-	   
-	   $('#N').click(function(){
-		   loadMsg("N");
-		   //안읽은 쪽지
-	   });
-	   
-		// 페이지 첫 로드 시 전체 목록 불러오기
-       loadMsg("all"); 
-		
-     	//휴지통 이동
-	   $('#toTrash').click(function(){
-		   let selectedMsgNos = [];
-		  //name이  msgNo+체크된 값만 가져오기 => 배열에 하나씩 넣기 
-		  $('[name="msgNo"]:checked').each(function() {
-			  selectedMsgNos.push($(this).val());
-        	});
-		  console.log(selectedMsgNos[0]);
-		   if(selectedMsgNos.length > 0){
-			   $.ajax({
-				   url: '${pageContext.request.contextPath}/msg/toTrashRecipient',
-				   method: 'post',
-				   traditional:true, 
-				   data:{
-					   msgNos:selectedMsgNos
-				   },
-				   success:function(){
-					   alert('쪽지가 휴지통으로 이동하였습니다.')
-					   loadMsg("all"); // 이동 후 전체 목록 새로고침
-				   }
-		   })
-		   }else {
-			   alert('휴지통으로 이동할 쪽지를 선택해주세요.');
-		   }
-		   
-	   });
-     	
-	   
-   })
+    let currentPage = 1;
+    let lastPage = 1;
+
+    $(document).ready(function(){
+        let readYN = 'all';
+
+        function loadMsg(readYN, page){
+            $.ajax({
+                url : '${pageContext.request.contextPath}/msg/receivedMsgBox',
+                method: 'post',
+                data : {
+                    readYN : readYN,
+                    currentPage : page
+                },
+                success:function(json){
+                    console.log(json);
+
+                    lastPage = json.lastPage;
+                    console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
+
+                    $('#msgTableBody').empty();
+                    json.msgList.forEach(function(item){
+                        console.log(item);
+                        $('#msgTableBody').append('<tr>' +
+                            '<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
+                            '<td>'+ item.msgOrder + '</td>'+
+                            '<td>'+ item.empName + '</td>'+
+                            '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+                                    item.msgNo +'">'+ item.title + '</a></td>'+
+                            '<td>'+ item.createDatetime + '</td>'+
+                            '<td id="readYN">'+ item.readYN + '</td>'+
+                            '</tr>'
+                        );
+                    });
+
+                    updateBtnState();
+                }
+            });
+        }
+		//페이징 버튼 활성화
+        function updateBtnState() {
+            console.log("update");
+            $('#pre').prop('disabled', currentPage === 1);
+            $('#next').prop('disabled', currentPage === lastPage);
+            $('#first').prop('disabled', currentPage === 1);
+            $('#last').prop('disabled', currentPage === lastPage);
+        }
+		//이전 
+        $('#pre').click(function() {
+            if (currentPage > 1) {
+                currentPage -= 1;
+                loadMsg(readYN, currentPage);
+            }
+        });
+		//다음 
+        $('#next').click(function() {
+            if (currentPage < lastPage) {
+                currentPage += 1;
+                loadMsg(readYN, currentPage);
+            }
+        });
+		//첫페이지 이동 
+        $('#first').click(function() {
+            if (currentPage > 1) {
+                currentPage = 1;
+                loadMsg(readYN, currentPage);
+            }
+        });
+		//마지막 페이지 
+        $('#last').click(function() {
+            if (currentPage < lastPage) {
+                currentPage = lastPage;
+                loadMsg(readYN, currentPage);
+            }
+        });
+		//카데고리 분기
+        $('#all').click(function(){
+            readYN = 'all';
+            currentPage = 1;
+            loadMsg(readYN, currentPage); // 전체목록
+        });
+
+        $('#Y').click(function(){
+            readYN = 'Y';
+            currentPage = 1;
+            loadMsg(readYN, currentPage); // 읽은 쪽지
+        });
+
+        $('#N').click(function(){
+            readYN = 'N';
+            currentPage = 1;
+            loadMsg(readYN, currentPage); // 안읽은 쪽지
+        });
+
+        // 페이지 첫 로드 시 전체 목록 불러오기
+        loadMsg(readYN, currentPage);
+
+        //휴지통 이동
+        $('#toTrash').click(function(){
+            let selectedMsgNos = [];
+            $('[name="msgNo"]:checked').each(function() {
+                selectedMsgNos.push($(this).val());
+            });
+            console.log(selectedMsgNos[0]);
+            if (selectedMsgNos.length > 0) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/msg/toTrashRecipient',
+                    method: 'post',
+                    traditional: true,
+                    data: {
+                        msgNos: selectedMsgNos
+                    },
+                    success: function(){
+                        alert('쪽지가 휴지통으로 이동하였습니다.');
+                        loadMsg(readYN, currentPage); // 이동 후 현재 목록 새로고침
+                    }
+                });
+            } else {
+                alert('휴지통으로 이동할 쪽지를 선택해주세요.');
+            }
+        });
+    });
 </script>
 </body>
 </html>

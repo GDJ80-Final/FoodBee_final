@@ -51,14 +51,6 @@
 			#{beginRow},
 			#{rowPerPage}
 	</select>
-	<select id="selectCntReceivedMsg" resultType="int">
-		SELECT 
-			COUNT(*) cnt
-		FROM
-			msg
-		WHERE
-			msg_state = 1
-	</select>
 	<update id="updateMsgToTrash" parameterType="int">
 		UPDATE
 			msg
@@ -97,9 +89,7 @@
 		</if>
 		GROUP BY m.msg_no
 		ORDER BY msgOrder DESC
-		LIMIT
-			#{beginRow},
-			#{rowPerPage}
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<select id="selectMsgOne" parameterType="int" resultType="Map">
 		SELECT
@@ -139,7 +129,7 @@
 		WHERE
 			msg_no = #{msgNo}
 	</update>
-	<select id="selectTrashMsgList"  parameterType="int" resultType="Map">
+	<select id="selectTrashMsgList"  parameterType="Map" resultType="Map">
 		SELECT 
 			ROW_NUMBER() OVER(ORDER BY updateDatetime) msgOrder,
 			msgNo,
@@ -189,6 +179,7 @@
 			    m.msg_no)s
 		 GROUP BY msgNo
 		 ORDER BY msgOrder DESC
+		 LIMIT #{beginRow},#{rowPerPage}
 
 	</select>
 	<update id="updateMsgDelete" parameterType="int">
@@ -212,4 +203,88 @@
 			CURDATE() >= DATE_FORMAT(state_update_datetime,'%Y-%m-%d') + INTERVAL 15 DAY
 			AND msg_state = 0
 	</update>
+	<select id="selectMsgCntReceivedBox" parameterType="Map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			msg m
+		INNER JOIN
+			msg_recipient mr ON m.msg_no = mr.msg_no
+		INNER JOIN
+			emp e ON e.emp_no = m.sender_emp_no
+		WHERE
+			mr.recipient_emp_no = #{empNo}
+			AND mr.recipient_msg_state = 1
+		<if test='readYN == "Y"'>
+			AND mr.read_YN = 'Y'
+		</if>
+		<if test='readYN == "N"'>
+			AND mr.read_YN = 'N'
+		</if>
+
+	</select>
+	<select id="selectMsgCntSentBox" parameterType="Map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			msg m
+		INNER JOIN
+			msg_recipient mr ON m.msg_no = mr.msg_no
+		INNER JOIN
+			emp e ON e.emp_no = mr.recipient_emp_no
+		WHERE
+			m.sender_emp_no = #{empNo}
+			AND m.msg_state = 1
+		<if test='readYN == "Y"'>
+			AND mr.read_YN = 'Y'
+		</if>
+		<if test='readYN == "N"'>
+			AND mr.read_YN = 'N'
+		</if>
+	
+	</select>
+	<select id="selectMsgcntTrashBox" parameterType="int" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM
+			(SELECT
+			    m.msg_no msgNo,
+			    sender.emp_name senderName,
+			    GROUP_CONCAT(recipient.emp_name SEPARATOR ',') receiverName,
+			    m.title,
+			    DATE_FORMAT(m.state_update_datetime, '%Y-%m-%d %H:%i') updateDatetime
+			 FROM
+				msg m
+			 INNER JOIN
+    			emp sender ON m.sender_emp_no = sender.emp_no
+			 INNER JOIN
+    			msg_recipient mr ON m.msg_no = mr.msg_no
+			 INNER JOIN
+   				emp recipient ON mr.recipient_emp_no = recipient.emp_no
+			 WHERE
+    			m.sender_emp_no = #{empNo}
+    			    			AND m.msg_state = 0
+			 GROUP BY
+   				m.msg_no
+		UNION
+			SELECT
+			    m.msg_no msgNo,
+			    sender.emp_name senderName,
+			    e.emp_name receiverName,
+			    m.title,
+			    DATE_FORMAT(mr.state_update_datetime, '%Y-%m-%d %H:%i') updateDatetime
+			FROM
+			    msg m
+			INNER JOIN
+			    emp sender ON m.sender_emp_no = sender.emp_no
+			INNER JOIN
+			    msg_recipient mr ON m.msg_no = mr.msg_no
+			INNER JOIN
+			    emp e ON mr.recipient_emp_no = e.emp_no
+			WHERE
+			    mr.recipient_emp_no = #{empNo}
+			    AND mr.recipient_msg_state = 0
+			GROUP BY
+			    m.msg_no) s
+	</select>
 </mapper>
