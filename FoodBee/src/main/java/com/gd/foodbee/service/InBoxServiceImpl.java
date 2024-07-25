@@ -35,6 +35,20 @@ public class InBoxServiceImpl implements InBoxService {
 		return inBoxMapper.getReferrerList(m);
 	}
 	
+	//수신참조된 전체리스트의 총갯수
+	@Override
+	public int countAllReferrerList(int empNo) {
+		InBoxStateDTO stateBox = inBoxMapper.getStateBox(empNo);
+		return stateBox.totalCount();
+	}
+	
+	//수신참조된 리스트 LastPage
+	@Override
+	public int allReferrerLastPage(int empNo) {
+		int totalCount = countAllReferrerList(empNo);
+		return (int) Math.ceil((double) totalCount / rowPerPage);
+	}
+	
 	//결재상태 건수(결재대기, 승인중, 승인완료, 반려)
 	@Override
 	public InBoxStateDTO getStateBox(int empNo) {
