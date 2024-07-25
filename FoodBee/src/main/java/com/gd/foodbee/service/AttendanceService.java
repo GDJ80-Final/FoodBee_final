@@ -25,4 +25,15 @@ public interface AttendanceService {
 	// 근태 확정
 	int modifyAttendanceFinalTime(String date, int empNo);
 		
+	// 팀원 근태 출력
+	List<HashMap<String, Object>> getAttendanceTeamMember(int empNo, String dptNo, int currentPage, String search);
+	
+	// 팀원 근태 출력 승인 상태별 분기
+	List<HashMap<String, Object>> getAttendanceTeamMemberByStatus(int empNo, String dptNo, int currentPage, String search, String approvalState);
+	
+	// 팀원 근태 cnt
+	int getAttendanceTeamMemberCnt(int empNo, String dptNo);
+
+	// 팀원 근태 승인 상태별  cnt
+	int getAttendanceTeamMemberByStatusCnt(int empNo, String dptNo, String approvalState);
 }

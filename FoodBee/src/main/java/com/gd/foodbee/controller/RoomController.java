@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.RoomDTO;
 import com.gd.foodbee.dto.RoomRsvDTO;
+import com.gd.foodbee.mapper.RoomMapper;
 import com.gd.foodbee.service.RoomService;
 import com.gd.foodbee.util.TeamColor;
 
@@ -28,6 +29,9 @@ public class RoomController {
 	
 	@Autowired 
 	private RoomService roomService;
+	
+	@Autowired
+	private RoomMapper roomMapper;
 
 	// 회의실 목록
 	// 파라미터 : X
@@ -45,7 +49,7 @@ public class RoomController {
 	
 	// 회의실 상세보기 및 예약폼
 	// 파라미터 : int roomNo, String rsvDate
-	// 반환 값 : RoomDTO, int roomNo, String rsvDate
+	// 반환 값 : RoomDTO roomDTO, int roomNo, String rsvDate, List<RoomDTO> roomImg
 	// 사용 페이지 : /room/roomOne
 	@GetMapping("/room/roomOne")
 	public String roomOne(Model model, @RequestParam(name= "roomNo") int roomNo, 
@@ -57,7 +61,11 @@ public class RoomController {
 		RoomDTO roomDTO = roomService.getRoomOne(roomNo);
 		log.debug(TeamColor.GREEN + "roomDTO => " + roomDTO.toString());
 		
+		List<RoomDTO> roomImg = roomMapper.selectRoomOneImg(roomNo);
+		log.debug(TeamColor.GREEN + "roomImg => " + roomImg.toString());
+		
 		model.addAttribute("roomDTO",roomDTO);
+		model.addAttribute("roomImg",roomImg);
 		model.addAttribute("roomNo",roomNo);
 		model.addAttribute("rsvDate",rsvDate);
 		return "/room/roomOne";

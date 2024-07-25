@@ -68,10 +68,12 @@
 			<td style="width:300px; height:50px;">회의실 명</td>
 			<td>${roomDTO.roomName}</td>
 		</tr>
-		<tr>
-			<td style="width:25%; height:50px;">이미지</td>
-			<td><img src="${pageContext.request.contextPath}/upload/profile_img/20240716004716.jpeg" width="100px"></td>
-		</tr>
+		<c:forEach var="m" items="${roomImg}">
+			<tr>
+				<td style="width:25%; height:50px;">이미지</td>
+				<td><img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="400px"></td>
+			</tr>
+		</c:forEach>
 		<tr>
 			<td style="width:25%; height:50px;">위치</td>
 			<td>${roomDTO.roomPlace}</td>

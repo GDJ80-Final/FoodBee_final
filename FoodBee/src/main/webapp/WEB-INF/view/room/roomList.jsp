@@ -31,9 +31,7 @@
 				</form>	
 			</td>
 			<td style="height:200px;">
-			<img src="${pageContext.request.contextPath}/profileImg?name=20240716004716.jpeg" width="100px">
-				<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
-				 </a>
+				<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="300px">				
 			</td>
 			<td style="height:200px;">${m.roomPlace}</td>
 			<td style="height:200px;">최대 ${m.roomMAX}명</td>

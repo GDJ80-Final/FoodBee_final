@@ -2,6 +2,7 @@ package com.gd.foodbee.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.AttendanceDTO;
 import com.gd.foodbee.dto.EmpDTO;
@@ -144,6 +146,64 @@ public class AttendanceController {
 		log.debug(TeamColor.GREEN + "row => " + row);
 		
 		return "redirect:/attendance/attendancePersonal";
+	}
+	
+	// 팀원 근태 출력
+	// 파라미터 : HttpSession session, int currentPage
+	// 반환 값 : List<HashMap<String, Object>> list, int currentPage, int lastPage
+	// 사용 페이지 : /attendance/attendanceTeamMember
+	@GetMapping("/attendance/attendanceTeamMember")
+	public String attendanceTeamMember(Model model, HttpSession session,
+			@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		String dptNo = emp.getDptNo();
+		
+		model.addAttribute("empNo", empNo);
+		model.addAttribute("dptNo", dptNo);
+		return "/attendance/attendanceTeamMember";
+	}
+	
+	@GetMapping("/attendance/getAttendanceTeamMemberAll")
+	@ResponseBody
+	public Map<String, Object> getAttendanceTeamMemberAll(int empNo, String dptNo, int currentPage, String search) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		log.debug(TeamColor.GREEN + "search => " + search);
+	    
+	    List<HashMap<String, Object>> allList = attendanceService.getAttendanceTeamMember(empNo, dptNo, currentPage, search);
+	    int allLastPage = attendanceService.getAttendanceTeamMemberCnt(empNo, dptNo);
+	
+	    Map<String, Object> allAttendanceList = new HashMap<>();
+	    allAttendanceList.put("allList", allList);
+	    allAttendanceList.put("currentPage", currentPage);
+	    allAttendanceList.put("allLastPage", allLastPage);
+	    
+	    return allAttendanceList;
+	}
+	
+	@GetMapping("/attendance/getAttendanceTeamMemberByStatus")
+	@ResponseBody
+	public Map<String, Object> getAttendanceTeamMemberByStatus(int empNo, String dptNo, int currentPage, 
+																String search, String approvalState) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		log.debug(TeamColor.GREEN + "search => " + search);
+		log.debug(TeamColor.GREEN + "approvalState => " + approvalState);
+	    
+	    List<HashMap<String, Object>> list = attendanceService.getAttendanceTeamMemberByStatus(empNo, dptNo, currentPage, search, approvalState);
+	    int lastPage = attendanceService.getAttendanceTeamMemberByStatusCnt(empNo, dptNo, approvalState);
+	
+	    Map<String, Object> attendanceList = new HashMap<>();
+	    attendanceList.put("list", list);
+	    attendanceList.put("currentPage", currentPage);
+	    attendanceList.put("allLastPage", lastPage);
+	    
+	    return attendanceList;
 	}
 	
 }

@@ -9,7 +9,7 @@
 			info.room_place roomPlace, 
 			info.room_no roomNo, 
 			info.room_max roomMAX, 
-			img.original_file, 
+			img.original_file originalFile, 
 			img.save_file
 		FROM 
 			room_info info 
@@ -22,18 +22,24 @@
 	<!-- 회의실 상세보기 및 예약폼 -->
 	<select id="selectRoomOne" resultType="com.gd.foodbee.dto.RoomDTO" parameterType="int">
 		SELECT 
-		    info.room_name roomName, 
-		    info.info info, 
-		    info.room_place roomPlace, 
-		    info.room_max roomMax, 
-		    GROUP_CONCAT(img.original_file SEPARATOR ', ') originalFiles, 
-		    GROUP_CONCAT(img.save_file SEPARATOR ', ') saveFiles
+		    room_name roomName, 
+		    info info, 
+		    room_place roomPlace, 
+		    room_max roomMax
 		FROM 
 		    room_info info 
-		INNER JOIN 
-			room_img img ON	info.room_no = img.room_no
 		WHERE 
-		    info.room_no = #{roomNo}
+		    room_no = #{roomNo}
+	</select>
+	
+	<!-- 회의실 상세보기 이미지 -->
+	<select id="selectRoomOneImg" resultType="com.gd.foodbee.dto.RoomDTO" parameterType="int">
+		SELECT 
+			original_file originalFile
+		FROM  
+			room_img
+		WHERE 
+		    room_no = #{roomNo}
 	</select>
 	
 	<!-- 회의실 예약 -->

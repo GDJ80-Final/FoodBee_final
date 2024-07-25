@@ -36,7 +36,7 @@ public interface AttendanceMapper {
 	
 	// 개인 근태 cnt
 	// 파라미터 : int empNo
-	// 반환값 : X
+	// 반환값 : int
 	// 사용클래스 : AttendanceServiceImpl.getAttendancePersonalCnt
 	int selectAttendancePersonalCnt(int empNo);
 	
@@ -45,4 +45,25 @@ public interface AttendanceMapper {
 	// 반환값 : X
 	// 사용클래스 : AttendanceServiceImpl.modifyAttendanceFinalTime
 	int updateAttendanceFinalTime(HashMap<String,Object> m);
+	
+	// 팀원 근태 출력
+	// 파라미터 : HashMap<String,Object> m
+	// 반환값 : List<HashMap<String, Object>>
+	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMember
+	List<HashMap<String, Object>> selectAttendanceTeamMember(HashMap<String, Object> m);
+	
+	// 팀원 근태 출력 승인 상태별 분기
+	// 파라미터 : HashMap<String,Object> m
+	// 반환값 : List<HashMap<String, Object>>
+	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMember
+	List<HashMap<String, Object>> selectAttendanceTeamMemberByStatus(HashMap<String, Object> m);
+	
+	// 팀원 근태 cnt
+	// 파라미터 : HashMap<String, Object> m
+	// 반환값 : int
+	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMemberCnt
+	int selectAttendanceTeamMemberCnt(HashMap<String, Object> m);
+
+	// 팀원 근태 승인 상태별 cnt
+	int selectAttendanceTeamMemberByStatusCnt(HashMap<String, Object> m);
 }

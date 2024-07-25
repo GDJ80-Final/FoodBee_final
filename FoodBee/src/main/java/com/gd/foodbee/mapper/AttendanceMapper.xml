@@ -83,7 +83,8 @@
 		ORDER BY 
 			date DESC
 		<if test="startDate == null and endDate == null">
-        	LIMIT #{beginRow}, #{rowPerPage}
+        	LIMIT 
+        		#{beginRow}, #{rowPerPage}
     	</if>
 	</select>
 	
@@ -108,5 +109,133 @@
 			AND
 			emp_no = #{empNo}
 	</update>
+	
+	<!-- 팀원 근태 출력 -->
+	<select id="selectAttendanceTeamMember" resultType="map" parameterType="map">
+		SELECT 
+			a.emp_no empNo, 
+			e.emp_name empName, 
+			a.date date, 
+			DATE_FORMAT(a.start_time, '%H:%i') startTime, 		 
+			DATE_FORMAT(a.end_time, '%H:%i') endTime,
+			DATE_FORMAT(a.update_start_time, '%H:%i') updateStartTime,
+			DATE_FORMAT(a.update_end_time, '%H:%i') updateEndTime,
+			CASE
+		        WHEN 
+		        	a.approval_state = 0 THEN '미승인'
+		        WHEN 
+		        	a.approval_state = 1 THEN '승인'
+		        ELSE '알 수 없음'
+		    END approvalState,
+			CASE 
+	            WHEN 
+	            	a.start_time = a.update_start_time 
+	            	AND 
+	            	a.end_time = a.update_end_time 
+	            THEN 'x'
+	            ELSE '사유 확인'
+        	END updateStatus,
+			a.update_reason updateReason, 
+			a.final_time finalTime
+		FROM 
+			attendance a 
+			INNER JOIN 
+				emp e
+				ON a.emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+			AND
+			a.emp_no != #{empNo}
+		    <if test="search != null and search != ''">
+		        AND (
+		            e.emp_name LIKE '%${search}%'
+		        )
+		    </if>
+		ORDER BY 
+			date DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>	
+	
+	<!-- 팀원 근태 출력 승인 상태별 분기 -->
+	<select id="selectAttendanceTeamMemberByStatus" resultType="map" parameterType="map">
+		SELECT 
+			a.emp_no empNo, 
+			e.emp_name empName, 
+			a.date date, 
+			DATE_FORMAT(a.start_time, '%H:%i') startTime, 		 
+			DATE_FORMAT(a.end_time, '%H:%i') endTime,
+			DATE_FORMAT(a.update_start_time, '%H:%i') updateStartTime,
+			DATE_FORMAT(a.update_end_time, '%H:%i') updateEndTime,
+			CASE
+		        WHEN 
+		        	a.approval_state = 0 THEN '미승인'
+		        WHEN 
+		        	a.approval_state = 1 THEN '승인'
+		        ELSE '알 수 없음'
+		    END approvalState,
+			CASE 
+	            WHEN 
+	            	a.start_time = a.update_start_time 
+	            	AND 
+	            	a.end_time = a.update_end_time 
+	            THEN 'x'
+	            ELSE '사유 확인'
+        	END updateStatus,
+			a.update_reason updateReason, 
+			a.final_time finalTime
+		FROM 
+			attendance a 
+			INNER JOIN 
+				emp e
+				ON a.emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+			AND
+			a.emp_no != #{empNo}
+			AND 
+			a.approval_state = #{approvalState}
+		    <if test="search != null and search != ''">
+		        AND (
+		            e.emp_name LIKE '%${search}%'
+		        )
+		    </if>
+		ORDER BY 
+			date DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 팀원 근태 cnt -->
+	<select id="selectAttendanceTeamMemberCnt" resultType="int" parameterType="map">
+		SELECT 
+			COUNT(*)
+		FROM 
+			attendance a			 
+			INNER JOIN 
+				emp e
+				ON a.emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+			AND
+			a.emp_no != #{empNo}
+	</select>
+	
+	<!-- 팀원 근태 승인 상태별 cnt -->
+	<select id="selectAttendanceTeamMemberByStatusCnt" resultType="int" parameterType="map">
+		SELECT 
+			COUNT(*)
+		FROM 
+			attendance a			 
+			INNER JOIN 
+				emp e
+				ON a.emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+			AND
+			a.emp_no != #{empNo}
+			AND 
+			a.approval_state = #{approvalState}
+	</select>
 	
 </mapper>

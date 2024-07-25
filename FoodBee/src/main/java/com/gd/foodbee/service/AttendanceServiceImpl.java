@@ -111,4 +111,96 @@ public class AttendanceServiceImpl implements AttendanceService {
 		
 		return attendanceMapper.updateAttendanceFinalTime(m);
 	}
+	
+	// 팀원 근태 출력
+	// 파라미터 : int empNo, String dptNo
+	// 반환 값 : List<HashMap<String, Object>>
+	// 사용 클래스 : AttendanceController.
+	@Override
+	public List<HashMap<String, Object>> getAttendanceTeamMember(int empNo, String dptNo, int currentPage, String search) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		log.debug(TeamColor.GREEN + "search => " + search);
+		
+		int beginRow = 0;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+        
+		HashMap<String,Object> m = new HashMap<String,Object>();        
+        m.put("empNo", empNo);
+        m.put("dptNo", dptNo);
+        m.put("beginRow", beginRow);
+        m.put("rowPerPage", ROW_PER_PAGE);
+        m.put("search", search);
+		
+		return attendanceMapper.selectAttendanceTeamMember(m);
+	}
+	
+	// 팀원 근태 출력 승인 상태별 분기
+	// 파라미터 : int empNo, String dptNo
+	// 반환 값 : List<HashMap<String, Object>>
+	// 사용 클래스 : AttendanceController.
+	@Override
+	public List<HashMap<String, Object>> getAttendanceTeamMemberByStatus(int empNo, String dptNo, int currentPage, String search, String approvalState) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		log.debug(TeamColor.GREEN + "search => " + search);
+		log.debug(TeamColor.GREEN + "approvalState => " + approvalState);
+		
+		int beginRow = 0;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+        
+		HashMap<String,Object> m = new HashMap<String,Object>();        
+        m.put("empNo", empNo);
+        m.put("dptNo", dptNo);
+        m.put("beginRow", beginRow);
+        m.put("rowPerPage", ROW_PER_PAGE);
+        m.put("search", search);
+        m.put("approvalState", approvalState);
+		
+		return attendanceMapper.selectAttendanceTeamMemberByStatus(m);
+	}
+	
+	// 팀원 근태 cnt
+	// 파라미터 : int empNo
+	// 반환 값 : X
+	// 사용 클래스 : AttendanceController.attendanceTeamMember
+	public int getAttendanceTeamMemberCnt(int empNo, String dptNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
+		
+		HashMap<String,Object> m = new HashMap<String,Object>();        
+        m.put("empNo", empNo);
+        m.put("dptNo", dptNo);
+		
+		int cnt = attendanceMapper.selectAttendanceTeamMemberCnt(m);
+		log.debug(TeamColor.GREEN + "cnt => " + cnt);
+		
+		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		
+		return lastPage;
+	}
+	
+	// 팀원 근태 승인 상태별  cnt
+	// 파라미터 : int empNo
+	// 반환 값 : X
+	// 사용 클래스 : AttendanceController.attendanceTeamMember
+	public int getAttendanceTeamMemberByStatusCnt(int empNo, String dptNo, String approvalState) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
+		log.debug(TeamColor.GREEN + "approvalState => " + approvalState);
+		
+		HashMap<String,Object> m = new HashMap<String,Object>();        
+        m.put("empNo", empNo);
+        m.put("dptNo", dptNo);
+        m.put("approvalState", approvalState);
+		
+		int cnt = attendanceMapper.selectAttendanceTeamMemberByStatusCnt(m);
+		log.debug(TeamColor.GREEN + "cnt => " + cnt);
+		
+		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		
+		return lastPage;
+	}
 }

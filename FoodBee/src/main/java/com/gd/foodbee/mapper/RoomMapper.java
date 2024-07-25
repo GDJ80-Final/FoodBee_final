@@ -22,7 +22,13 @@ public interface RoomMapper {
 	// 파라미터 : int roomNo
 	// 반환값 : RoomDTO
 	// 사용클래스 : RoomServiceImpl.getRoomOne
-	RoomDTO selectRoomOne(int roomNo); 
+	RoomDTO selectRoomOne(int roomNo);
+	
+	// 회의실 상세보기 이미지
+	// 파라미터 : int roomNo
+	// 반환값 : RoomDTO
+	// 사용클래스 : RoomServiceImpl.getRoomOne
+	List<RoomDTO> selectRoomOneImg(int roomNo); 
 	
 	// 회의실 예약
 	// 파라미터 : RoomRsvDTO roomRsvDTO
