@@ -10,20 +10,20 @@
 <body>
 <h1>기안함</h1>
 <div>
-    <table border="1">
-        <tr>
-            <th>결재대기</th>
-            <th>승인중</th>
-            <th>승인완료</th>
-            <th>반려</th>
-        </tr>
-        <tr>
-            <td><c:out value="${stateBox.zeroState}"></c:out>건</td>
-            <td><c:out value="${stateBox.oneState}"></c:out>건</td>
-            <td><c:out value="${stateBox.twoState}"></c:out>건</td>
-            <td><c:out value="${stateBox.nineState}"></c:out>건</td>
-        </tr>
-    </table>
+	<table border="1">
+		<tr>
+			<th>결재대기</th>
+			<th>승인중</th>
+			<th>승인완료</th>
+			<th>반려</th>
+		</tr>
+		<tr>
+			<td><c:out value="${stateBox.zeroState == null ? 0 : stateBox.zeroState}"></c:out>건</td>
+			<td><c:out value="${stateBox.oneState == null ? 0 : stateBox.oneState}"></c:out>건</td>
+			<td><c:out value="${stateBox.twoState == null ? 0 : stateBox.twoState}"></c:out>건</td>
+			<td><c:out value="${stateBox.nineState == null ? 0 : stateBox.nineState}"></c:out>건</td>
+		</tr>
+	</table>
 </div>
 
 <button id="allBtn">전체</button>
@@ -100,7 +100,7 @@
                 success: function(json) {
                     updateAllDocList(json);
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("전체기안서를 가져올 수 없습니다.");
                 }
             });
@@ -117,7 +117,7 @@
                 success: function(json) {
                 	updateZeroTypeDocList(json)
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("결재대기상태의 기안서를 가져올 수 없습니다.");
                 }
             });
@@ -135,7 +135,7 @@
                 success: function(json) {
                 	updateOneTypeDocList(json)
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("승인중상태의 기안서를 가져올 수 없습니다.");
                 }
             });
@@ -152,7 +152,7 @@
                 success: function(json) {
                 	updateTwoTypeDocList(json)
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("승인완료상태의 기안서를 가져올 수 없습니다.");
                 }
             });
@@ -169,14 +169,30 @@
                 success: function(json) {
                 	updateNineTypeDocList(json)
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("반려상태의 기안서를 가져올 수 없습니다.");
                 }
             });
         }
      	 
-     	 
-     	 
+     	 //중간승인자&최종승인자의 승인상태값
+     	 function getApprovalStateText(stateNo) {
+             let stateText = '';
+             switch (parseInt(stateNo)) {
+                 case 1:
+                     stateText = '승인전';
+                     break;
+                 case 2:
+                     stateText = '승인완료';
+                     break;
+                 case 9:
+                     stateText = '반려';
+                     break;
+                 default:
+                     stateText = '알 수 없음';
+             }
+             return stateText;
+         }
      	 
 		//전체
         function updateAllDocList(json) {
@@ -211,15 +227,21 @@
                     default:
                         approvalStateText = '알 수 없음';
                 }
+                //승인자의 중간상태값, 최종상태값
+                let midApprovalState = getApprovalStateText(item.midApprovalState);
+                let finalApprovalState = getApprovalStateText(item.finalApprovalState);	          
+   				
+                let modifyButton = approvalStateNo === 0 ? `<a href=""><button>수정하기</button></a>` : '';
 
                 let newRow = $("<tr>" +
                         "<td>" + item.tmpName + "</td>" +
                         "<td>" + item.title + "</td>" +
-                        "<td>" + approvalStateText + "</td>" +
+                        "<td>" + approvalStateText + 
+                        "<br>" + modifyButton + "</td>" +
                         "<td>" + item.midApprovalDatetime + "</td>" +
-                        "<td>" + item.midApprovalState + "</td>" +
+                        "<td>" + midApprovalState + "</td>" +
                         "<td>" + item.finalApprovalDatetime + "</td>" +
-                        "<td>" + item.finalApprovalState + "</td>" +
+                        "<td>" + finalApprovalState + "</td>" +
                         "<td>" + item.createDatetime + "</td>" +
                         "</tr>");
                 
@@ -244,14 +266,19 @@
             tableBody.empty();
             
             $.each(json.zeroDocList, function(index, item) {
+            	//중간승인자의 상태값, 최종승인자의 상태값
+            	 let midApprovalState = getApprovalStateText(item.midApprovalState);
+                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
+            	
+                 let modifyButton = `<a href=""><button>수정하기</button></a>`;
                 let newRow = $("<tr>" +
                 		 "<td>" + item.tmpName + "</td>" +
                          "<td>" + item.title + "</td>" +
-                         "<td>" + "결재대기" + "</td>" +
+                         "<td>" + "결재대기" + "<br>" + modifyButton + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
-                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + midApprovalState + "</td>" +
                          "<td>" + item.finalApprovalDatetime + "</td>" +
-                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
                 
@@ -275,14 +302,18 @@
             tableBody.empty();
             
             $.each(json.oneDocList, function(index, item) {
+            	//중간승인자의 상태값, 최종승인자의 상태값
+           	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
+                let finalApprovalState = getApprovalStateText(item.finalApprovalState);
+            	
                 let newRow = $("<tr>" +
                 		 "<td>" + item.tmpName + "</td>" +
                          "<td>" + item.title + "</td>" +
                          "<td>" + "승인중" + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
-                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + midApprovalState + "</td>" +
                          "<td>" + item.finalApprovalDatetime + "</td>" +
-                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
                 
@@ -307,14 +338,18 @@
             tableBody.empty();
             
             $.each(json.twoDocList, function(index, item) {
+            	//중간승인자의 상태값, 최종승인자의 상태값
+           	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
+                let finalApprovalState = getApprovalStateText(item.finalApprovalState);
+                
                 let newRow = $("<tr>" +
                 		 "<td>" + item.tmpName + "</td>" +
                          "<td>" + item.title + "</td>" +
                          "<td>" + "승인완료" + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
-                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + midApprovalState + "</td>" +
                          "<td>" + item.finalApprovalDatetime + "</td>" +
-                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
                 
@@ -338,14 +373,18 @@
             tableBody.empty();
             
             $.each(json.nineDocList, function(index, item) {
+            	//중간승인자의 상태값, 최종승인자의 상태값
+           	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
+                let finalApprovalState = getApprovalStateText(item.finalApprovalState);
+                
                 let newRow = $("<tr>" +
                 		 "<td>" + item.tmpName + "</td>" +
                          "<td>" + item.title + "</td>" +
                          "<td>" + "반려" + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
-                         "<td>" + item.midApprovalState + "</td>" +
+                         "<td>" + midApprovalState + "</td>" +
                          "<td>" + item.finalApprovalDatetime + "</td>" +
-                         "<td>" + item.finalApprovalState + "</td>" +
+                         "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
                 

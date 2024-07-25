@@ -25,7 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DraftBoxController {
 	
 	@Autowired 
-	private DraftBoxService draftBoxService;
+	private 
+	DraftBoxService draftBoxService;
 	
 	// 기안함
 	// 파라미터 : int currentPage, Model model, HttpSession session
@@ -47,12 +48,11 @@ public class DraftBoxController {
 	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
 	    }
 	    
-		
 		DraftBoxStateDTO stateBox = draftBoxService.getStateBox(empNo);
 		log.debug(TeamColor.PURPLE + "stateBox=>"+stateBox);
+		
 		model.addAttribute("empNo", empNo);
 		model.addAttribute("stateBox",stateBox);
-		
 		
 		return "/approval/draftBox";
 	}

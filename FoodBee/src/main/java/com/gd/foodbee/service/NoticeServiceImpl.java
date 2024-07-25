@@ -28,8 +28,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class NoticeServiceImpl implements NoticeService{
-    @Autowired NoticeMapper noticeMapper;
-    @Autowired NoticeFileMapper noticeFileMapper;
+    @Autowired 
+    NoticeMapper noticeMapper;
+    @Autowired 
+    NoticeFileMapper noticeFileMapper;
+    
     final int rowPerPage= 10;
     
     //전체 공지사항리스트

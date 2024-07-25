@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DraftBoxServiceImpl implements DraftBoxService {
 	@Autowired 
 	DraftBoxMapper draftBoxMapper;
-	final int rowPerPage= 10;
+	final int rowPerPage = 10;
 	 
 	//전체 기안리스트
 	@Override
@@ -151,7 +151,7 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         return (int) Math.ceil((double) twoStateCount / rowPerPage);
 	}
 	
-	//결제상태 건수(결제대기,결제진행중,결제완료,반려)
+	//결재상태 건수(결재대기, 승인중, 승인완료, 반려)
 	@Override
 	public DraftBoxStateDTO getStateBox(int empNo) {
 		return draftBoxMapper.getStateBox(empNo);
