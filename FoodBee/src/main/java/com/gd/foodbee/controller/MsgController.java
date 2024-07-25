@@ -156,31 +156,40 @@ public class MsgController {
 			
 		return "success";
 	}
+	
 	// 휴지통 리스트
-	// 파라미터 : int currentPage,HttpSession session,Model model
+	// 파라미터 : X
 	// 반환 값 : String(view)
 	// 사용 페이지 : /msg/trashMsgBox
 	@GetMapping("/msg/trashMsgBox")
-	public String trashMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
-			HttpSession session,
-			Model model) {
+	public String trashMsgBox() {
+		
+		return "/msg/trashMsgBox";
+	}
+	// 휴지통 리스트
+	// 파라미터 : int currentPage,HttpSession session
+	// 반환 값 : Map<String,Object>
+	// 사용 페이지 : /msg/trashMsgBox
+	@PostMapping("/msg/trashMsgBox")
+	@ResponseBody
+	public Map<String,Object> trashMsgBox(@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
+				HttpSession session) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
 		String empName = emp.getEmpName();
 		
 		log.debug(TeamColor.YELLOW + "empName =>" +empName);
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
-		
-		List<Map<String,Object>> list =  msgService.getTrashList(currentPage, empNo);
-		log.debug(TeamColor.YELLOW + "list => " + list.toString());
+	
 		
 		int lastPage = msgService.getLastPageTrashBox(empNo);
 		
-		model.addAttribute("list", list);
-		model.addAttribute("empName", empName);
-		model.addAttribute("lastPage", lastPage);
+		Map<String, Object> map = new HashMap<>();
+		map.put("msgList", msgService.getTrashList(currentPage, empNo));
+		map.put("currentPage", currentPage); 
+		map.put("lastPage", lastPage);
 		
-		return "/msg/trashMsgBox";
+		return map;
 		
 	}
 	// 휴지통 >> 쪽지함 으로 복구
