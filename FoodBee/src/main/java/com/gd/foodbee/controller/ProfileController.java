@@ -17,7 +17,10 @@ public class ProfileController {
 	@Autowired
 	private ProfileService profileService;
 	
-	
+	// 프로필 사진 수정
+	// 파라미터 : int empNo, MultipartFile file, HttpServletRequest request
+	// 반환 값 : String
+	// 사용 페이지 : /myPage 
 	@PostMapping("/myPage/modifyProfileImg")
 	@ResponseBody
 	public String modifyProfileImg(@RequestParam int empNo,

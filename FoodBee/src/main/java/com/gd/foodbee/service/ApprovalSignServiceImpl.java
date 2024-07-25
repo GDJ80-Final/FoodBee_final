@@ -20,6 +20,10 @@ public class ApprovalSignServiceImpl implements ApprovalSignService{
 	@Autowired
 	private ApprovalSignMapper approvalSignMapper;
 
+	// 전자 서명 수정
+	// 파라미터 : int empNo,  String url, HttpServletRequest request
+	// 반환 값 : X
+	// 사용 클래스 : ApprovalSignController.saveApprovalSign
 	@Override
 	public void saveApprovalSign(int empNo, 
 				String url, 

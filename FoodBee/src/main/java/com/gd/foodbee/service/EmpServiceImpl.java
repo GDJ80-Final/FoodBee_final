@@ -126,6 +126,11 @@ public class EmpServiceImpl implements EmpService{
 		}	
 		
 	}
+	
+	// 사원번호 생성
+	// 파라미터 : int empNo
+	// 반환 값 : int
+	// 사용 클래스 : 
 	@Override
 	public int selectEmpNoDuplicate(int empNo) {
 		log.debug(TeamColor.YELLOW + "empNo => "+ empNo);
@@ -139,6 +144,9 @@ public class EmpServiceImpl implements EmpService{
 	}
 	
 	// 사원번호 생성
+	// 파라미터 : X
+	// 반환 값 : int
+	// 사용 클래스 : EmpController.createEmpNo
 	@Override
 	public int createEmpNo() {
       
@@ -163,6 +171,9 @@ public class EmpServiceImpl implements EmpService{
 	
 	
 	// 사원 등록
+	// 파라미터 : EmpDTO empDTO, EmailDTO emailDTO
+	// 반환 값 : X
+	// 사용 클래스 : EmpController.addEmp
 	@Override
 	public void addEmp(EmpDTO empDTO, EmailDTO emailDTO) {
 		
@@ -201,31 +212,49 @@ public class EmpServiceImpl implements EmpService{
 	}
 	
 	// 사원목록
+	// 파라미터 : EmpSearchDTO empSearchDTO, int currentPage
+	// 반환 값 : List<EmpSearchDTO>
+	// 사용 클래스 : EmpController.getEmpList
 	@Override
 	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO, int currentPage) {
-		int startRow = (currentPage - 1) * ROW_PER_PAGE;
-		return empMapper.selectEmpList(empSearchDTO, startRow, ROW_PER_PAGE);
+		int beginRow = (currentPage - 1) * ROW_PER_PAGE;
+		return empMapper.selectEmpList(empSearchDTO, beginRow, ROW_PER_PAGE);
 	}
 
 	// 사원번호로 이메일 찾기
+	// 파라미터 : int empNo
+	// 반환 값 : String
+	// 사용 클래스 : EmpController.resendEmail
 	@Override
 	public String getEmpEmailByEmpNo(int empNo) {
 		
 		return empMapper.selectEmpEmailByEmpNo(empNo);
 	}
 
+	// 사원 상세보기(개인 정보)
+	// 파라미터 : int empNo
+	// 반환 값 : Map<String, Object>
+	// 사용 클래스 : EmpController.getEmpPersnal
 	@Override
 	public Map<String, Object> getEmpPersnal(int empNo) {
 		
 		return empMapper.selectEmpPersnal(empNo);
 	}
 
+	// 사원 상세보기(인사 정보)
+	// 파라미터 : int empNo
+	// 반환 값 : Map<String, Object>
+	// 사용 클래스 : EmpController.getEmpHr
 	@Override
 	public Map<String, Object> getEmpHr(int empNo) {
 		
 		return empMapper.selectEmpHr(empNo);
 	}
 
+	// 사원 인사 정보 수정
+	// 파라미터 : EmpDTO empDTO
+	// 반환 값 : X
+	// 사용 클래스 :  EmpController.modifyEmpHr
 	@Override
 	public void modifyEmpHr(EmpDTO empDTO) {
 		int row = empMapper.updateEmpHr(empDTO);
@@ -235,6 +264,10 @@ public class EmpServiceImpl implements EmpService{
 		}
 	}
 
+	// 사원 목록 마지막 페이지 구하기
+	// 파라미터 : EmpSearchDTO empSearchDTO
+	// 반환 값 : int
+	// 사용 클래스 : EmpController.searhEmpList
 	@Override
 	public int getLastPage(EmpSearchDTO empSearchDTO) {
 		
@@ -250,6 +283,10 @@ public class EmpServiceImpl implements EmpService{
 		return lastPage;
 	}
 
+	// 마이페이지 사원 비밀번호 수정
+	// 파라미터 : int empNo, String oldPw, String newPw
+	// 반환 값 : X
+	// 사용 클래스 : EmpController.modifyEmpPwMyPage
 	@Override
 	public void modifyEmpPwMyPage(int empNo, String oldPw, String newPw) {
 		
@@ -261,6 +298,10 @@ public class EmpServiceImpl implements EmpService{
 		
 	}
 
+	// 사원 년도별 휴가 개수 구하기
+	// 파라미터 : int empNo, String targetYearStr
+	// 반환 값 : double
+	// 사용 클래스 : DayOffHistoryController.getdayOffHistoryList
 	@Override
 	public double getDayOff(int empNo, String targetYearStr) {
 		
@@ -322,6 +363,10 @@ public class EmpServiceImpl implements EmpService{
         }
 	}
 
+	// 마이페이지 사원 개인정보 수정
+	// 파라미터 : Map map
+	// 반환 값 : X
+	// 사용 클래스 : EmpController.modifyEmpPersnalMyPage
 	@Override
 	public void modifyEmpPersnalMyPage(Map map) {
 		

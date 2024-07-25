@@ -21,6 +21,10 @@ public class GroupController {
 	@Autowired
 	private GroupService groupService;
 
+	// 전체 본사/지사 리스트
+	// 파라미터 : X
+	// 반환 값 : List<GroupDTO>
+	// 사용 페이지 : /emp/addEmp, /myPage, /emp/empList
 	@GetMapping("/emp/officeList")
 	public List<GroupDTO> getOfficeList(){
 		
@@ -28,6 +32,10 @@ public class GroupController {
 		return groupService.getOfficeList();
 	}
 	
+	// 본사/지사에 포함된 부서 리스트
+	// 파라미터 : String dptNo
+	// 반환 값 : List<GroupDTO>
+	// 사용 페이지 : /emp/addEmp, /myPage
 	@PostMapping("emp/deptList")
 	public List<GroupDTO> getDeptListByOffice(@RequestParam String dptNo){
 		log.debug(TeamColor.RED + "dptNo =>" + dptNo);
@@ -35,6 +43,10 @@ public class GroupController {
 		return groupService.getDeptListByOffice(dptNo);
 	}
 	
+	// 본사/지사에 포함된 부서 리스트
+	// 파라미터 : String dptNo
+	// 반환 값 : List<GroupDTO>
+	// 사용 페이지 : /emp/addEmp, /myPage
 	@PostMapping("/emp/teamList")
 	public List<GroupDTO> getTeamListByDept(@RequestParam String dptNo){
 		log.debug(TeamColor.RED + "dptNo =>" + dptNo);
@@ -42,12 +54,20 @@ public class GroupController {
 		return groupService.getTeamListByDept(dptNo);
 	}
 	
+	// 전체 부서 리스트
+	// 파라미터 : X
+	// 반환 값 : List<GroupDTO>
+	// 사용 페이지 : /emp/empList
 	@GetMapping("/emp/deptList")
 	public List<GroupDTO> getDeptList(){
 		
 		return groupService.getDeptList();
 	}
 	
+	// 전체 부서 리스트
+	// 파라미터 : X
+	// 반환 값 : List<GroupDTO>
+	// 사용 페이지 : /emp/empList
 	@GetMapping("/emp/teamList")
 	public List<GroupDTO> getTeamList(){
 		

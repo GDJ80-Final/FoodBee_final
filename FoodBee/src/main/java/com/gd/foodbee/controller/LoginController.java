@@ -119,6 +119,10 @@ public class LoginController {
 		return "findPw";
 	}
 	
+	// 비밀번호 찾기
+	// 파라미터 : int authNum, int empNo, String empEmail, HttpServletRequest request
+	// 반환 값 : String
+	// 사용 페이지 : /findPw
 	@PostMapping("/getPw")
 	@ResponseBody
 	public String getPw(@RequestParam int authNum,

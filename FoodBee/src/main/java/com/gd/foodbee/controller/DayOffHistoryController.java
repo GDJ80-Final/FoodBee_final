@@ -28,10 +28,10 @@ public class DayOffHistoryController {
 	@PostMapping("/emp/getDayOffHistoryList")
 	@ResponseBody
 	// 휴가내역리스트
-	// 파라미터 : empNo,year,currentPage
-	// 반환값 : Map<>
-	// 사용페이지 : scheduleList
-	public Map<String, Object> getdayOffHistoryList(@RequestParam int empNo,
+	// 파라미터 : int empNo, String year, int currentPage
+	// 반환값 : Map<String, Object>
+	// 사용 페이지 : /myPage
+	public Map<String, Object> getDayOffHistoryList(@RequestParam int empNo,
 				@RequestParam String year,
 				@RequestParam int currentPage){
 		

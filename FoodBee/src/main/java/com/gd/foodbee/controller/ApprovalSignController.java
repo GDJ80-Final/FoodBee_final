@@ -20,6 +20,10 @@ public class ApprovalSignController {
 	@Autowired
 	private ApprovalSignService approvalSignService;
 	
+	// 전자 서명 수정
+	// 파라미터 : int empNo,  String url, HttpServletRequest request
+	// 반환 값 : String
+	// 사용 클래스 : /myPage
 	@PostMapping("/myPage/saveApprovalSign")
 	@ResponseBody
 	public String saveApprovalSign(@RequestParam int empNo, 

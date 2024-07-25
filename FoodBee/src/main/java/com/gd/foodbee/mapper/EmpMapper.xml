@@ -123,7 +123,7 @@
                 AND e.emp_no LIKE '%${empSearchDTO.empNo}%'
             </if>
 		ORDER BY emp_name
-		LIMIT #{startRow}, #{rowPerPage}
+		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 	<select id="selectEmpCount" parameterType="com.gd.foodbee.dto.EmpSearchDTO" resultType="int">
 		SELECT

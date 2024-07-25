@@ -22,6 +22,9 @@ public class ProfileServiceImpl implements ProfileService{
 	private ProfileMapper profileMapper;
 
 	// 프로필 사진 수정
+	// 파라미터 : int empNo, MultipartFile file, HttpServletRequest request
+	// 반환 값 : String
+	// 사용 클래스 : ProfileController
 	@Override
 	public String modifyProfileImg(int empNo, 
 			MultipartFile file, 

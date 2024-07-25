@@ -10,17 +10,32 @@ import com.gd.foodbee.dto.GroupDTO;
 public interface GroupMapper {
 	
 	// 본사/지사 리스트
+	// 파라미터 : X
+	// 반환 값 : List<GroupDTO>
+	// 사용 클래스 : GroupService.getOfficeList
 	List<GroupDTO> selectOfficeList();
 	
 	// 본사/지사에 포함된 부서 리스트
+	// 파라미터 : String dptNo
+	// 반환 값 : List<GroupDTO>
+	// 사용 클래스 : GroupService.getDeptListByOffice
 	List<GroupDTO> selectDeptListByOffice(String dptNo);
 	
 	// 부서에 포함된 팀 리스트
+	// 파라미터 : String dptNo
+	// 반환 값 : List<GroupDTO>
+	// 사용 클래스 : GroupService.getTeamListByDept
 	List<GroupDTO> selectTeamListByDept(String dptNo);
 	
 	// 부서 리스트
+	// 파라미터 : X
+	// 반환 값 : List<GroupDTO>
+	// 사용 클래스 : GroupService.getDeptList
 	List<GroupDTO> selectDeptList();
 	
 	// 팀 리스트
+	// 파라미터 : X
+	// 반환 값 : List<GroupDTO>
+	// 사용 클래스 : GroupService.getTeamList
 	List<GroupDTO> selectTeamList();
 }

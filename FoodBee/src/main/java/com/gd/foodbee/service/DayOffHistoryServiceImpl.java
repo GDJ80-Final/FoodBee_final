@@ -17,6 +17,9 @@ public class DayOffHistoryServiceImpl implements DayOffHistoryService{
 	private static final int ROW_PER_PAGE = 2;
 
 	// 휴가 내역 리스트
+	// 파라미터 : int empNo, String year, int currentPage
+	// 반환 값 : List<Map<String, Object>>
+	// 사용 클래스 : DayOffHistoryController.getDayOffHistoryList
 	@Override
 	public List<Map<String, Object>> getDayOffHistoryList(int empNo, String year, int currentPage) {
 		
@@ -26,6 +29,9 @@ public class DayOffHistoryServiceImpl implements DayOffHistoryService{
 	}
 
 	// 휴가 내역 마지막 페이지
+	// 파라미터 : int empNo, String year
+	// 반환 값 : int
+	// 사용 클래스 : DayOffHistoryController.getDayOffHistoryList
 	@Override
 	public int getDayOffLastPage(int empNo, String year) {
 		
@@ -40,6 +46,10 @@ public class DayOffHistoryServiceImpl implements DayOffHistoryService{
 		return lastPage;
 	}
 
+	// 휴가 내역 개수
+	// 파라미터 : int empNo, String year
+	// 반환 값 : int
+	// 사용 클래스 : DayOffHistoryController.getDayOffHistoryList
 	@Override
 	public int getDayOffCnt(int empNo, String year) {
 		int cnt = dayOffHistoryMapper.selectDayOffHistoryCnt(empNo, year);

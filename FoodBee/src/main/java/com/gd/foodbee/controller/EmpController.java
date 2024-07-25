@@ -42,8 +42,8 @@ public class EmpController {
 	
 	//회원가입 페이지
 	//파라미터 : int empNo
-	//반환값 : String(view)
-	//사용페이지 : /signup
+	//반환 값 : String(view)
+	//사용 페이지 : /signup
 	@GetMapping("/signup")
 	public String signup(@RequestParam(name="empNo")int empNo, 
 				Model model) {
@@ -59,8 +59,8 @@ public class EmpController {
 	
 	//회원가입값입력
 	//파라미터 : signupDTO,Errors errors,HttpServletRequest request,Model model
-	//반환값 : String(view)
-	//사용페이지: /signup
+	//반환 값 : String(view)
+	//사용 페이지: /signup
 	@PostMapping("/signup")
 	public String signup(@Valid SignupDTO signupDTO,
 				Errors errors,
@@ -94,8 +94,8 @@ public class EmpController {
 	
 	//사원 등록 및 초대 페이지
 	//파라미터 : X
-	//반환값 : String(view)
-	//사용페이지 : /addEmp
+	//반환 값 : String(view)
+	//사용 페이지 : /emp/addEmp
 	@GetMapping("/emp/addEmp")
 	   public String addEmp() {
 	      
@@ -104,8 +104,8 @@ public class EmpController {
 	
 	//사원 번호 생성
 	//파라미터 : X
-	//반환값 : int
-	//사용페이지 : /addEmp
+	//반환 값 : int
+	//사용 페이지 : /emp/addEmp
 	@GetMapping("/emp/createEmpNo")
 	@ResponseBody
 	public int createEmpNo() {
@@ -116,8 +116,8 @@ public class EmpController {
 		
 	//사원 등록 및 초대
 	//파라미터 : EmpDTO empDTO,  Errors errors,HttpServletRequest request,Model model
-	//반환값 : String(View)
-	//사용페이지 : /addEmp
+	//반환 값 : String(View)
+	//사용 페이지 : /emp/addEmp
 	@PostMapping("/emp/addEmp")
 	public String addEmp(@Valid EmpDTO empDTO,
 			Errors errors,
@@ -198,8 +198,8 @@ public class EmpController {
 	
 	//사원 목록 페이지
 	//파라미터 : X
-	//반환값 : String(view)
-	//사용페이지 : /empList
+	//반환 값 : String(view)
+	//사용 페이지 : /emp/empList
 	@GetMapping("/emp/empList")
 	public String getEmpList() {
 		
@@ -208,8 +208,8 @@ public class EmpController {
 	
 	//사원 목록 조회
 	//파라미터 : EmpSearchDTO empSearchDTO
-	//반환값 : List<EmpSearchDTO>
-	//사용페이지 : /empList
+	//반환 값 : List<EmpSearchDTO>
+	//사용 페이지 : /emp/empList
 	@GetMapping("/emp/searchEmp")
 	@ResponseBody
 	public Map<String, Object> searhEmpList(EmpSearchDTO empSearchDTO, 
@@ -232,7 +232,10 @@ public class EmpController {
 		return map;
 	}
 	
-	//비밀번호 초기화
+	// 비밀번호 초기화
+	// 파라미터 : int empNo, String empEmail
+	// 반환 값 : String
+	// 사용 페이지 : /emp/empList
 	@PostMapping("/emp/resetPw")
 	@ResponseBody
 	public String resetEmpPw(@RequestParam(name = "empNo") int empNo,
@@ -277,6 +280,9 @@ public class EmpController {
 	}
 	
 	//이메일 재발송
+	// 파라미터 : int empNo
+	// 반환 값 : String
+	// 사용 페이지 : /emp/empList
 	@PostMapping("/emp/resendEmail")
 	@ResponseBody
 	public String resendEmail(@RequestParam(name = "empNo") int empNo) {
@@ -298,6 +304,9 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기 페이지
+	// 파라미터 : int empNo
+	// 반환 값 : String(view)
+	// 사용 페이지 : /emp/empDetail
 	@GetMapping("/emp/empDetail")
 	public String empDetail(@RequestParam int empNo,
 				Model model) {
@@ -308,6 +317,9 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기(개인 + 인사)
+	// 파라미터 : int empNo
+	// 반환 값 : String(view)
+	// 사용 페이지 : /emp/empDetail
 	@GetMapping("/emp/getEmpPersnal")
 	@ResponseBody
 	public Map<String, Object> getEmpPersnal(@RequestParam int empNo){
@@ -317,6 +329,9 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기(인사)
+	// 파라미터 : int empNo
+	// 반환 값 : String(view)
+	// 사용 페이지 : /emp/empDetail	
 	@GetMapping("/emp/getEmpHr")
 	@ResponseBody
 	public Map<String, Object> getEmpHr(@RequestParam int empNo){
@@ -325,6 +340,9 @@ public class EmpController {
 		return empService.getEmpHr(empNo);
 	}
 	// 사원 수정 페이지
+	// 파라미터 : int empNo, Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /emp/modifyEmpHr		
 	@GetMapping("/emp/modifyEmpHr")
 	public String modifyEmpHrPage(@RequestParam int empNo,
 				Model model) {
@@ -333,10 +351,13 @@ public class EmpController {
 		Map<String, Object> empHr = empService.getEmpHr(empNo);
 		
 		model.addAttribute("empHr", empHr);
-		return "emp/modifyEmpHr";
+		return "emp/";
 	}
 	
 	// 사원 수정
+	// 파라미터 : EmpDTO empDTO
+	// 반환 값 : String(view)
+	// 사용 페이지 : /emp/modifyEmpHr		
 	@PostMapping("/emp/modifyEmpHr")
 	public String modifyEmpHr(EmpDTO empDTO) {
 		
@@ -346,6 +367,9 @@ public class EmpController {
 	}
 	
 	// 마이페이지
+	// 파라미터 : HttpSession session, Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /myPage	
 	@GetMapping("/myPage")
 	public String myPage(HttpSession session,
 				Model model) {
@@ -356,6 +380,9 @@ public class EmpController {
 	}
 	
 	// 마이페이지에서 비밀번호 수정
+	// 파라미터 : int empNo, String oldPw, String newPw
+	// 반환 값 : String
+	// 사용 페이지 : /myPage		
 	@PostMapping("/myPage/modifyEmpPw")
 	@ResponseBody
 	public String modifyEmpPwMyPage(@RequestParam int empNo,
@@ -368,6 +395,9 @@ public class EmpController {
 	}
 	
 	// 마이페이지에서 개인정보 수정
+	// 파라미터 : int empNo, String empEmail, String contact, String postNo, String address, String addressDetail
+	// 반환 값 : String
+	// 사용 페이지 : /myPage		
 	@PostMapping("/myPage/modifyEmpPersnal")
 	@ResponseBody
 	public String modifyEmpPersnalMyPage(@RequestParam int empNo,
