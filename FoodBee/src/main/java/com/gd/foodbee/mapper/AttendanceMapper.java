@@ -14,7 +14,7 @@ public interface AttendanceMapper {
 	// 파라미터 : int empNo
 	// 반환값 : AttendanceDTO
 	// 사용클래스 : AttendanceServiceImpl.getTime
-	AttendanceDTO selectTime(int empNo);
+	AttendanceDTO selectTime(int empNo, String date);
 	
 	// 근태보고(승인자) 출력
 	// 파라미터 : String dptNo
@@ -23,13 +23,13 @@ public interface AttendanceMapper {
 	HashMap<String, Object> selectTeamLeader(String dptNo);
 	
 	// 근태보고 수정
-	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo
+	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo, String date
 	// 반환값 : X
 	// 사용클래스 : AttendanceServiceImpl.modifyTime
-	int updateTime(String updateStartTime, String updateEndTime, String updateReason, int empNo);
+	int updateTime(String updateStartTime, String updateEndTime, String updateReason, int empNo, String date);
 	
 	// 개인 근태 출력
-	// 파라미터 : HashMap<String,Object> m
+	// 파라미터 : int empNo, String startDate, String endDate, int beginRow, int rowPerPage
 	// 반환값 : List<AttendanceDTO>
 	// 사용클래스 : AttendanceServiceImpl.getAttendancePersonal
 	List<AttendanceDTO> selectAttendancePersonal(int empNo, String startDate, String endDate, int beginRow, int rowPerPage);
@@ -41,19 +41,19 @@ public interface AttendanceMapper {
 	int selectAttendancePersonalCnt(int empNo);
 	
 	// 근태 확정
-	// 파라미터 : HashMap<String,Object> m
+	// 파라미터 : int empNo, String date
 	// 반환값 : X
 	// 사용클래스 : AttendanceServiceImpl.modifyAttendanceFinalTime
 	int updateAttendanceFinalTime(int empNo, String date);
 	
 	// 팀원 근태 출력
-	// 파라미터 : HashMap<String,Object> m
+	// 파라미터 : int empNo, String dptNo, int beginRow, int rowPerPage, String search
 	// 반환값 : List<HashMap<String, Object>>
 	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMember
 	List<HashMap<String, Object>> selectAttendanceTeamMember(int empNo, String dptNo, int beginRow, int rowPerPage, String search);
 	
 	// 팀원 근태 출력 승인 상태별 분기
-	// 파라미터 : HashMap<String,Object> m
+	// 파라미터 : int empNo, String dptNo, int beginRow, int rowPerPage, String search, String approvalState
 	// 반환값 : List<HashMap<String, Object>>
 	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMember
 	List<HashMap<String, Object>> selectAttendanceTeamMemberByStatus(int empNo, String dptNo, int beginRow, int rowPerPage, String search, String approvalState);
@@ -69,4 +69,17 @@ public interface AttendanceMapper {
 	// 반환값 : int
 	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMemberByStatusCnt
 	int selectAttendanceTeamMemberByStatusCnt(int empNo, String dptNo, String approvalState);
+	
+	// 근태 반려
+	// 파라미터 : int empNo, String date, String approvalReason
+	// 반환값 : X
+	// 사용클래스 : AttendanceServiceImpl.modifyAttendanceRejection
+	int updateAttendanceRejection(int empNo, String date, String approvalReason);
+	
+	// 근태 승인
+	// 파라미터 : int empNo, String date
+	// 반환값 : X
+	// 사용클래스 : AttendanceServiceImpl.modifyAttendanceAccept
+	int updateAttendanceAccept(int empNo, String date);
+	
 }

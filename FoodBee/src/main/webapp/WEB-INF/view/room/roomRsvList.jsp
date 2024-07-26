@@ -41,7 +41,15 @@
                 <td>${rsv.empName}</td>
                 <td>&nbsp;</td>
             </tr>
+	       
         </c:forEach>
+		<c:if test="${empty rsvListByDate}">
+		    <tr>
+		    	<td colspan="5">
+		    		<h3>등록 된 예약이 없습니다.</h3>
+		    	</td>
+		    </tr>
+		</c:if>
     </tbody>
 </table>
 

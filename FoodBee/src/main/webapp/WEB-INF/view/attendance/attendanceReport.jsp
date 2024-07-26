@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>전일 근태보고</title>
+<title>근태보고</title>
 </head>
 <body>
-<h1>전일 근태보고</h1>
+<h1>근태보고</h1>
 <form method="post" action="${pageContext.request.contextPath}/attendance/attendanceFinalTime">
 	<input type="hidden" name="date" value="${attendanceDTO.date}">
 	<table border="1">
@@ -27,8 +28,10 @@
 			<td>${map.rankName} ${map.empName}</td>
 		</tr>	
 	</table>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceModify'">수정</button>
-	<button type="submit">확정</button>
+	<c:if test="${attendanceDTO.date ne null}">
+		<button type="button" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceModify?date=${attendanceDTO.date}'">수정</button>
+		<button type="submit">확정</button>
+	</c:if>	
 </form>
 </body>
 </html>

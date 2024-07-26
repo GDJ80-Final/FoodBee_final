@@ -31,14 +31,15 @@ public class AttendanceController {
 	// 반환 값 : attendanceDTO, HashMap<String, Object> map
 	// 사용 페이지 : /attendance/attendanceReport
 	@GetMapping("/attendance/attendanceReport")
-	public String attendanceReport(Model model, HttpSession session) {
+	public String attendanceReport(Model model, HttpSession session,
+							@RequestParam(name="date", required = false) String date) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		
 		int empNo = emp.getEmpNo();
-		String dptNo = emp.getDptNo();
-		
-		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo);
+		String dptNo = emp.getDptNo();				
+        
+		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo, date);
 		HashMap<String, Object> map = attendanceService.getTeamLeader(dptNo);
 		
 		model.addAttribute("attendanceDTO", attendanceDTO);
@@ -52,14 +53,15 @@ public class AttendanceController {
 	// 반환 값 : attendanceDTO, HashMap<String, Object> map
 	// 사용 페이지 : /attendance/attendanceModify
 	@GetMapping("/attendance/attendanceModify")
-	public String attendanceModify(Model model, HttpSession session) {
+	public String attendanceModify(Model model, HttpSession session,
+							@RequestParam(name="date", required = false) String date) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		
 		int empNo = emp.getEmpNo();
 		String dptNo = emp.getDptNo();
 		
-		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo);
+		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo, date);
 		HashMap<String, Object> map = attendanceService.getTeamLeader(dptNo);
 		
 		model.addAttribute("attendanceDTO", attendanceDTO);
@@ -76,7 +78,8 @@ public class AttendanceController {
 	public String attendanceModifyAction(HttpSession session, 
 						@RequestParam(name="updateStartTime") String updateStartTime,
 						@RequestParam(name="updateEndTime") String updateEndTime,
-						@RequestParam(name="updateReason") String updateReason) {
+						@RequestParam(name="updateReason") String updateReason,
+						@RequestParam(name="date", required = false) String date) {
 		
 		log.debug(TeamColor.GREEN + "updateStartTime => " + updateStartTime);
 		log.debug(TeamColor.GREEN + "updateEndTime => " + updateEndTime);
@@ -87,10 +90,10 @@ public class AttendanceController {
 		
 		int empNo = emp.getEmpNo();
 		
-		int row = attendanceService.modifyTime(updateStartTime, updateEndTime, updateReason, empNo);
+		int row = attendanceService.modifyTime(updateStartTime, updateEndTime, updateReason, empNo, date);
 		log.debug(TeamColor.GREEN + "row => " + row);
 		
-		return "redirect:/attendance/attendanceReport";
+		return "redirect:/attendance/attendancePersonal";
 	}
 	
 	// 개인 근태
@@ -99,9 +102,9 @@ public class AttendanceController {
 	// 사용 페이지 : /attendance/attendancePersonal
 	@GetMapping("/attendance/attendancePersonal")
 	public String attendancePersonal(Model model, HttpSession session, 
-			 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
-			 			@RequestParam(name="startDate", required = false) String startDate,
-			 			@RequestParam(name="endDate", required = false) String endDate) {
+						@RequestParam(name="currentPage", defaultValue="1") int currentPage,
+						@RequestParam(name="startDate", required = false) String startDate,
+						@RequestParam(name="endDate", required = false) String endDate) {
 		
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		log.debug(TeamColor.GREEN + "startDate => " + startDate);
@@ -133,7 +136,7 @@ public class AttendanceController {
 	// 사용 페이지 : /attendance/attendanceReport
 	@PostMapping("/attendance/attendanceFinalTime")
 	public String attendanceFinalTime(HttpSession session, 
-						@RequestParam(name="date")String date) {
+							@RequestParam(name="date")String date) {
 		
 		log.debug(TeamColor.GREEN + "date => " + date);
 		
@@ -154,7 +157,7 @@ public class AttendanceController {
 	// 사용 페이지 : /attendance/attendanceTeamMember
 	@GetMapping("/attendance/attendanceTeamMember")
 	public String attendanceTeamMember(Model model, HttpSession session,
-			@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
+							@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
@@ -213,6 +216,42 @@ public class AttendanceController {
 	    attendanceList.put("allLastPage", lastPage);
 	    
 	    return attendanceList;
+	}
+	
+	// 근태 반려
+	// 파라미터 : HttpSession session, String date
+	// 반환 페이지 : /attendance/attendanceTeamMember
+	// 사용 페이지 : /attendance/attendanceTeamMember
+	@PostMapping("/attendance/attendanceRejection")
+	@ResponseBody
+	public String attendanceRejection(@RequestParam(name="date") String date,
+							@RequestParam(name="empNo") int empNo,
+							@RequestParam(name="approvalReason") String approvalReason) {
+		log.debug(TeamColor.GREEN + "date => " + date);
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "approvalReason => " + approvalReason);
+		
+		int row = attendanceService.modifyAttendanceRejection(empNo, date, approvalReason);
+		log.debug(TeamColor.GREEN + "row => " + row);
+		
+		return "/redirect:/attendance/attendanceTeamMember";
+	}
+	
+	// 근태 승인
+	// 파라미터 : HttpSession session, String date
+	// 반환 페이지 : /attendance/attendanceTeamMember
+	// 사용 페이지 : /attendance/attendanceTeamMember
+	@PostMapping("/attendance/attendanceAccept")
+	@ResponseBody
+	public String attendanceAccept(@RequestParam(name="date") String date,
+							@RequestParam(name="empNo") int empNo) {
+		log.debug(TeamColor.GREEN + "date => " + date);
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		int row = attendanceService.modifyAttendanceAccept(empNo, date);
+		log.debug(TeamColor.GREEN + "row => " + row);
+		
+		return "/redirect:/attendance/attendanceTeamMember";
 	}
 	
 }

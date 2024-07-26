@@ -3,12 +3,12 @@
 <mapper namespace="com.gd.foodbee.mapper.RoomMapper">
 
 	<!-- 회의실 목록 -->
-	<select id="selectRoomList" resultType="Map">
+	<select id="selectRoomList" resultType="com.gd.foodbee.dto.RoomDTO">
 		SELECT 
 			info.room_name roomName, 
 			info.room_place roomPlace, 
 			info.room_no roomNo, 
-			info.room_max roomMAX, 
+			info.room_max roomMax, 
 			img.original_file originalFile, 
 			img.save_file
 		FROM 
@@ -78,8 +78,7 @@
 		 	room_rsv
 		WHERE
 		 	rsv_date = #{rsvDate} 
-			AND
-			room_no = #{roomNo}
+			AND room_no = #{roomNo}
 	</select>
 	
 	<!-- 선택된 날짜별 전체 예약리스트 출력 -->
@@ -142,8 +141,7 @@
 			room_info info ON rsv.room_no = info.room_no
 		WHERE 
 			emp.emp_no = #{empNo}
-			AND
-			rsv.rsv_state = 1 
+			AND rsv.rsv_state = 1 
 		ORDER BY 
 			rsvDate DESC, 
 			startTime ASC
@@ -169,9 +167,7 @@
 			rsv_state = 0
 		WHERE 
 			emp_no = #{empNo}
-			AND
-			TIME(start_datetime) = #{startTime} 
-			AND 
-			rsv_date = #{rsvDate}
+			AND TIME(start_datetime) = #{startTime} 
+			AND rsv_date = #{rsvDate}
 	</update>
 </mapper>

@@ -33,7 +33,14 @@
 			<td>&nbsp;&nbsp;&nbsp;${m.updateStartTime}<br>등록:${m.startTime}</td>
 			<td>&nbsp;&nbsp;&nbsp;${m.updateEndTime}<br>등록:${m.endTime}</td>
 			<td>${map.rankName} ${map.empName}</td>
-			<td>${m.approvalState}</td>
+			
+			<c:if test="${m.approvalState eq '승인' || m.approvalState eq '미승인'}">
+			    <td>${m.approvalState}</td>
+			</c:if>
+			<c:if test="${m.approvalState eq '반려'}">
+			    <td><a href="${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}">${m.approvalState}</a></td>
+			</c:if>
+			
 			<td>${m.updateStatus}</td>
 		</tr>
 	</c:forEach>

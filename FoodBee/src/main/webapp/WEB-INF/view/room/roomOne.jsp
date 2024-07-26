@@ -101,7 +101,7 @@
 		<tr>						
 			<td style="height:50px;">참석 인원</td>
 			<td>
-				<input type="number" name="users"style="width: 30px;">명
+				<input type="number" name="users"style="width: 30px;" min="1">명
 			</td>		
 		</tr>
 	</table>
@@ -112,8 +112,7 @@
 <script>
 $(document).ready(function() {
     // 09:00 부터 17:30 까지 30분 단위로 생성
-    const availableTimes = [];
-    
+    const availableTimes = [];   
     for (let hour = 9; hour <= 17; hour++) {
         for (let minute of ['00', '30']) {
             const time = ('0' + hour).slice(-2) + ':' + minute;
@@ -232,14 +231,23 @@ $(document).ready(function() {
         });
     }
     
-    // 예약 버튼 클릭 시 시작시간, 유형 선택 여부 확인
+ 	// 빈값 확인
     $('#reservationForm').submit(function(event) {
         if (!$('input[name="type"]:checked').val()) {
             alert('유형을 선택하세요.');
             event.preventDefault(); // 폼 제출 막기
         } else if ($('#start-time').val() === ':::선택:::') {
             alert('시작 시간을 선택하세요.');
-            event.preventDefault(); 
+            event.preventDefault();
+        } else if (!$('input[name="meetingTitle"]').val()) {
+            alert('제목을 입력하세요.');
+            event.preventDefault();
+        } else if (!$('textarea[name="meetingReason"]').val()) {
+            alert('목적을 입력하세요.');
+            event.preventDefault();
+        } else if (!$('input[name="users"]').val()) {
+            alert('참석 인원을 입력하세요.');
+            event.preventDefault();
         }
     });
 });

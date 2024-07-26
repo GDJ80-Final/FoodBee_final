@@ -2,10 +2,10 @@ package com.gd.foodbee.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,6 +21,4 @@ public class RoomDTO {
 	private String caution;
 	private String originalFile;
 	private String saveFile;
-	private String originalFiles;
-	private String saveFiles;
 }

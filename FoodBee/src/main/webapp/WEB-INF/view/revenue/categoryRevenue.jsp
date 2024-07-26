@@ -44,7 +44,8 @@ function fetchTotalData() {
         method: 'POST',
         dataType: 'json',
         data: { year: selectedYear },
-        success: function(data) {
+        success: function(json) {
+        	const data = json;
             console.log(selectedYear + " 전체 데이터:", data);
             allData = data;
             updateChart(allData);
@@ -64,7 +65,8 @@ function fetchCategoryData(category) {
         method: 'POST',
         dataType: 'json',
         data: { year: selectedYear, category: category },
-        success: function(data) {
+        success: function(json) {
+        	const data = json;
             console.log(category + " 카테고리 데이터:", data);
             updateChart(data);
         },

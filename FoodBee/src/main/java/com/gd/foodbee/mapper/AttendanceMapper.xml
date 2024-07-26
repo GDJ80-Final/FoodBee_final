@@ -3,26 +3,23 @@
 <mapper namespace="com.gd.foodbee.mapper.AttendanceMapper">
 
 	<!-- 근태보고 출력 -->
-	<select id="selectTime" resultType="com.gd.foodbee.dto.AttendanceDTO" parameterType="int">
-		SELECT 
-			emp_no empNo, 
-			date, 
-			DATE_FORMAT(start_time, '%H:%i') startTime, 
-			DATE_FORMAT(end_time, '%H:%i') endTime,
-			DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
-			DATE_FORMAT(update_end_time, '%H:%i') updateEndTime
-		FROM 
-			attendance 
-		WHERE 
-			emp_no = #{empNo} 
-			AND 
-			date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
-		ORDER BY 
-			date DESC
+	<select id="selectTime" parameterType="map" resultType="com.gd.foodbee.dto.AttendanceDTO">
+    	SELECT 
+            emp_no empNo, 
+            date, 
+            DATE_FORMAT(start_time, '%H:%i') startTime, 
+            DATE_FORMAT(end_time, '%H:%i') endTime,
+            DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
+            DATE_FORMAT(update_end_time, '%H:%i') updateEndTime
+        FROM 
+            attendance 
+        WHERE 
+            emp_no = #{empNo} 
+            AND date = #{date}
 	</select>
 	
 	<!-- 근태보고(승인자) 출력 -->
-	<select id="selectTeamLeader" resultType="map" parameterType="String">
+	<select id="selectTeamLeader" parameterType="String" resultType="map">
 		SELECT 
 			rank_name rankName, 
 			emp_name empName
@@ -30,8 +27,7 @@
 			emp
 		WHERE 
 			dpt_no = #{dptNo} 
-			AND 
-			rank_name = '팀장'
+			AND rank_name = '팀장'
 	</select>
 	
 	<!-- 근태보고 수정 -->
@@ -44,12 +40,11 @@
 			update_reason = #{updateReason}
 		WHERE 
 			emp_no = #{empNo} 
-			AND 
-			date = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+			AND date = #{date}
 	</update>
 	
 	<!-- 개인 근태 출력 -->
-	<select id="selectAttendancePersonal" resultType="com.gd.foodbee.dto.AttendanceDTO" parameterType="map">
+	<select id="selectAttendancePersonal" parameterType="map" resultType="com.gd.foodbee.dto.AttendanceDTO">
 		SELECT 
 			emp_no empNo, 
 			date, 
@@ -60,16 +55,17 @@
 			update_reason updateReason,
 			CASE
 		        WHEN 
-		        	approval_state = 0 THEN '미승인'
+		        	approval_state = 1 THEN '미승인'
 		        WHEN 
-		        	approval_state = 1 THEN '승인'
+		        	approval_state = 2 THEN '승인'
+		        WHEN 
+		        	approval_state = 9 THEN '반려'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
 	            WHEN 
 	            	start_time = update_start_time 
-	            	AND 
-	            	end_time = update_end_time 
+	            	AND end_time = update_end_time 
 	            THEN 'x'
 	            ELSE 'o'
         	END updateStatus
@@ -89,7 +85,7 @@
 	</select>
 	
 	<!-- 개인 근태 cnt -->
-	<select id="selectAttendancePersonalCnt" resultType="int" parameterType="int">
+	<select id="selectAttendancePersonalCnt" parameterType="int" resultType="int">
 		SELECT 
 			COUNT(*)
 		FROM 
@@ -103,15 +99,15 @@
 		UPDATE 
 			attendance 
 		SET 
-			final_time = NOW()
+			final_time = NOW(),
+			approval_state = 1
 		WHERE 
 			date = #{date}
-			AND
-			emp_no = #{empNo}
+			AND	emp_no = #{empNo}
 	</update>
 	
 	<!-- 팀원 근태 출력 -->
-	<select id="selectAttendanceTeamMember" resultType="map" parameterType="map">
+	<select id="selectAttendanceTeamMember" parameterType="map" resultType="map">
 		SELECT 
 			a.emp_no empNo, 
 			e.emp_name empName, 
@@ -122,34 +118,31 @@
 			DATE_FORMAT(a.update_end_time, '%H:%i') updateEndTime,
 			CASE
 		        WHEN 
-		        	a.approval_state = 0 THEN '미승인'
+		        	a.approval_state = 1 THEN '미승인'
 		        WHEN 
-		        	a.approval_state = 1 THEN '승인'
+		        	a.approval_state = 2 THEN '승인'
+		        WHEN 
+		        	a.approval_state = 9 THEN '반려'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
 	            WHEN 
 	            	a.start_time = a.update_start_time 
-	            	AND 
-	            	a.end_time = a.update_end_time 
+	            	AND a.end_time = a.update_end_time 
 	            THEN 'x'
 	            ELSE '사유 확인'
         	END updateStatus,
 			a.update_reason updateReason, 
-			a.final_time finalTime
+			DATE_FORMAT(a.final_time, '%Y-%m-%d %H:%i') finalTime
 		FROM 
 			attendance a 
-			INNER JOIN 
-				emp e
-				ON a.emp_no = e.emp_no
+		INNER JOIN 
+			emp e ON a.emp_no = e.emp_no
 		WHERE 
 			e.dpt_no = #{dptNo} 
-			AND
-			a.emp_no != #{empNo}
+			AND	a.emp_no != #{empNo}
 		    <if test="search != null and search != ''">
-		        AND (
-		            e.emp_name LIKE '%${search}%'
-		        )
+		        AND (e.emp_name LIKE '%${search}%')
 		    </if>
 		ORDER BY 
 			date DESC
@@ -158,7 +151,7 @@
 	</select>	
 	
 	<!-- 팀원 근태 출력 승인 상태별 분기 -->
-	<select id="selectAttendanceTeamMemberByStatus" resultType="map" parameterType="map">
+	<select id="selectAttendanceTeamMemberByStatus" parameterType="map" resultType="map">
 		SELECT 
 			a.emp_no empNo, 
 			e.emp_name empName, 
@@ -169,9 +162,11 @@
 			DATE_FORMAT(a.update_end_time, '%H:%i') updateEndTime,
 			CASE
 		        WHEN 
-		        	a.approval_state = 0 THEN '미승인'
+		        	a.approval_state = 1 THEN '미승인'
 		        WHEN 
-		        	a.approval_state = 1 THEN '승인'
+		        	a.approval_state = 2 THEN '승인'
+		        WHEN 
+		        	a.approval_state = 9 THEN '반려'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
@@ -183,22 +178,17 @@
 	            ELSE '사유 확인'
         	END updateStatus,
 			a.update_reason updateReason, 
-			a.final_time finalTime
+			DATE_FORMAT(a.final_time, '%Y-%m-%d %H:%i') finalTime
 		FROM 
 			attendance a 
-			INNER JOIN 
-				emp e
-				ON a.emp_no = e.emp_no
+		INNER JOIN 
+			emp e ON a.emp_no = e.emp_no
 		WHERE 
 			e.dpt_no = #{dptNo} 
-			AND
-			a.emp_no != #{empNo}
-			AND 
-			a.approval_state = #{approvalState}
+			AND a.emp_no != #{empNo}
+			AND a.approval_state = #{approvalState}
 		    <if test="search != null and search != ''">
-		        AND (
-		            e.emp_name LIKE '%${search}%'
-		        )
+		    	AND (e.emp_name LIKE '%${search}%')
 		    </if>
 		ORDER BY 
 			date DESC
@@ -207,35 +197,53 @@
 	</select>
 	
 	<!-- 팀원 근태 cnt -->
-	<select id="selectAttendanceTeamMemberCnt" resultType="int" parameterType="map">
+	<select id="selectAttendanceTeamMemberCnt" parameterType="map" resultType="int">
 		SELECT 
 			COUNT(*)
 		FROM 
 			attendance a			 
-			INNER JOIN 
-				emp e
-				ON a.emp_no = e.emp_no
+		INNER JOIN 
+			emp e ON a.emp_no = e.emp_no
 		WHERE 
 			e.dpt_no = #{dptNo} 
-			AND
-			a.emp_no != #{empNo}
+			AND a.emp_no != #{empNo}
 	</select>
 	
 	<!-- 팀원 근태 승인 상태별 cnt -->
-	<select id="selectAttendanceTeamMemberByStatusCnt" resultType="int" parameterType="map">
+	<select id="selectAttendanceTeamMemberByStatusCnt" parameterType="map" resultType="int">
 		SELECT 
 			COUNT(*)
 		FROM 
 			attendance a			 
-			INNER JOIN 
-				emp e
-				ON a.emp_no = e.emp_no
+		INNER JOIN 
+			emp e ON a.emp_no = e.emp_no
 		WHERE 
 			e.dpt_no = #{dptNo} 
-			AND
-			a.emp_no != #{empNo}
-			AND 
-			a.approval_state = #{approvalState}
+			AND a.emp_no != #{empNo}
+			AND a.approval_state = #{approvalState}
 	</select>
 	
+	<!-- 근태 반려 -->
+	<update id="updateAttendanceRejection" parameterType="map">
+		UPDATE 
+			attendance 
+		SET 
+			approval_state = 9,
+			approval_reason = #{approvalReason}
+		WHERE
+			emp_no = #{empNo}
+			AND date = #{date}
+	</update>
+	
+	<!-- 근태 승인 -->
+	<update id="updateAttendanceAccept" parameterType="map">
+		UPDATE 
+			attendance 
+		SET 
+			approval_state = 2,
+			approval_datetime = NOW()
+		WHERE
+			emp_no = #{empNo}
+			AND date = #{date}
+	</update>
 </mapper>

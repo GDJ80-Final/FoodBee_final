@@ -34,7 +34,7 @@
 				<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="300px">				
 			</td>
 			<td style="height:200px;">${m.roomPlace}</td>
-			<td style="height:200px;">최대 ${m.roomMAX}명</td>
+			<td style="height:200px;">최대 ${m.roomMax}명</td>
 		</tr>
 	</c:forEach>	
 </table>

@@ -3,7 +3,6 @@ package com.gd.foodbee.controller;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +43,7 @@ public class RoomController {
 		log.debug(TeamColor.GREEN + "list => " + list.toString()); 
 		
 		model.addAttribute("list", list);
+		
 		return "/room/roomList";
 	}
 	
@@ -68,6 +68,7 @@ public class RoomController {
 		model.addAttribute("roomImg",roomImg);
 		model.addAttribute("roomNo",roomNo);
 		model.addAttribute("rsvDate",rsvDate);
+		
 		return "/room/roomOne";
 	}
 	

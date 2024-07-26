@@ -8,13 +8,13 @@ import com.gd.foodbee.dto.AttendanceDTO;
 public interface AttendanceService {
 	
 	// 근태보고 출력
-	AttendanceDTO getTime(int empNo);
+	AttendanceDTO getTime(int empNo, String date);
 	
 	// 근태보고(승인자) 출력
 	HashMap<String, Object> getTeamLeader(String dptNo);
 	
 	// 근태보고 수정
-	int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo);
+	int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo, String date);
 	
 	// 개인 근태 출력
 	List<AttendanceDTO> getAttendancePersonal(int empNo, int currentPage, String startDate, String endDate);
@@ -36,4 +36,10 @@ public interface AttendanceService {
 
 	// 팀원 근태 승인 상태별  cnt
 	int getAttendanceTeamMemberByStatusCnt(int empNo, String dptNo, String approvalState);
+	
+	// 근태 반려
+	int modifyAttendanceRejection(int empNo, String date, String approvalReason);
+	
+	// 근태 승인
+	int modifyAttendanceAccept(int empNo, String date);
 }

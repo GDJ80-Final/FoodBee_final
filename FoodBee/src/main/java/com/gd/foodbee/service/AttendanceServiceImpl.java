@@ -1,5 +1,7 @@
 package com.gd.foodbee.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,14 +23,22 @@ public class AttendanceServiceImpl implements AttendanceService {
 	private static final int ROW_PER_PAGE = 10;
 	
 	// 근태보고 출력
-	// 파라미터 : int empNo
+	// 파라미터 : int empNo, String date
 	// 반환 값 : AttendanceDTO
 	// 사용 클래스 : AttendanceController.attendanceReport & attendanceModify
 	@Override
-	public AttendanceDTO getTime(int empNo) {
+	public AttendanceDTO getTime(int empNo, String date) {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		
-		return attendanceMapper.selectTime(empNo);		
+		// date 값이 없으면 전날의 날짜로 설정
+        if (date == null || date.isEmpty()) {
+            LocalDate yesterday = LocalDate.now().minusDays(1);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            date = yesterday.format(formatter);
+        }
+        log.debug(TeamColor.GREEN + "date => " + date);
+        
+		return attendanceMapper.selectTime(empNo, date);		
 	}
 	
 	// 근태보고(승인자) 출력
@@ -43,17 +53,18 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 	
 	// 근태보고 수정
-	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo
+	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo, String date
 	// 반환 값 : X
 	// 사용 클래스 : AttendanceController.attendanceModify
 	@Override
-	public int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo) {
+	public int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo, String date) {
 		log.debug(TeamColor.GREEN + "updateStartTime => " + updateStartTime);
 		log.debug(TeamColor.GREEN + "updateEndTime => " + updateEndTime);
 		log.debug(TeamColor.GREEN + "updateReason => " + updateReason);
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
-		
-		return attendanceMapper.updateTime(updateStartTime, updateEndTime, updateReason, empNo);
+        log.debug(TeamColor.GREEN + "date => " + date);
+        
+		return attendanceMapper.updateTime(updateStartTime, updateEndTime, updateReason, empNo, date);
 	}
 	
 	// 개인 근태 출력
@@ -173,5 +184,28 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
 		return lastPage;
+	}
+	
+	// 근태 반려
+	// 파라미터 : String date, int empNo, String approvalReason
+	// 반환 값 : X
+	// 사용 클래스 : AttendanceController.attendanceRejection
+	public int modifyAttendanceRejection(int empNo, String date, String approvalReason) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "date => " + date);
+		log.debug(TeamColor.GREEN + "approvalReason => " + approvalReason);
+		
+		return attendanceMapper.updateAttendanceRejection(empNo, date, approvalReason);
+	}
+	
+	// 근태 승인
+	// 파라미터 : String date, int empNo
+	// 반환 값 : X
+	// 사용 클래스 : AttendanceController.attendanceAccept
+	public int modifyAttendanceAccept(int empNo, String date) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "date => " + date);
+		
+		return attendanceMapper.updateAttendanceAccept(empNo, date);
 	}
 }
