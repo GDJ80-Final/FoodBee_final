@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.BoardCommentMapper">
-	<select id="selectCommentList" parameterType="int" resultType="Map">
+	<select id="selectCommentList" parameterType="Map" resultType="Map">
 		SELECT
 			ROW_NUMBER() OVER(ORDER BY createDatetime) commentOrder,
 			comment_no commentNo,
@@ -14,6 +14,8 @@
 			AND delete_YN = 'N'
 		ORDER BY 
 			commentOrder DESC
+		LIMIT
+			#{beginRow},#{rowPerPage}
 	
 	</select>
 	<insert id="insertComment" parameterType="com.gd.foodbee.dto.BoardCommentDTO">
@@ -34,7 +36,16 @@
 	
 	
 	</insert>
-
+	<select id="selectCommentCnt" parameterType="int" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM 
+			board_comment
+		WHERE 
+			board_no = #{boardNo}
+			AND delete_YN = 'N'
+	
+	</select>
 
 
 

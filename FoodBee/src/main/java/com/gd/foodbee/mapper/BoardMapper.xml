@@ -20,7 +20,7 @@
 		)
 	
 	</insert>
-	<select id="selectBoardList" resultType="Map">
+	<select id="selectBoardList" parameterType="Map" resultType="Map">
 		SELECT 
 			ROW_NUMBER() OVER(ORDER BY createDatetime) boardOrder,
 			b.board_no boardNo,
@@ -88,4 +88,24 @@
 			board_no = #{boardNo}
 	
 	</update>
+	<select id="selectBoardCnt" parameterType="Map" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			board b 
+		WHERE
+			1=1
+			<if test='category == "chat"'>
+				AND b.board_category = '잡담' 
+			</if>
+			<if test='category == "company"'>
+				AND b.board_category = '회사이야기' 
+			</if>
+			<if test='category == "question"'>
+				AND b.board_category = '질문' 
+			</if>
+			<if test='keyword != null and keyword != ""'>
+        		AND b.title LIKE CONCAT('%', #{keyword}, '%')
+   			</if>
+	</select>
 </mapper>

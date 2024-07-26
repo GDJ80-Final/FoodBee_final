@@ -26,7 +26,9 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardCommentMapper boardCommentMapper;
 	
-	private static final int ROW_PER_PAGE = 15;
+	private static final int ROW_PER_PAGE = 10;
+	
+	private static final int ROW_PER_PAGE_COMMENT = 5;
 	
 	// 새 글 작성
 	// 파라미터 : BoardDTO boardDTO
@@ -59,6 +61,20 @@ public class BoardServiceImpl implements BoardService{
 		
 		return boardMapper.selectBoardList(beginRow, ROW_PER_PAGE, category,keyword);
 	}
+	// 게시판 lastPage 구하기
+	// 파라미터 : String category, String keyword
+	// 반환 값 : int
+	// 사용 클래스 : BoardController.boardList
+	@Override
+	public int getLastPageBoard(String category, String keyword) {
+		
+		int boardCount = boardMapper.selectBoardCnt(category, keyword);
+		
+		int lastPage = (int) Math.ceil((double) boardCount / ROW_PER_PAGE);
+		
+		return lastPage;
+	}
+	
 	// 글 상세보기 
 	// 파라미터 : int boardNo
 	// 반환 값 : Map<String,Object>
@@ -72,13 +88,28 @@ public class BoardServiceImpl implements BoardService{
 	// 댓글 리스트 
 	// 파라미터 : int boardNo
 	// 반환 값 : List<Map<String, Object>>
-	// 사용 클래스 : BoardController.boardOne
-
+	// 사용 클래스 : BoardController.commentList
 	@Override
-	public List<Map<String, Object>> getCommentList(int boardNo) {
+	public List<Map<String, Object>> getCommentList(int currentPage, int boardNo) {
 		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
 		
-		return boardCommentMapper.selectCommentList(boardNo);
+		int beginRow = (currentPage - 1) * ROW_PER_PAGE_COMMENT;
+		
+		return boardCommentMapper.selectCommentList(boardNo, beginRow, ROW_PER_PAGE_COMMENT);
+	}
+	
+	// 댓글리스트 lastPage 구하기
+	// 파라미터 : int boardNo
+	// 반환 값 : int
+	// 사용 클래스 : BoardController.commentList
+	@Override
+	public int getLastPageComment(int boardNo) {
+		
+		int commentCount = boardCommentMapper.selectCommentCnt(boardNo);
+		
+		int lastPage = (int) Math.ceil((double) commentCount / ROW_PER_PAGE_COMMENT);
+		
+		return lastPage;
 	}
 	
 	// 좋아요 수 업데이트 

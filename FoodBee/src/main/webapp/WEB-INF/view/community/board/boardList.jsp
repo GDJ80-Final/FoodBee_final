@@ -161,33 +161,38 @@
             <input type="text" id="search" placeholder="제목을 입력하세요">
             <button class="search-button" id="searchButton">검색</button>
         </div>
-        <div class="pagination">
-            <button class="page-button">Previous</button>
-            <div class="page-numbers">
-                <button class="page-number active">1</button>
-                <button class="page-number">2</button>
-                <button class="page-number">3</button>
-                <button class="page-number">...</button>
-                <button class="page-number">67</button>
-                <button class="page-number">68</button>
-            </div>
-            <button class="page-button">Next</button>
-        </div>
+	 	<div id="page">
+	        <button type="button" id="first">First</button>
+	        <button type="button" id="pre">◁</button>
+	        <button type="button" id="next">▶</button>
+	        <button type="button" id="last">Last</button>
+		</div>
         <button class="write-button" id="writeButton">글쓰기</button>
     </div>
 <script>
+
+	let currentPage = 1;
+	let lastPage = 1;
+	let category = "all";
+	let keyword = "";
+	
 	$(document).ready(function(){
-		function loadBoardList(category,keyword){
+		function loadBoardList(page,category,keyword){
 			$.ajax({
 				url:'${pageContext.request.contextPath}/community/board/boardList',
 				method:'post',
 				data:{
-					category:category,
-					keyword:keyword
+					category: category,
+					keyword: keyword,
+					currentPage: page
 				},
 				success:function(json){
+					
+                    lastPage = json.lastPage;
+                    console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
+                    
 					$('#boardBody').empty();
-					   json.forEach(function(item){
+					   json.boardList.forEach(function(item){
 						   console.log(item)
 						   $('#boardBody').append('<tr>' +
 									'<td>'+ item.boardOrder +'</td>'+
@@ -199,10 +204,12 @@
 									'<td>'+ item.likeCnt + '</td>'+
 									'</tr>' 
 						   );
-					 });
-				}
-			});
-		}
+					 	});
+					   
+					   	updateBtnState()
+					}
+				});
+			}
 		$(document).on('click','#title',function(){
 			let boardNo = $(this).data('board-no');
 			$.ajax({
@@ -219,42 +226,82 @@
 		})
 		
 		$('#all').click(function(){
-			loadBoardList("all","");
+			loadBoardList(currentPage,"all","");
 			$('.tab-button').removeClass('active');
 			$(this).addClass('active');
 			//전체목록
 			});
 		$('#chat').click(function(){
-			loadBoardList("chat","");
+			loadBoardList(currentPage,"chat","")
 			$('.tab-button').removeClass('active');
 			$(this).addClass('active');
 			
 			});
 		$('#company').click(function(){
-			loadBoardList("company","");
+			loadBoardList(currentPage,"company","")
 			$('.tab-button').removeClass('active');
 			$(this).addClass('active');
 			
 			});
 		$('#question').click(function(){
-			loadBoardList("question","");
+			loadBoardList(currentPage,"question","")
 			$('.tab-button').removeClass('active');
 			$(this).addClass('active');
 			
 			});
-		// 페이지 첫 로드 시 전체 목록 불러오기
-	    loadBoardList("all",""); 
+
+		
+		// --- 페이징 ---
+		// 페이징 버튼 활성화
+        function updateBtnState() {
+            console.log("update");
+            $('#pre').prop('disabled', currentPage === 1);
+            $('#next').prop('disabled', currentPage === lastPage);
+            $('#first').prop('disabled', currentPage === 1);
+            $('#last').prop('disabled', currentPage === lastPage);
+        }
+		// 이전 
+		$('#pre').click(function() {
+			if (currentPage > 1) {
+				currentPage = currentPage - 1;
+				loadBoardList(currentPage,category,keyword)
+			}
+		});
+		// 다음 
+		$('#next').click(function() {
+			if (currentPage < lastPage) {
+				currentPage = currentPage + 1;
+				loadBoardList(currentPage,category,keyword)
+			}
+		});
+		// 처음 
+		$('#first').click(function() {
+			if (currentPage > 1) {
+				currentPage = 1;
+				loadBoardList(currentPage,category,keyword)
+			}
+		});
+		// 마지막
+		$('#last').click(function() {
+			if (currentPage < lastPage) {
+				currentPage = lastPage
+				loadBoardList(currentPage,category,keyword)
+			}
+		});
 		
 		//검색 누를 시
 	    $('#searchButton').click(function(){
-			let selectedCategory = $('#category').val();
+			let category = $('#category').val();
 			let keyword = $('#search').val();
-			loadBoardList(selectedCategory, keyword);
+			loadBoardList(currentPage,category, keyword);
 		});
 		
 	    $('#writeButton').click(function(){
 	        window.location.href = '${pageContext.request.contextPath}/community/board/addBoard';
 	    });
+	    
+		// 페이지 첫 로드 시 전체 목록 불러오기
+	    loadBoardList(currentPage,"all",""); 
 	})
 </script>
 </body>

@@ -81,7 +81,7 @@ public interface MsgMapper {
 	// 휴지통 총 쪽지수 구하기
 	// 파라미터 : int empNo
 	// 반환 값 : int
-	// 사용 클래스 : getLastPageTrashBox
+	// 사용 클래스 : MsgService.getLastPageTrashBox
 	int selectMsgcntTrashBox(int empNo);
 	
 }

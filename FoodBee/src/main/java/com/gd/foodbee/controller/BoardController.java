@@ -1,5 +1,6 @@
 package com.gd.foodbee.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +60,22 @@ public class BoardController {
 	// 사용 페이지 : /community/board/boardList
 	@PostMapping("/community/board/boardList")
 	@ResponseBody
-	public List<Map<String,Object>> boardList(@RequestParam(name="currentPage",defaultValue = "1")int currentPage,
+	public Map<String,Object> boardList(@RequestParam(name="currentPage",defaultValue = "1")int currentPage,
 				@RequestParam(name="category",defaultValue = "all") String category,
 				@RequestParam(name="keyword") String keyword) {
 		log.debug(TeamColor.YELLOW + "category =>" + category);
 		log.debug(TeamColor.YELLOW + "keyword =>" + keyword);
 		
-		return boardService.getBoardList(currentPage, category, keyword);
+		int lastPage = boardService.getLastPageBoard(category, keyword);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("boardList", boardService.getBoardList(currentPage, category, keyword));
+		map.put("currentPage", currentPage); 
+		map.put("lastPage", lastPage); 
+		
+		
+		return map;
 	}
 	// 게시글 상세보기 
 	// 파라미터 : int boardNo, Model model
@@ -75,11 +85,37 @@ public class BoardController {
 	public String boardOne(@RequestParam(name="boardNo")int boardNo,
 				Model model) {
 		Map<String,Object> m = boardService.getBoardOne(boardNo);
-		List<Map<String,Object>> list = boardService.getCommentList(boardNo);
+		
 		model.addAttribute("m", m);
-		model.addAttribute("list", list);
+		
 		
 		return "/community/board/boardOne";
+	}
+	
+	// 게시글 상세보기에서 댓글 리스트 뽑기
+	// 파라미터 : int currentPage,int boardNo
+	// 반환 값 : String
+	// 사용 페이지 : /community/board/boardOne
+	@PostMapping("/community/board/commentList")
+	@ResponseBody
+	public Map<String,Object> commentList(@RequestParam(name="currentPage",defaultValue = "1") int currentPage,
+				@RequestParam(name="boardNo")int boardNo) {
+		log.debug(TeamColor.YELLOW + "currentPage => " +  currentPage);
+		log.debug(TeamColor.YELLOW + "boardNo => " +  boardNo);
+		
+		int lastPage = boardService.getLastPageComment(boardNo);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("commentList", boardService.getCommentList(currentPage, boardNo));
+		map.put("currentPage", currentPage); 
+		map.put("lastPage", lastPage); 
+		
+		
+		return map;
+		
+		
+		
 	}
 	
 	// 게시글 조회수 업데이트

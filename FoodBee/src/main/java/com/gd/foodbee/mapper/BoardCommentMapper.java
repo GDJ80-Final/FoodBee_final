@@ -14,11 +14,18 @@ public interface BoardCommentMapper {
 	// 파라미터 : int boardNo
 	// 반환 값 : List<Map<String,Object>>
 	// 사용 클래스 : BoardService.getCommentList
-	List<Map<String,Object>> selectCommentList(int boardNo);
+	List<Map<String,Object>> selectCommentList(int boardNo,int beginRow, int rowPerPage);
+	
+	// 댓글 전체 갯수 구하기
+	// 파라미터 : int boardNo
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.getLastPageComment
+	int selectCommentCnt(int boardNo);
 	
 	// 댓글 작성
 	// 파라미터 : BoardCommentDTO boardCommentRequestDTO
 	// 반환 값 : int
 	// 사용 클래스 : BoardService.addComment
 	int insertComment(BoardCommentDTO boardCommentDTO);
+	
 }

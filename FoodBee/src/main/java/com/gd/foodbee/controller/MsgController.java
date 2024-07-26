@@ -89,7 +89,9 @@ public class MsgController {
 		int empNo = emp.getEmpNo();
 		log.debug(TeamColor.YELLOW + "empNo" + empNo);
 		int lastPage = msgService.getLastPageReceivedBox(empNo, readYN);
+		
 		Map<String, Object> map = new HashMap<>();
+		
 		map.put("msgList", msgService.getReceivedMsgList(currentPage, empNo,readYN));
 		map.put("currentPage", currentPage); 
 		map.put("lastPage", lastPage); 

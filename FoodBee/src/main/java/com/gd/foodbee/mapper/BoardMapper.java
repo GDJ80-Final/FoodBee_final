@@ -22,6 +22,12 @@ public interface BoardMapper {
 	// 사용 클래스 : BoardService.getBoardList
 	List<Map<String,Object>> selectBoardList(int beginRow, int rowPerPage, String category,String keyword);
 	
+	// 게시글 페이징 전체 갯수 구하기 
+	// 파라미터 : String category, String keyword
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.getBoardList
+	int selectBoardCnt(String category,String keyword);
+	
 	// 게시글 상세보기
 	// 파라미터 : int boardNo
 	// 반환 값 : Map<String,Object>>

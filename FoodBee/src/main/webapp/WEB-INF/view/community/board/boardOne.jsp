@@ -167,29 +167,30 @@
 		 	<h2>댓글</h2>
 		 	<form method="post" action="${pageContext.request.contextPath}/community/board/addComment">
 		 	<div class="comment-input">
-		 			<input type="hidden" name="boardNo" value="${m.boardNo}">
+		 			<input type="hidden" name="boardNo" id="boardNo" value="${m.boardNo}">
 			 		<textarea class="comment-box" name="content" placeholder="댓글입력..."></textarea>
 			 		<input type="password" name="commentPw" class="password-box" placeholder="비밀번호 입력">
 			 		<button class="button register" id="addComment">댓글 등록</button>
 		 	</div>
 		 	</form>
-		 	<table class="comment">
-		 	<c:forEach var="m" items="${list}">
-		 		<tr>
-		 			<td class="comment-content"><span>[${m.commentOrder}]</span>&nbsp; ${m.content}</td>
-		 		</tr>
-		 		<tr>
-		 			<td class="comment-info">
-		 				<span class="comment-date">${m.createDatetime}</span>
-		 				
-		 			</td>
-		 		
-		 		</tr>
-		 	</c:forEach>
+		 	<div id="page">
+		        <button type="button" id="first">First</button>
+		        <button type="button" id="pre">◁</button>
+		        <button type="button" id="next">▶</button>
+		        <button type="button" id="last">Last</button>
+			</div>
+		 	<table class="comment" id="comment">
+		 	<!-- 댓글 리스트 출력  -->
+		 	
 		 	</table>
 		 </div>
 	</div>
 <script>
+
+	let currentPage = 1;
+	let lastPage = 1;
+	let boardNo = $('#boardNo').val();
+	
 	$(document).ready(function(){
 		//좋아요 버튼 연속 클릭 여부 체크
 		let isLikeClicked = false;
@@ -220,14 +221,79 @@
 					//AJAX 요청 성공 시 timeout 설정해서 특정 시간이 지난 후에만 isLikeClicked를 false로 바꿔줌 
 					
 				
-			})
-				
-				
-			}
+				})
 			
+			 }
 		})
+		 
+		// 댓글 리스트 출력 + 페이징 
+		function loadCommentList(currentPage, boardNo) {
+			$.ajax({
+				url: '${pageContext.request.contextPath}/community/board/commentList',
+				method: 'post',
+				data: {
+					currentPage: currentPage,
+					boardNo: boardNo
+				},
+				success: function(json) {
+					lastPage = json.lastPage;
+					console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
+					$('#comment').empty();
+					json.commentList.forEach(function(item) {
+						console.log(item);
+						$('#comment').append('<tr>' +
+							'<td class="comment-content"><span>['+ item.commentOrder + ']</span>&nbsp;' + item.content + '</td>' + 
+							'</tr>' +
+							'<tr><td class="comment-info"><span class="comment-date">' + item.createDatetime + '</span></td></tr>'
+						);
+					});
+					updateBtnState();
+				}
+			});
+		}
 		
 		
+	
+		// --- 페이징 ---
+		// 페이징 버튼 활성화
+	    function updateBtnState() {
+	        console.log("update");
+	        $('#pre').prop('disabled', currentPage === 1);
+	        $('#next').prop('disabled', currentPage === lastPage);
+	        $('#first').prop('disabled', currentPage === 1);
+	        $('#last').prop('disabled', currentPage === lastPage);
+	    }
+		// 이전 
+		$('#pre').click(function() {
+			if (currentPage > 1) {
+				currentPage = currentPage - 1;
+				loadCommentList(currentPage,boardNo)
+			}
+		});
+		// 다음 
+		$('#next').click(function() {
+			if (currentPage < lastPage) {
+				currentPage = currentPage + 1;
+				loadCommentList(currentPage,boardNo)
+			}
+		});
+		// 처음 
+		$('#first').click(function() {
+			if (currentPage > 1) {
+				currentPage = 1;
+				loadCommentList(currentPage,boardNo)
+			}
+		});
+		// 마지막
+		$('#last').click(function() {
+			if (currentPage < lastPage) {
+				currentPage = lastPage
+				loadCommentList(currentPage,boardNo)
+			}
+		});
+		
+		// 페이지 첫 로드 시 전체 목록 불러오기
+	    loadCommentList(currentPage,boardNo);
 		
 		$('#backToList').click(function(){
 			window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
