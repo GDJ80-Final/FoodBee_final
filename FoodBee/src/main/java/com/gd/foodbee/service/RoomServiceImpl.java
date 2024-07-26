@@ -1,8 +1,6 @@
 package com.gd.foodbee.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +48,7 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.roomRsv
 	@Override
 	public int addRoomRsv(RoomRsvDTO rsv) {
-		log.debug(TeamColor.GREEN + "rsv => " + rsv);
+		log.debug(TeamColor.GREEN + "rsv => " + rsv.toString());
 		
 		return roomMapper.insertRoomRsv(rsv); 
 	}
@@ -75,15 +73,12 @@ public class RoomServiceImpl implements RoomService{
 	public List<RoomRsvDTO> getRsvListByDate(String rsvDate, int currentPage) {
 		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		
 		int beginRow = 0;
         beginRow = (currentPage -1) * ROW_PER_PAGE;
+        log.debug(TeamColor.GREEN + "beginRow => " + beginRow);
         
-        HashMap<String,Object> m = new HashMap<String,Object>();
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", ROW_PER_PAGE);
-        m.put("rsvDate", rsvDate);
-        
-		return roomMapper.selectRsvListByDate(m); 
+		return roomMapper.selectRsvListByDate(rsvDate, beginRow, ROW_PER_PAGE); 
 	}
 	
 	// 선택된 날짜 예약 총 갯수
@@ -98,6 +93,8 @@ public class RoomServiceImpl implements RoomService{
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
+		
 		return lastPage; 
 	}
 	
@@ -112,13 +109,9 @@ public class RoomServiceImpl implements RoomService{
 		
 		int beginRow = 0;
         beginRow = (currentPage -1) * ROW_PER_PAGE;
+        log.debug(TeamColor.GREEN + "beginRow => " + beginRow);
         
-        HashMap<String,Object> m = new HashMap<String,Object>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", ROW_PER_PAGE);       
-        
-		return roomMapper.selectRsvListByEmpNo(m); 
+		return roomMapper.selectRsvListByEmpNo(empNo, beginRow, ROW_PER_PAGE); 
 	}
 	
 	// 내 예약 총 갯수
@@ -133,6 +126,8 @@ public class RoomServiceImpl implements RoomService{
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
+		
 		return lastPage; 
 	}
 	
@@ -142,7 +137,7 @@ public class RoomServiceImpl implements RoomService{
 	// 사용 클래스 : RoomController.
 	@Override
 	public int modifyRoomRsv(RoomRsvDTO rsv) {
-		log.debug(TeamColor.GREEN + "rsv => " + rsv);
+		log.debug(TeamColor.GREEN + "rsv => " + rsv.toString());
 		
 		return roomMapper.updateRoomRsv(rsv); 
 	}

@@ -20,7 +20,7 @@
 	</select>
 
 	<!-- 회의실 상세보기 및 예약폼 -->
-	<select id="selectRoomOne" resultType="com.gd.foodbee.dto.RoomDTO" parameterType="int">
+	<select id="selectRoomOne" parameterType="int" resultType="com.gd.foodbee.dto.RoomDTO">
 		SELECT 
 		    room_name roomName, 
 		    info info, 
@@ -33,7 +33,7 @@
 	</select>
 	
 	<!-- 회의실 상세보기 이미지 -->
-	<select id="selectRoomOneImg" resultType="com.gd.foodbee.dto.RoomDTO" parameterType="int">
+	<select id="selectRoomOneImg" parameterType="int" resultType="com.gd.foodbee.dto.RoomDTO">
 		SELECT 
 			original_file originalFile
 		FROM  
@@ -68,7 +68,7 @@
 	</insert>
 	
 	<!-- 회의실 번호, 선택된 날짜에 예약된 시간을 출력 -->
-	<select id="selectReservedTimes" resultType="Map" parameterType="com.gd.foodbee.dto.RoomRsvDTO">
+	<select id="selectReservedTimes" parameterType="com.gd.foodbee.dto.RoomRsvDTO" resultType="Map">
 		SELECT 
 		 	rsv_date rsvDate, 
 		 	rsv_state rsvState,  
@@ -83,7 +83,7 @@
 	</select>
 	
 	<!-- 선택된 날짜별 전체 예약리스트 출력 -->
-	<select id="selectRsvListByDate" resultType="Map" parameterType="Map">
+	<select id="selectRsvListByDate" parameterType="Map" resultType="Map">
 		SELECT 
 		    rsv.rsv_no rsvNo,
 		    emp.emp_no empNo, 
@@ -111,7 +111,7 @@
 	</select>
 	
 	<!-- 선택된 날짜 예약 총갯수 -->
-	<select id="selectRsvCntByDate" resultType="int" parameterType="String">
+	<select id="selectRsvCntByDate" parameterType="String" resultType="int">
 		SELECT
 			COUNT(*) cnt
 		FROM  
@@ -121,7 +121,7 @@
 	</select>
 	
 	<!-- 내 예약리스트 출력 -->
-	<select id="selectRsvListByEmpNo" resultType="Map" parameterType="Map">
+	<select id="selectRsvListByEmpNo" parameterType="Map" resultType="Map">
 		SELECT 
 			rsv.rsv_no rsvNo,
 		    emp.emp_no empNo, 
@@ -152,7 +152,7 @@
 	</select>
 	
 	<!-- 내 예약 총갯수 -->
-	<select id="selectRsvCntByEmpNo" resultType="int" parameterType="int">
+	<select id="selectRsvCntByEmpNo" parameterType="int" resultType="int">
 		SELECT 
 			COUNT(*) cnt		
 		FROM  

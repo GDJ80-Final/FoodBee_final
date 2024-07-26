@@ -32,7 +32,7 @@ public interface AttendanceMapper {
 	// 파라미터 : HashMap<String,Object> m
 	// 반환값 : List<AttendanceDTO>
 	// 사용클래스 : AttendanceServiceImpl.getAttendancePersonal
-	List<AttendanceDTO> selectAttendancePersonal(HashMap<String,Object> m);
+	List<AttendanceDTO> selectAttendancePersonal(int empNo, String startDate, String endDate, int beginRow, int rowPerPage);
 	
 	// 개인 근태 cnt
 	// 파라미터 : int empNo
@@ -44,26 +44,29 @@ public interface AttendanceMapper {
 	// 파라미터 : HashMap<String,Object> m
 	// 반환값 : X
 	// 사용클래스 : AttendanceServiceImpl.modifyAttendanceFinalTime
-	int updateAttendanceFinalTime(HashMap<String,Object> m);
+	int updateAttendanceFinalTime(int empNo, String date);
 	
 	// 팀원 근태 출력
 	// 파라미터 : HashMap<String,Object> m
 	// 반환값 : List<HashMap<String, Object>>
 	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMember
-	List<HashMap<String, Object>> selectAttendanceTeamMember(HashMap<String, Object> m);
+	List<HashMap<String, Object>> selectAttendanceTeamMember(int empNo, String dptNo, int beginRow, int rowPerPage, String search);
 	
 	// 팀원 근태 출력 승인 상태별 분기
 	// 파라미터 : HashMap<String,Object> m
 	// 반환값 : List<HashMap<String, Object>>
 	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMember
-	List<HashMap<String, Object>> selectAttendanceTeamMemberByStatus(HashMap<String, Object> m);
+	List<HashMap<String, Object>> selectAttendanceTeamMemberByStatus(int empNo, String dptNo, int beginRow, int rowPerPage, String search, String approvalState);
 	
 	// 팀원 근태 cnt
-	// 파라미터 : HashMap<String, Object> m
+	// 파라미터 : int empNo, String dptNo
 	// 반환값 : int
 	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMemberCnt
-	int selectAttendanceTeamMemberCnt(HashMap<String, Object> m);
+	int selectAttendanceTeamMemberCnt(int empNo, String dptNo);
 
 	// 팀원 근태 승인 상태별 cnt
-	int selectAttendanceTeamMemberByStatusCnt(HashMap<String, Object> m);
+	// 파라미터 : int empNo, String dptNo, String approvalState
+	// 반환값 : int
+	// 사용클래스 : AttendanceServiceImpl.getAttendanceTeamMemberByStatusCnt
+	int selectAttendanceTeamMemberByStatusCnt(int empNo, String dptNo, String approvalState);
 }

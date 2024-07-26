@@ -148,9 +148,9 @@ public class AttendanceController {
 		return "redirect:/attendance/attendancePersonal";
 	}
 	
-	// 팀원 근태 출력
+	// 팀원 근태
 	// 파라미터 : HttpSession session, int currentPage
-	// 반환 값 : List<HashMap<String, Object>> list, int currentPage, int lastPage
+	// 반환 값 : int empNo, String dptNo
 	// 사용 페이지 : /attendance/attendanceTeamMember
 	@GetMapping("/attendance/attendanceTeamMember")
 	public String attendanceTeamMember(Model model, HttpSession session,
@@ -163,9 +163,14 @@ public class AttendanceController {
 		
 		model.addAttribute("empNo", empNo);
 		model.addAttribute("dptNo", dptNo);
+		
 		return "/attendance/attendanceTeamMember";
 	}
 	
+	// 팀원 근태 전체 출력
+	// 파라미터 : int empNo, String dptNo, int currentPage, String search
+	// 반환 값 : Map<String, Object> allAttendanceList, int currentPage, int allLastPage
+	// 사용 페이지 : /attendance/attendanceTeamMember
 	@GetMapping("/attendance/getAttendanceTeamMemberAll")
 	@ResponseBody
 	public Map<String, Object> getAttendanceTeamMemberAll(int empNo, String dptNo, int currentPage, String search) {
@@ -185,6 +190,10 @@ public class AttendanceController {
 	    return allAttendanceList;
 	}
 	
+	// 팀원 근태 승인/미승인 출력
+	// 파라미터 : int empNo, String dptNo, int currentPage, String search, String approvalState
+	// 반환 값 : Map<String, Object> attendanceList, int currentPage, int lastPage
+	// 사용 페이지 : /attendance/attendanceTeamMember
 	@GetMapping("/attendance/getAttendanceTeamMemberByStatus")
 	@ResponseBody
 	public Map<String, Object> getAttendanceTeamMemberByStatus(int empNo, String dptNo, int currentPage, 

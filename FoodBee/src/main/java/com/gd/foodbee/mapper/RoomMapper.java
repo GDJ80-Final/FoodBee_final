@@ -1,8 +1,6 @@
 package com.gd.foodbee.mapper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -46,7 +44,7 @@ public interface RoomMapper {
 	// 파라미터 : HashMap<String,Object> m (beginRow, ROW_PER_PAGE, rsvDate)
 	// 반환값 : List<RoomRsvDTO>
 	// 사용클래스 : RoomServiceImpl.getRsvListByDate
-	List<RoomRsvDTO> selectRsvListByDate(HashMap<String,Object> m);
+	List<RoomRsvDTO> selectRsvListByDate( String rsvDate, int beginRow, int rowPerPage);
 	
 	// 선택된 날짜 예약 총 갯수
 	// 파라미터 : String rsvDate
@@ -58,7 +56,7 @@ public interface RoomMapper {
 	// 파라미터 : HashMap<String,Object> m (beginRow, ROW_PER_PAGE, empNo)
 	// 반환값 : List<RoomRsvDTO>
 	// 사용클래스 : RoomServiceImpl.getRsvListByEmpNo
-	List<RoomRsvDTO> selectRsvListByEmpNo(HashMap<String,Object> m);
+	List<RoomRsvDTO> selectRsvListByEmpNo(int empNo, int beginRow, int rowPerPage);
 	
 	// 내 예약 총 갯수
 	// 파라미터 : int empNo

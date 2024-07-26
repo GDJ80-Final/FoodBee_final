@@ -69,15 +69,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 		
 		int beginRow = 0;
         beginRow = (currentPage -1) * ROW_PER_PAGE;
+        log.debug(TeamColor.GREEN + "beginRow => " + beginRow);
         
-        HashMap<String,Object> m = new HashMap<String,Object>();        
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", ROW_PER_PAGE);
-        m.put("startDate", startDate);
-        m.put("endDate", endDate);
-        
-		return attendanceMapper.selectAttendancePersonal(m);
+		return attendanceMapper.selectAttendancePersonal(empNo, startDate, endDate, beginRow, ROW_PER_PAGE);
 	}
 	
 	// 개인 근태 cnt
@@ -92,7 +86,8 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
-
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
+		 
 		return lastPage;
 	}
 	
@@ -105,11 +100,7 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "date => " + date);
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		
-		HashMap<String,Object> m = new HashMap<String,Object>();        
-        m.put("date", date);
-        m.put("empNo", empNo);
-		
-		return attendanceMapper.updateAttendanceFinalTime(m);
+		return attendanceMapper.updateAttendanceFinalTime(empNo, date);
 	}
 	
 	// 팀원 근태 출력
@@ -125,15 +116,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 		
 		int beginRow = 0;
         beginRow = (currentPage -1) * ROW_PER_PAGE;
+        log.debug(TeamColor.GREEN + "beginRow => " + beginRow);
         
-		HashMap<String,Object> m = new HashMap<String,Object>();        
-        m.put("empNo", empNo);
-        m.put("dptNo", dptNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", ROW_PER_PAGE);
-        m.put("search", search);
-		
-		return attendanceMapper.selectAttendanceTeamMember(m);
+		return attendanceMapper.selectAttendanceTeamMember(empNo, dptNo, beginRow, ROW_PER_PAGE, search);
 	}
 	
 	// 팀원 근태 출력 승인 상태별 분기
@@ -150,16 +135,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 		
 		int beginRow = 0;
         beginRow = (currentPage -1) * ROW_PER_PAGE;
+        log.debug(TeamColor.GREEN + "beginRow => " + beginRow);
         
-		HashMap<String,Object> m = new HashMap<String,Object>();        
-        m.put("empNo", empNo);
-        m.put("dptNo", dptNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", ROW_PER_PAGE);
-        m.put("search", search);
-        m.put("approvalState", approvalState);
-		
-		return attendanceMapper.selectAttendanceTeamMemberByStatus(m);
+		return attendanceMapper.selectAttendanceTeamMemberByStatus(empNo, dptNo, beginRow, ROW_PER_PAGE, search, approvalState);
 	}
 	
 	// 팀원 근태 cnt
@@ -170,14 +148,11 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
 		
-		HashMap<String,Object> m = new HashMap<String,Object>();        
-        m.put("empNo", empNo);
-        m.put("dptNo", dptNo);
-		
-		int cnt = attendanceMapper.selectAttendanceTeamMemberCnt(m);
+		int cnt = attendanceMapper.selectAttendanceTeamMemberCnt(empNo, dptNo);
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
 		return lastPage;
 	}
@@ -190,16 +165,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
 		log.debug(TeamColor.GREEN + "dptNo => " + dptNo);
 		log.debug(TeamColor.GREEN + "approvalState => " + approvalState);
-		
-		HashMap<String,Object> m = new HashMap<String,Object>();        
-        m.put("empNo", empNo);
-        m.put("dptNo", dptNo);
-        m.put("approvalState", approvalState);
-		
-		int cnt = attendanceMapper.selectAttendanceTeamMemberByStatusCnt(m);
+	
+		int cnt = attendanceMapper.selectAttendanceTeamMemberByStatusCnt(empNo, dptNo, approvalState);
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
 		return lastPage;
 	}
