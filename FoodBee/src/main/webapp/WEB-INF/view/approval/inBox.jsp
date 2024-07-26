@@ -77,12 +77,29 @@
 			tableBody.empty();
 			
 			$.each(json.referrerList, function(index, item){
-				
+				let approvalStateText = '';
+                let docApprovalStateNo = parseInt(item.docApproverStateNo);  // 숫자로 변환
+                switch (docApprovalStateNo) {
+                    case 0:
+                        approvalStateText = '결재대기';
+                        break;
+                    case 1:
+                        approvalStateText = '승인중';
+                        break;
+                    case 2:
+                        approvalStateText = '승인완료';
+                        break;
+                    case 9:
+                        approvalStateText = '반려';
+                        break;
+                    default:
+                        approvalStateText = '알 수 없음';
+                }
 				let newRow = $("<tr>" +
                         "<td>" + item.tmpName + "</td>" +
                         "<td>" + item.empName + "</td>" +
                         "<td>" + item.title + "</td>" +
-                        "<td>" + item.docApproverStateNo + "</td>" +
+                        "<td>" + approvalStateText + "</td>" +
                         "<td>" + item.createDatetime + "</td>" +
                         "</tr>");
 				tableBody.append(newRow);

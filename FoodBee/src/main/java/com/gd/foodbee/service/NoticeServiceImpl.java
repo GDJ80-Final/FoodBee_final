@@ -29,25 +29,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoticeServiceImpl implements NoticeService{
     @Autowired 
-    NoticeMapper noticeMapper;
+    private NoticeMapper noticeMapper;
     @Autowired 
-    NoticeFileMapper noticeFileMapper;
+    private NoticeFileMapper noticeFileMapper;
     
-    final int rowPerPage= 10;
+    private static final int ROW_PER_PAGE = 10;
     
     //전체 공지사항리스트
     @Override
     public List<HashMap<String,Object>> getNoticeList(int currentPage, String dptNo){
         
         int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
-        HashMap<String,Object> m = new HashMap<String,Object>();
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        m.put("dptNo", dptNo);
-        
-        return noticeMapper.noticeList(m);
+        return noticeMapper.noticeList(dptNo, beginRow, ROW_PER_PAGE);
     }
     
     //전사원 공지사항리스트
@@ -55,42 +50,33 @@ public class NoticeServiceImpl implements NoticeService{
     public List<HashMap<String,Object>> getAllEmpNoticeList(int currentPage){
     	
     	int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+
         
-        HashMap<String,Object> m = new HashMap<String,Object>();
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        
-        return noticeMapper.allEmpNoticeList(m);
+        return noticeMapper.allEmpNoticeList(beginRow, ROW_PER_PAGE);
     }
     //부서별 공지사항 리스트
     @Override
     public List<HashMap<String,Object>> getAllDptNoticeList(int currentPage, String dptNo){
     	
     	int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
-        
-        HashMap<String,Object> m = new HashMap<String,Object>();
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        m.put("dptNo", dptNo);
-        
-        return noticeMapper.allDptNoticeList(m);
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+
+        return noticeMapper.allDptNoticeList(dptNo, beginRow, ROW_PER_PAGE);
     }
     //전체 공지사항 마지막페이지
     @Override
     public int allLastPage(String dptNo) {
     	int count = noticeMapper.countNoticeList(dptNo);
-    	int lastPage = (int) Math.ceil((double) count / rowPerPage);
+    	int lastPage = (int) Math.ceil((double) count / ROW_PER_PAGE);
 
-    	
     	return lastPage;
     }
     //사원별 공지사항 마지막페이지
     @Override
     public int allEmpLastPage() {
     	int countEmp = noticeMapper.countEmpNoticeList();
-    	int empLastPage = (int) Math.ceil((double) countEmp / rowPerPage);
+    	int empLastPage = (int) Math.ceil((double) countEmp / ROW_PER_PAGE);
 
     	return empLastPage;
     }
@@ -98,7 +84,7 @@ public class NoticeServiceImpl implements NoticeService{
     @Override
     public int allDptLastPage(String dptNo) {
     	int countDpt = noticeMapper.countDptNoticeList(dptNo);
-    	int dptLastPage = (int) Math.ceil((double) countDpt / rowPerPage);
+    	int dptLastPage = (int) Math.ceil((double) countDpt / ROW_PER_PAGE);
 
     	return dptLastPage;
     }

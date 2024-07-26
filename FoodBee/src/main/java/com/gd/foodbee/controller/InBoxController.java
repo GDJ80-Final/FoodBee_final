@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InBoxController {
 	@Autowired 
-	InBoxService inBoxService;
+	private InBoxService inBoxService;
 	
 	// 수신함
 	// 파라미터 : int currentPage, Model model, HttpSession session
@@ -44,14 +44,15 @@ public class InBoxController {
         } else {
             log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
         }
-        
+        //수신함 stateBox가 0인경우 대비
         InBoxStateDTO stateBox = inBoxService.getStateBox(empNo);
         if (stateBox == null) {
-            stateBox = new InBoxStateDTO();
-            stateBox.setZeroState(0);
-            stateBox.setOneState(0);
-            stateBox.setTwoState(0);
-            stateBox.setNineState(0);
+            stateBox = InBoxStateDTO.builder()
+            		.zeroState(0)
+            		.oneState(0)
+            		.twoState(0)
+            		.nineState(0)
+            		.build();
         }
        
         log.debug(TeamColor.PURPLE + "currentPage=>" + currentPage);

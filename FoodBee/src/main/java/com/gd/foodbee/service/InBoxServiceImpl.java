@@ -17,39 +17,34 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InBoxServiceImpl implements InBoxService {
 	@Autowired 
-	InBoxMapper inBoxMapper;
-	final int rowPerPage = 10;
+	private InBoxMapper inBoxMapper;
+	private static final int ROW_PER_PAGE = 10;
 	
-	//내 수신 전체 리스트
+	// 내 수신 전체 리스트
 	@Override 
 	public List<InBoxDTO> getReferrerList(int currentPage, int empNo){
 		
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
-        
-        Map<String,Object> m = new HashMap<>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-   
-		return inBoxMapper.getReferrerList(m);
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+
+		return inBoxMapper.getReferrerList(empNo, beginRow, ROW_PER_PAGE);
 	}
 	
-	//수신참조된 전체리스트의 총갯수
+	// 수신참조된 전체리스트의 총갯수
 	@Override
 	public int countAllReferrerList(int empNo) {
 		InBoxStateDTO stateBox = inBoxMapper.getStateBox(empNo);
 		return stateBox.totalCount();
 	}
 	
-	//수신참조된 리스트 LastPage
+	// 수신참조된 리스트 LastPage
 	@Override
 	public int allReferrerLastPage(int empNo) {
 		int totalCount = countAllReferrerList(empNo);
-		return (int) Math.ceil((double) totalCount / rowPerPage);
+		return (int) Math.ceil((double) totalCount / ROW_PER_PAGE);
 	}
 	
-	//결재상태 건수(결재대기, 승인중, 승인완료, 반려)
+	// 결재상태 건수(결재대기, 승인중, 승인완료, 반려) 
 	@Override
 	public InBoxStateDTO getStateBox(int empNo) {
 		return inBoxMapper.getStateBox(empNo);

@@ -26,8 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class DraftBoxController {
 	
 	@Autowired 
-	private 
-	DraftBoxService draftBoxService;
+	private DraftBoxService draftBoxService;
 	
 	// 기안함
 	// 파라미터 : int currentPage, Model model, HttpSession session
@@ -48,16 +47,17 @@ public class DraftBoxController {
 	    } else {
 	        log.debug(TeamColor.PURPLE + "로그인하지 않았습니다");
 	    }
-	    //기안문서가 없고 null인 경우 대비
+	    //stateBox가 null인 경우대비
 		DraftBoxStateDTO stateBox = draftBoxService.getStateBox(empNo);
 		if (stateBox == null) {
-	        stateBox = new DraftBoxStateDTO();
-	        stateBox.setZeroState(0);
-	        stateBox.setOneState(0);
-	        stateBox.setTwoState(0);
-	        stateBox.setNineState(0);
+	        stateBox = DraftBoxStateDTO.builder()
+	        		.zeroState(0)
+	        		.oneState(0)
+	        		.twoState(0)
+	        		.nineState(0)
+	        		.build();
 	    }
-		
+		//빌더 패턴으로 변경! 
 		log.debug(TeamColor.PURPLE + "stateBox=>"+stateBox);
 		
 		model.addAttribute("empNo", empNo);

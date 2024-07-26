@@ -14,19 +14,19 @@ public interface NoticeMapper {
     // 파라미터 : "HashMap" 
   	// 반환값 : "HashMap"
 	// 사용클래스 : NoticeService.getNoticeList
-    List<HashMap<String, Object>> noticeList(HashMap<String,Object> m);
+    List<HashMap<String, Object>> noticeList(String dptNo, int beginRow, int rowPerPage);
     
     //전사원별 공지사항
     //파라미터:"HashMap" 
   	//반환값:"HashMap"
     //사용클래스:NoticeService.getAllEmpNoticeList
-    List<HashMap<String,Object>> allEmpNoticeList(HashMap<String,Object> m);
+    List<HashMap<String,Object>> allEmpNoticeList(int beginRow, int rowPerPage);
     
     // 부서별 공지사항
     // 파라미터 : "HashMap" 
   	// 반환값 : "HashMap"
     // 사용클래스 : NoticeService.getAllDptNoticeList
-    List<HashMap<String,Object>> allDptNoticeList(HashMap<String,Object> m);
+    List<HashMap<String,Object>> allDptNoticeList(String dptNo, int beginRow, int rowPerPage);
    
     // 전체공지사항의 총갯수 구하기
     // 반환값 : "int"

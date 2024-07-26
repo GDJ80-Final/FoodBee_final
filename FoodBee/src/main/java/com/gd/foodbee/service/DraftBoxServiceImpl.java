@@ -18,20 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 public class DraftBoxServiceImpl implements DraftBoxService {
 	@Autowired 
 	DraftBoxMapper draftBoxMapper;
-	final int rowPerPage = 10;
+	private static final int ROW_PER_PAGE = 10;
 	 
 	//전체 기안리스트
 	@Override
 	public List<DraftBoxDTO> getAllDocList(int currentPage, int empNo){
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
-        Map<String,Object> m = new HashMap<>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-   
-		return draftBoxMapper.allDocList(m);
+		return draftBoxMapper.allDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
 	//*전체 기안리스트의 총갯수
 	@Override
@@ -43,21 +38,16 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 	@Override
 	 public int getAllDocLastPage(int empNo) {
         int totalCount = countAllDocList(empNo);
-        return (int) Math.ceil((double) totalCount / rowPerPage);
+        return (int) Math.ceil((double) totalCount / ROW_PER_PAGE);
     }
 	
 	//결재대기 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getZeroDocList(int currentPage, int empNo){
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
-        Map<String,Object> m = new HashMap<>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        
-        return draftBoxMapper.zeroTypeDocList(m);
+        return draftBoxMapper.zeroTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
 	//*결재대기 리스트 총갯수
 	@Override
@@ -69,21 +59,16 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 	@Override
 	public int getZeroDocLastPage(int empNo) {
 		int zeroStateCount = countZeroDocList(empNo);
-        return (int) Math.ceil((double) zeroStateCount / rowPerPage);
+        return (int) Math.ceil((double) zeroStateCount / ROW_PER_PAGE);
 	}
 	
 	//승인중 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getOneDocList(int currentPage, int empNo){
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
-        
-        Map<String,Object> m = new HashMap<>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        
-        return draftBoxMapper.oneTypeDocList(m);
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+
+        return draftBoxMapper.oneTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
 	//*승인중 리스트 총갯수
 	@Override
@@ -95,22 +80,17 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 	@Override
 	public int getOneDocLastPage(int empNo) {
 		int oneStateCount = countOneDocList(empNo);
-        return (int) Math.ceil((double) oneStateCount / rowPerPage);
+        return (int) Math.ceil((double) oneStateCount / ROW_PER_PAGE);
 	}
-
 	
 	//승인완료 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getTwoDocList(int currentPage, int empNo){
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+
         
-        Map<String,Object> m = new HashMap<>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        
-        return draftBoxMapper.twoTypeDocList(m);
+        return draftBoxMapper.twoTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
 	//*승인완료 리스트 총갯수
 	@Override
@@ -122,21 +102,16 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 	@Override
 	public int getTwoDocLastPage(int empNo) {
 		int twoStateCount = countTwoDocList(empNo);
-        return (int) Math.ceil((double) twoStateCount / rowPerPage);
+        return (int) Math.ceil((double) twoStateCount / ROW_PER_PAGE);
 	}
 	
 	//반려 기안서리스트
 	@Override
 	public List<DraftBoxDTO> getNineDocList(int currentPage, int empNo){
 		int beginRow = 0;
-        beginRow = (currentPage -1) * rowPerPage;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
         
-        Map<String,Object> m = new HashMap<>();
-        m.put("empNo", empNo);
-        m.put("beginRow", beginRow);
-        m.put("rowPerPage", rowPerPage);
-        
-        return draftBoxMapper.nineTypeDocList(m);
+        return draftBoxMapper.nineTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
 	//*반려 리스트 총갯수
 	@Override
@@ -148,7 +123,7 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 	@Override
 	public int getNineDocLastPage(int empNo) {
 		int twoStateCount = countNineDocList(empNo);
-        return (int) Math.ceil((double) twoStateCount / rowPerPage);
+        return (int) Math.ceil((double) twoStateCount / ROW_PER_PAGE);
 	}
 	
 	//결재상태 건수(결재대기, 승인중, 승인완료, 반려)

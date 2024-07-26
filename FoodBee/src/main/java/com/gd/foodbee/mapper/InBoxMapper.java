@@ -14,7 +14,7 @@ public interface InBoxMapper {
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : List<InBoxDTO>
 	// 사용클래스 : InBoxController.inbox
-	List<InBoxDTO> getReferrerList(Map<String,Object>m);
+	List<InBoxDTO> getReferrerList(int empNo, int beginRow, int rowPerPage);
 	
 	// 결재상태 총갯수
 	// 파라미터 : int empNo
