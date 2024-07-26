@@ -98,9 +98,11 @@
                     empNo: "${empNo}"
                 },
                 success: function(json) {
+                	console.log("Ajax 요청 성공:", json); 
                     updateAllDocList(json);
                 },
                 error: function() {
+                	console.log("Ajax 요청 실패:", json); 
                     alert("전체기안서를 가져올 수 없습니다.");
                 }
             });
@@ -179,10 +181,10 @@
      	 function getApprovalStateText(stateNo) {
              let stateText = '';
              switch (parseInt(stateNo)) {
-                 case 1:
+                 case 0:
                      stateText = '승인전';
                      break;
-                 case 2:
+                 case 1:
                      stateText = '승인완료';
                      break;
                  case 9:

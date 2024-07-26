@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.ApprovalBoxMapper">
+<!-- 전체 결재함 리스트 -->
+<select id="getApprovalListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+	SELECT 
+	    dt.tmp_name tmpName,
+	    e.emp_name empName,
+	    dd.title title,
+	    dd.doc_approver_state_no approverStateNo,
+	    dd.mid_approver_no midApproverNo,
+	    dd.mid_approval_state midApprovalState,
+	    dd.mid_approval_datetime midApprovalDatetime,
+	    dd.final_approver_no finalApproverNo,
+	    dd.final_approval_state finalApprovalState,
+	    dd.final_approval_datetime finalApprovalDatetime,
+	    dd.create_datetime createDatetime,
+	    dd.draft_doc_no draftDocNo
+	FROM 
+	    draft_doc dd
+    INNER JOIN 
+    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
+    INNER JOIN 
+    	emp e ON dd.drafter_emp_no = e.emp_no
+	WHERE 
+	    (mid_approver_no = #{empNo} OR final_approver_no = #{empNo})
+	ORDER BY 
+		dd.create_datetime DESC
+	LIMIT #{beginRow}, #{rowPerPage}
+</select>
+<!-- 미결 리스트 -->
+<select id="getZeroListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+	SELECT 
+	    dt.tmp_name tmpName,
+	    e.emp_name empName,
+	    dd.title title,
+	    dd.doc_approver_state_no approverStateNo,
+	    dd.mid_approver_no midApproverNo,
+	    dd.mid_approval_state midApprovalState,
+	    dd.mid_approval_datetime midApprovalDatetime,
+	    dd.final_approver_no finalApproverNo,
+	    dd.final_approval_state finalApprovalState,
+	    dd.final_approval_datetime finalApprovalDatetime,
+	    dd.create_datetime createDatetime,
+	    dd.draft_doc_no draftDocNo
+	FROM 
+	    draft_doc dd
+    INNER JOIN 
+    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
+    INNER JOIN 
+    	emp e ON dd.drafter_emp_no = e.emp_no
+	WHERE 
+		(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND final_approval_state = 0)
+	ORDER BY 
+			dd.create_datetime DESC
+	LIMIT #{beginRow}, #{rowPerPage}
+</select>
+<!-- 기결 리스트 -->
+<select id="getOneListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+	SELECT 
+	    dt.tmp_name tmpName,
+	    e.emp_name empName,
+	    dd.title title,
+	    dd.doc_approver_state_no approverStateNo,
+	    dd.mid_approver_no midApproverNo,
+	    dd.mid_approval_state midApprovalState,
+	    dd.mid_approval_datetime midApprovalDatetime,
+	    dd.final_approver_no finalApproverNo,
+	    dd.final_approval_state finalApprovalState,
+	    dd.final_approval_datetime finalApprovalDatetime,
+	    dd.create_datetime createDatetime,
+	    dd.draft_doc_no draftDocNo
+	FROM 
+	    draft_doc dd
+    INNER JOIN 
+    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
+    INNER JOIN 
+    	emp e ON dd.drafter_emp_no = e.emp_no
+	WHERE 
+		(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
+	ORDER BY 
+			dd.create_datetime DESC
+	LIMIT #{beginRow}, #{rowPerPage}
+</select>
+<!-- 전체 리스트 총갯수 -->
+<select id="countAllList" resultType="int" parameterType="int">
+	SELECT COUNT(*) 
+	FROM 
+		draft_doc
+	WHERE 
+    (mid_approver_no = #{empNo} OR final_approver_no = #{empNo})
+</select>
+<!-- 미결 리스트 총갯수 -->
+<select id="countZeroTypeList" resultType="int" parameterType="int">
+	SELECT COUNT(*) 
+	FROM 
+		draft_doc
+	WHERE 
+		(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND final_approval_state = 0)
+</select>
+<!-- 기결 리스트 총갯수 -->
+<select id="countOneTypeList" resultType="int" parameterType="int">
+	SELECT COUNT(*) 
+	FROM 
+		draft_doc
+	WHERE 
+		(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
+</select>
+<!-- 결재함 기안서 상태값 -->
+<select id="getStateBox" parameterType="com.gd.foodbee.dto.ApprovalBoxStateDTO">
+	SELECT
+        SUM(CASE WHEN dd.doc_approver_state_no = 0 THEN 1 ELSE 0 END) AS zeroState,
+        SUM(CASE WHEN dd.doc_approver_state_no = 1 THEN 1 ELSE 0 END) AS oneState,
+        SUM(CASE WHEN dd.doc_approver_state_no = 2 THEN 1 ELSE 0 END) AS twoState,
+        SUM(CASE WHEN dd.doc_approver_state_no = 9 THEN 1 ELSE 0 END) AS nineState
+   FROM 
+        draft_doc dd
+	LEFT JOIN
+        emp e ON dd.drafter_emp_no = e.emp_no
+   LEFT JOIN 
+   		doc_referrer dr ON dd.draft_doc_no = dr.draft_doc_no
+   WHERE
+   	(dd.mid_approver_no = #{empNo} OR dd.final_approver_no = #{empNo})
+</select>
+</mapper>
