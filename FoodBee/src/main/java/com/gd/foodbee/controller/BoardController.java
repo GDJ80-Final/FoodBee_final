@@ -192,7 +192,6 @@ public class BoardController {
 	public boolean deleteBoard(@RequestParam(name="boardNo") int boardNo) {
 		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
 		
-		boardService.deleteBoard(boardNo);
 		
 		return boardService.deleteBoard(boardNo);
 	}
@@ -213,10 +212,8 @@ public class BoardController {
 	@ResponseBody
 	public boolean boardPwCheck(@RequestParam(name="boardNo") int boardNo,
 				String boardPw) {
-		
-		boardService.boardPwCheck(boardNo, boardPw);
-		
-		
+		log.debug(TeamColor.YELLOW + "boardNo => "+ boardNo);
+	
 		
 		return boardService.boardPwCheck(boardNo, boardPw);
 	}
