@@ -7,7 +7,8 @@
 			comment_no commentNo,
 			content,
 			DATE_FORMAT(create_datetime,'%Y-%m-%d %H:%i') createDatetime
-		FROM board_comment
+		FROM 
+			board_comment
 		WHERE 
 			board_no = #{boardNo}
 			AND delete_YN = 'N'

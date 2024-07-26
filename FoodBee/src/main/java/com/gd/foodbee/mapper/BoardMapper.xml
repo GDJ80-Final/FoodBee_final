@@ -30,8 +30,10 @@
 			COUNT(bc.comment_no) commentCnt,
 			DATE_FORMAT(b.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
 			b.like_cnt likeCnt
-		FROM board b 
-		LEFT JOIN board_comment bc ON b.board_no = bc.board_no 
+		FROM 
+			board b 
+		LEFT JOIN 
+			board_comment bc ON b.board_no = bc.board_no 
 		WHERE
 			1=1
 			<if test='category == "chat"'>
@@ -46,9 +48,12 @@
 			<if test='keyword != null and keyword != ""'>
         		AND b.title LIKE CONCAT('%', #{keyword}, '%')
    			</if>
-		GROUP BY b.board_no
-		ORDER BY boardOrder DESC
-		LIMIT #{beginRow},#{rowPerPage}
+		GROUP BY 
+			b.board_no
+		ORDER BY 
+			boardOrder DESC
+		LIMIT 
+			#{beginRow},#{rowPerPage}
 	</select>
 	<select id="selectBoardOne" parameterType="int" resultType="Map">
 		SELECT
@@ -59,8 +64,10 @@
 	 		create_datetime createDatetime,
 	 		view,
 	 		like_cnt likeCnt
-		FROM board
-		WHERE board_no = #{boardNo}
+		FROM 
+			board
+		WHERE 
+			board_no = #{boardNo}
 	
 	</select>
 	<update id="updateViewCnt" parameterType="int">
@@ -68,7 +75,8 @@
 			board
 		SET
 			view = view + 1
-		WHERE board_no = #{boardNo}
+		WHERE 
+			board_no = #{boardNo}
 	
 	</update>
 	<update id="updateLikeCnt" parameterType="int">
@@ -76,7 +84,8 @@
 			board
 		SET
 			like_cnt = like_cnt + 1
-		WHERE board_no = #{boardNo}
+		WHERE 
+			board_no = #{boardNo}
 	
 	</update>
 </mapper>

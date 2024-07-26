@@ -26,6 +26,8 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private BoardCommentMapper boardCommentMapper;
 	
+	private static final int ROW_PER_PAGE = 15;
+	
 	// 새 글 작성
 	// 파라미터 : BoardDTO boardDTO
 	// 반환 값 : X
@@ -52,10 +54,10 @@ public class BoardServiceImpl implements BoardService{
 	// 사용 클래스 : BoardController.boardList
 	@Override
 	public List<Map<String, Object>> getBoardList(int currentPage,String category, String keyword) {
-		int rowPerPage = 10;
-		int beginRow = (currentPage - 1) * rowPerPage;
 		
-		return boardMapper.selectBoardList(beginRow, rowPerPage, category,keyword);
+		int beginRow = (currentPage - 1) * ROW_PER_PAGE;
+		
+		return boardMapper.selectBoardList(beginRow, ROW_PER_PAGE, category,keyword);
 	}
 	// 글 상세보기 
 	// 파라미터 : int boardNo
@@ -69,7 +71,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 	// 댓글 리스트 
 	// 파라미터 : int boardNo
-	// 반환 값 : Map<String,Object>
+	// 반환 값 : List<Map<String, Object>>
 	// 사용 클래스 : BoardController.boardOne
 
 	@Override
@@ -81,7 +83,7 @@ public class BoardServiceImpl implements BoardService{
 	
 	// 좋아요 수 업데이트 
 	// 파라미터 : int boardNo
-	// 반환 값 : Map<String,Object>
+	// 반환 값 : X
 	// 사용 클래스 : BoardController.updateLikeCnt
 	@Override
 	public void updateLikeCnt(int boardNo) {
@@ -95,7 +97,7 @@ public class BoardServiceImpl implements BoardService{
 	
 	// 조회수 업데이트  
 	// 파라미터 : int boardNo
-	// 반환 값 : Map<String,Object>
+	// 반환 값 :X
 	// 사용 클래스 : BoardController.updateViewCnt
 	@Override
 	public void updateViewCnt(int boardNo) {
@@ -108,7 +110,7 @@ public class BoardServiceImpl implements BoardService{
 	
 	// 댓글 추가
 	// 파라미터 : int boardNo
-	// 반환 값 : Map<String,Object>
+	// 반환 값 : X
 	// 사용 클래스 : BoardController.addComment
 	@Override
 	public void addComment(BoardCommentDTO boardCommentRequestDTO,int boardNo) {

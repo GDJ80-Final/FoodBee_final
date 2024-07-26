@@ -297,13 +297,11 @@ public class MsgServiceImpl implements MsgService{
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
 		log.debug(TeamColor.YELLOW + "readYN =>" + readYN);
 		
-		int lastPage = 0;
+	
 		int msgCount = msgMapper.selectMsgCntReceivedBox(readYN, empNo);
-		if(msgCount % ROW_PER_PAGE == 0) {
-			lastPage = msgCount / ROW_PER_PAGE;
-		} else {
-			lastPage = msgCount / ROW_PER_PAGE + 1;
-		}
+		
+		int lastPage = (int) Math.ceil((double) msgCount / ROW_PER_PAGE);
+
 		
 		return lastPage;
 	}
@@ -315,13 +313,11 @@ public class MsgServiceImpl implements MsgService{
 	public int getLastPageSentBox(int empNo, String readYN) {
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
 		log.debug(TeamColor.YELLOW + "readYN =>" + readYN);
-		int lastPage = 0 ;
+		
 		int msgCount = msgMapper.selectMsgCntSentBox(readYN, empNo);
-		if(msgCount % ROW_PER_PAGE == 0) {
-			lastPage = msgCount / ROW_PER_PAGE;
-		} else {
-			lastPage = msgCount / ROW_PER_PAGE + 1;
-		}
+		
+		int lastPage = (int) Math.ceil((double) msgCount / ROW_PER_PAGE);
+		
 		return lastPage;
 	}
 	// 마지막 페이지 구하기 휴지통
@@ -331,13 +327,11 @@ public class MsgServiceImpl implements MsgService{
 	@Override
 	public int getLastPageTrashBox(int empNo) {
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
-		int lastPage = 0;
+		
 		int msgCount = msgMapper.selectMsgcntTrashBox(empNo);
-		if(msgCount % ROW_PER_PAGE == 0) {
-			lastPage = msgCount / ROW_PER_PAGE;
-		} else {
-			lastPage = msgCount / ROW_PER_PAGE + 1;
-		}
+		
+		int lastPage = (int) Math.ceil((double) msgCount / ROW_PER_PAGE);
+		
 		return lastPage;
 	}
 }

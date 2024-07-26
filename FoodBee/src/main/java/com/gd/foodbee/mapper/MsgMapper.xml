@@ -46,10 +46,10 @@
 		<if test='readYN == "N"'>
 			AND mr.read_YN = 'N'
 		</if>
-		ORDER BY msgOrder DESC
+		ORDER BY 
+			msgOrder DESC
 		LIMIT
-			#{beginRow},
-			#{rowPerPage}
+			#{beginRow},#{rowPerPage}
 	</select>
 	<update id="updateMsgToTrash" parameterType="int">
 		UPDATE
@@ -87,9 +87,12 @@
 		<if test='readYN == "N"'>
 			AND mr.read_YN = 'N'
 		</if>
-		GROUP BY m.msg_no
-		ORDER BY msgOrder DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		GROUP BY 
+			m.msg_no
+		ORDER BY 
+			msgOrder DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<select id="selectMsgOne" parameterType="int" resultType="Map">
 		SELECT
@@ -115,8 +118,10 @@
         		msg_no,
         		GROUP_CONCAT(original_file SEPARATOR ',') originalFiles,
         		GROUP_CONCAT(save_file SEPARATOR ',') saveFiles
-    		 FROM msg_file
-    		 GROUP BY msg_no) mf ON m.msg_no = mf.msg_no
+    		 FROM 
+    		 	msg_file
+    		 GROUP BY 
+    		 	msg_no) mf ON m.msg_no = mf.msg_no
 		WHERE
 			m.msg_no = #{msgNo}
 	</select>
@@ -176,10 +181,13 @@
 			    mr.recipient_emp_no = #{empNo}
 			    AND mr.recipient_msg_state = 0
 			GROUP BY
-			    m.msg_no)s
-		 GROUP BY msgNo
-		 ORDER BY msgOrder DESC
-		 LIMIT #{beginRow},#{rowPerPage}
+			    m.msg_no) s
+		GROUP BY 
+			msgNo
+		ORDER BY 
+			msgOrder DESC
+		LIMIT 
+			#{beginRow},#{rowPerPage}
 
 	</select>
 	<update id="updateMsgDelete" parameterType="int">
@@ -263,7 +271,7 @@
    				emp recipient ON mr.recipient_emp_no = recipient.emp_no
 			 WHERE
     			m.sender_emp_no = #{empNo}
-    			    			AND m.msg_state = 0
+    			AND m.msg_state = 0
 			 GROUP BY
    				m.msg_no
 		UNION
