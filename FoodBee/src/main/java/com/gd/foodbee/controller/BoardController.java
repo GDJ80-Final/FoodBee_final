@@ -162,4 +162,70 @@ public class BoardController {
 		return "redirect:/community/board/boardOne?boardNo="+boardNo;
 	}
 	
+	// 게시글 수정 폼
+	@GetMapping("/community/board/modifyBoard")
+	public String modifyBoard(@RequestParam(name="boardNo") int boardNo,
+				Model model) {
+		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
+		
+		Map<String,Object> m = boardService.getBoardOne(boardNo);
+		
+		model.addAttribute("m", m);
+		
+		return "/community/board/modifyBoard";
+	}
+	
+	// 게시글 수정 
+	@PostMapping("/community/board/modifyBoard")
+	public String modifyBoard(BoardDTO boardDTO,
+				@RequestParam(name="boardNo") int boardNo) {
+		
+		boardService.modifyBoard(boardDTO, boardNo);
+		
+		return "redirect:/community/board/boardOne?boardNo="+boardNo;
+		
+	}
+	
+	// 게시글 삭제 
+	@PostMapping("/community/board/deleteBoard")
+	@ResponseBody
+	public boolean deleteBoard(@RequestParam(name="boardNo") int boardNo) {
+		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
+		
+		boardService.deleteBoard(boardNo);
+		
+		return boardService.deleteBoard(boardNo);
+	}
+	// 댓글 삭제 
+	@PostMapping("/community/board/deleteComment")
+	@ResponseBody
+	public String deleteComment(@RequestParam(name="commentNo") int commentNo){
+		log.debug(TeamColor.YELLOW + "commentNo =>" + commentNo);
+		
+		boardService.deleteComment(commentNo);
+		
+		return "success";
+		
+	}
+	
+	// 게시글 비번 체크 
+	@PostMapping("/community/board/boardPwCheck")
+	@ResponseBody
+	public boolean boardPwCheck(@RequestParam(name="boardNo") int boardNo,
+				String boardPw) {
+		
+		boardService.boardPwCheck(boardNo, boardPw);
+		
+		
+		
+		return boardService.boardPwCheck(boardNo, boardPw);
+	}
+	// 댓글 비번 체크 
+	@PostMapping("/community/board/commentPwCheck")
+	@ResponseBody
+	public boolean commentPwCheck(@RequestParam(name="commentNo") int commentNo,
+				String commentPw) {
+		
+		return boardService.commentPwCheck(commentNo, commentPw);
+	}
 }

@@ -108,4 +108,40 @@
         		AND b.title LIKE CONCAT('%', #{keyword}, '%')
    			</if>
 	</select>
+	<update id="updateBoard" parameterType="com.gd.foodbee.dto.BoardDTO">
+		UPDATE
+			board
+		SET
+			title = #{title},
+			board_category = #{boardCategory},
+			content = #{content},
+			update_datetime = NOW()
+		WHERE
+			board_no = #{boardNo}
+	</update>
+	<delete id="deleteBoard" parameterType="Map">
+		DELETE
+		FROM 
+			board
+		WHERE 
+			board_no = #{boardNo}
+			AND 
+				(SELECT
+					COUNT(*)
+				 FROM 
+					board_comment
+				 WHERE 
+					board_no = #{boardNo}) = 0
+	</delete>
+	<select id="selectPwCheck" parameterType="Map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			board
+		WHERE
+			board_no = #{boardNo}
+			AND board_pw = SHA2(#{boardPw},256)
+		
+	
+	</select>
 </mapper>

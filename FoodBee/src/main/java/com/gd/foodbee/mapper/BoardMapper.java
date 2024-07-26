@@ -16,6 +16,24 @@ public interface BoardMapper {
 	// 사용 클래스 : BoardService.addBoard
 	int insertBoard(BoardDTO boardDTO);
 	
+	// 글 수정 삭제 시 비번 체크 
+	// 파라미터 : int boardNo, String boardPw
+	// 반환 값 : int 
+	// 사용 클래스 :BoardService.boardPwCheck
+	int selectPwCheck(int boardNo, String boardPw);
+	
+	// 사내익명게시판 게시글 수정
+	// 파라미터 : BoardDTO boardDTO
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.modifyBoard
+	int updateBoard(BoardDTO boardDTO);
+	
+	// 사내익명게시판 게시글 삭제 
+	// 파라미터 : int boardNo,
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.deleteBoard
+	int deleteBoard(int boardNo);
+	
 	// 게시글 리스트 + 검색 
 	// 파라미터 :int beginRow, int rowPerPage, String category,String keyword
 	// 반환 값 : List<Map<String,Object>>

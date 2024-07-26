@@ -5,6 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+	crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
     body {
@@ -122,6 +128,11 @@
     .comment-date{
     	color:black;
     }
+    .error-message {
+        color: red;
+        display: none;
+        margin-top: 10px;
+    }
 </style>
 </head>
 <body>
@@ -156,8 +167,8 @@
 					
 		</table>
 		 <div class="post-actions">
-		 	<button class="button edit">수정</button>
-            <button class="button delete">삭제</button>
+		 	<button type="button" class="button edit" id="modifyBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">수정</button>
+            <button  type="button" class="button delete" id="deleteBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button>
 		 </div>
 		 <div class="like-section">
 		 	<button class="like-button" id="likeButton">&#10084;</button>
@@ -184,6 +195,25 @@
 		 	
 		 	</table>
 		 </div>
+	</div>
+	 <!-- 모달 -->
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="staticBackdropLabel">비밀번호 확인</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+			  <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+			  <div class="error-message" id="errorMessage">비밀번호가 틀렸습니다.</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-primary" id="checkPw">확인</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 <script>
 
@@ -298,6 +328,79 @@
 		$('#backToList').click(function(){
 			window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
 		})
+		
+		
+		
+		
+		// -- 비밀번호 확인 모달 --
+		
+        // 비번확인 후 이동 할 액션 
+        let action = '';
+        
+
+        // 수정 버튼 클릭 이벤트
+        $('#modifyBoard').click(function() {
+            action = 'modify';
+        });
+
+        // 삭제 버튼 클릭 이벤트
+        $('#deleteBoard').click(function() {
+            action = 'delete';
+        });
+
+        $('#checkPw').click(function() {
+            let password = $('#password').val();
+
+            if (password) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/community/board/boardPwCheck',
+                    method: 'post',
+                    data: {
+                        boardNo: boardNo,
+                        boardPw: password
+                    },
+                    success: function(json) {
+                        console.log(action);
+                        if (json) {
+                            if (action === 'modify') {
+                                window.location.href = '${pageContext.request.contextPath}/community/board/modifyBoard?boardNo=' + boardNo;
+                            } else if (action === 'delete') {
+                                if (confirm('삭제하시겠습니까?')) {
+                                    $.ajax({
+                                        url: '${pageContext.request.contextPath}/community/board/deleteBoard',
+                                        method: 'post',
+                                        data: {
+                                            boardNo: boardNo
+                                        },
+                                        success: function(json) {
+                                        	console.log(json);
+                                            if (json) {
+                                                alert('삭제되었습니다.');
+                                                window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
+                                            } else {
+                                                alert('댓글이 달린 게시글은 삭제할 수 없습니다');
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        } else {
+                            $('#errorMessage').show();
+                        }
+                    }
+                });
+            } else {
+                alert('비밀번호를 입력하세요.');
+            }
+        });
+        
+     	// 모달이 닫힐 때 입력된 비밀번호 + 오류문구 초기화
+        $('#staticBackdrop').on('hidden.bs.modal', function () {
+            $('#password').val('');
+            $('#errorMessage').hide();
+            action = ''; 
+        });
+
 	})
 </script>
 

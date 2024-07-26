@@ -28,4 +28,17 @@ public interface BoardCommentMapper {
 	// 사용 클래스 : BoardService.addComment
 	int insertComment(BoardCommentDTO boardCommentDTO);
 	
+	// 댓글 삭제
+	// 파라미터 : int commentNo
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.deleteComment
+	int deleteComment(int commentNo);
+	
+	// 댓글 삭제 시 비번 체크 
+	// 파라미터 : int commentNo, STring commentPw
+	// 반환 값 : int
+	// 사용 클래스 : BoarrdService.commentPwCheck
+	int selectPwCheck(int commentNo, String commentPw);
+	
+	
 }

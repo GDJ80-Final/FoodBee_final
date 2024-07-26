@@ -144,7 +144,8 @@ public class BoardServiceImpl implements BoardService{
 	// 반환 값 : X
 	// 사용 클래스 : BoardController.addComment
 	@Override
-	public void addComment(BoardCommentDTO boardCommentRequestDTO,int boardNo) {
+	public void addComment(BoardCommentDTO boardCommentRequestDTO,
+				int boardNo) {
 		BoardCommentDTO boardCommentDTO = BoardCommentDTO.builder()
 					.boardNo(boardNo)
 					.content(boardCommentRequestDTO.getContent())
@@ -156,5 +157,90 @@ public class BoardServiceImpl implements BoardService{
 			throw new RuntimeException();
 		}
 		
+	}
+	// 게시글 수정/삭제 시 비번 체크 
+	// 파라미터 : int boardNo, String boardPw
+	// 반환 값 : boolean
+	// 사용 클래스 : BoardController.boardPwCheck
+	@Override
+	public boolean boardPwCheck(int boardNo, String boardPw) {
+		boolean isChecked = false;
+		
+		if(boardMapper.selectPwCheck(boardNo, boardPw) == 1) {
+			isChecked = true;
+		}
+		
+		
+		return isChecked;
+	}
+	
+	
+	// 게시글 수정
+	// 파라미터 : BoardDTO boardRequestDTO, int boardNo
+	// 반환 값 : X
+	// 사용 클래스 : BoardController.modifyBoard
+	@Override
+	public void modifyBoard(BoardDTO boardRequestDTO,
+				int boardNo) {
+		BoardDTO boardDTO = BoardDTO.builder()
+					.boardNo(boardNo)
+					.boardCategory(boardRequestDTO.getBoardCategory())
+					.title(boardRequestDTO.getTitle())
+					.content(boardRequestDTO.getContent())
+					.build();
+		log.debug(TeamColor.YELLOW + "boardDTO =>" + boardDTO.toString());
+		
+		int row = boardMapper.updateBoard(boardDTO);
+		if(row != 1) {
+			throw new RuntimeException();
+		}
+		
+	}
+	// 게시글 삭제
+	// 파라미터 : int boardNo, String boardPw 
+	// 반환 값 : X
+	// 사용 클래스 : BoardController.deleteBoard
+	@Override
+	public boolean deleteBoard(int boardNo) {
+		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
+		boolean result = false;
+		int row = boardMapper.deleteBoard(boardNo);
+		
+		if(row == 1) {
+			result = true;
+		}
+		
+		log.debug(TeamColor.YELLOW + "result =>" + result);
+		
+		return result;
+		
+	}
+	// 댓글 삭제 시 비번 체크 
+	// 파라미터 : int commentNo 
+	// 반환 값 : boolean
+	// 사용 클래스 : BoardComtroller.commentPwCheck
+	@Override
+	public boolean commentPwCheck(int commentNo, String boardPw) {
+		boolean isChecked = false;
+		
+		if(boardCommentMapper.selectPwCheck(commentNo, boardPw) == 1) {
+			isChecked = true;
+		}
+		return isChecked;
+	}
+	
+	
+	// 댓글 삭제
+	// 파라미터 : int commentNo, String boardPw
+	// 반환 값 : X 
+	// 사용 클래스 : BoardController.deleteComment
+	@Override
+	public void deleteComment(int commentNo) {
+		log.debug(TeamColor.YELLOW + "commentNo =>" + commentNo);
+		
+		int row = boardCommentMapper.deleteComment(commentNo);
+		if(row != 1) {
+			throw new RuntimeException();
+		}
 	}
 }

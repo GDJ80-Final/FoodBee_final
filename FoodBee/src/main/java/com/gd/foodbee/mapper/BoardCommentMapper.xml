@@ -46,7 +46,26 @@
 			AND delete_YN = 'N'
 	
 	</select>
-
+	<delete id="deleteComment">
+		DELETE
+		FROM
+			board_comment
+		WHERE
+			comment_no = #{commentNo}
+	
+	
+	</delete>
+	<select id="selectPwCheck" parameterType="Map" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			board_comment
+		WHERE
+			comment_no = #{commentNo}
+			AND comment_pw = SHA2(#{commentPw},256)
+		
+	
+	</select>
 
 
 

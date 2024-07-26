@@ -34,4 +34,19 @@ public interface BoardService {
 	
 	// 댓글 작성
 	void addComment(BoardCommentDTO boardCommentDTO,int boardNo);
+	
+	// 글 수정
+	void modifyBoard(BoardDTO boardDTO, int boardNo);
+	
+	// 글 삭제 
+	boolean deleteBoard(int boardNo);
+	
+	// 댓글 삭제 
+	void deleteComment(int commentNo);
+	
+	// 글 수정 삭제 시 비번 체크 
+	boolean boardPwCheck(int boardNo, String boardPw);
+	
+	// 댓글 삭제 시 비번 체크 
+	boolean commentPwCheck(int commentNo, String boardPw);
 }
