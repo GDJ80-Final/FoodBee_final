@@ -274,13 +274,17 @@
 						$('#comment').append('<tr>' +
 							'<td class="comment-content"><span>['+ item.commentOrder + ']</span>&nbsp;' + item.content + '</td>' + 
 							'</tr>' +
-							'<tr><td class="comment-info"><span class="comment-date">' + item.createDatetime + '</span></td></tr>'
+							'<tr><td class="comment-info"><span class="comment-date">' + item.createDatetime + '</span>'+
+							'<button type="button" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">X</button></td></tr>'
 						);
 					});
 					updateBtnState();
 				}
+				
 			});
 		}
+		
+		
 		
 		
 	
@@ -336,7 +340,9 @@
 		
         // 비번확인 후 이동 할 액션 
         let action = '';
-        
+		// 댓글 번호 
+		let commentNo = '';
+    	
 
         // 수정 버튼 클릭 이벤트
         $('#modifyBoard').click(function() {
@@ -347,11 +353,18 @@
         $('#deleteBoard').click(function() {
             action = 'delete';
         });
+        
+     	// 댓글 삭제 전 비번 체크 
+		$(document).on('click', '#deleteComment', function() {
+			commentNo = $(this).val();
+			console.log(commentNo);
+			action = 'deleteComment';
+		});
 
         $('#checkPw').click(function() {
             let password = $('#password').val();
-
-            if (password) {
+			console.log(action);
+            if (password && action != 'deleteComment') {
                 $.ajax({
                     url: '${pageContext.request.contextPath}/community/board/boardPwCheck',
                     method: 'post',
@@ -389,8 +402,46 @@
                         }
                     }
                 });
+            } else if(password && action === 'deleteComment'){
+            	$.ajax({
+            		url: '${pageContext.request.contextPath}/community/board/commentPwCheck',
+            		method : 'post',
+            		data :{
+            			commentNo : commentNo,
+            			commentPw : password
+            		},
+            		success:function(json){
+            			console.log(json);
+            			if(json){
+            				if (confirm('삭제하시겠습니까?')){
+            					$.ajax({
+                                    url: '${pageContext.request.contextPath}/community/board/deleteComment',
+                                    method: 'post',
+                                    data: {
+                                        commentNo : commentNo
+                                    },
+                                    success: function(json){
+                                    	console.log(json);
+                                    	if(json){
+                                    		alert('삭제되었습니다.');
+                                            window.location.href = '${pageContext.request.contextPath}/community/board/boardOne?boardNo='+boardNo;
+                                        }else {
+                                            alert('댓글을 삭제할수 없습니다. ');
+                                        }
+                                    }
+            					}); // deleteComment
+            					
+                              }
+            			}else{ // 비번 불일치시 에러 메세지 출력 
+            				$('#errorMessage').show();
+            			}
+            		}
+            		
+            		
+            	})
+                
             } else {
-                alert('비밀번호를 입력하세요.');
+            	alert('비밀번호를 입력하세요.');
             }
         });
         

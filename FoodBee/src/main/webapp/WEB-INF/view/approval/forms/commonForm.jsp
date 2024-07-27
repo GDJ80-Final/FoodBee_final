@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
 	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
 	crossorigin="anonymous">
@@ -11,133 +7,93 @@
 	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<style>
-	body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-	}
-
-	.form-container {
-	    width: 50%;
-	    margin: 50px auto;
-	    padding: 20px;
-	    background-color: #fff;
-	    border: 1px solid #ccc;
-	    border-radius: 5px;
-	}
-	
-	table {
-	    width: 100%;
-	    border-collapse: collapse;
-	}
-	
-	td {
-	    padding: 10px;
-	    vertical-align: top;
-	}
-	
-	label {
-	    font-weight: bold;
-	}
-	
-	input[type="text"],
-	input[type="file"],
-	textarea {
-	    width: 100%;
-	    padding: 8px;
-	    border: 1px solid #ccc;
-	    border-radius: 4px;
-	}
-	
-	textarea {
-	    height: 200px;
-	    resize: none;
-	}
-	
-	.search-btn {
-	    margin-left: 10px;
-	    padding: 8px 12px;
-	    background-color: #f0f0f0;
-	    border: 1px solid #ccc;
-	    border-radius: 4px;
-	    cursor: pointer;
-	}
-	
-	.search-btn:hover {
-	    background-color: #e0e0e0;
-	}
-	
-	.form-buttons {
-	    display: flex;
-	    justify-content: flex-end;
-	}
-	
-	.cancel-btn,
-	.send-btn {
-	    padding: 10px 20px;
-	    border: none;
-	    border-radius: 5px;
-	    cursor: pointer;
-	}
-	
-	.cancel-btn {
-	    background-color: #ccc;
-	    margin-right: 10px;
-	}
-	
-	.send-btn {
-	    background-color: #4CAF50;
-	    color: white;
-	}
-	
-	.send-btn:hover {
-	    background-color: #45a049;
-	}
-	
-	.cancel-btn:hover {
-	    background-color: #b0b0b0;
-	}
-	
-
-</style>
+    <style>
+        
+        .common-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .common-section th, .common-section td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            height : 60px;
+        }
+        .common-section .search-btn {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .form-section {
+            padding: 20px;
+        }
+         .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 80px;
+            margin-right: 10px;
+        }
+        .form-group input[type="text"], .form-group textarea {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .form-group input[type="text"]:first-child {
+            margin-right: 20px;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+        .sign td {
+       		height : 130px;
+        
+        }
+    </style>
 </head>
-<body>
-	 <div class="form-container">
-	 	<form method="post" action="${pageContext.request.contextPath}/msg/addMsg" id="addMsgForm" enctype="multipart/form-data">
-	        <table>
-	            <tr>
-	                <td><label for="recipient">받는사람:</label></td>
-	                <td>
-	                    <input type="text" name="recipientEmpNos" id="recipient" readonly>
-	                    <button type="button" class="btn btn-primary" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  							검색 
-						</button>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td><label for="title">제목:</label></td>
-	                <td><input type="text" name="title" id="title"></td>
-	            </tr>
-	            <tr>
-	                <td><label for="msgFile">첨부파일:</label></td>
-	                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple"></td>
-	            </tr>
-	            <tr>
-	                <td colspan="2">
-	                    <label for="message">쪽지쓰기:</label>
-	                    <textarea id="message" name="content" placeholder="쪽지쓰기 textarea"></textarea>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td colspan="2" class="form-buttons">
-	                    <button class="cancel-btn">취소</button>
-	                    <button class="send-btn">보내기</button>
-	                </td>
-	            </tr>
-	        </table>
-        </form>
+    <div class="common-section">
+        <table>
+            <tr>
+                <th colspan="2">기안서</th>
+                <th>기안자</th>
+                <th>중간결재자</th>
+                <th>최종결재자</th>
+            </tr>
+            <tr>
+                <td colspan="2">결재</td>
+                                  
+                <td id="drafter">기안자 이름(사번)</td>
+                <td id="midApprover"><button type="button" id="midApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
+                <td id="finalApprover"><button type="button"  id="finalApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
+            </tr>
+            <tr class="sign">
+                <td colspan="2">결재</td>
+                                  
+                <td id="drafterSign">기안자 sign </td>
+                <td id="midApproverSign">mid approver sign</td>
+                <td id="finalApproverSign">final approver sign</td>
+            </tr>
+            <tr>
+                <td>수신참조자</td>
+                <td colspan="4" id="referrerField"><button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
+            </tr>
+        </table>
+        <div class="form-section">
+            <div class="form-group">
+                <label for="name">성명:</label>
+                <input type="text" id="name" name="name">
+                <label for="department" style="margin-left: 10px;">부서:</label>
+                <input type="text" id="department" name="department">
+            </div>
+         </div>
     </div>
-    <!-- 모달 -->
+<!-- 모달 -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
@@ -205,7 +161,7 @@
 	    </div>
 	  </div>
 	</div>
-	<script>
+<script>
 		let currentPage = 1;
 		let lastPage = 1;
 	
@@ -353,41 +309,66 @@
 						'</tr>');
 				}
 			
+			// 중간결재자 / 최종결재자 분기 
+			let action = '';
+			$('#midApprover').click(function(){
+				action = 'mid';
+			});
+			$('#finalApprover').click(function(){
+				action = 'final';
+			});
+			$('#referrer').click(function(){
+				action = 'referrer';
+			});
+			
+			
 			
 			//모달에서 사원 선택 
 			$(document).on('click', '#selectEmp', function() {
-				
 				let empNo = $(this).val();
-				let empName = $(this).data('name');
-			    let recipientField = $('#recipient');
-			    let currentVal = recipientField.val();
-			    let newVal;
-			    let empNosArray = [];
-			    
-			    console.log(empNo);
-			    
-			    if (currentVal) {
-			        empNosArray = currentVal.split(',').map(emp => emp.split('(')[1].split(')')[0]); 
-			        // 사원번호 배열로 변환
-			        console.log('empNosArray => ' + empNosArray);
-			        
-			        // 중복된 사번이 있으면
-			        if (empNosArray.includes(empNo)) {
-			            alert('이미 추가된 사원입니다.');
-			            return;
-			        } else {
-			            newVal = currentVal + ',' + empName + '(' + empNo + ')'; // 중복이 아니면 추가
-			        }
-			        
-			    } else {
-			        newVal = empName + '(' + empNo + ')'; // 처음 추가할 때
+			    let empName = $(this).data('name');
+			    let selectedEmp = empName + '(' + empNo + ')';
+
+			    // 선택한 사원의 정보를 필요한 곳에 출력
+			    console.log(action);
+			    if(action === 'mid'){
+			    	 $('#midApprover').text(selectedEmp);
+			    }else if(action === 'final'){
+			    	 $('#finalApprover').text(selectedEmp);
+			    }else if(action === 'referrer'){
+			 
+				    let referrerField = $('#referrerField');
+				    let currentVal = referrerField.val();
+				    let newVal;
+				    let empNosArray = [];
+				    
+				    console.log(empNo);
+				    
+				    if (currentVal) {
+				        empNosArray = currentVal.split(',').map(emp => emp.split('(')[1].split(')')[0]); 
+				        // 사원번호 배열로 변환
+				        console.log('empNosArray => ' + empNosArray);
+				        
+				        // 중복된 사번이 있으면
+				        if (empNosArray.includes(empNo)) {
+				            alert('이미 추가된 사원입니다.');
+				            return;
+				        } else {
+				            newVal = currentVal + ',' + empName + '(' + empNo + ')'; // 중복이 아니면 추가
+				        }
+				        
+				    } else {
+				        newVal = empName + '(' + empNo + ')'; // 처음 추가할 때
+				    }
+				    
+				    referrerField.text(newVal);
 			    }
 			    
-			    recipientField.val(newVal);
+			    
+			    // 모달 닫기
 			    $('#staticBackdrop').modal('hide');
+				
 		    });
 			
 		});
-	</script>
-</body>
-</html>
+</script>

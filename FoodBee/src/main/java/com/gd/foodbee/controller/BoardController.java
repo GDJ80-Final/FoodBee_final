@@ -163,6 +163,9 @@ public class BoardController {
 	}
 	
 	// 게시글 수정 폼
+	// 파라미터 : int boardNo, Model model
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/modifyBoard
 	@GetMapping("/community/board/modifyBoard")
 	public String modifyBoard(@RequestParam(name="boardNo") int boardNo,
 				Model model) {
@@ -176,6 +179,9 @@ public class BoardController {
 	}
 	
 	// 게시글 수정 
+	// 파라미터 : int boardNo
+	// 반환 값 : String(view)
+	// 사용 페이지 : /community/board/modifyBoard
 	@PostMapping("/community/board/modifyBoard")
 	public String modifyBoard(BoardDTO boardDTO,
 				@RequestParam(name="boardNo") int boardNo) {
@@ -187,6 +193,9 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제 
+	// 파라미터 : int boardNo
+	// 반환 값 : boolean
+	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/deleteBoard")
 	@ResponseBody
 	public boolean deleteBoard(@RequestParam(name="boardNo") int boardNo) {
@@ -196,6 +205,9 @@ public class BoardController {
 		return boardService.deleteBoard(boardNo);
 	}
 	// 댓글 삭제 
+	// 파라미터 : int commentNo
+	// 반환 값 : String
+	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/deleteComment")
 	@ResponseBody
 	public String deleteComment(@RequestParam(name="commentNo") int commentNo){
@@ -208,6 +220,9 @@ public class BoardController {
 	}
 	
 	// 게시글 비번 체크 
+	// 파라미터 : int boardNo, String boardPw
+	// 반환 값 : boolean
+	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/boardPwCheck")
 	@ResponseBody
 	public boolean boardPwCheck(@RequestParam(name="boardNo") int boardNo,
@@ -218,6 +233,9 @@ public class BoardController {
 		return boardService.boardPwCheck(boardNo, boardPw);
 	}
 	// 댓글 비번 체크 
+	// 파라미터 : int commentNo, String commentPw
+	// 반환 값 : boolean
+	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/commentPwCheck")
 	@ResponseBody
 	public boolean commentPwCheck(@RequestParam(name="commentNo") int commentNo,
