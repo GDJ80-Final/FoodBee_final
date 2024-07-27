@@ -213,7 +213,8 @@ public class EmpController {
 	@GetMapping("/emp/searchEmp")
 	@ResponseBody
 	public Map<String, Object> searhEmpList(EmpSearchDTO empSearchDTO, 
-				@RequestParam(name="currentPage", defaultValue = "1") int currentPage) {
+				@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
+				HttpSession session) {
 		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
 		log.debug(TeamColor.RED + "deptName =>" + empSearchDTO.getDeptName());
 		log.debug(TeamColor.RED + "teamName =>" + empSearchDTO.getTeamName());
@@ -222,11 +223,12 @@ public class EmpController {
 		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
 		
 		int lastPage = empService.getLastPage(empSearchDTO);
-		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
 		log.debug(TeamColor.RED + "lastPage =>" + lastPage);
 		
 		Map<String, Object> map = new HashMap<>();
-		map.put("empList", empService.getEmpList(empSearchDTO, currentPage));
+		map.put("empList", empService.getEmpList(empSearchDTO, currentPage,empNo));
 		map.put("currentPage", currentPage); 
 		map.put("lastPage", lastPage); 
 		return map;

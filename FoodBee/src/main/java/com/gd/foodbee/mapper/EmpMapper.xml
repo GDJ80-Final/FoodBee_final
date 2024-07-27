@@ -104,6 +104,7 @@
 			`group` o ON d.superior_dpt_no = o.dpt_no
 		WHERE
 			1=1
+			AND emp_no != #{empNo}
 			<if test="empSearchDTO.officeName != null and empSearchDTO.officeName != ''">
                 AND o.dpt_name = #{empSearchDTO.officeName}
             </if>
@@ -122,8 +123,10 @@
             <if test="empSearchDTO.empNo != null and empSearchDTO.empNo != ''">
                 AND e.emp_no LIKE '%${empSearchDTO.empNo}%'
             </if>
-		ORDER BY emp_name
-		LIMIT #{beginRow}, #{rowPerPage}
+		ORDER BY 
+			emp_name
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<select id="selectEmpCount" parameterType="com.gd.foodbee.dto.EmpSearchDTO" resultType="int">
 		SELECT

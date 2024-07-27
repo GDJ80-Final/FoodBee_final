@@ -216,9 +216,9 @@ public class EmpServiceImpl implements EmpService{
 	// 반환 값 : List<EmpSearchDTO>
 	// 사용 클래스 : EmpController.getEmpList
 	@Override
-	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO, int currentPage) {
+	public List<EmpSearchDTO> getEmpList(EmpSearchDTO empSearchDTO, int currentPage,int empNo) {
 		int beginRow = (currentPage - 1) * ROW_PER_PAGE;
-		return empMapper.selectEmpList(empSearchDTO, beginRow, ROW_PER_PAGE);
+		return empMapper.selectEmpList(empSearchDTO, beginRow, ROW_PER_PAGE,empNo);
 	}
 
 	// 사원번호로 이메일 찾기

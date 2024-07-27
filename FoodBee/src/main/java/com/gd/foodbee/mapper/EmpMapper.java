@@ -60,7 +60,7 @@ public interface EmpMapper {
     // 파라미터 : EmpSearchDTO empSearchDTO, int beginRow, int rowPerPage
     // 반환 값 : List<EmpSearchDTO>
     // 사용 클래스 : EmpService.getEmpList
-    List<EmpSearchDTO> selectEmpList(EmpSearchDTO empSearchDTO, int beginRow, int rowPerPage);
+    List<EmpSearchDTO> selectEmpList(EmpSearchDTO empSearchDTO, int beginRow, int rowPerPage,int empNo);
     
     //사원번호로 이메일 찾기
     // 파라미터 : int empNo
