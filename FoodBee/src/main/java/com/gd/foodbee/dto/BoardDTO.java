@@ -19,4 +19,8 @@ public class BoardDTO {
 	private String content;
 	private String boardPw;
 	private int likeCnt;
+	private String deleteYN;
+	private int deleteEmpNo;
+	private String deleteReason;
+	private String deleteDatetime;
 }

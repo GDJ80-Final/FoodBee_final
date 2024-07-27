@@ -166,7 +166,7 @@
 				</tr>
 					
 		</table>
-		 <div class="post-actions">
+		 <div class="post-actions" id="post-actions">
 		 	<button type="button" class="button edit" id="modifyBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">수정</button>
             <button  type="button" class="button delete" id="deleteBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button>
 		 </div>
@@ -196,25 +196,10 @@
 		 	</table>
 		 </div>
 	</div>
-	 <!-- 모달 -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">비밀번호 확인</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-			  <input type="password" id="password" placeholder="비밀번호를 입력하세요">
-			  <div class="error-message" id="errorMessage">비밀번호가 틀렸습니다.</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-	        <button type="button" class="btn btn-primary" id="checkPw">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<!-- 비밀번호 확인 모달 -->
+	<jsp:include page="./checkPwModal.jsp"></jsp:include>
+	<!-- 관리자 사유 입력 모달 -->
+	<jsp:include page="./addReasonModal.jsp"></jsp:include>
 <script>
 
 	let currentPage = 1;
@@ -450,6 +435,50 @@
             $('#password').val('');
             $('#errorMessage').hide();
             action = ''; 
+        });
+     	
+     	// 만일 세션에 담긴 dptNo 가 운영팀일 경우 게시글 강제삭제 버튼 생성
+     	let dptNo = '${dptNo}';
+     	let empNo = '${empNo}';
+     	console.log(dptNo);
+     	if( dptNo === 'D017' || dptNo === 'D030' || dptNo === 'D043'){
+     		 $('#post-actions').append(
+     				 '<button type="button" class="button delete" id="deleteBoardByAdmin" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>'
+     				 );
+     	}else{
+     		console.log('관리자가 아닙니다.')
+     	}
+     	
+        $('#addReasonButton').click(function() {
+            let selectedReason = $('#reasonSelect').val();
+            if (!selectedReason) {
+                $('#errorMessage').show();
+            } else {
+                $('#errorMessage').hide();
+                console.log('선택된 사유:', selectedReason);
+                $.ajax({
+                	url:'${pageContext.request.contextPath}/community/board/deleteBoardByAdmin',
+                	method : 'post',
+                	data:{
+                		boardNo:boardNo,
+                		empNo:empNo,
+                		deleteReason : selectedReason
+                	},
+                	success:function(json){
+                		console.log(json);
+                		
+                		window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
+                	}
+                })
+                
+            }
+        });
+
+        // 사유 선택 시 에러 메시지 숨기기
+        $('#reasonSelect').change(function() {
+            if ($(this).val()) {
+                $('#errorMessage').hide();
+            }
         });
 
 	})

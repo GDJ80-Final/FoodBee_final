@@ -40,5 +40,10 @@ public interface BoardCommentMapper {
 	// 사용 클래스 : BoarrdService.commentPwCheck
 	int selectPwCheck(int commentNo, String commentPw);
 	
+	// 관리자(운영팀) 으로 들어올 시 댓글 강제삭제  -> 업데이트 
+	// 파라미터 : int commentNo, int empNo, String deleteReason
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.deleteCommentByAdmin
+	int updateCommentByAdmin(int commentNo, int empNo,String deleteReason);
 	
 }

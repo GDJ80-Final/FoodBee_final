@@ -49,4 +49,13 @@ public interface BoardService {
 	
 	// 댓글 삭제 시 비번 체크 
 	boolean commentPwCheck(int commentNo, String boardPw);
+	
+	// 최근 1주내의 top 5 인기글 뽑기
+	List<Map<String,Object>> getMostLikedBoard();
+	
+	// 관리자 게시글 강제 삭제
+	void deleteBoardByAdmin(int boardNo,int empNo,String deleteReason);
+	
+	// 관리자 댓글 강제 삭제 
+	void deleteCommentByAdmin(int commentNo,int empNo, String deleteReason);
 }

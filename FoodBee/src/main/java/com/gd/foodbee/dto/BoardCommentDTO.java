@@ -15,4 +15,8 @@ public class BoardCommentDTO {
 	private String content;
 	private String createDatetime;
 	private String commentPw;
+	private String deleteYN;
+	private int deleteEmpNo;
+	private String deleteReason;
+	private String deleteDatetime;
 }

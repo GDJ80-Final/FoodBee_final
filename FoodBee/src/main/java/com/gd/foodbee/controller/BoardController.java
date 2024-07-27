@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.BoardCommentDTO;
 import com.gd.foodbee.dto.BoardDTO;
+import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.BoardService;
 import com.gd.foodbee.util.TeamColor;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -78,15 +80,22 @@ public class BoardController {
 		return map;
 	}
 	// 게시글 상세보기 
-	// 파라미터 : int boardNo, Model model
+	// 파라미터 : int boardNo, Model model,HttpSession session
 	// 반환 값 : String(view)
 	// 사용 페이지 : /community/board/boardOne
 	@GetMapping("/community/board/boardOne")
 	public String boardOne(@RequestParam(name="boardNo")int boardNo,
-				Model model) {
+				Model model,
+				HttpSession session) {
 		Map<String,Object> m = boardService.getBoardOne(boardNo);
-		
+		// 부서번호 넘겨주기 + 관리자 강제삭제시 삭제자에 관리자 empNo 넣어주기 
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		String dptNo = emp.getDptNo();
+		log.debug(TeamColor.YELLOW + "empNo" + empNo);
 		model.addAttribute("m", m);
+		model.addAttribute("empNo", empNo);
+		model.addAttribute("dptNo", dptNo);
 		
 		
 		return "/community/board/boardOne";
@@ -243,4 +252,53 @@ public class BoardController {
 		
 		return boardService.commentPwCheck(commentNo, commentPw);
 	}
+	
+	// 인기글 리스트 뽑기
+	// 파라미터 : X
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 페이지 : /community/board/boardList
+	@PostMapping("/community/board/getMostLikedList")
+	@ResponseBody
+	public List<Map<String,Object>> getMostLikedList(){
+		
+		return boardService.getMostLikedBoard();
+	}
+	
+	// 관리자 게시글 강제삭제 
+	// 파라미터 : int boardNo, String deleteReason, Httpsession session
+	// 반환 값 : String
+	// 사용 페이지 : /community/board/boardOne
+	@PostMapping("/community/board/deleteBoardByAdmin")
+	@ResponseBody
+	public String deleteBoardByAdmin(@RequestParam(name="boardNo")int boardNo,
+				@RequestParam(name="deleteReason") String deleteReason,
+				HttpSession session) {
+		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
+		log.debug(TeamColor.YELLOW + "deleteReason =>" + deleteReason);
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		boardService.deleteBoardByAdmin(boardNo, empNo, deleteReason);
+		
+		return "success";
+		
+	}
+	// 관리자 댓글 강제삭제 
+	// 파라미터 : int commentNo, String deleteReason, Httpsession session
+	// 반환 값 : String
+	// 사용 페이지 : /community/board/boardOne
+	@PostMapping("/community/board/deleteCommentByAdmin")
+	@ResponseBody
+	public String deleteCommentByAdmin(@RequestParam(name="commentNo")int commentNo,
+				@RequestParam(name="deleteReason") String deleteReason,
+				HttpSession session) {
+		log.debug(TeamColor.YELLOW + "commentNo =>" + commentNo);
+		log.debug(TeamColor.YELLOW + "deleteReason =>" + deleteReason);
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		boardService.deleteBoardByAdmin(commentNo, empNo, deleteReason);
+		
+		return "success";
+		
+	}
+	
 }

@@ -243,4 +243,51 @@ public class BoardServiceImpl implements BoardService{
 			throw new RuntimeException();
 		}
 	}
+	
+	// 최근 1주내의 top 5 인기글 뽑기
+	// 파라미터 : 
+	// 반환 값 :
+	// 사용 클래스 : 
+	@Override
+	public List<Map<String, Object>> getMostLikedBoard() {
+		
+		return boardMapper.selectMostLikedBoard();
+	}
+	
+	// 관리자 게시글 강제 삭제
+	// 파라미터 : int boardNo, int empNo, String deleteReason
+	// 반환 값 : X
+	// 사용 클래스 : BoardController.deleteBoardByAdmin
+	@Override
+	public void deleteBoardByAdmin(int boardNo, int empNo, String deleteReason) {
+		log.debug(TeamColor.YELLOW + "boardNo =>" + boardNo);
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		log.debug(TeamColor.YELLOW + "deleteReason =>" + deleteReason);
+		
+		int row = boardMapper.updateBoardByAdmin(boardNo, empNo, deleteReason);
+		if(row != 1) {
+			throw new RuntimeException();
+		}
+		
+	}
+	
+	// 관리자 댓글 강제 삭제 
+	// 파라미터 : int commentNo, int empNo, String deleteReason
+	// 반환 값 : X
+	// 사용 클래스 : BoardController.deleteCommentByAdmin
+	@Override
+	public void deleteCommentByAdmin(int commentNo, int empNo, String deleteReason) {
+		log.debug(TeamColor.YELLOW + "boardNo =>" + commentNo);
+		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
+		log.debug(TeamColor.YELLOW + "deleteReason =>" + deleteReason);
+		
+		int row = boardCommentMapper.updateCommentByAdmin(commentNo, empNo, deleteReason);
+		if(row != 1) {
+			throw new RuntimeException();
+		}
+		
+		
+	}
+	
+	
 }

@@ -36,6 +36,7 @@
 			board_comment bc ON b.board_no = bc.board_no 
 		WHERE
 			1=1
+			AND b.delete_YN = 'N'
 			<if test='category == "chat"'>
 				AND b.board_category = '잡담' 
 			</if>
@@ -144,4 +145,41 @@
 		
 	
 	</select>
+	<select id="selectMostLikedBoard" resultType="Map">
+		SELECT
+			ROW_NUMBER() OVER(ORDER BY likeCnt DESC) boardOrder,
+			b.board_no boardNo,
+			b.title,
+			b.board_category boardCategory, 
+			b.view,
+			COUNT(bc.comment_no) commentCnt,
+			DATE_FORMAT(b.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
+			b.like_cnt likeCnt
+		FROM 
+			board b
+		LEFT JOIN
+			board_comment bc ON b.board_no = bc.board_no 
+		WHERE
+			b.create_datetime >= DATE_SUB(NOW(), INTERVAL 1 WEEK)
+			AND b.delete_YN = 'N'
+		 GROUP BY 
+			b.board_no
+		ORDER BY 
+			likeCnt DESC
+		LIMIT 
+			5
+	</select>
+	<update id="updateBoardByAdmin" parameterType="Map">
+		UPDATE
+			board
+		SET
+			title = '관리자에 의해 삭제된 글입니다',
+			content = '',
+			delete_YN = 'Y',
+			delete_emp_no = #{empNo},
+			delete_reason = #{deleteReason},
+			delete_datetime = NOW()
+		WHERE
+			board_no = #{boardNo}
+	</update>
 </mapper>

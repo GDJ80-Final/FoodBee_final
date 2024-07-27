@@ -64,4 +64,16 @@ public interface BoardMapper {
 	// 사용 클래스 : BoardService.updateLikeCnt
 	int updateLikeCnt(int boardNo);
 	
+	// 인기글 top 5 리스트 출력
+	// 파라미터 : X
+	// 반환 값 : List<Map<STring,Obejct>>
+	// 사용 클래스 : BoardService.getMostLikedBoard
+	List<Map<String,Object>> selectMostLikedBoard();
+	
+	// 관리자(운영팀) 으로 들어올 시 게시글 강제삭제  -> 업데이트 
+	// 파라미터 : int boardNo, int empNo,String deleteReason
+	// 반환 값 : int
+	// 사용 클래스 : BoardService.deleteBoardByAdmin
+	int updateBoardByAdmin(int boardNo,int empNo,String deleteReason);
+	
 }
