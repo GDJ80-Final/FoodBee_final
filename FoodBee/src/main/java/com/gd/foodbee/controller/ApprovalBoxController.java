@@ -137,4 +137,33 @@ public class ApprovalBoxController {
 		
 		return allOneList;
 	}
+	//매출보고 상세보기페이지
+	@GetMapping("/approval/revenueOne")
+	public String revenueOne() {
+		
+		//empNo값 가져오고
+		//상세보기 내역 가져오고(중간 결재자/최종결재자)
+		
+		return "/approval/revenueOne";
+	}
+	//휴가신청
+	@GetMapping("/approval/dayOffOne")
+	public String dayOffOne() {
+		return "/approval/dayOffOne";
+	}
+	//출장신청
+	@GetMapping("/approval/businessTripOne")
+	public String businessTripOne() {
+		return "/approval/businessTripOne";
+	}
+	//기본기안서
+	@GetMapping("/approval/docOne")
+	public String docOne() {
+		return"/approval/docOne";
+	}
+	//지출결의
+	@GetMapping("/approval/chargeOne")
+	public String chargeOne() {
+		return "/approval/chargeOne";
+	}
 }
