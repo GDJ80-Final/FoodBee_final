@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ApprovalController {
 	
-	@GetMapping("/approval/addBasicDraft")
+	@GetMapping("/approval/addDraft")
 	public String addBasicDraft() {
 		
-		return "/approval/addBasicDraft";
+		return "/approval/addDraft";
 	}
 }	
