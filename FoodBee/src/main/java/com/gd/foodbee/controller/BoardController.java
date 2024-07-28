@@ -219,12 +219,12 @@ public class BoardController {
 	// 사용 페이지 : /community/board/boardOne
 	@PostMapping("/community/board/deleteComment")
 	@ResponseBody
-	public String deleteComment(@RequestParam(name="commentNo") int commentNo){
+	public boolean deleteComment(@RequestParam(name="commentNo") int commentNo){
 		log.debug(TeamColor.YELLOW + "commentNo =>" + commentNo);
 		
-		boardService.deleteComment(commentNo);
 		
-		return "success";
+		
+		return boardService.deleteComment(commentNo);
 		
 	}
 	
@@ -295,7 +295,7 @@ public class BoardController {
 		log.debug(TeamColor.YELLOW + "deleteReason =>" + deleteReason);
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
-		boardService.deleteBoardByAdmin(commentNo, empNo, deleteReason);
+		boardService.deleteCommentByAdmin(commentNo, empNo, deleteReason);
 		
 		return "success";
 		

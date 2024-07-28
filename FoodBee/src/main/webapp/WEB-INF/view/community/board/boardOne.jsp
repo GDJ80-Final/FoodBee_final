@@ -205,8 +205,40 @@
 	let currentPage = 1;
 	let lastPage = 1;
 	let boardNo = $('#boardNo').val();
+ 	let dptNo = '${dptNo}';
+ 	let empNo = '${empNo}';
+ 	let adminAction = '';
+ 	let commentNo = '';
+ 	console.log(dptNo);
 	
+ 	
+ 	
+ 	
+ 	
 	$(document).ready(function(){
+		
+		// 만일 세션에 담긴 dptNo 가 운영팀일 경우 게시글 강제삭제 버튼 생성
+
+
+	 	if( dptNo === 'D017' || dptNo === 'D030' || dptNo === 'D043'){
+	 		// 게시글 강제 삭제 버튼 추가 
+	 		 $('#post-actions').append(
+	 				 '<button type="button" class="button delete" id="deleteBoardByAdmin" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>'
+	 				 );
+	    	
+	 	}else{
+	 		console.log('관리자가 아닙니다.');
+	 		
+	 	}
+		
+	    // deleteBoardByAdmin 버튼 클릭 시 adminAction 변수에 "board" 저장
+	    $('#post-actions').on('click', '#deleteBoardByAdmin', function() {
+	        adminAction = 'board';
+	        console.log(adminAction);
+	       
+	    });
+		
+		
 		//좋아요 버튼 연속 클릭 여부 체크
 		let isLikeClicked = false;
 		$('#likeButton').click(function(){
@@ -260,8 +292,13 @@
 							'<td class="comment-content"><span>['+ item.commentOrder + ']</span>&nbsp;' + item.content + '</td>' + 
 							'</tr>' +
 							'<tr><td class="comment-info"><span class="comment-date">' + item.createDatetime + '</span>'+
-							'<button type="button" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">X</button></td></tr>'
+							'<button type="button" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">X</button></td>'+
+							'</tr>'
 						);
+						// 관리자일 경우에만 "관리자 삭제" 버튼 추가
+		                if (dptNo === 'D017' || dptNo === 'D030' || dptNo === 'D043') {
+		                    $('#comment').append('<tr><td><button type="button" id="deleteCommentByAdmin" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button></td></tr>');
+		                }
 					});
 					updateBtnState();
 				}
@@ -269,11 +306,17 @@
 			});
 		}
 		
-		
+	    $('#comment').on('click', '#deleteCommentByAdmin', function() {
+	        adminAction = 'comment';
+	        commentNo = $(this).val();
+	        console.log(commentNo);
+	        console.log(adminAction);
+	       
+	    });
 		
 		
 	
-		// --- 페이징 ---
+		/* 페이징 */
 		// 페이징 버튼 활성화
 	    function updateBtnState() {
 	        console.log("update");
@@ -310,6 +353,7 @@
 				loadCommentList(currentPage,boardNo)
 			}
 		});
+		/* 페이징 종료 */
 		
 		// 페이지 첫 로드 시 전체 목록 불러오기
 	    loadCommentList(currentPage,boardNo);
@@ -436,18 +480,10 @@
             $('#errorMessage').hide();
             action = ''; 
         });
+     	/* 모달 종료 */
      	
-     	// 만일 세션에 담긴 dptNo 가 운영팀일 경우 게시글 강제삭제 버튼 생성
-     	let dptNo = '${dptNo}';
-     	let empNo = '${empNo}';
-     	console.log(dptNo);
-     	if( dptNo === 'D017' || dptNo === 'D030' || dptNo === 'D043'){
-     		 $('#post-actions').append(
-     				 '<button type="button" class="button delete" id="deleteBoardByAdmin" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>'
-     				 );
-     	}else{
-     		console.log('관리자가 아닙니다.')
-     	}
+     	
+     	/* 관리자 강제삭제 사유 모달   */
      	
         $('#addReasonButton').click(function() {
             let selectedReason = $('#reasonSelect').val();
@@ -456,20 +492,38 @@
             } else {
                 $('#errorMessage').hide();
                 console.log('선택된 사유:', selectedReason);
-                $.ajax({
-                	url:'${pageContext.request.contextPath}/community/board/deleteBoardByAdmin',
-                	method : 'post',
-                	data:{
-                		boardNo:boardNo,
-                		empNo:empNo,
-                		deleteReason : selectedReason
-                	},
-                	success:function(json){
-                		console.log(json);
-                		
-                		window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
-                	}
-                })
+                console.log('adminAction :',adminAction);
+                if(adminAction === 'board'){
+                	$.ajax({
+	                	url:'${pageContext.request.contextPath}/community/board/deleteBoardByAdmin',
+	                	method : 'post',
+	                	data:{
+	                		boardNo:boardNo,
+	                		empNo:empNo,
+	                		deleteReason : selectedReason
+	                	},
+	                	success:function(json){
+	                		console.log(json);
+	                		
+	                		window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
+	                	}
+                	});
+                }else if(adminAction === 'comment'){
+                	$.ajax({
+                		url: '${pageContext.request.contextPath}/community/board/deleteCommentByAdmin',
+                		method : 'post',
+                		data :{
+                			commentNo : commentNo,
+                			empNo : empNo,
+                			deleteReason : selectedReason
+                		},
+                		success:function(json){
+                			console.log(json);
+                			window.location.href = '${pageContext.request.contextPath}/community/board/boardOne?boardNo='+boardNo;
+                		}
+                	}) 
+                }
+                
                 
             }
         });
@@ -480,8 +534,18 @@
                 $('#errorMessage').hide();
             }
         });
+        
+        $('#addReason').on('hidden.bs.modal', function() {
+            $('#reasonSelect').val('');
+            $('#errorMessage').hide();
+            adminAction = ''; // action 초기화
+            commentNo = '';   // commentNo 초기화
+            console.log('모달 닫힘, 변수 초기화됨');
+        });
+        /* 관리자 강제삭제 사유 모달 종료   */
+     	
 
-	})
+	});
 </script>
 
 </body>

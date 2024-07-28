@@ -208,6 +208,7 @@ public class BoardServiceImpl implements BoardService{
 		
 		if(row == 1) {
 			result = true;
+			
 		}
 		
 		log.debug(TeamColor.YELLOW + "result =>" + result);
@@ -235,13 +236,16 @@ public class BoardServiceImpl implements BoardService{
 	// 반환 값 : X 
 	// 사용 클래스 : BoardController.deleteComment
 	@Override
-	public void deleteComment(int commentNo) {
+	public boolean deleteComment(int commentNo) {
 		log.debug(TeamColor.YELLOW + "commentNo =>" + commentNo);
-		
+		boolean result = false;
 		int row = boardCommentMapper.deleteComment(commentNo);
-		if(row != 1) {
-			throw new RuntimeException();
+		if(row == 1) {
+			result = true;
+			
 		}
+		
+		return result;
 	}
 	
 	// 최근 1주내의 top 5 인기글 뽑기

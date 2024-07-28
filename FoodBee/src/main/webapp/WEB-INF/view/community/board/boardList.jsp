@@ -125,6 +125,10 @@
 	    cursor: pointer;
 	    text-align: center;
 	}
+	.most-liked {
+    background-color: #f9f9f9; 
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -147,7 +151,10 @@
                     <th>좋아요</th>
                 </tr>
             </thead>
-            <tbody id="boardBody">
+            <tbody class="most-liked" id="boardBodyMostLiked">
+               
+            </tbody>
+             <tbody id="boardBody">
                
             </tbody>
         </table>
@@ -194,7 +201,8 @@
 					$('#boardBody').empty();
 					   json.boardList.forEach(function(item){
 						   console.log(item)
-						   $('#boardBody').append('<tr>' +
+						   if(item.deleteYN === 'N'){
+							   $('#boardBody').append('<tr>' +
 									'<td>'+ item.boardOrder +'</td>'+
 									'<td>'+ item.boardCategory + '</td>'+
 									'<td><a id="title" href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
@@ -203,13 +211,51 @@
 									'<td>'+ item.view + '</td>'+
 									'<td>'+ item.likeCnt + '</td>'+
 									'</tr>' 
-						   );
+						  	 	 );
+						   }else if(item.deleteYN === 'Y'){
+							   // 관리자에 의해 삭제된 글일 경우 disabled로 상세보기 하지 못하게 막기 
+							   $('#boardBody').append('<tr>' +
+										'<td>'+ item.boardOrder +'</td>'+
+										'<td>'+ item.boardCategory + '</td>'+
+										'<td>'+ item.title +'</td>'+
+										'<td>'+ item.createDatetime + '</td>'+
+										'<td>'+ item.view + '</td>'+
+										'<td>'+ item.likeCnt + '</td>'+
+										'</tr>' 
+							  	 );
+						   }
+						   
 					 	});
 					   
 					   	updateBtnState()
 					}
 				});
 			}
+		/* 인기글 리스트 상단에 뽑기 */
+		function loadMostLikedList(){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/community/board/getMostLikedList',
+				method : 'post',
+				success:function(json){
+					   console.log(json);
+					   json.forEach(function(item){
+						   console.log(item)
+							   $('#boardBodyMostLiked').append('<tr>' +
+									'<td>'+ item.boardOrder +'</td>'+
+									'<td>'+ item.boardCategory + '</td>'+
+									'<td><a id="title" href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
+											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
+									'<td>'+ item.createDatetime + '</td>'+
+									'<td>'+ item.view + '</td>'+
+									'<td>'+ item.likeCnt + '</td>'+
+									'</tr>' 
+						  	 	 );
+							});
+						}
+					});
+				}
+		
+		
 		$(document).on('click','#title',function(){
 			let boardNo = $(this).data('board-no');
 			$.ajax({
@@ -301,6 +347,7 @@
 	    });
 	    
 		// 페이지 첫 로드 시 전체 목록 불러오기
+		loadMostLikedList();
 	    loadBoardList(currentPage,"all",""); 
 	})
 </script>

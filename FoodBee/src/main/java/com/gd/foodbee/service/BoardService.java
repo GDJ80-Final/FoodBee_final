@@ -42,7 +42,7 @@ public interface BoardService {
 	boolean deleteBoard(int boardNo);
 	
 	// 댓글 삭제 
-	void deleteComment(int commentNo);
+	boolean deleteComment(int commentNo);
 	
 	// 글 수정 삭제 시 비번 체크 
 	boolean boardPwCheck(int boardNo, String boardPw);

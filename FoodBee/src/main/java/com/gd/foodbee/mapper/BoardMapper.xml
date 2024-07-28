@@ -29,14 +29,14 @@
 			b.view,
 			COUNT(bc.comment_no) commentCnt,
 			DATE_FORMAT(b.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
-			b.like_cnt likeCnt
+			b.like_cnt likeCnt,
+			b.delete_YN deleteYN
 		FROM 
 			board b 
 		LEFT JOIN 
 			board_comment bc ON b.board_no = bc.board_no 
 		WHERE
 			1=1
-			AND b.delete_YN = 'N'
 			<if test='category == "chat"'>
 				AND b.board_category = '잡담' 
 			</if>

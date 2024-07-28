@@ -11,7 +11,6 @@
 			board_comment
 		WHERE 
 			board_no = #{boardNo}
-			AND delete_YN = 'N'
 		ORDER BY 
 			commentOrder DESC
 		LIMIT
@@ -43,16 +42,16 @@
 			board_comment
 		WHERE 
 			board_no = #{boardNo}
-			AND delete_YN = 'N'
+			
 	
 	</select>
-	<delete id="deleteComment">
+	<delete id="deleteComment" parameterType="int">
 		DELETE
 		FROM
 			board_comment
 		WHERE
 			comment_no = #{commentNo}
-	
+			AND delete_YN = 'N';
 	
 	</delete>
 	<select id="selectPwCheck" parameterType="Map" resultType="int">
