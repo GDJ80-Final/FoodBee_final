@@ -195,7 +195,31 @@
              }
              return stateText;
          }
-     	 
+     	// URL 설정 함수
+             function getDetailUrl(tmpName, drafterDocNo) {
+             let detailUrl = "";
+             switch(tmpName) {
+                 case "매출보고":
+                     detailUrl = "${pageContext.request.contextPath}/approval/revenueOne?drafterDocNo=" + drafterDocNo;
+                     break;
+                 case "휴가신청":
+                     detailUrl = "${pageContext.request.contextPath}/approval/dayOffOne?drafterDocNo=" + drafterDocNo;
+                     break;
+                 case "출장신청":
+                     detailUrl = "${pageContext.request.contextPath}/approval/businessTripOne?drafterDocNo=" + drafterDocNo;
+                     break;
+                 case "기본기안서":
+                     detailUrl = "${pageContext.request.contextPath}/approval/basicFormOne?drafterDocNo=" + drafterDocNo;
+                     break;
+                 case "지출결의":
+                     detailUrl = "${pageContext.request.contextPath}/approval/chargeOne?drafterDocNo=" + drafterDocNo;
+                     break;
+                 default:
+                     detailUrl = "#";
+             }
+             return detailUrl;
+         }
+
 		//전체
         function updateAllDocList(json) {
         	<!-- DB 조회해온 last 페이지 순번 -->
@@ -233,11 +257,14 @@
                 let midApprovalState = getApprovalStateText(item.midApprovalState);
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);	          
    				
-                let modifyButton = approvalStateNo === 0 ? `<a href=""><button>수정하기</button></a>` : '';
-
+                let modifyButton = approvalStateNo === 0 ? `<a href=""><button>수정가능</button></a>` : '';
+                
+             	// 상세보기 페이지 URL 설정
+                let detailUrl = getDetailUrl(item.tmpName, item.drafterDocNo);
+				
                 let newRow = $("<tr>" +
                         "<td>" + item.tmpName + "</td>" +
-                        "<td>" + item.title + "</td>" +
+                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                         "<td>" + approvalStateText + 
                         "<br>" + modifyButton + "</td>" +
                         "<td>" + item.midApprovalDatetime + "</td>" +
@@ -272,10 +299,13 @@
             	 let midApprovalState = getApprovalStateText(item.midApprovalState);
                  let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
             	
-                 let modifyButton = `<a href=""><button>수정하기</button></a>`;
+                 let modifyButton = `<a href=""><button>수정가능</button></a>`;
+                 
+             	// 상세보기 페이지 URL 설정
+                let detailUrl = getDetailUrl(item.tmpName, item.drafterDocNo);
                 let newRow = $("<tr>" +
                 		 "<td>" + item.tmpName + "</td>" +
-                         "<td>" + item.title + "</td>" +
+                		 "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "결재대기" + "<br>" + modifyButton + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +

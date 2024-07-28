@@ -148,7 +148,7 @@
                     detailUrl = "${pageContext.request.contextPath}/approval/businessTripOne?draftDocNo=" + draftDocNo;
                     break;
                 case "기본기안서":
-                    detailUrl = "${pageContext.request.contextPath}/approval/docOne?draftDocNo=" + draftDocNo;
+                    detailUrl = "${pageContext.request.contextPath}/approval/basicFormOne?draftDocNo=" + draftDocNo;
                     break;
                 case "지출결의":
                     detailUrl = "${pageContext.request.contextPath}/approval/chargeOne?draftDocNo=" + draftDocNo;

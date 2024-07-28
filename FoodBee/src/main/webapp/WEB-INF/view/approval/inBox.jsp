@@ -68,6 +68,30 @@
 				}
 			})
 		}
+		 // URL 설정 함수
+        function getDetailUrl(tmpName, draftDocNo) {
+            let detailUrl = "";
+            switch(tmpName) {
+                case "매출보고":
+                    detailUrl = "${pageContext.request.contextPath}/approval/revenueOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "휴가신청":
+                    detailUrl = "${pageContext.request.contextPath}/approval/dayOffOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "출장신청":
+                    detailUrl = "${pageContext.request.contextPath}/approval/businessTripOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "기본기안서":
+                    detailUrl = "${pageContext.request.contextPath}/approval/basicFormOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "지출결의":
+                    detailUrl = "${pageContext.request.contextPath}/approval/chargeOne?draftDocNo=" + draftDocNo;
+                    break;
+                default:
+                    detailUrl = "#";
+            }
+            return detailUrl;
+        }
 		
 		function updateAllList(json){
 			lastPage = json.listLastPage;
@@ -95,10 +119,13 @@
                     default:
                         approvalStateText = '알 수 없음';
                 }
+                
+         		// 상세보기 페이지 URL 설정
+                let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
 				let newRow = $("<tr>" +
                         "<td>" + item.tmpName + "</td>" +
                         "<td>" + item.empName + "</td>" +
-                        "<td>" + item.title + "</td>" +
+                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                         "<td>" + approvalStateText + "</td>" +
                         "<td>" + item.createDatetime + "</td>" +
                         "</tr>");
