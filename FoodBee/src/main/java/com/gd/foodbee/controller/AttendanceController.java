@@ -37,10 +37,21 @@ public class AttendanceController {
 		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		
 		int empNo = emp.getEmpNo();
-		String dptNo = emp.getDptNo();				
+		String dptNo = emp.getDptNo();	
+		String rankName = emp.getRankName();
         
+		HashMap<String, Object> map = new HashMap<>();
+		
+	    if ("팀장".equals(rankName) || "부서장".equals(rankName) || "지사장".equals(rankName)) {
+	        // 팀장이거나 그 이상의 직급이면 CEO 정보
+	    	map = attendanceService.getCEO();
+	    } else {
+	        // 팀장 미만이면 팀장 정보
+	    	map = attendanceService.getTeamLeader(dptNo);
+	    }
+		
 		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo, date);
-		HashMap<String, Object> map = attendanceService.getTeamLeader(dptNo);
+		
 		
 		model.addAttribute("attendanceDTO", attendanceDTO);
 		model.addAttribute("map", map);

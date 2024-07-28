@@ -22,6 +22,12 @@ public interface AttendanceMapper {
 	// 사용클래스 : AttendanceServiceImpl.getTeamLeader
 	HashMap<String, Object> selectTeamLeader(String dptNo);
 	
+	// CEO 출력
+	// 파라미터 : X
+	// 반환값 : HashMap<String, Object>
+	// 사용클래스 : AttendanceServiceImpl.getCEO
+	HashMap<String, Object> selectCEO();
+	
 	// 근태보고 수정
 	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo, String date
 	// 반환값 : X

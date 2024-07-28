@@ -13,6 +13,9 @@ public interface AttendanceService {
 	// 근태보고(승인자) 출력
 	HashMap<String, Object> getTeamLeader(String dptNo);
 	
+	// CEO 출력
+	HashMap<String, Object> getCEO();
+	
 	// 근태보고 수정
 	int modifyTime(String updateStartTime, String updateEndTime, String updateReason, int empNo, String date);
 	

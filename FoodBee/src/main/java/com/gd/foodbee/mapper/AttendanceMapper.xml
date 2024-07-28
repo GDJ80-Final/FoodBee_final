@@ -30,6 +30,17 @@
 			AND rank_name = '팀장'
 	</select>
 	
+	<!-- 팀장이상급 승인자 / CEO -->
+	<select id="selectCEO" resultType="map">
+		SELECT 
+			rank_name rankName, 
+			emp_name empName
+		FROM 
+			emp
+		WHERE 
+			rank_name = 'CEO'
+	</select>
+	
 	<!-- 근태보고 수정 -->
 	<update id="updateTime" parameterType="map">
 		UPDATE 
@@ -141,8 +152,9 @@
 		WHERE 
 			e.dpt_no = #{dptNo} 
 			AND	a.emp_no != #{empNo}
+			AND a.approval_state != 0
 		    <if test="search != null and search != ''">
-		        AND (e.emp_name LIKE '%${search}%')
+		        AND e.emp_name LIKE '%${search}%'
 		    </if>
 		ORDER BY 
 			date DESC

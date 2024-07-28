@@ -52,6 +52,16 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceMapper.selectTeamLeader(dptNo);
 	}
 	
+	// CEO 출력
+	// 파라미터 : X
+	// 반환 값 : HashMap<String, Object> 
+	// 사용 클래스 : AttendanceController.attendanceReport
+	@Override
+	public HashMap<String, Object> getCEO() {
+		
+		return attendanceMapper.selectCEO();
+	}
+	
 	// 근태보고 수정
 	// 파라미터 : String updateStartTime, String updateEndTime, String updateReason, int empNo, String date
 	// 반환 값 : X

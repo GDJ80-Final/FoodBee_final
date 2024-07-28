@@ -121,7 +121,7 @@ function loadAllAttendanceData(page) {
             search: $('#search').val() || ''  // 검색어
         },
         success: function(response) {
-            const data = response; // 응답 데이터는 JSON 형식이어야 함
+            const data = response; 
             updateTable(data.allList);
             updatePagination(data.currentPage, data.allLastPage);
         },
@@ -208,9 +208,9 @@ function updateTable(data) {
                         url: '${pageContext.request.contextPath}/attendance/attendanceRejection',
                         type: 'POST',
                         data: { 
-                            date: item.date, // 직접 item.date 사용
-                            empNo: item.empNo, // 직접 item.empNo 사용
-                            approvalReason: reason // 입력한 반려 사유
+                            date: item.date, 
+                            empNo: item.empNo, 
+                            approvalReason: reason 
                         },
                         success: function(response) {
                             alert('반려되었습니다.'); // 성공 메시지
@@ -219,7 +219,7 @@ function updateTable(data) {
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             console.error("오류:", textStatus, errorThrown);
-                            alert('반려 중 오류가 발생했습니다.'); // 오류 메시지
+                            alert('반려 중 오류가 발생했습니다.'); 
                         }
                     });
                 });
@@ -229,22 +229,21 @@ function updateTable(data) {
         let acceptButton = $('<button>')
             .text('승인')
             .addClass('btn btn-success btn-sm')
-            .click(function() {
-                // AJAX 호출
+            .click(function() {        
                 $.ajax({
                     url: '${pageContext.request.contextPath}/attendance/attendanceAccept',
                     type: 'POST',
                     data: { 
-                        date: item.date, // 직접 item.date 사용
-                        empNo: item.empNo // 직접 item.empNo 사용
+                        date: item.date, 
+                        empNo: item.empNo 
                     },
                     success: function(response) {
-                        alert('승인되었습니다.'); // 성공 메시지
+                        alert('승인되었습니다.'); 
                         loadAllAttendanceData(currentPage); // 데이터 새로 고침
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error("오류:", textStatus, errorThrown);
-                        alert('승인 중 오류가 발생했습니다.'); // 오류 메시지
+                        alert('승인 중 오류가 발생했습니다.'); 
                     }
                 });
             });
