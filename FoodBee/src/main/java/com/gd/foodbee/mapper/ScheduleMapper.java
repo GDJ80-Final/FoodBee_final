@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.DayOffDTO;
+import com.gd.foodbee.dto.RoomRsvDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
 import com.gd.foodbee.dto.TripHistoryDTO;
 
@@ -86,6 +87,11 @@ public interface ScheduleMapper {
 	// 파라미터  :  scheduleNo
 	// 반환값  :  "com.gd.foodbee.dto.TripHistoryDTO"
 	TripHistoryDTO tripHistoryOne(int scheduleNo);
+	
+	// 회의실예약 상세보기
+	// 파라미터 : rsvNo
+	// 반환값 : com.gd.foodbee.dto.RoomRsvDTO
+	RoomRsvDTO roomRsvOne(int rsvNo);
 	
 	// 개인일정 수정하기
 	// 파라미터 : scheduleNo, scheduleDTO

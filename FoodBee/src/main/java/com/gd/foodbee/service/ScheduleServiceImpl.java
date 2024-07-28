@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gd.foodbee.dto.DayOffDTO;
+import com.gd.foodbee.dto.RoomRsvDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
 import com.gd.foodbee.dto.TripHistoryDTO;
 import com.gd.foodbee.mapper.ScheduleMapper;
@@ -126,10 +127,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 		
 		return scheduleMapper.dayOffOne(scheduleNo);
 	}
-	//출장일정 상세보기
-	public TripHistoryDTO tripHistoryOne(int scheduleNo) {
+	@Override
+	public RoomRsvDTO roomRsvOne(int scheduleNo) {
 		
-		return scheduleMapper.tripHistoryOne(scheduleNo);
+		return scheduleMapper.roomRsvOne(scheduleNo);
+	}
+	//출장일정 상세보기
+	public TripHistoryDTO tripHistoryOne(int rsvNo) {
+		
+		return scheduleMapper.tripHistoryOne(rsvNo);
 	}
 	
 	//일정수정

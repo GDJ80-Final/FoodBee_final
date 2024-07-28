@@ -19,6 +19,7 @@ public class RoomRsvDTO {
 	private String endTime;
 	private String type;
 	private String rsvState;
+	private String roomPlace;
 	private String meetingTitle;
 	private String meetingReason;
 	private int users;

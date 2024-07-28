@@ -403,6 +403,28 @@
 	WHERE 
 		bth.business_trip_no = #{scheduleNo}
 </select>
+<!-- 회의실 에약 상세보기 -->
+<select id="roomRsvOne" parameterType="int" resultType="com.gd.foodbee.dto.RoomRsvDTO">
+	SELECT 
+		ri.room_name roomName, 
+		e.emp_name empName, 
+		ri.room_place roomPlace,
+		rr.meeting_title meetingTitle, 
+		rr.meeting_reason meetingReason, 
+		rr.users users, 
+		rr.start_datetime startTime, 
+		rr.end_datetime endTime,
+		rr.`type` type, 
+		rr.rsv_state rsvState
+	FROM 
+		room_rsv rr
+	INNER JOIN 
+		emp e ON rr.emp_no = e.emp_no
+	INNER JOIN 
+		room_info ri ON rr.room_no = ri.room_no
+	WHERE 
+		rr.rsv_no = #{rsvNo}
+</select>
 
 <!-- 일정 수정하기 -->
 <update id="modifySchedule" parameterType="Map">

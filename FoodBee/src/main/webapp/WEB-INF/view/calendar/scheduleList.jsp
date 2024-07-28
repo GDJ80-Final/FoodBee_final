@@ -289,7 +289,7 @@
             $.each(json.roomListAll, function(index, item) {
                 let newRow = $("<tr>" +
                         "<td>" + item.category + "</td>" +
-                        "<td>" + item.meetingTitle + "</td>" +
+                        "<td><a href='" + "${pageContext.request.contextPath}/calendar/roomRsvOne?rsvNo=" + item.rsvNo + "'>" + item.meetingTitle + "</a></td>" +
                         "<td>" + item.roomName + "("+item.roomPlace+")" + "</td>" +
                         "<td>" + item.startDatetime + "</td>" +
                         "<td>" + item.endDatetime + "</td>" +

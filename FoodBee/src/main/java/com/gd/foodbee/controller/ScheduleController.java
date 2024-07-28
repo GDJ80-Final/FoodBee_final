@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.DayOffDTO;
 import com.gd.foodbee.dto.EmpDTO;
+import com.gd.foodbee.dto.RoomRsvDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
 import com.gd.foodbee.dto.TripHistoryDTO;
 import com.gd.foodbee.service.ScheduleService;
@@ -232,6 +233,18 @@ public class ScheduleController {
 		model.addAttribute("tripHistoryOne", tripHistoryOne);
 		
 		return"/calendar/businessTripScheduleOne";
+	}
+	
+	//휴가내역 상세보기
+	@GetMapping("/calendar/roomRsvOne")
+	public String roomRsvOne(@RequestParam("rsvNo")int rsvNo,
+			Model model) {
+		
+		RoomRsvDTO roomRsvOne = scheduleService.roomRsvOne(rsvNo);
+		
+		model.addAttribute("roomRsvOne", roomRsvOne);
+		
+		return"/calendar/roomRsvOne";
 	}
 	
 	// 일정 수정

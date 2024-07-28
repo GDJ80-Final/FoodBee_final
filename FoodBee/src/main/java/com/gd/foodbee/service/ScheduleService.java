@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gd.foodbee.dto.DayOffDTO;
+import com.gd.foodbee.dto.RoomRsvDTO;
 import com.gd.foodbee.dto.ScheduleDTO;
 import com.gd.foodbee.dto.TripHistoryDTO;
 
@@ -62,6 +63,12 @@ public interface ScheduleService {
 	// 반환값 : TripHistoryDTO
 	// 사용클래스 : ScheduleController.businessTripScheduleOne
 	TripHistoryDTO tripHistoryOne(int scheduleNo);
+	
+	// 회의일정 상세
+	// 파라미터 : int rsvNo
+	// 반환값 : roomRsvDTO
+	// 사용클래스 : scheduleController.roomRsvOne
+	RoomRsvDTO roomRsvOne(int rsvNo);
 	
 	// 개인일정 전체 리스트
 	// 파라미터 : int cureentPage, int empNo, String search
