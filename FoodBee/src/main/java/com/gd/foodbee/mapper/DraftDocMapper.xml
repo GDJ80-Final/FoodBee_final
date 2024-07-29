@@ -14,7 +14,7 @@
 			mid_approval_state, 
 			final_approver_no, 
 			final_approval_state, 
-			doc_approver_state,
+			doc_approver_state_no,
 			tmp_no
 		) VALUES (
 			#{drafterEmpNo},
