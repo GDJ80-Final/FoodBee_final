@@ -67,12 +67,18 @@ public class DraftDocServiceImpl implements DraftDocService{
 		
 		// typeName length 만큼 반복문 돌리기 
 		// typeNames [0] => empty 이면 기본기안서 이므로 for문 X
-		String [] typeNames = draftDocRequestDTO.getTypeName();
+		String [] typeNames = null;
+		if(draftDocRequestDTO.getTypeName().length != 0) {
+			typeNames = draftDocRequestDTO.getTypeName();
+		}else {
+			typeNames = null;
+		}
 		int [] amounts = draftDocRequestDTO.getAmount();
 		String [] descriptions = draftDocRequestDTO.getDescription();
 		log.debug(TeamColor.YELLOW + "typeName =>" + typeNames[0]);
-		if(!typeNames[0].isEmpty()) {
-			int draftDocOrder = 1;
+		if (typeNames != null && typeNames.length > 0 && typeNames[0] != null && !typeNames[0].isEmpty()) {
+		    int draftDocOrder = 1;
+			
 			for(int i = 0;i < typeNames.length;i++) {
 				DraftDocDetailDTO draftDocDetailDTO = DraftDocDetailDTO.builder()
 					.draftDocOrder(draftDocOrder)
