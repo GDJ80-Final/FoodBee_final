@@ -138,7 +138,7 @@ public class NoticeController {
 	}
 
 	// 공지사항 추가
-	// 파라미터 : Model model, HttpSession session, HttpServeltReqest request
+	// 파라미터 : Model model, HttpSession session
 	// 반환값 : String
 	// 사용페이지
 	@GetMapping("/community/notice/addNotice")
@@ -169,15 +169,15 @@ public class NoticeController {
 	return "/community/notice/addNotice";
 	}
 	// 공지사항 추가action
-	// 파라미터  : NoticeRequest noticeRequest, HttpServletRequest request
+	// 파라미터  : NoticeRequest noticeRequest
 	// 반환값 : /community/notice/noticeList
 	// 사용페이지
 	@PostMapping("/community/notice/addNoticeAction")
-	public String addNoticeAction(NoticeRequestDTO noticeRequest, HttpServletRequest request) {
+	public String addNoticeAction(NoticeRequestDTO noticeRequest) {
 		log.debug(TeamColor.PURPLE + "noticeRequest=>" + noticeRequest);
 		
 		try{
-			noticeService.addNotice(noticeRequest, request);
+			noticeService.addNotice(noticeRequest);
 	    } catch (Exception e) {
 	        log.error("공지사항 수정 중 오류 발생", e);
 	    }		
@@ -234,17 +234,17 @@ public class NoticeController {
 		return "/community/notice/modifyNotice";
 	}
 	// 공지사항 수정액션
-	// 파라미터 : int noticeNo, NoticeRequest noticeRequest, HttpServletRequest request
+	// 파라미터 : int noticeNo, NoticeRequest noticeRequest
 	// 반혼값 : /community/notice/noticeOne
 	// 사용페이지 modifyNotice
 	@PostMapping("/community/notice/modifyNoticeAction")
 	public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
-			NoticeRequestDTO noticeRequest, HttpServletRequest request) {
+			NoticeRequestDTO noticeRequest) {
 		log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
 		log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
 		
 	  try{
-	        noticeService.getModifyNoticeList(noticeNo, noticeRequest, request);
+	        noticeService.getModifyNoticeList(noticeNo, noticeRequest);
 	    } catch (Exception e) {
 	        log.error("공지사항 수정 중 오류 발생", e);
 	    }

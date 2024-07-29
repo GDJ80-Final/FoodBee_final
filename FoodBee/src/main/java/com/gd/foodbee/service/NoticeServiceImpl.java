@@ -98,7 +98,7 @@ public class NoticeServiceImpl implements NoticeService{
  
     //공지사항 내용추가
     @Override
-	public void addNotice(NoticeRequestDTO noticeRequest, HttpServletRequest request) {
+	public void addNotice(NoticeRequestDTO noticeRequest) {
 		NoticeDTO notice = NoticeDTO.builder()
 					.writerEmpNo(noticeRequest.getWriterEmpNo())
 					.title(noticeRequest.getTitle())
@@ -153,8 +153,7 @@ public class NoticeServiceImpl implements NoticeService{
     //공지사항 내용수정하기
     @Override
     public void getModifyNoticeList(int noticeNo, 
-    		NoticeRequestDTO noticeRequest,
-    		HttpServletRequest request) {
+    		NoticeRequestDTO noticeRequest) {
     	NoticeDTO notice = NoticeDTO.builder()
     				.noticeNo(noticeNo)
     				.title(noticeRequest.getTitle())

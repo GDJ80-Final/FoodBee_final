@@ -56,7 +56,6 @@ public class MsgController {
 	// 사용 페이지 : /msg/addMsg
 	@PostMapping("/msg/addMsg")
 	public String addMsg(MsgRequestDTO msgRequestDTO, 
-				HttpServletRequest request,
 				HttpSession session,
 				Model model) {
 		
@@ -64,7 +63,7 @@ public class MsgController {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo );
-		msgService.addMsg(msgRequestDTO, request,empNo);
+		msgService.addMsg(msgRequestDTO,empNo);
 		
 		return "redirect:/msg/sentMsgBox";
 	}

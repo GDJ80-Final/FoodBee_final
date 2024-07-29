@@ -64,7 +64,6 @@ public class EmpController {
 	@PostMapping("/signup")
 	public String signup(@Valid SignupDTO signupDTO,
 				Errors errors,
-				HttpServletRequest request,
 				Model model) {
 		
 		log.debug(TeamColor.YELLOW +"signupDTO =>" +signupDTO.toString());
@@ -87,7 +86,7 @@ public class EmpController {
 			// 매개값으로 넘겨지는 커맨드객체의 경우에는 별도로 모델에 추가하지 않아도 View에서 사용가능 
 		}
 
-		empService.updateEmpSignup(signupDTO,request);
+		empService.updateEmpSignup(signupDTO);
 		//가입 성공시 로그인화면으로 이동 
 		return "redirect:/login";
 	}

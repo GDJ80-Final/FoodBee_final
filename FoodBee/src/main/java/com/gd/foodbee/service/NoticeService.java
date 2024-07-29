@@ -50,7 +50,7 @@ public interface NoticeService {
 	// 파라미터 : NoticeRequestDTO noticeRequest, HttpServletRequest request
 	// 반환값 : X
 	// 사용클래스 : NoticeController.addNoticeAction
-	void addNotice(NoticeRequestDTO noticeRequest, HttpServletRequest request);
+	void addNotice(NoticeRequestDTO noticeRequest);
 	
 	// 공지사항 상세보기(다중파일때문에 List로)
 	// 파라미터 : int noticeNo
@@ -62,7 +62,7 @@ public interface NoticeService {
 	// 파라미터 : int noticeNo, NoticeRequestDTO noticeRequest, HttpServletRequest request
 	// 반환값 : X
 	// 사용클래스 : NoticeController.modifyNoticeAction
-	void getModifyNoticeList(int noticeNo, NoticeRequestDTO noticeRequest, HttpServletRequest request);
+	void getModifyNoticeList(int noticeNo, NoticeRequestDTO noticeRequest);
 	
 	// 공지사항 파일삭제
 	// 파라미터 : String fileName, int noticeNo

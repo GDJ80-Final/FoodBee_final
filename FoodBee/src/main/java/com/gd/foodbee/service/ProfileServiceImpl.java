@@ -29,13 +29,12 @@ public class ProfileServiceImpl implements ProfileService{
 	private FileFormatter fileFormatter;
 
 	// 프로필 사진 수정
-	// 파라미터 : int empNo, MultipartFile file, HttpServletRequest request
+	// 파라미터 : int empNo, MultipartFile file
 	// 반환 값 : String
 	// 사용 클래스 : ProfileController
 	@Override
 	public String modifyProfileImg(int empNo, 
-			MultipartFile file, 
-			HttpServletRequest request) {
+			MultipartFile file) {
 		String originalFile = fileFormatter.fileFormatter(file);
 		
 		ProfileDTO profileDTO = ProfileDTO.builder()

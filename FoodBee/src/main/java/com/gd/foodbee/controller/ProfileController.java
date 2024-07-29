@@ -24,9 +24,8 @@ public class ProfileController {
 	@PostMapping("/myPage/modifyProfileImg")
 	@ResponseBody
 	public String modifyProfileImg(@RequestParam int empNo,
-				@RequestParam MultipartFile file,
-				HttpServletRequest request) {
+				@RequestParam MultipartFile file) {
 		
-		return profileService.modifyProfileImg(empNo, file, request);
+		return profileService.modifyProfileImg(empNo, file);
 	}
 }

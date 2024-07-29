@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface MsgService {
 	
 	//새 쪽지 작성
-	void addMsg(MsgRequestDTO msgRequestDTO,HttpServletRequest request, int empNo);
+	void addMsg(MsgRequestDTO msgRequestDTO, int empNo);
 	
 	//받은쪽지함
 	List<Map<String,Object>> getReceivedMsgList(int currentPage,int empNo,String readYN);

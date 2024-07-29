@@ -20,7 +20,6 @@ import com.gd.foodbee.util.FileFormatter;
 import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -49,12 +48,11 @@ public class MsgServiceImpl implements MsgService{
 	
 	
 	// 새 쪽지 작성
-	// 파라미터 : MsgRequestDTO msgRequestDTO,HttpServeltReqeust request, int empNo
+	// 파라미터 : MsgRequestDTO msgRequestDTO, int empNo
 	// 반환 값 : int
 	// 사용 클래스 : MsgController.addMsg
 	@Override
 	public void addMsg(MsgRequestDTO msgRequestDTO,
-				HttpServletRequest request,
 				int empNo) {
 		//매개값 확인 
 		log.debug(TeamColor.YELLOW + "MsgRequestDTO =>" + msgRequestDTO.toString());

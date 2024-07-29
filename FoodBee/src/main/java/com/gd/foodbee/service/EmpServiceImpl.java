@@ -79,12 +79,11 @@ public class EmpServiceImpl implements EmpService{
 	}
 	
 	//사원 인트라넷 등록 (가입) 
-	//파라미터 : SignupDTO signupDTO,HttpServletRequest request
+	//파라미터 : SignupDTO signupDTO
 	//반환값 : void
 	//사용클래스 : EmpController.signup
 	@Override
-	public void updateEmpSignup(SignupDTO signupDTO,
-				HttpServletRequest request) {
+	public void updateEmpSignup(SignupDTO signupDTO) {
 			
 			
 		EmpDTO empDTO = EmpDTO.builder()
