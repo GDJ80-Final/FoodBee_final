@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DocReferrerDTO;
 import com.gd.foodbee.dto.DraftDocDTO;
 import com.gd.foodbee.dto.DraftDocDetailDTO;
 import com.gd.foodbee.dto.DraftDocFileDTO;
@@ -149,42 +150,130 @@ public class ApprovalBoxController {
 			Model model, HttpSession session) {
 		
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
-        String empName = emp.getEmpName();
-        
-        log.debug(TeamColor.PURPLE + "empName=>" + empName);
+        int empNo = emp.getEmpNo();
 
 		// 기안서상세, detail, 파일
-        DraftDocDTO revenueOne = approvalBoxService.getDocOne(draftDocNo);
-        DraftDocDetailDTO revenueDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
-        DraftDocFileDTO revenueFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        Map<String,Object> revenueOne = approvalBoxService.getDocOne(draftDocNo);
+        List<DraftDocDetailDTO> revenueDetailOne = approvalBoxService.getDocDetailList(draftDocNo);
+        List<DraftDocFileDTO> revenueFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        Map<String,Object> revenueReferrer = approvalBoxService.getDocReferrerOne(draftDocNo);
         
-        log.debug(TeamColor.PURPLE + "empName=>" + empName);
         log.debug(TeamColor.PURPLE + "revenueOne=>" + revenueOne);
         log.debug(TeamColor.PURPLE + "revenueDetailOne=>" + revenueDetailOne);
         log.debug(TeamColor.PURPLE + "revenueFileOne=>" + revenueFileOne);
 		
-        model.addAttribute("empName", empName);
+        model.addAttribute("empName", empNo);
+        model.addAttribute("revenueOne", revenueOne);
+        model.addAttribute("revenueDetailOne", revenueDetailOne);
+        model.addAttribute("revenueFileOne", revenueFileOne);
+        model.addAttribute("refenueReferrer", revenueReferrer);
         
 		return "/approval/revenueOne";
 	}
 	//휴가신청 상세보기페이지
 	@GetMapping("/approval/dayOffOne")
-	public String dayOffOne() {
+	public String dayOffOne(@RequestParam("draftDocNo") int draftDocNo,
+			Model model, HttpSession session) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+        int empNo = emp.getEmpNo();
+
+		// 기안서상세, detail, 파일
+        Map<String,Object> dayOffOne = approvalBoxService.getDocOne(draftDocNo);
+        DraftDocDetailDTO dayOffDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
+        List<DraftDocFileDTO> dayOffFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        Map<String,Object> dayOffReferrer = approvalBoxService.getDocReferrerOne(draftDocNo);
+        
+        log.debug(TeamColor.PURPLE + "dayOffReferrer=>" + dayOffReferrer);
+        log.debug(TeamColor.PURPLE + "dayOffOne=>" + dayOffOne);
+        log.debug(TeamColor.PURPLE + "dayOffDetailOne=>" + dayOffDetailOne);
+        log.debug(TeamColor.PURPLE + "dayOffFileOne=>" + dayOffFileOne);
+		
+        model.addAttribute("empNo", empNo);
+        model.addAttribute("dayOffOne", dayOffOne);
+        model.addAttribute("dayOffDetailOne", dayOffDetailOne);
+        model.addAttribute("dayOffFileOne", dayOffFileOne);
+        model.addAttribute("dayOffReferrer", dayOffReferrer);
+        
 		return "/approval/dayOffOne";
 	}
 	//출장신청 상세보기페이지
 	@GetMapping("/approval/businessTripOne")
-	public String businessTripOne() {
+	public String businessTripOne(@RequestParam("draftDocNo") int draftDocNo,
+			Model model, HttpSession session) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+        int empNo = emp.getEmpNo();
+
+		// 기안서상세, detail, 파일
+        Map<String,Object> businessTripOne = approvalBoxService.getDocOne(draftDocNo);
+        DraftDocDetailDTO businessTripDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
+        List<DraftDocFileDTO> businessTripFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        Map<String,Object> businessTripReferrer = approvalBoxService.getDocReferrerOne(draftDocNo);
+        
+        log.debug(TeamColor.PURPLE + "empNo=>" + empNo);
+        log.debug(TeamColor.PURPLE + "businessTripOne=>" + businessTripOne);
+        log.debug(TeamColor.PURPLE + "businessTripDetailOne=>" +  businessTripDetailOne);
+        log.debug(TeamColor.PURPLE + "businessTripFileOne=>" + businessTripFileOne);
+		
+        model.addAttribute("empNo", empNo);
+        model.addAttribute("businessTripOne", businessTripOne);
+        model.addAttribute("businessTripDetailOne",  businessTripDetailOne);
+        model.addAttribute("businessTripFileOne", businessTripFileOne);
+        model.addAttribute("businessTripReferrer", businessTripReferrer);
+        
 		return "/approval/businessTripOne";
 	}
 	//기본기안서 상세보기페이지
-	@GetMapping("/approval/docOne")
-	public String docOne() {
-		return"/approval/docOne";
+	@GetMapping("/approval/basicFormOne")
+	public String docOne(@RequestParam("draftDocNo") int draftDocNo,
+			Model model, HttpSession session) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+        int empNo = emp.getEmpNo();
+
+		// 기안서상세, detail,수신자, 파일
+        Map<String,Object> basicFormOne = approvalBoxService.getDocOne(draftDocNo);
+        DraftDocDetailDTO basicFormDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
+        List<DraftDocFileDTO> basicFormFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        Map<String,Object> basicReferrerOne = approvalBoxService.getDocReferrerOne(draftDocNo);
+        
+        log.debug(TeamColor.PURPLE + "basicFormOne=>" + basicFormOne);
+        log.debug(TeamColor.PURPLE + " basicFormDetailOne=>" + basicFormDetailOne);
+        log.debug(TeamColor.PURPLE + "basicFormFileOne=>" + basicFormFileOne);
+        log.debug(TeamColor.PURPLE + "basicReferrerOne=>" + basicReferrerOne);
+		
+        model.addAttribute("basicFormOne", basicFormOne);
+        model.addAttribute("basicFormDetailOne", basicFormDetailOne);
+        model.addAttribute("basicFormFileOne", basicFormFileOne);
+        model.addAttribute("basicReferrerOne", basicReferrerOne); 
+        model.addAttribute("empNo", empNo);
+		return"/approval/basicFormOne";
 	}
 	//지출결의 상세보기페이지
 	@GetMapping("/approval/chargeOne")
-	public String chargeOne() {
+	public String chargeOne(@RequestParam("draftDocNo") int draftDocNo,
+			Model model, HttpSession session) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+        int empNo = emp.getEmpNo();
+
+		// 기안서상세, detail, 파일
+        Map<String,Object>chargeOne = approvalBoxService.getDocOne(draftDocNo);
+        DraftDocDetailDTO chargeDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
+        List<DraftDocFileDTO> chargeFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        Map<String,Object> chargeReferrer = approvalBoxService.getDocReferrerOne(draftDocNo);
+        
+        log.debug(TeamColor.PURPLE + "revenueOne=>" + chargeOne);
+        log.debug(TeamColor.PURPLE + "revenueDetailOne=>" + chargeDetailOne);
+        log.debug(TeamColor.PURPLE + "revenueFileOne=>" + chargeFileOne);
+		
+        model.addAttribute("empNo", empNo);
+        model.addAttribute("chargeOne", chargeOne);
+        model.addAttribute("chargeDetailOne", chargeDetailOne);
+        model.addAttribute("chargeFileOne", chargeFileOne);
+        model.addAttribute("chargeReferrer", chargeReferrer);
+        
 		return "/approval/chargeOne";
 	}
 }

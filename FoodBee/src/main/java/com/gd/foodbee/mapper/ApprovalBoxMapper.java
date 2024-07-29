@@ -1,11 +1,13 @@
 package com.gd.foodbee.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DocReferrerDTO;
 import com.gd.foodbee.dto.DraftDocDTO;
 import com.gd.foodbee.dto.DraftDocDetailDTO;
 import com.gd.foodbee.dto.DraftDocFileDTO;
@@ -53,15 +55,28 @@ public interface ApprovalBoxMapper {
 	// 기안서 상세보기
 	// 파라미터 : int draftDocNo
 	// 반환값 : com.gd.foodbee.dto.DraftDocDTO
-	DraftDocDTO getDocOne(int draftDocNo);
+	Map<String,Object> getDocOne(int draftDocNo);
 	
 	// 기안서 detail 상세보기
 	// 파라미터 : int draftDocNo
 	// 반환값 : com.gd.foodbee.dto.DraftDocDetailDTO
 	DraftDocDetailDTO getDocDetailOne(int draftDocNo);
 	
+	// 기안서 detailList로 출력 
+	List<DraftDocDetailDTO> getDocDetailList(int draftDocNo);
+	
 	// 기안서 파일 상세
 	// 파라미터 : int draftDocNo
 	// 반환값 : com.gd.foodbee.dto.DraftDocFileDTO
-	DraftDocFileDTO getDocFileOne(int draftDocNo);
+	List<DraftDocFileDTO> getDocFileOne(int draftDocNo);
+	
+	// 기안서 수신참조자
+	// 파라미터 : int draftDocNo
+	// 반환값 : com.gd.foodbee.dto.DocReferrerDTO
+	Map<String,Object> getDocReferrerOne(int draftDocNo);
+	
+	// 휴가 상세보기
+	// 파라미터
+	// 반환값
+	Map<String,Object> getDayOffOne(int draftDocNo);
 }

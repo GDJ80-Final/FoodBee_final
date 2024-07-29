@@ -1,12 +1,14 @@
 package com.gd.foodbee.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DocReferrerDTO;
 import com.gd.foodbee.dto.DraftDocDTO;
 import com.gd.foodbee.dto.DraftDocDetailDTO;
 import com.gd.foodbee.dto.DraftDocFileDTO;
@@ -94,7 +96,7 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	
 	// 기안서 상세
 	@Override
-	public DraftDocDTO getDocOne(int draftDocNo) {
+	public Map<String,Object> getDocOne(int draftDocNo) {
 		
 		return approvalBoxMapper.getDocOne(draftDocNo);
 	}
@@ -105,10 +107,27 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		return approvalBoxMapper.getDocDetailOne(draftDocNo);
 	}
 	
+	//기안서 detail List
+	@Override
+	public List<DraftDocDetailDTO> getDocDetailList(int draftDocNo){
+		return approvalBoxMapper.getDocDetailList(draftDocNo);
+	}
+	
 	//기안서 파일상세
 	@Override
-	public DraftDocFileDTO getDocFileOne(int draftDocNo) {
+	public List<DraftDocFileDTO> getDocFileOne(int draftDocNo) {
 		return approvalBoxMapper.getDocFileOne(draftDocNo);
 	}
 	
+	//기안서 수신참조자
+	@Override
+	public Map<String,Object> getDocReferrerOne(int draftDocNo) {
+		return approvalBoxMapper.getDocReferrerOne(draftDocNo);
+	}
+	
+	//휴가상세정보
+	@Override
+	public Map<String,Object> getDayOffOne(int draftDocNo){
+		return approvalBoxMapper.getDayOffOne(draftDocNo);
+	}
 }

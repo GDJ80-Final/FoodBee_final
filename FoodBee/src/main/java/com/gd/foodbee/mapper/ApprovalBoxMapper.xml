@@ -125,30 +125,59 @@
    	(dd.mid_approver_no = #{empNo} OR dd.final_approver_no = #{empNo})
 </select>
 <!-- 기안서 상세-->
-<select id="getDocOne" resultType="com.gd.foodbee.dto.DraftDocDTO" parameterType="int">
-	SELECT 
-		dd.draft_doc_no draftDocNo, 
-		dd.drafter_emp_no drafterEmpNo, 
-		dd.create_datetime createDatetime, 
-		dd.title title, 
-		dd.content content, 
-		dd.mid_approver_no midApproverNo,
-		dd.mid_approval_state midApprovalState, 
-		dd.mid_approval_datetime midApprovalDatetime, 
-		dd.final_approver_no finalApproverNo, 
-		dd.final_approval_state finalApprovalState, 
-		dd.final_approval_datetime finalApprovalDatetime,
-		dd.mid_approver_reason midApproverReason, 
-		dd.final_approver_reason finalApproverReason, 
-		dd.doc_approver_state_no docApproverState, 
-		dd.tmp_no tmpNo
+<select id="getDocOne" resultType="Map" parameterType="int">
+    SELECT 
+	    dd.draft_doc_no draftDocNo, 
+	    dd.drafter_emp_no drafterEmpNo, 
+	    drafter.dpt_no dptNo,
+	    drafter.emp_name drafterEmpName, 
+	    drafterSign.approval_sign_file drafterSign,
+	    dd.create_datetime createDatetime, 
+	    dd.title title, 
+	    dd.content content, 
+	    dd.mid_approver_no midApproverNo,
+	    midApprover.emp_name midApproverName,
+	    midApproverSign.approval_sign_file midApproverSign,
+	    dd.mid_approval_state midApprovalState, 
+	    dd.mid_approval_datetime midApprovalDatetime, 
+	    dd.final_approver_no finalApproverNo, 
+	    finalApprover.emp_name finalApproverName,
+	    finalApproverSign.approval_sign_file finalApproverSign,
+	    dd.final_approval_state finalApprovalState, 
+	    dd.final_approval_datetime finalApprovalDatetime,
+	    dd.mid_approver_reason midApproverReason, 
+	    dd.final_approver_reason finalApproverReason, 
+	    dd.doc_approver_state_no docApproverState, 
+	    dd.tmp_no tmpNo
 	FROM 
-		draft_doc dd
+	    draft_doc dd
+	    LEFT JOIN emp drafter ON dd.drafter_emp_no = drafter.emp_no
+	    LEFT JOIN approval_sign drafterSign ON drafter.emp_no = drafterSign.emp_no
+	    LEFT JOIN emp midApprover ON dd.mid_approver_no = midApprover.emp_no
+	    LEFT JOIN approval_sign midApproverSign ON midApprover.emp_no = midApproverSign.emp_no
+	    LEFT JOIN emp finalApprover ON dd.final_approver_no = finalApprover.emp_no
+	    LEFT JOIN approval_sign finalApproverSign ON finalApprover.emp_no = finalApproverSign.emp_no
 	WHERE 
 		draft_doc_no = #{draftDocNo}
 </select>
 <!-- 기안서Detail상세 -->
 <select id="getDocDetailOne" resultType="com.gd.foodbee.dto.DraftDocDetailDTO" parameterType="int">
+	SELECT 
+		d.draft_doc_order draftDocOrder,
+		d.draft_doc_no draftDocNo,
+		d.start_date startDate,
+		d.end_date endDate,
+		d.type_name typeName,
+		d.amount amount,
+		d.description description,
+		d.text text
+	FROM 
+		draft_doc_detail d
+	WHERE 
+		draft_doc_no = #{draftDocNo}
+</select>
+<!-- 기안서Detail List 출력 -->
+<select id="getDocDetailList" resultType="com.gd.foodbee.dto.DraftDocDetailDTO" parameterType="int">
 	SELECT 
 		d.draft_doc_order draftDocOrder,
 		d.draft_doc_no draftDocNo,
@@ -177,5 +206,33 @@
 		draft_doc_file d
 	WHERE 
 		d.draft_doc_no = #{draftDocNo}
+</select>
+<!-- 수신참조자 가져오기 -->
+<select id="getDocReferrerOne" resultType ="Map" parameterType="int">
+	SELECT 
+		dr.draft_doc_no draftDocNo,
+		dr.referrer_emp_no referrerEmpNo,
+		e.emp_name empName
+	FROM 
+		doc_referrer dr
+	LEFT JOIN 
+		emp e ON dr.referrer_emp_no = e.emp_no
+	WHERE 
+		dr.draft_doc_no = #{draftDocNo}
+</select>
+<!-- 휴가 상세보기 -->
+<select id="getDayOffOne" resultType="Map" parameterType="int">
+SELECT 
+	doh.start_date startDate, 
+	doh.end_date endDate, 
+	doh.cancle_YN cancleYN, 
+	doh.cancle_reason cancleReason, 
+	doh.use_year useYear, 
+	doh.emergency_contact emergencyContact, 
+	doh.type_name typeName
+FROM 
+	day_off_history doh
+WHERE 
+	doh.draft_doc_no = #{draftDocNo}
 </select>
 </mapper>

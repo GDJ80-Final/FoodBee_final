@@ -1,9 +1,11 @@
 package com.gd.foodbee.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DocReferrerDTO;
 import com.gd.foodbee.dto.DraftDocDTO;
 import com.gd.foodbee.dto.DraftDocDetailDTO;
 import com.gd.foodbee.dto.DraftDocFileDTO;
@@ -38,11 +40,20 @@ public interface ApprovalBoxService {
 	int countOneState(int empNo);
 	
 	//기안서 상세
-	DraftDocDTO getDocOne(int draftDocNo);
+	Map<String,Object> getDocOne(int draftDocNo);
 	
 	//기안서 detail 상세
 	DraftDocDetailDTO getDocDetailOne(int draftDocNo);
 	
+	//기안서 detail상세리스트
+	List<DraftDocDetailDTO> getDocDetailList(int draftDocNo);
+	
 	//기안서 파일상세
-	DraftDocFileDTO getDocFileOne(int draftDocNo);
+	List<DraftDocFileDTO> getDocFileOne(int draftDocNo);
+	
+	//기안서 수신참조자
+	Map<String,Object> getDocReferrerOne(int draftDocNo);
+	
+	//휴가 상세 
+	Map<String,Object> getDayOffOne(int draftDocNo);
 }
