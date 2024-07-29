@@ -352,7 +352,7 @@ public class EmpController {
 		Map<String, Object> empHr = empService.getEmpHr(empNo);
 		
 		model.addAttribute("empHr", empHr);
-		return "emp/";
+		return "emp/modifyEmpHr";
 	}
 	
 	// 사원 수정

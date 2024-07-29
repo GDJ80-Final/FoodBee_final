@@ -1,5 +1,6 @@
 package com.gd.foodbee;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -11,6 +12,12 @@ import com.gd.foodbee.util.LoginInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer{
 
+	@Autowired
+    private AuthorityInterceptor authorityInterceptor;
+
+    @Autowired
+    private LoginInterceptor loginInterceptor;
+	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		 registry.addResourceHandler("/upload/**")
@@ -21,11 +28,11 @@ public class WebConfig implements WebMvcConfigurer{
     
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoginInterceptor())
+		registry.addInterceptor(loginInterceptor)
 			.addPathPatterns("/**")
-			.excludePathPatterns("/login", "/logout", "/signup", "/findPw", "getPw", "/sendEmail", "/css/**", "/js/**", "/upload/**");
+			.excludePathPatterns("/login", "/logout", "/signup", "/findPw", "/getPw", "/sendEmail", "/css/**", "/js/**", "/upload/**");
 		
-		registry.addInterceptor(new AuthorityInterceptor())
+		registry.addInterceptor(authorityInterceptor)
 	        .addPathPatterns(
 	            "/attendance/attendanceTeamMember",
 	            "/attendance/getAttendanceTeamMemberAll",

@@ -164,7 +164,12 @@
 		        	},
 			        success: function(json){
 			            alert('비밀번호가 초기화되었습니다. 이메일로 임시 비밀번호를 발송했습니다');
-			        }
+			        },
+		        	error: function(jqXHR, textStatus, errorThrown) {
+		                if(jqXHR.status === 403) {
+		                    alert('권한이 없습니다.');
+		                }
+		        	}
 			    });
 			});
 			
@@ -178,7 +183,12 @@
 			        data: { empNo: empNo },
 			        success: function(json){
 			            alert('회원가입 링크가 발송되었습니다. 이메일 : ' + json);
-			        }
+			        },
+			        error: function(jqXHR, textStatus, errorThrown) {
+		                if(jqXHR.status === 403) {
+		                    alert('권한이 없습니다.');
+		                }
+		        	}
 			    });
 			});
 			
