@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,6 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class NoticeFileController {
+	
+	@Autowired
+	private FilePath filePath;
+	
     
 	// 파일 다운로드
 	// 파라미터 : String fileName , HttpRequest request
@@ -31,7 +35,7 @@ public class NoticeFileController {
         // 실제 파일이 저장된 경로
     	log.info("Requested file: " + filename);
     	
-    	String path = FilePath.getFilePath() + "notice_file/";
+    	String path = filePath.getFilePath() + "notice_file/";
         File file = new File(path + File.separator + filename);
 
         // 로그로 경로 확인

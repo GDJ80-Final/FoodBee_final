@@ -24,6 +24,7 @@ import com.gd.foodbee.dto.SignupDTO;
 import com.gd.foodbee.mapper.EmpMapper;
 import com.gd.foodbee.mapper.ProfileMapper;
 import com.gd.foodbee.util.FileFormatter;
+import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.SendEmail;
 import com.gd.foodbee.util.TeamColor;
 
@@ -46,6 +47,12 @@ public class EmpServiceImpl implements EmpService{
 	
 	@Autowired
 	private SendEmail sendEmail;
+	
+	@Autowired
+	private FilePath filePath;
+	
+	@Autowired
+	private FileFormatter fileFormatter;
 	
 	private static final int ROW_PER_PAGE = 2;
 	
@@ -97,7 +104,7 @@ public class EmpServiceImpl implements EmpService{
 		log.debug(TeamColor.YELLOW + "multipartfile mf => " + mf.toString());
 		
 		//파일명 년월일시부초 형태로 변환 -> 파일명 중복 안되게 하기 위해서 
-		String originalFile = FileFormatter.fileFormatter(mf);
+		String originalFile = fileFormatter.fileFormatter(mf);
 		
 		ProfileDTO profileDTO = ProfileDTO.builder()
 					.empNo(signupDTO.getEmpNo())
@@ -107,23 +114,15 @@ public class EmpServiceImpl implements EmpService{
 					.build();
 		//프로필 사진 등록 
 		int row2 = profileMapper.insertProfileImg(profileDTO);
-		
-		// 파일 저장
-		//Controller 에서 넘겨받은 HttpServletRequest 객체 받아서 RealPath 구해서 파일 저장하기 
-		
-		String path = request.getServletContext().getRealPath("/WEB-INF/upload/profile_img/");
-		log.debug(TeamColor.YELLOW +"path =>"+ path);
-		
-		File emptyFile = new File(path+originalFile);
-			try {
-				mf.transferTo(emptyFile);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new RuntimeException();
-			} 
 		if(row2 == 0) {
 			throw new RuntimeException();
-		}	
+		}
+		// 파일 저장
+		//Controller 에서 넘겨받은 HttpServletRequest 객체 받아서 RealPath 구해서 파일 저장하기 
+		String path = filePath.getFilePath() + "profile_img/";
+		log.debug(TeamColor.YELLOW +"path =>"+ path);
+		
+		filePath.saveFile(path, originalFile, mf);
 		
 	}
 	

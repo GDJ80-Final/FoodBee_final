@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FilePath {
-	public static String getFilePath() {
+	public String getFilePath() {
 		String path = null;
 		try {
 			path = System.getProperty("user.dir") + "/src/main/resources/static/upload/";
@@ -17,7 +17,7 @@ public class FilePath {
 		
 		return path;
 	}
-	public static String saveFile(String path, String originalFile,MultipartFile mf) {
+	public String saveFile(String path, String originalFile,MultipartFile mf) {
 		File emptyFile = new File(path+originalFile);
 
 		try {

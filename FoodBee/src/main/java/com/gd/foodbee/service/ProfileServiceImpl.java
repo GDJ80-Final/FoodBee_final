@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.gd.foodbee.dto.ProfileDTO;
 import com.gd.foodbee.mapper.ProfileMapper;
 import com.gd.foodbee.util.FileFormatter;
+import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,12 @@ public class ProfileServiceImpl implements ProfileService{
 
 	@Autowired
 	private ProfileMapper profileMapper;
+	
+	@Autowired
+	private FilePath filePath;
+	
+	@Autowired
+	private FileFormatter fileFormatter;
 
 	// 프로필 사진 수정
 	// 파라미터 : int empNo, MultipartFile file, HttpServletRequest request
@@ -29,7 +36,7 @@ public class ProfileServiceImpl implements ProfileService{
 	public String modifyProfileImg(int empNo, 
 			MultipartFile file, 
 			HttpServletRequest request) {
-		String originalFile = FileFormatter.fileFormatter(file);
+		String originalFile = fileFormatter.fileFormatter(file);
 		
 		ProfileDTO profileDTO = ProfileDTO.builder()
 					.empNo(empNo)
@@ -44,16 +51,10 @@ public class ProfileServiceImpl implements ProfileService{
 			throw new RuntimeException();
 		}
 		
-		String path = request.getServletContext().getRealPath("/WEB-INF/upload/profile_img/");
+		String path = filePath.getFilePath() + "profile_img/";
 		log.debug(TeamColor.RED +"path =>"+ path);
 		
-		File emptyFile = new File(path+originalFile);
-		try {
-			file.transferTo(emptyFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		} 
+		filePath.saveFile(path, originalFile, file);
 		
 		return originalFile;
 		

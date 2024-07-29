@@ -11,10 +11,10 @@ import com.gd.foodbee.mapper.MsgRecipientMapper;
 
 
 
-@Service
+
 @Transactional
 @Component
-public class ScheduleService {
+public class AutoDeleteSchedule {
 	
 	@Autowired
 	private MsgMapper msgMapper;

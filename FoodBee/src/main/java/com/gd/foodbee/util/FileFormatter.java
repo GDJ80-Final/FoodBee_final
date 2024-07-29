@@ -3,13 +3,15 @@ package com.gd.foodbee.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Component
 public class FileFormatter {
-	public static String fileFormatter(MultipartFile mf) {
+	public String fileFormatter(MultipartFile mf) {
 		
 		log.debug(TeamColor.YELLOW +"fileName => " + mf.toString());
 		

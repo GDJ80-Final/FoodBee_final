@@ -36,6 +36,9 @@ public class MsgController {
 	@Autowired
 	private MsgService msgService;
 	
+	@Autowired
+	private FilePath filePath;
+	
 
 	
 	// 새 쪽지 쓰기
@@ -275,7 +278,7 @@ public class MsgController {
     public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(name="file") String filename) {
 		
         // 실제 파일이 저장된 경로
-        String path = FilePath.getFilePath()+"msg_file/";
+        String path = filePath.getFilePath()+"msg_file/";
         File file = new File(path + File.separator + filename);
 
         // 로그로 경로 확인

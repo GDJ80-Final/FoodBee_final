@@ -30,8 +30,15 @@ import lombok.extern.slf4j.Slf4j;
 public class NoticeServiceImpl implements NoticeService{
     @Autowired 
     private NoticeMapper noticeMapper;
+    
     @Autowired 
     private NoticeFileMapper noticeFileMapper;
+    
+	@Autowired
+	private FilePath filePath;
+	
+	@Autowired
+	private FileFormatter fileFormatter;
     
     private static final int ROW_PER_PAGE = 10;
     
@@ -111,7 +118,7 @@ public class NoticeServiceImpl implements NoticeService{
     	if(mfs.length !=0) {
 	    
 	    	for(MultipartFile mf : mfs) {
-	    		String originalFile = FileFormatter.fileFormatter(mf);
+	    		String originalFile = fileFormatter.fileFormatter(mf);
 	    		log.debug(TeamColor.PURPLE + "originalFile=>" + originalFile);
 	    		
 	    		  NoticeFileDTO file = NoticeFileDTO.builder()
@@ -127,11 +134,11 @@ public class NoticeServiceImpl implements NoticeService{
 		        }
 		        
 		        // 파일 저장
-		        String path = FilePath.getFilePath() + "notice_file/";
+		        String path = filePath.getFilePath() + "notice_file/";
 		        log.debug(TeamColor.PURPLE + "path => "+path);
 		        
 		        //경로에 저장
-				FilePath.saveFile(path, originalFile, mf);
+				filePath.saveFile(path, originalFile, mf);
 	        }
 	    }
     }
@@ -169,7 +176,7 @@ public class NoticeServiceImpl implements NoticeService{
     	}
     	//파일이 있는경우
     	for(MultipartFile mf : mfs) {
-    		String originalFile = FileFormatter.fileFormatter(mf);
+    		String originalFile = fileFormatter.fileFormatter(mf);
     		
     		log.debug(TeamColor.PURPLE + "originalFile=>" + originalFile);
     		
@@ -187,10 +194,10 @@ public class NoticeServiceImpl implements NoticeService{
 	  	      }
     	  
     	  	// 파일 저장
-			String path = FilePath.getFilePath() + "notice_file/";
+			String path = filePath.getFilePath() + "notice_file/";
 			log.debug(TeamColor.PURPLE + "path => "+path);
 			//경로에 저장
-			FilePath.saveFile(path, originalFile, mf);
+			filePath.saveFile(path, originalFile, mf);
         }	
 	}
 

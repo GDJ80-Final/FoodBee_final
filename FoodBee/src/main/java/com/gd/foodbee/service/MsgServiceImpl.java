@@ -1,8 +1,6 @@
 package com.gd.foodbee.service;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +20,6 @@ import com.gd.foodbee.util.FileFormatter;
 import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +38,12 @@ public class MsgServiceImpl implements MsgService{
 	
 	@Autowired
 	private MsgRecipientMapper msgRecipientMapper;
+	
+	@Autowired
+	private FilePath filePath;
+	
+	@Autowired
+	private FileFormatter fileFormatter;
 	
 	private static final int ROW_PER_PAGE = 2;
 	
@@ -68,7 +71,7 @@ public class MsgServiceImpl implements MsgService{
 		log.debug(TeamColor.YELLOW + "Multipartfiel mfs =>" + mfs.toString() );
 		
 		//파일 저장 경로 설정
-		String path = FilePath.getFilePath() + "msg_file/";
+		String path = filePath.getFilePath() + "msg_file/";
 		log.debug(TeamColor.YELLOW +"path =>"+ path);
 		
 		//쪽지 insert 
@@ -81,7 +84,7 @@ public class MsgServiceImpl implements MsgService{
 		log.debug(TeamColor.YELLOW + "mfs isEmpty =>" + mfs[0].isEmpty());
 		if(!mfs[0].isEmpty()) {
 			for(MultipartFile mf:mfs) {
-				String originalFile = FileFormatter.fileFormatter(mf);
+				String originalFile = fileFormatter.fileFormatter(mf);
 				MsgFileDTO msgFileDTO = MsgFileDTO.builder()
 							.msgNo(msgDTO.getMsgNo())
 							.originalFile(originalFile)
@@ -94,7 +97,7 @@ public class MsgServiceImpl implements MsgService{
 					throw new RuntimeException();
 				}
 				//파일 경로에 저장
-				FilePath.saveFile(path, originalFile, mf);
+				filePath.saveFile(path, originalFile, mf);
 			}
 		}else {
 			log.debug(TeamColor.YELLOW + "첨부파일이 없습니다.");
