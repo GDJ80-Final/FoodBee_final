@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DraftDocDTO;
+import com.gd.foodbee.dto.DraftDocDetailDTO;
+import com.gd.foodbee.dto.DraftDocFileDTO;
 
 @Mapper
 public interface ApprovalBoxMapper {
@@ -46,4 +49,19 @@ public interface ApprovalBoxMapper {
 	// 파라미터 : int empNo
 	//반환값 : com.gd.foodbee.dto.ApprovalBoxStateDTO
 	ApprovalBoxStateDTO getStateBox(int empNo);
+	
+	// 기안서 상세보기
+	// 파라미터 : int draftDocNo
+	// 반환값 : com.gd.foodbee.dto.DraftDocDTO
+	DraftDocDTO getDocOne(int draftDocNo);
+	
+	// 기안서 detail 상세보기
+	// 파라미터 : int draftDocNo
+	// 반환값 : com.gd.foodbee.dto.DraftDocDetailDTO
+	DraftDocDetailDTO getDocDetailOne(int draftDocNo);
+	
+	// 기안서 파일 상세
+	// 파라미터 : int draftDocNo
+	// 반환값 : com.gd.foodbee.dto.DraftDocFileDTO
+	DraftDocFileDTO getDocFileOne(int draftDocNo);
 }

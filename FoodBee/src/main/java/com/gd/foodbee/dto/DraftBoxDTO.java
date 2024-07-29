@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class DraftBoxDTO {
-	private int drafterDocNo;
+	private int draftDocNo;
 	private int drafterEmpNo;
 	private String tmpName;
 	private String title;

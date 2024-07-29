@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class ApprovalBoxDTO {
+	private int draftDocNo;
 	private String tmpName;
 	private String empName;
 	private String title;
@@ -21,5 +22,4 @@ public class ApprovalBoxDTO {
 	private String finalApprovalState;
 	private String finalApprovalDatetime;
 	private String createDatetime;
-	private int draftDocNo;
 }

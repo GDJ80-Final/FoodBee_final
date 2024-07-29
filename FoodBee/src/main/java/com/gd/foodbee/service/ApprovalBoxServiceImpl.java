@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DraftDocDTO;
+import com.gd.foodbee.dto.DraftDocDetailDTO;
+import com.gd.foodbee.dto.DraftDocFileDTO;
 import com.gd.foodbee.mapper.ApprovalBoxMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -88,4 +91,24 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	public ApprovalBoxStateDTO getStateBox(int empNo) {
 		return approvalBoxMapper.getStateBox(empNo);
 	}
+	
+	// 기안서 상세
+	@Override
+	public DraftDocDTO getDocOne(int draftDocNo) {
+		
+		return approvalBoxMapper.getDocOne(draftDocNo);
+	}
+
+	// 기안서 detail 상세
+	@Override
+	public DraftDocDetailDTO getDocDetailOne(int draftDocNo) {
+		return approvalBoxMapper.getDocDetailOne(draftDocNo);
+	}
+	
+	//기안서 파일상세
+	@Override
+	public DraftDocFileDTO getDocFileOne(int draftDocNo) {
+		return approvalBoxMapper.getDocFileOne(draftDocNo);
+	}
+	
 }

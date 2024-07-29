@@ -4,7 +4,7 @@
 <!-- 전체 기안리스트 -->
 <select id="allDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
 	SELECT 
-		dd.draft_doc_no drafterDocNo,
+		dd.draft_doc_no draftDocNo,
 		dd.drafter_emp_no drafterEmpNo,
 		dt.tmp_name tmpName,
 		dd.title title,
@@ -27,7 +27,7 @@
 <!-- 결재대기상태 리스트 -->
 <select id="zeroTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
 	SELECT 
-		dd.draft_doc_no drafterDocNo,
+		dd.draft_doc_no draftDocNo,
 		dd.drafter_emp_no drafterEmpNo,
 		dt.tmp_name tmpName,
 		dd.title title,
@@ -50,7 +50,7 @@
 <!-- 승인중상태 리스트 -->
 <select id="oneTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
 	SELECT 
-		dd.draft_doc_no drafterDocNo,
+		dd.draft_doc_no draftDocNo,
 		dd.drafter_emp_no drafterEmpNo,
 		dt.tmp_name tmpName,
 		dd.title title,
@@ -73,7 +73,7 @@
 <!-- 승인완료상태 리스트 -->
 <select id="twoTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
 	SELECT 
-		dd.draft_doc_no drafterDocNo,
+		dd.draft_doc_no draftDocNo,
 		dd.drafter_emp_no drafterEmpNo,
 		dt.tmp_name tmpName,
 		dd.title title,
@@ -96,7 +96,7 @@
 <!-- 반려상태 리스트 -->
 <select id="nineTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
 	SELECT 
-		dd.draft_doc_no drafterDocNo,
+		dd.draft_doc_no draftDocNo,
 		dd.drafter_emp_no drafterEmpNo,
 		dt.tmp_name tmpName,
 		dd.title title,

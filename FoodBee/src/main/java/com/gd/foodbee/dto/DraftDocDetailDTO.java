@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class DraftDocDetailDTO {
 	private int draftDocOrder;
 	private int draftDocNo;
-	private String stateDate;
+	private String startDate;
 	private String endDate;
 	private String typeName;
 	private int amount;

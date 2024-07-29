@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DraftDocDTO;
+import com.gd.foodbee.dto.DraftDocDetailDTO;
+import com.gd.foodbee.dto.DraftDocFileDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.ApprovalBoxService;
 import com.gd.foodbee.util.TeamColor;
@@ -137,31 +140,49 @@ public class ApprovalBoxController {
 		
 		return allOneList;
 	}
-	//매출보고 상세보기페이지
+	// 매출보고 상세보기페이지
+	// 파라미터 : int draftDocNo
+	// 반환값 : Model model
+	// 사용페이지 
 	@GetMapping("/approval/revenueOne")
-	public String revenueOne() {
+	public String revenueOne(@RequestParam("draftDocNo") int draftDocNo,
+			Model model, HttpSession session) {
 		
-		//empNo값 가져오고
-		//상세보기 내역 가져오고(중간 결재자/최종결재자)
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+        String empName = emp.getEmpName();
+        
+        log.debug(TeamColor.PURPLE + "empName=>" + empName);
+
+		// 기안서상세, detail, 파일
+        DraftDocDTO revenueOne = approvalBoxService.getDocOne(draftDocNo);
+        DraftDocDetailDTO revenueDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
+        DraftDocFileDTO revenueFileOne = approvalBoxService.getDocFileOne(draftDocNo);
+        
+        log.debug(TeamColor.PURPLE + "empName=>" + empName);
+        log.debug(TeamColor.PURPLE + "revenueOne=>" + revenueOne);
+        log.debug(TeamColor.PURPLE + "revenueDetailOne=>" + revenueDetailOne);
+        log.debug(TeamColor.PURPLE + "revenueFileOne=>" + revenueFileOne);
 		
+        model.addAttribute("empName", empName);
+        
 		return "/approval/revenueOne";
 	}
-	//휴가신청
+	//휴가신청 상세보기페이지
 	@GetMapping("/approval/dayOffOne")
 	public String dayOffOne() {
 		return "/approval/dayOffOne";
 	}
-	//출장신청
+	//출장신청 상세보기페이지
 	@GetMapping("/approval/businessTripOne")
 	public String businessTripOne() {
 		return "/approval/businessTripOne";
 	}
-	//기본기안서
+	//기본기안서 상세보기페이지
 	@GetMapping("/approval/docOne")
 	public String docOne() {
 		return"/approval/docOne";
 	}
-	//지출결의
+	//지출결의 상세보기페이지
 	@GetMapping("/approval/chargeOne")
 	public String chargeOne() {
 		return "/approval/chargeOne";

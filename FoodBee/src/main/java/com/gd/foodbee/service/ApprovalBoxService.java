@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
+import com.gd.foodbee.dto.DraftDocDTO;
+import com.gd.foodbee.dto.DraftDocDetailDTO;
+import com.gd.foodbee.dto.DraftDocFileDTO;
 
 public interface ApprovalBoxService {
 	
@@ -30,6 +33,16 @@ public interface ApprovalBoxService {
 	
 	//미결 총갯수
 	int countZeroState(int empNo);
+	
 	//기결 총갯수
 	int countOneState(int empNo);
+	
+	//기안서 상세
+	DraftDocDTO getDocOne(int draftDocNo);
+	
+	//기안서 detail 상세
+	DraftDocDetailDTO getDocDetailOne(int draftDocNo);
+	
+	//기안서 파일상세
+	DraftDocFileDTO getDocFileOne(int draftDocNo);
 }
