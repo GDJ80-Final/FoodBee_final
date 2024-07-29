@@ -14,12 +14,43 @@
 		) VALUES (
 			#{draftDocOrder},
 			#{draftDocNo},
-			#{startDate},
-			#{endDate},
-			#{typeName},
-			#{amount},
-			#{description},
-			#{text} 
+			<if test="startDate != null">
+			#{startDate}
+			</if>
+			<if test="startDate == null">
+			NULL
+			</if>,
+			<if test="endDate != null">
+			#{endDate}
+			</if>
+			<if test="endDate == null">
+			NULL
+			</if>,
+			<if test="typeName != null">
+			#{typeName}
+			</if>
+			<if test="typeName == null">
+			NULL
+			</if>,
+			<if test="amount != null and amount != 0">
+            #{amount}
+        	</if>
+        	<if test="amount == null or amount == 0">
+            NULL
+       		</if>,
+       		<if test="description != null">
+            #{description}
+        	</if>
+        	<if test="description == null">
+            NULL
+       		</if>,
+			<if test="text != null">
+            #{text} 
+        	</if>
+        	<if test="text == null">
+            NULL
+       		</if>
+			
 		)
 	
 	
