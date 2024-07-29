@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100%;
             margin: 0;
         }
         .container {
@@ -76,7 +76,15 @@
 	        <!-- 공통 영역 끝 -->
 	        
 	        <!-- 양식 영역 시작 -->
-	        <jsp:include page="./forms/basicForm.jsp"></jsp:include>
+	        <!-- 
+	        	<jsp:include page="./forms/basicForm.jsp"></jsp:include>
+	        	<jsp:include page="./forms/revenueForm.jsp"></jsp:include>
+	        	<jsp:include page="./forms/dayOffForm.jsp"></jsp:include>
+	        	<jsp:include page="./forms/businessTripForm.jsp"></jsp:include>
+	      		
+	        -->
+	        	<jsp:include page="./forms/chargeForm.jsp"></jsp:include>
+	        	
 	        <!-- 양식 영역 끝 -->
 	        <div class="form-actions">
 	            <button class="cancel-btn">취소</button>
