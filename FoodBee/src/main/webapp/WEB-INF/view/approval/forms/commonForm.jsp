@@ -72,6 +72,7 @@
                 기안자 이름(사번)
                 </td>
                 <td id="midApprover">
+                <input type="hidden" name="">
                 <button type="button" id="midApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button>
                 </td>
