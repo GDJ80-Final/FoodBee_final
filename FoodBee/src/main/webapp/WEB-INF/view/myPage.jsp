@@ -241,6 +241,7 @@
 	                            alert('프로필 사진이 성공적으로 업데이트되었습니다.');
 	                            originalSrc = json;
 	                            $('#profileImage').attr('src', '${pageContext.request.contextPath}/upload/profile_img/' +originalSrc);
+	                            $('#profileImg').attr('src', '${pageContext.request.contextPath}/upload/profile_img/' +originalSrc);
 	                            newImageSelected = false;
 	                            $('#updateProfileBtn').hide();
 	                            $('#profileModal').modal('hide');
