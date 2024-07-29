@@ -1,5 +1,7 @@
 package com.gd.foodbee.service;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +55,7 @@ public class DraftDocServiceImpl implements DraftDocService{
 		DraftDocDTO draftDocDTO = DraftDocDTO.builder()
 					.drafterEmpNo(draftDocRequestDTO.getDrafterEmpNo())
 					.title(draftDocRequestDTO.getTitle())
-					.content(draftDocRequestDTO.getContent() == null ? null : draftDocRequestDTO.getContent())
+					.content(Objects.isNull(draftDocRequestDTO.getContent()) ? null : draftDocRequestDTO.getContent())
 					.midApproverNo(draftDocRequestDTO.getMidApproverNo())
 					.finalApproverNo(draftDocRequestDTO.getFinalApproverNo())
 					.tmpNo(draftDocRequestDTO.getTmpNo())
@@ -66,29 +68,42 @@ public class DraftDocServiceImpl implements DraftDocService{
 		// draft_doc_detail insert
 		
 		// typeName length 만큼 반복문 돌리기 
-		// typeNames [0] => empty 이면 기본기안서 이므로 for문 X
+		// typeNames 값이 들어오지 않았다면 -> 기본기안서 
 		String [] typeNames = null;
-		if(draftDocRequestDTO.getTypeName().length != 0) {
-			typeNames = draftDocRequestDTO.getTypeName();
+		int [] amounts = null;
+		String [] descriptions = null;
+		if(Objects.isNull(draftDocRequestDTO.getTypeName())) {
+			log.debug("typeNames => null");
 		}else {
-			typeNames = null;
+			typeNames = draftDocRequestDTO.getTypeName();
 		}
-		int [] amounts = draftDocRequestDTO.getAmount();
-		String [] descriptions = draftDocRequestDTO.getDescription();
-		log.debug(TeamColor.YELLOW + "typeName =>" + typeNames[0]);
-		if (typeNames != null && typeNames.length > 0 && typeNames[0] != null && !typeNames[0].isEmpty()) {
-		    int draftDocOrder = 1;
+		if(Objects.isNull(draftDocRequestDTO.getAmount())) {
+			log.debug(TeamColor.YELLOW + "amounts => null");
+		}else {
+			amounts = draftDocRequestDTO.getAmount();
+		}
+		if(Objects.isNull(draftDocRequestDTO.getDescription())) {
+			log.debug(TeamColor.YELLOW + "amounts => null");
+		}else {
+			descriptions = draftDocRequestDTO.getDescription();
+		}
+		
+		if (Objects.isNull(typeNames)) {
+		    log.debug(TeamColor.YELLOW + "기본기안서 작성");
 			
+		}else {
+			int draftDocOrder = 1;
+		    log.debug(TeamColor.YELLOW + "typeName =>" + typeNames[0]);
 			for(int i = 0;i < typeNames.length;i++) {
 				DraftDocDetailDTO draftDocDetailDTO = DraftDocDetailDTO.builder()
 					.draftDocOrder(draftDocOrder)
 					.draftDocNo(draftDocDTO.getDraftDocNo())
-					.startDate(draftDocRequestDTO.getStartDate() == null ? null : draftDocRequestDTO.getStartDate())
-					.endDate(draftDocRequestDTO.getEndDate() == null ? null : draftDocRequestDTO.getEndDate())
-					.typeName(typeNames[i] == null ? null : typeNames[i])
-					.amount(amounts[i] == 0 ? null :amounts[i])
-					.description(descriptions[i] ==  null ? null : descriptions[i])
-					.text(draftDocRequestDTO.getText() == null ? null : draftDocRequestDTO.getText())
+					.startDate(Objects.isNull(draftDocRequestDTO.getStartDate()) ? null : draftDocRequestDTO.getStartDate())
+					.endDate(Objects.isNull(draftDocRequestDTO.getEndDate()) ? null : draftDocRequestDTO.getEndDate())
+					.typeName(typeNames[i])
+					.amount(Objects.isNull(draftDocRequestDTO.getAmount()) ? 0 :amounts[i])
+					.description(Objects.isNull(draftDocRequestDTO.getDescription()) ? null : descriptions[i])
+					.text(Objects.isNull(draftDocRequestDTO.getText()) ? null : draftDocRequestDTO.getText())
 					.build();
 				log.debug(TeamColor.YELLOW + "draftDocDetailDTO => " + draftDocDetailDTO);
 				// insert into draft_doc_detail 
@@ -98,42 +113,43 @@ public class DraftDocServiceImpl implements DraftDocService{
 				}
 				draftDocOrder++;
 			}
-			
-		}else {
-			log.debug(TeamColor.YELLOW + "기본기안서 작성");
 		}
 		
 		// insert draft_doc_file 
-		MultipartFile[] mfs = draftDocRequestDTO.getDocFiles();
 		String path = filePath.getFilePath() + "draft_file/";
 		log.debug(TeamColor.YELLOW + "path => " + path);
-		// 첨부파일이 들어왔을 경우 
-		log.debug(TeamColor.YELLOW + "mfs isEmpty =>" + mfs[0].isEmpty());
-		if(!mfs[0].isEmpty()) {
-			for(MultipartFile mf:mfs) {
-				String originalFile = fileFormatter.fileFormatter(mf);
-				DraftDocFileDTO draftDocFileDTO = DraftDocFileDTO.builder()
-							.draftDocNo(draftDocDTO.getDraftDocNo())
-							.originalFile(originalFile)
-							.saveFile(mf.getOriginalFilename())
-							.type(mf.getContentType())
-							.build();
-				log.debug(TeamColor.YELLOW + "MsgFileDTO =>" + draftDocFileDTO.toString());
-				int fileRow = draftDocFileMapper.insertDraftDocFile(draftDocFileDTO);
-				if(fileRow != 1) {
-					throw new RuntimeException();
-				}
-				//파일 경로에 저장
-				filePath.saveFile(path, originalFile, mf);
-			}
+		MultipartFile[] mfs = null;
+		if(Objects.isNull(draftDocRequestDTO.getDocFiles())) {
+			log.debug(TeamColor.YELLOW + "첨부파일 존재하지 않음");
 		}else {
-			log.debug(TeamColor.YELLOW + "첨부파일이 없습니다.");
+			mfs = draftDocRequestDTO.getDocFiles();
+			if(!mfs[0].isEmpty()) {
+				for(MultipartFile mf:mfs) {
+					String originalFile = fileFormatter.fileFormatter(mf);
+					DraftDocFileDTO draftDocFileDTO = DraftDocFileDTO.builder()
+								.draftDocNo(draftDocDTO.getDraftDocNo())
+								.originalFile(originalFile)
+								.saveFile(mf.getOriginalFilename())
+								.type(mf.getContentType())
+								.build();
+					log.debug(TeamColor.YELLOW + "DocFileDTO =>" + draftDocFileDTO.toString());
+					int fileRow = draftDocFileMapper.insertDraftDocFile(draftDocFileDTO);
+					if(fileRow != 1) {
+						throw new RuntimeException();
+					}
+					//파일 경로에 저장
+					filePath.saveFile(path, originalFile, mf);
+				}
 		}
 			
+			
 		// insert draft_referrer
-		int [] referrers = draftDocRequestDTO.getReferrerEmpNo();
-		log.debug(TeamColor.YELLOW + "referre[0] =>" + referrers[0]);
-		if(referrers.length != 0) {
+		int [] referrers = null;
+		if(Objects.isNull(draftDocRequestDTO.getReferrerEmpNo())) {
+			log.debug(TeamColor.YELLOW + "수신 참조자가 없습니다");
+		}else {
+			referrers = draftDocRequestDTO.getReferrerEmpNo();
+			log.debug(TeamColor.YELLOW + "referre[0] =>" + referrers[0]);
 			for(int referrer:referrers) {
 				DocReferrerDTO docReferrerDTO = DocReferrerDTO.builder()
 							.docDraftNo(draftDocDTO.getDraftDocNo())
@@ -143,11 +159,10 @@ public class DraftDocServiceImpl implements DraftDocService{
 				int referrerRow = draftDocReferrerMapper.insertDraftDocReferrer(docReferrerDTO);
 				if(referrerRow != 1) {
 					throw new RuntimeException();
+					}
 				}
 			}
-		}else {
-			log.debug(TeamColor.YELLOW + "수신참조자가 없습니다. ");
+			
 		}
-		
 	}
 }
