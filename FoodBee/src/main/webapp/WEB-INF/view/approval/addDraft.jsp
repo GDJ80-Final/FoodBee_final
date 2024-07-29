@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,12 +63,12 @@
 </head>
 <body>
     <div class="container">
-	    <div class="tabs">
-	        <div class="active">기본기안서</div>
-	        <div>매출보고</div>
-	        <div>지출결의</div>
-	        <div>출장신청</div>
-	        <div>휴가신청</div>
+	    <div class="tabs" id="tabs">
+	        <div class="tab" id="basicForm" data-form="basicForm">기본기안서</div>
+	        <div class="tab" id="revenueForm" data-form="revenueForm">매출보고</div>
+	        <div class="tab" id="chargeForm" data-form="chargeForm">지출결의</div>
+	        <div class="tab" id="businessTripForm" data-form="businessTripForm">출장신청</div>
+	        <div class="tab" id="dayOffForm" data-form="dayOffForm">휴가신청</div>
 	    </div>
 	    <form>
 	        <!-- 공통 영역 포함 -->
@@ -81,9 +81,15 @@
 	        	<jsp:include page="./forms/revenueForm.jsp"></jsp:include>
 	        	<jsp:include page="./forms/dayOffForm.jsp"></jsp:include>
 	        	<jsp:include page="./forms/businessTripForm.jsp"></jsp:include>
+	        	<jsp:include page="./forms/basicForm.jsp"></jsp:include>
 	      		
 	        -->
-	        	<jsp:include page="./forms/chargeForm.jsp"></jsp:include>
+	        <div id="formContent" class="form-content">
+                <jsp:include page="./forms/basicForm.jsp"></jsp:include>
+            </div>
+           	
+           
+	        	
 	        	
 	        <!-- 양식 영역 끝 -->
 	        <div class="form-actions">
@@ -92,5 +98,26 @@
 	        </div>
 		</form>
     </div>
+<script>
+	$(document).ready(function(){
+	    // 컨텍스트 경로를 JavaScript 변수로 설정
+	    let contextPath = "${pageContext.request.contextPath}";
+		console.log(contextPath);
+		
+	    $(".tab").click(function(){
+	        // 모든 탭에서 'active' 클래스 제거
+	        $(".tab").removeClass("active");
+	        // 클릭한 탭에 'active' 클래스 추가
+	        $(this).addClass("active");
+	        
+	        // data-form 속성에서 폼 파일명 가져오기
+	        let formName = $(this).data("form");
+	        console.log(formName);
+	        
+	        // formContent div를 비우고 새로운 내용 로드
+	        $("#formContent").load(contextPath + "/approval/forms/revenueForm.jsp);
+	    });
+	});
+</script>
 </body>
 </html>

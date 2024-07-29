@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.DraftDocReferrerMapper">
+	<insert id="insertDraftDocReferrer" parameterType="com.gd.foodbee.dto.DocReferrerDTO">
+		INSERT INTO doc_referrer(
+			referrer_emp_no, 
+			draft_doc_no
+		) VALUES (
+			#{referrerEmpNo},
+			#{draftDocNo}
+		)
+	
+	</insert>
+</mapper>

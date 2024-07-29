@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.DraftDocDetailMapper">
+	<insert id="insertDraftDocDetail" parameterType="com.gd.foodbee.dto.DraftDocDetailDTO">
+		INSERT INTO draft_doc_detail (
+			draft_doc_order,
+			draft_doc_no, 
+			start_date,
+			end_date, 
+			type_name, 
+			amount, 
+			description,
+			text
+		) VALUES (
+			#{draftDocOrder},
+			#{draftDocNo},
+			#{startDate},
+			#{endDate},
+			#{typeName},
+			#{amount},
+			#{description},
+			#{text} 
+		)
+	
+	
+	</insert>
+
+
+
+
+</mapper>

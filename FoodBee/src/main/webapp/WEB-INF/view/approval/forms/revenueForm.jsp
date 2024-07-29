@@ -1,10 +1,45 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
+    	body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            width: 900px;
+           
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        }
+        .tabs {
+            display: flex;
+            background-color: #f1f1f1;
+            margin:10px;
+           
+            
+        }
+        .tabs div {
+            padding: 10px 20px;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            color : black;
+        }
+        .tabs div.active {
+            background-color: #fff;
+            border-bottom: 2px solid #000;
+        }
+  
         .form-section {
             padding: 20px;
         }
@@ -85,9 +120,40 @@
             height: 25px;
             margin-left: 0px;
         }
+        a {
+        	text-decoration-line: none;
+        
+        }
     </style>
 </head>
-
+<body>
+	<div class="container">
+		<div class="tabs" id="tabs">
+		        <div class="tab" id="basicForm" data-form="basicForm">
+		        <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
+		        기본기안서
+		        </a></div>
+		        <div class="tab" id="revenueForm" data-form="revenueForm">
+		        <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
+		        매출보고
+		        </a></div>
+		        <div class="tab" id="chargeForm" data-form="chargeForm">
+		        <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
+		        지출결의
+		        </a></div>
+		        <div class="tab" id="businessTripForm" data-form="businessTripForm">
+		        <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
+		        출장신청
+		        </a></div>
+		        <div class="tab" id="dayOffForm" data-form="dayOffForm">
+		        <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
+		        휴가신청
+		        </a></div>
+		    </div>
+	    <form method="post" action="${pageContext.request.contextPath}/approval/addDraft">
+	        <!-- 공통 영역 포함 -->
+	        <jsp:include page="./commonForm.jsp"></jsp:include>
+	        <!-- 공통 영역 끝 -->
         <div class="form-section">
             <div class="form-group">
                 <label for="yearSelect"></label>
@@ -127,8 +193,17 @@
                 <input type="text" id="attachment" name="attachment">
                 <button>찾기</button>
             </div>
-        </div>
-
+         
+         </div> 
+         <!-- form section 종료 -->
+         <!-- 양식 영역 끝 -->
+	     <div class="form-actions">
+	          <button class="cancel-btn">취소</button>
+	          <button class="submit-btn">제출</button>
+	     </div>
+	     </form>
+         
+	</div>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	    <script>
 	    $(document).ready(function() {
@@ -212,5 +287,6 @@
 	            }
 	        });
 	    });
-	    </script>
-
+</script>
+</body>
+</html>

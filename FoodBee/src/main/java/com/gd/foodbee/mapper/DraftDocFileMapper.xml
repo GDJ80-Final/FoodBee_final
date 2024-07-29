@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.DraftDocFileMapper">
+	<insert id="insertDraftDocFile" parameterType="com.gd.foodbee.dto.DraftDocFileDTO">
+		INSERT INTO draft_doc_file (
+			original_file, 
+			save_file,
+			type, 
+			create_datetime, 
+			update_datetime, 
+			draft_doc_no
+		)VALUES(
+			#{originalFile}, 
+			#{saveFile}, 
+			#{type},
+			NOW(),
+			NOW(),
+			#{draftDocNo}
+		)
+	
+	
+	</insert>
+
+
+
+
+
+</mapper>

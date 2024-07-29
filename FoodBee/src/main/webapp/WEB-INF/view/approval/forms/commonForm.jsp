@@ -68,9 +68,16 @@
             <tr>
                 <td colspan="2">결재</td>
                                   
-                <td id="drafter">기안자 이름(사번)</td>
-                <td id="midApprover"><button type="button" id="midApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
-                <td id="finalApprover"><button type="button"  id="finalApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
+                <td id="drafter">
+                기안자 이름(사번)
+                </td>
+                <td id="midApprover">
+                <button type="button" id="midApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
+                </button>
+                </td>
+                <td id="finalApprover">
+                <button type="button"  id="finalApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
+                </button></td>
             </tr>
             <tr class="sign">
                 <td colspan="2">결재</td>

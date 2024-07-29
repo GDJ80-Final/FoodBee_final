@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gd.foodbee.mapper.DraftDocMapper">
+	<insert id="insertDraftDoc" parameterType="com.gd.foodbee.dto.DraftDocDTO">
+	<selectKey resultType="int" order="AFTER" keyProperty="draftDocNo">
+        SELECT LAST_INSERT_ID()
+    </selectKey>
+		INSERT INTO draft_doc (
+			drafter_emp_no, 
+			create_datetime, 
+			title,
+			content, 
+			mid_approver_no, 
+			mid approval_state, 
+			final_approver_no, 
+			final_approval_state, 
+			doc_approver_state,
+			tmp_no
+		) VALUES (
+			#{drafterEmpNo},
+			NOW(), 
+			#{title},
+			#{content},
+			#{midApproverNo},
+			0,
+			#{finalApproverNo},
+			0,
+			0,
+			#{tmpNo}
+		)
+	
+	</insert>
+
+
+
+
+
+
+
+</mapper>
