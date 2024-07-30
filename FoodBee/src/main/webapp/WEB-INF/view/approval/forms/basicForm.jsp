@@ -115,7 +115,7 @@
         	text-decoration-line: none;
         
         }
-                .common-section table {
+        .common-section table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
@@ -220,76 +220,8 @@
 			</form>	
 			<!-- 폼 종료 -->
 	    </div>
-
-<!-- 모달 -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">사원검색</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-			  <form>
-				<div>
-					본사/지사
-					<select id="office">
-						<option value="">---본사/지사 선택---</option>
-					</select>
-					부서
-					<select id="dept">
-						<option value="">---부서 선택---</option>
-					</select>
-					팀
-					<select id="team">
-						<option value="">---팀 선택---</option>
-					</select>
-					직급 
-					<select id="rankName" name="rankName">
-						<option value="">---직급 선택---
-						<option value="사원">사원
-						<option value="대리">대리
-						<option value="팀장">팀장
-						<option value="부서장">부서장
-						<option value="지서장">지사장
-						<option value="CEO">CEO
-					</select>
-				</div>
-				<div>
-					사원 번호
-					<input type="number" id="empNo" name="empNo">
-					
-					<button id="searchBtn" type="button">검색</button>
-				</div>
-			</form>
-		    <table class="table" id="empList">
-		        
-		            <tr>
-		                <th>본사/지사</th>
-						<th>부서</th>
-						<th>팀</th>
-						<th>직급</th>
-						<th>사원번호</th>
-						<th>사원명</th>
-		                <th>선택</th>
-		            </tr>
-		        
-		   </table>
-		   <div id="page">
-		        <button type="button" id="first">First</button>
-		        <button type="button" id="pre">◁</button>
-		        <button type="button" id="next">▶</button>
-		        <button type="button" id="last">Last</button>
-		   </div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-	        <button type="button" class="btn btn-primary">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
+		<!-- 모달 -->
+		<jsp:include page="./empModal.jsp"></jsp:include>
 <script>
 	$(document).ready(function(){
 		// 호출되면 페이지에 담을 emp 정보 불러오기 
@@ -299,7 +231,8 @@
             success: function(json) {
                 $('#drafterEmpNo').val(json.empNo);
                 console.log($('#drafterEmpNo').val());
-                
+                $('#drafterEmpNoField').val(json.empName + '('+json.empNo+')');
+				console.log($('#drafterEmpNoField').val());
                 $('#name').val(json.empName);
                 $('#department').val(json.dptName)
             },
@@ -308,231 +241,8 @@
             }
         });
 		
-	    $(".tab").click(function(){
-	        // 모든 탭에서 'active' 클래스 제거
-	        $(".tab").removeClass("active");
-	        // 클릭한 탭에 'active' 클래스 추가
-	        $(this).addClass("active");
-	
-	        // data-form 속성에서 폼 파일명 가져오기
-	        let formName = $(this).data("form");
-	        console.log(formName);
-	    });
+	   
 
-<!-- 사원선택 -->
-
-		let currentPage = 1;
-		let lastPage = 1;
-	
-			loadEmpList(1);
-			
-			//본사지사 데이터 
-			$.ajax({
-				url:'${pageContext.request.contextPath}/emp/officeList',
-				method:'get',
-				success:function(json){
-					console.log(json);
-					json.forEach(function(item){
-						console.log(item);
-						$('#office').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
-					});			
-				}
-			});
-			//부서데이터 
-			$.ajax({
-				url:'${pageContext.request.contextPath}/emp/deptList',
-				method:'get',
-				success:function(json){
-					console.log(json);
-					json.forEach(function(item){
-						console.log(item);
-						$('#dept').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
-					});			
-				}
-			});
-			//팀 리스트 데이터 
-			$.ajax({
-				url:'${pageContext.request.contextPath}/emp/teamList',
-				method:'get',
-				success:function(json){
-					console.log(json);
-					json.forEach(function(item){
-						console.log(item);
-						$('#team').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
-					});			
-				}
-			});
-			
-			$('#searchBtn').click(function(){
-				currentPage = 1
-				getLastPage();
-				loadEmpList(currentPage);
-			});
-			
-			$('#pre').click(function() {
-				if (currentPage > 1) {
-					currentPage = currentPage - 1;
-					loadEmpList(currentPage);
-				}
-			});
-
-			$('#next').click(function() {
-				if (currentPage < lastPage) {
-					currentPage = currentPage + 1;
-					loadEmpList(currentPage);
-				}
-			});
-			
-			$('#first').click(function() {
-				if (currentPage > 1) {
-					currentPage = 1;
-					loadEmpList(currentPage);
-				}
-			});
-
-			$('#last').click(function() {
-				if (currentPage < lastPage) {
-					currentPage = lastPage
-					loadEmpList(currentPage);
-				}
-			});
-			
-			// 버튼 활성화
-			function updateBtnState() {
-				console.log("update");
-		        $('#pre').prop('disabled', currentPage === 1);
-		        $('#next').prop('disabled', currentPage === lastPage);
-		        $('#first').prop('disabled', currentPage === 1);
-		        $('#last').prop('disabled', currentPage === lastPage);
-		    }
-			
-			// 사원 목록 출력
-			function loadEmpList(page){
-				$.ajax({
-					url:'${pageContext.request.contextPath}/emp/searchEmp',
-					method:'get',
-					data:{
-						officeName: $('#office').val(),
-						deptName: $('#dept').val(),
-						teamName: $('#team').val(),
-						rankName: $('#rankName').val(),
-						empNo: $('#empNo').val(),
-						currentPage: page
-					},
-					success:function(json){
-						console.log(json);
-						lastPage = json.lastPage;
-						console.log('curreptPage : ' + currentPage);
-						$('#empList').empty();
-						$('#empList').append('<tr>' +
-								'<th>본사/지사</th>' +
-								'<th>부서</th>' +
-								'<th>팀</th>' +
-								'<th>직급</th>' +
-								'<th>사원번호</th>' +
-								'<th>사원명</th>' +
-								'</tr>');
-						json.empList.forEach(function(item){
-							console.log(item);
-							
-							empList(item);
-							
-							
-						});
-						
-						updateBtnState();
-					}
-				});
-			}
-			
-			// 사원 목록 데이터 가져오기
-			function empList(item){
-				
-				 let officeInfo = '';
-
-			    if (item.officeName !== null) {
-			        officeInfo += '<td>' + item.officeName + '</td>';
-			        officeInfo += '<td>' + item.deptName + '</td>';
-			        officeInfo += '<td>' + item.teamName + '</td>';
-			    } else {
-			        officeInfo += '<td colspan="3">가발령</td>';
-			    }
-				
-				$('#empList').append('<tr>' +
-						officeInfo + 
-						'<td>' + item.rankName +'</td>' + 
-						'<td>' + item.empNo +'</td>' + 
-						'<td>' + item.empName +'</td>' + 
-						'<td><button type="button" id="selectEmp" class="selectEmp" value="' + item.empNo + '" data-name="' + item.empName + '">선택</button></td>' +
-						'</tr>');
-				}
-			
-			// 중간결재자 / 최종결재자 분기 
-			let action = '';
-			$('#midApproverBtn').click(function(){
-				action = 'mid';
-			});
-			$('#finalApproverBtn').click(function(){
-				action = 'final';
-			});
-			$('#referrer').click(function(){
-				action = 'referrer';
-			});
-			
-			
-			
-			//모달에서 사원 선택 
-			$(document).on('click', '#selectEmp', function() {
-				let empNo = $(this).val();
-			    let empName = $(this).data('name');
-			    let selectedEmp = empName + '(' + empNo + ')';
-				console.log(empNo);
-				console.log(empName);
-			    // 선택한 사원의 정보를 필요한 곳에 출력
-			    console.log(action);
-			    if(action === 'mid'){
-			    	 $('#midApproverNo').val(empNo);
-			    	 
-			    	 
-			    	 console.log($('#midApproverNo').val());
-			    }else if(action === 'final'){
-			    	
-			    	 $('#finalApproverNo').val(empNo);
-			    }else if(action === 'referrer'){
-			 
-				    let referrerField = $('#referrerField');
-				    let currentVal = referrerField.val();
-				    let newVal;
-				    let empNosArray = [];
-				    
-				    console.log(empNo);
-				    
-				    if (currentVal) {
-				        empNosArray = currentVal.split(','); 
-				        // 사원번호 배열로 변환
-				        console.log('empNosArray => ' + empNosArray);
-				        
-				        // 중복된 사번이 있으면
-				        if (empNosArray.includes(empNo)) {
-				            alert('이미 추가된 사원입니다.');
-				            return;
-				        } else {
-				            newVal = currentVal + ',' + empNo; // 중복이 아니면 추가
-				        }
-				        
-				    } else {
-				        newVal = empNo ; // 처음 추가할 때
-				    }
-				    
-				    referrerField.val(newVal);
-			    }
-			    
-			    
-			    // 모달 닫기
-			    $('#staticBackdrop').modal('hide');
-				
-		    });
-			
 		});
 </script>
 </body>

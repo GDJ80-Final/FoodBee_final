@@ -11,16 +11,18 @@
                 <td colspan="2">결재</td>
                                   
                 <td>
-                <input type="number" name="drafterEmpNo" id="drafterEmpNo" value="" readonly>
-                
+                <input type="hidden" name="drafterEmpNo" id="drafterEmpNo" value="" >
+                <input type="text" name="drafterEmpNoField" id="drafterEmpNoField" value="" readonly>
                 </td>
                 <td id="midApprover">
-                <input type="number" name="midApproverNo" id="midApproverNo" value="" readonly>
+                <input type="hidden" name="midApproverNo" id="midApproverNo" value="" >
+                <input type="text" name="midApproverNoField" id="midApproverNoField" value="" readonly>
                 <button type="button" id="midApproverBtn" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button>
                 </td>
                 <td id="finalApprover">
-                 <input type="number" name="finalApproverNo" id="finalApproverNo" value="" readonly>
+                 <input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
+                 <input type="text" name="finalApproverNoField" id="finalApproverNoField" value="" readonly>
                 <button type="button"  id="finalApproverBtn" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button></td>
             </tr>
@@ -48,3 +50,228 @@
             </div>
          </div>
     </div>
+   
+	
+ <script>
+	$(document).ready(function(){
+
+<!-- 사원선택 -->
+
+		let currentPage = 1;
+		let lastPage = 1;
+	
+			loadEmpList(1);
+			
+			//본사지사 데이터 
+			$.ajax({
+				url:'${pageContext.request.contextPath}/emp/officeList',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						$('#office').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
+					});			
+				}
+			});
+			//부서데이터 
+			$.ajax({
+				url:'${pageContext.request.contextPath}/emp/deptList',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						$('#dept').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
+					});			
+				}
+			});
+			//팀 리스트 데이터 
+			$.ajax({
+				url:'${pageContext.request.contextPath}/emp/teamList',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					json.forEach(function(item){
+						console.log(item);
+						$('#team').append('<option value="' + item.dptName + '">' + item.dptName + '</option>');
+					});			
+				}
+			});
+			
+			$('#searchBtn').click(function(){
+				currentPage = 1
+				getLastPage();
+				loadEmpList(currentPage);
+			});
+			
+			$('#pre').click(function() {
+				if (currentPage > 1) {
+					currentPage = currentPage - 1;
+					loadEmpList(currentPage);
+				}
+			});
+
+			$('#next').click(function() {
+				if (currentPage < lastPage) {
+					currentPage = currentPage + 1;
+					loadEmpList(currentPage);
+				}
+			});
+			
+			$('#first').click(function() {
+				if (currentPage > 1) {
+					currentPage = 1;
+					loadEmpList(currentPage);
+				}
+			});
+
+			$('#last').click(function() {
+				if (currentPage < lastPage) {
+					currentPage = lastPage
+					loadEmpList(currentPage);
+				}
+			});
+			
+			// 버튼 활성화
+			function updateBtnState() {
+				console.log("update");
+		        $('#pre').prop('disabled', currentPage === 1);
+		        $('#next').prop('disabled', currentPage === lastPage);
+		        $('#first').prop('disabled', currentPage === 1);
+		        $('#last').prop('disabled', currentPage === lastPage);
+		    }
+			
+			// 사원 목록 출력
+			function loadEmpList(page){
+				$.ajax({
+					url:'${pageContext.request.contextPath}/emp/searchEmp',
+					method:'get',
+					data:{
+						officeName: $('#office').val(),
+						deptName: $('#dept').val(),
+						teamName: $('#team').val(),
+						rankName: $('#rankName').val(),
+						empNo: $('#empNo').val(),
+						currentPage: page
+					},
+					success:function(json){
+						console.log(json);
+						lastPage = json.lastPage;
+						console.log('curreptPage : ' + currentPage);
+						$('#empList').empty();
+						$('#empList').append('<tr>' +
+								'<th>본사/지사</th>' +
+								'<th>부서</th>' +
+								'<th>팀</th>' +
+								'<th>직급</th>' +
+								'<th>사원번호</th>' +
+								'<th>사원명</th>' +
+								'</tr>');
+						json.empList.forEach(function(item){
+							console.log(item);
+							
+							empList(item);
+							
+							
+						});
+						
+						updateBtnState();
+					}
+				});
+			}
+			
+			// 사원 목록 데이터 가져오기
+			function empList(item){
+				
+				 let officeInfo = '';
+
+			    if (item.officeName !== null) {
+			        officeInfo += '<td>' + item.officeName + '</td>';
+			        officeInfo += '<td>' + item.deptName + '</td>';
+			        officeInfo += '<td>' + item.teamName + '</td>';
+			    } else {
+			        officeInfo += '<td colspan="3">가발령</td>';
+			    }
+				
+				$('#empList').append('<tr>' +
+						officeInfo + 
+						'<td>' + item.rankName +'</td>' + 
+						'<td>' + item.empNo +'</td>' + 
+						'<td>' + item.empName +'</td>' + 
+						'<td><button type="button" id="selectEmp" class="selectEmp" value="' + item.empNo + '" data-name="' + item.empName + '">선택</button></td>' +
+						'</tr>');
+				}
+			
+			// 중간결재자 / 최종결재자 분기 
+			let action = '';
+			$('#midApproverBtn').click(function(){
+				action = 'mid';
+			});
+			$('#finalApproverBtn').click(function(){
+				action = 'final';
+			});
+			$('#referrer').click(function(){
+				action = 'referrer';
+			});
+			
+			
+			
+			//모달에서 사원 선택 
+			$(document).on('click', '#selectEmp', function() {
+				let empNo = $(this).val();
+			    let empName = $(this).data('name');
+			    let selectedEmp = empName + '(' + empNo + ')';
+				console.log(empNo);
+				console.log(empName);
+			    // 선택한 사원의 정보를 필요한 곳에 출력
+			    console.log(action);
+			    if(action === 'mid'){
+			    	 $('#midApproverNo').val(empNo);
+			    	 $('#midApproverNoField').val(selectedEmp);
+			    	 
+			    	 console.log($('#midApproverNo').val());
+			    }else if(action === 'final'){
+			    	
+			    	 $('#finalApproverNo').val(empNo);
+			    	 $('#finalApproverNoField').val(selectedEmp);
+			    }else if(action === 'referrer'){
+			 
+				    let referrerField = $('#referrerField');
+				    let currentVal = referrerField.val();
+				    let newVal;
+				    let empNosArray = [];
+				    
+				    console.log(empNo);
+				    
+				    if (currentVal) {
+				        empNosArray = currentVal.split(','); 
+				        // 사원번호 배열로 변환
+				        console.log('empNosArray => ' + empNosArray);
+				        
+				        // 중복된 사번이 있으면
+				        if (empNosArray.includes(empNo)) {
+				            alert('이미 추가된 사원입니다.');
+				            return;
+				        } else {
+				            newVal = currentVal + ',' + empNo; // 중복이 아니면 추가
+				        }
+				        
+				    } else {
+				        newVal = empNo ; // 처음 추가할 때
+				    }
+				    
+				    referrerField.val(newVal);
+			    }
+			    
+			    
+			    // 모달 닫기
+			    $('#staticBackdrop').modal('hide');
+				
+		    });
+			
+		});
+    
+    
+    
+    </script>

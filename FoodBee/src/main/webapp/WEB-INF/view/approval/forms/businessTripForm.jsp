@@ -4,8 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <style>
-         body {
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+	crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+    	 body {
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             display: flex;
@@ -39,7 +46,7 @@
             background-color: #fff;
             border-bottom: 2px solid #000;
         }
-        
+
         .form-section {
             padding: 20px;
         }
@@ -50,15 +57,15 @@
         }
         .form-group label {
             width: 80px;
-            margin-right: 10px;
+            
         }
-        .form-group input[type="text"], .form-group textarea {
+        .form-group input, .form-group textarea {
             flex: 1;
             padding: 8px;
             border: 1px solid #ccc;
         }
-        .form-group input[type="text"]:first-child {
-            margin-right: 20px;
+        .form-group input:first-child {
+            margin-right: 10px;
         }
         .form-group textarea {
             height: 100px;
@@ -73,7 +80,7 @@
             width: 80px;
             margin-right: 10px;
         }
-        .file-upload input[type="text"] {
+        .file-upload input {
             flex: 1;
             padding: 8px;
             border: 1px solid #ccc;
@@ -108,7 +115,53 @@
         	text-decoration-line: none;
         
         }
-    </style>
+        .common-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .common-section th, .common-section td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            height : 60px;
+        }
+        .common-section .search-btn {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .form-section {
+            padding: 20px;
+        }
+         .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 80px;
+            margin-right: 10px;
+        }
+        .form-group input[type="text"], .form-group textarea {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .form-group input[type="text"]:first-child {
+            margin-right: 20px;
+        }
+        .form-group textarea {
+            height: 100px;
+            resize: none;
+        }
+        .sign td {
+       		height : 130px;
+        
+        }
+</style>
 </head>
 <body>
 
@@ -135,7 +188,7 @@
 		        휴가신청
 		        </a></div>
 		    </div>
-	    <form method="post" action="${pageContext.request.contextPath}/approval/addDraft">
+	    <form method="post" action="${pageContext.request.contextPath}/approval/addDraft" enctype="multipart/form-data">
 	        <!-- 공통 영역 포함 -->
 	        <jsp:include page="./commonForm.jsp"></jsp:include>
 	        <!-- 공통 영역 끝 -->
@@ -143,10 +196,11 @@
 	        <!-- 양식 영역 시작 -->
 			<div class="form-section">        
 	        	<div class="form-group">
+	        		<input type="hidden" name="tmpNo" value="3">
 	                <label for=place>출장지:</label>
 	                <input type="text" id="place" name="typeName">
 	                
-	                <label for="period" style="margin-left: 500px;">기간:</label>
+	                <label for="period" style="margin-left: 200px;">기간:</label>
 	                <input type="date" id="period" name="startDate"> ~
 	                <input type="date" id="period" name="endDate">
 	            </div>
@@ -163,7 +217,7 @@
 	                <textarea id="content" name="content" placeholder="출장 목적을 작성하세요."></textarea>
 	            </div>            
 	            <div class="file-upload">
-	                <label for="attachment">첨부파일:</label>
+	                <label for="docFiles">첨부파일:</label>
 	                <input type="file" id="docFiles" name="docFiles" multiple>
 	                <button>찾기</button>
 	            </div>
@@ -171,11 +225,36 @@
 	        <!-- 양식 영역 끝 -->
 	        <div class="form-actions">
 	            <button class="cancel-btn">취소</button>
-	            <button class="submit-btn">제출</button>
+	            <button type="submit" class="submit-btn">제출</button>
 	        </div>
 		</form>
     </div>
+    
+  <!-- 모달 -->
+	<jsp:include page="./empModal.jsp"></jsp:include>
+<script>
+	$(document).ready(function(){
+		// 호출되면 페이지에 담을 emp 정보 불러오기 
+		$.ajax({
+            url: '${pageContext.request.contextPath}/approval/forms/commonForm',
+            method: 'get',
+            success: function(json) {
+                $('#drafterEmpNo').val(json.empNo);
+                console.log($('#drafterEmpNo').val());
+                $('#drafterEmpNoField').val(json.empName + '('+json.empNo+')');
+				console.log($('#drafterEmpNoField').val());
+                $('#name').val(json.empName);
+                $('#department').val(json.dptName)
+            },
+            error: function() {
+                alert('기본정보 불러오는데 실패했습니다 .');
+            }
+        });
+		
+	   
 
+		});
+</script>
 </body>
 </html>
 
