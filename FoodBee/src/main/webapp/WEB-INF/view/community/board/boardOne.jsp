@@ -519,7 +519,12 @@
 	                		console.log(json);
 	                		
 	                		window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
-	                	}
+	                	},
+	                	error: function(jqXHR, textStatus, errorThrown) {
+	                        if(jqXHR.status === 403) {
+	                            alert('권한이 없습니다.');
+	                        }
+	                   }
                 	});
                 }else if(adminAction === 'comment'){
                 	$.ajax({
@@ -533,7 +538,12 @@
                 		success:function(json){
                 			console.log(json);
                 			window.location.href = '${pageContext.request.contextPath}/community/board/boardOne?boardNo='+boardNo;
-                		}
+                		},
+                		error: function(jqXHR, textStatus, errorThrown) {
+                            if(jqXHR.status === 403) {
+                                alert('권한이 없습니다.');
+                            }
+                       }
                 	}) 
                 }
                 

@@ -30,7 +30,11 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         EmpDTO emp = (EmpDTO) session.getAttribute("emp");
         
+        log.debug(TeamColor.RED + "RankName =>" + emp.getRankName());
+        log.debug(TeamColor.RED + "DptNo =>" + emp.getDptNo());
+        
         String requestURI = request.getRequestURI();
+        
         
         // 여기서 세션에 저장된 rankName, dptNo를 통해서 각각에 저장된 accessPage를 List<String>으로 받아오기. 그리고 요청 주소가 포함되어있으면 통과 아니면 실패 
         List<String> rankAccessPage = authorityService.getAccessPageListByRankName(emp.getRankName());

@@ -127,7 +127,11 @@ function loadAllAttendanceData(page) {
             updatePagination(data.currentPage, data.allLastPage);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error("오류:", textStatus, errorThrown);
+        	if(jqXHR.status === 403) {
+                alert('권한이 없습니다.');
+            }else {
+            	console.error("오류:", textStatus, errorThrown);
+            }
         }
     });
 }
@@ -152,7 +156,11 @@ function loadAttendanceDataByStatus(status, page) {
             updatePagination(data.currentPage, data.allLastPage);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-            console.error("오류:", textStatus, errorThrown);
+        	if(jqXHR.status === 403) {
+                alert('권한이 없습니다.');
+            }else {
+            	console.error("오류:", textStatus, errorThrown);
+            }
         }
     });
 }
@@ -219,8 +227,12 @@ function updateTable(data) {
                             $('#rejectionReasonModal').modal('hide'); // 모달 닫기
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                            console.error("오류:", textStatus, errorThrown);
-                            alert('반려 중 오류가 발생했습니다.'); 
+                        	if(jqXHR.status === 403) {
+                                alert('권한이 없습니다.');
+                            }else {
+                            	 console.error("오류:", textStatus, errorThrown);
+                                 alert('반려 중 오류가 발생했습니다.');
+                            }
                         }
                     });
                 });
@@ -243,8 +255,12 @@ function updateTable(data) {
                         loadAllAttendanceData(currentPage); // 데이터 새로 고침
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error("오류:", textStatus, errorThrown);
-                        alert('승인 중 오류가 발생했습니다.'); 
+                    	if(jqXHR.status === 403) {
+                            alert('권한이 없습니다.');
+                        }else {
+                        	 console.error("오류:", textStatus, errorThrown);
+                        	 alert('승인 중 오류가 발생했습니다.'); 
+                        }
                     }
                 });
             });
