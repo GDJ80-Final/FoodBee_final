@@ -73,55 +73,63 @@
 	       	</c:if>
       </div>
 </div> 
-<script>
-$(document).ready(function() {
-    
-    let drafter = '${revenueOne.drafterEmpNo}';  
-    let drafterName = '${revenueOne.drafterEmpName}';  
-    let midApprover = '${revenueOne.midApproverNo}';
-    let midApproverName = '${revenueOne.midApproverName}';
-    let finalApproverName = '${revenueOne.finalApproverName}';
-    let finalApprover = '${revenueOne.finalApproverNo}';
-    let referrerField = '${revenueReferrer.referrerName}';
-    //수신자가 없는경우
-    if(referrerField === null || referrerField === '') {
-    	referrerField = "수신자 없음";
-    }
-    let name = '${revenueOne.drafterEmpName}';  
-    let dptNo = '${revenueOne.dptNo}';  
-
-    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
-    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
-    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-    document.getElementById("referrerField").innerHTML = referrerField;
-    $("#name").val(drafterName);
-    $("#department").val(dptNo);
-    
-	//사원 결재사인
-    let drafterSign = '${revenueOne.drafterSign}';
-    let midApproverSign = '${revenueOne.midApproverSign}';
-    let finalApproverSign = '${revenueOne.finalApproverSign}';
-    let midApprovalState = '${revenueOne.midApprovalState}';
-    let finalApprovalState = '${revenueOne.finalApprovalState}';
-    
-    if (drafterSign) {
-        $("#drafterSign").html(`<img src="${revenueOne.drafterSign}">`);
-    } else {
-        $("#drafterSign").text("기안자 서명 없음");
-    }
-
-    if (midApproverSign && midApprovalState == 1) {
-        $("#midApproverSign").html(`<img src="${revenueOne.midApproverSign}">`);
-    } else {
-        $("#midApproverSign").text("중간결재 서명전");
-    }
-
-    if (finalApproverSign && finalApprovalState == 1) {
-        $("#finalApproverSign").html(`<img src="${revenueOne.finalApproverSign}">`);
-    } else {
-        $("#finalApproverSign").text("최종결재 서명전");
-    }
-});
-</script>
+	<script>
+		$(document).ready(function() {
+		    
+		    let drafter = '${revenueOne.drafterEmpNo}';
+		    console.log(drafter);
+		    let drafterName = '${revenueOne.drafterEmpName}';  
+		    console.log(drafterName);
+		    let midApprover = '${revenueOne.midApproverNo}';
+		    let midApproverName = '${revenueOne.midApproverName}';
+		    let finalApproverName = '${revenueOne.finalApproverName}';
+		    let finalApprover = '${revenueOne.finalApproverNo}';
+		    let referrerField = '${revenueReferrer.referrerName}';
+		    //수신자가 없는경우
+		    if(referrerField === null || referrerField === '') {
+		    	referrerField = "수신자 없음";
+		    }
+		    let name = '${revenueOne.drafterEmpName}';  
+		    let dptNo = '${revenueOne.dptNo}';  
+		
+		    $("#drafterEmpNo").val(drafter);
+		    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+		    $("#midApproverNo").val(midApprover);
+		    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
+		    $("#finalApproverNo").val(finalApprover);
+		    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
+		    $("#referrerField").val(referrerField);
+		    $("#name").val(drafterName);
+		    $("#department").val(dptNo);
+		    $("#midApproverBtn").hide();
+		    $("#finalApproverBtn").hide();
+		    
+		    
+			//사원 결재사인
+		    let drafterSign = '${revenueOne.drafterSign}';
+		    let midApproverSign = '${revenueOne.midApproverSign}';
+		    let finalApproverSign = '${revenueOne.finalApproverSign}';
+		    let midApprovalState = '${revenueOne.midApprovalState}';
+		    let finalApprovalState = '${revenueOne.finalApprovalState}';
+		    
+		    if (drafterSign) {
+		        $("#drafterSign").html(`<img src="${revenueOne.drafterSign}">`);
+		    } else {
+		        $("#drafterSign").text("기안자 서명 없음");
+		    }
+		
+		    if (midApproverSign && midApprovalState == 1) {
+		        $("#midApproverSign").html(`<img src="${revenueOne.midApproverSign}">`);
+		    } else {
+		        $("#midApproverSign").text("중간결재 서명전");
+		    }
+		
+		    if (finalApproverSign && finalApprovalState == 1) {
+		        $("#finalApproverSign").html(`<img src="${revenueOne.finalApproverSign}">`);
+		    } else {
+		        $("#finalApproverSign").text("최종결재 서명전");
+		    }
+		});
+	</script>
 </body>
 </html>

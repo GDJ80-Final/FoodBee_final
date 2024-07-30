@@ -1,10 +1,12 @@
 package com.gd.foodbee.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
+@Transactional
 public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	//결재함 전체 리스트
 	@Autowired 
@@ -140,7 +143,36 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	//최종결재 승인
 	@Override
 	public int updateFinalState(int draftDocNo) {
-		return approvalBoxMapper.updateFinalState(draftDocNo);
+		
+		int row = approvalBoxMapper.updateFinalState(draftDocNo);
+		
+		if(row == 1) {
+			Map<String,Object> doc = approvalBoxMapper.getDocOne(draftDocNo);
+			DraftDocDetailDTO docDetail = approvalBoxMapper.getDocDetailOne(draftDocNo);
+			
+			Map<String,Object> m = new HashMap<String,Object>();
+			m.put("docDetail", docDetail);
+			m.put("doc", doc);
+			if((Integer)(doc.get("tmpNo")) == 3) {
+				row = approvalBoxMapper.insertBusinessTrip(m);
+			}
+			if((Integer)(doc.get("tmpNo")) == 1) {
+				row = approvalBoxMapper.insertRevenue(m);
+			}
+			if((Integer)(doc.get("tmpNo")) == 2) {
+				row = approvalBoxMapper.insertDayOffTrip(m);
+			}
+			
+			if(row != 1) {
+				throw new RuntimeException();
+			}
+		} else {
+			throw new RuntimeException();
+		}
+		
+		
+		
+		return row;
 	}
 	
 	//중간결재 반려
@@ -155,21 +187,4 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		return approvalBoxMapper.updateFinalRejection(draftDocNo, rejectionReason);
 	}
 	
-	//출장테이블 insert
-	@Override
-	public int insertBusinessTrip(DraftDocDetailDTO draftDocDetailDTO) {
-		return approvalBoxMapper.insertBusinessTrip(draftDocDetailDTO);
-	}
-	
-	//휴가테이블 insert
-	@Override
-	public int insertDayOffTrip(DraftDocDetailDTO draftDocDetailDTO) {
-		return approvalBoxMapper.insertDayOffTrip(draftDocDetailDTO);
-	}
-	
-	//매출테이블 insert
-	@Override
-	public int insertRevenue(DraftDocDetailDTO draftDocDetailDTO) {
-		return approvalBoxMapper.insertRevenue(draftDocDetailDTO);
-	}
 }

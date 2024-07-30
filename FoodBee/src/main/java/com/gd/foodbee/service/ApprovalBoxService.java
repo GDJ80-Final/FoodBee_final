@@ -69,10 +69,4 @@ public interface ApprovalBoxService {
 	//최종결재 반려
 	int updateFinalRejection(int draftDocNo, String rejectionReason);
 	
-	//출장 insert
-	int insertBusinessTrip(DraftDocDetailDTO draftDocDetailDTO);
-	//휴가 insert
-	int insertDayOffTrip(DraftDocDetailDTO draftDocDetailDTO);
-	//매출 insert
-	int insertRevenue(DraftDocDetailDTO draftDocDetailDTO);
 }

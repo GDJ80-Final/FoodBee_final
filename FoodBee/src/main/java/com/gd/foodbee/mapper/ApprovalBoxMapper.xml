@@ -2,303 +2,311 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.ApprovalBoxMapper">
 <!-- 전체 결재함 리스트 -->
-<select id="getApprovalListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-	    dt.tmp_name tmpName,
-	    e.emp_name empName,
-	    dd.title title,
-	    dd.doc_approver_state_no approverStateNo,
-	    dd.mid_approver_no midApproverNo,
-	    dd.mid_approval_state midApprovalState,
-	    dd.mid_approval_datetime midApprovalDatetime,
-	    dd.final_approver_no finalApproverNo,
-	    dd.final_approval_state finalApprovalState,
-	    dd.final_approval_datetime finalApprovalDatetime,
-	    dd.create_datetime createDatetime,
-	    dd.draft_doc_no draftDocNo
-	FROM 
-	    draft_doc dd
-    INNER JOIN 
-    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
-    INNER JOIN 
-    	emp e ON dd.drafter_emp_no = e.emp_no
-	WHERE 
-	    (mid_approver_no = #{empNo}) OR (final_approver_no = #{empNo}) OR (mid_approval_state = 1 AND final_approval_state = 0)
-	    AND final_approval_state = 1
-	ORDER BY 
-		dd.create_datetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 미결 리스트 -->
-<select id="getZeroListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-	    dt.tmp_name tmpName,
-	    e.emp_name empName,
-	    dd.title title,
-	    dd.doc_approver_state_no approverStateNo,
-	    dd.mid_approver_no midApproverNo,
-	    dd.mid_approval_state midApprovalState,
-	    dd.mid_approval_datetime midApprovalDatetime,
-	    dd.final_approver_no finalApproverNo,
-	    dd.final_approval_state finalApprovalState,
-	    dd.final_approval_datetime finalApprovalDatetime,
-	    dd.create_datetime createDatetime,
-	    dd.draft_doc_no draftDocNo
-	FROM 
-	    draft_doc dd
-    INNER JOIN 
-    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
-    INNER JOIN 
-    	emp e ON dd.drafter_emp_no = e.emp_no
-	WHERE 
-		(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND mid_approval_state = 1 AND final_approval_state = 0)
-	ORDER BY 
+	<select id="getApprovalListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+		    dt.tmp_name tmpName,
+		    e.emp_name empName,
+		    dd.title title,
+		    dd.doc_approver_state_no approverStateNo,
+		    dd.mid_approver_no midApproverNo,
+		    dd.mid_approval_state midApprovalState,
+		    dd.mid_approval_datetime midApprovalDatetime,
+		    dd.final_approver_no finalApproverNo,
+		    dd.final_approval_state finalApprovalState,
+		    dd.final_approval_datetime finalApprovalDatetime,
+		    dd.create_datetime createDatetime,
+		    dd.draft_doc_no draftDocNo
+		FROM 
+		    draft_doc dd
+	    INNER JOIN 
+	    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
+	    INNER JOIN 
+	    	emp e ON dd.drafter_emp_no = e.emp_no
+		WHERE 
+		    (mid_approver_no = #{empNo}) OR (final_approver_no = #{empNo}) OR (mid_approval_state = 1 AND final_approval_state = 0)
+		    AND final_approval_state = 1
+		ORDER BY 
 			dd.create_datetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 기결 리스트 -->
-<select id="getOneListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 미결 리스트 -->
+	<select id="getZeroListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+		    dt.tmp_name tmpName,
+		    e.emp_name empName,
+		    dd.title title,
+		    dd.doc_approver_state_no approverStateNo,
+		    dd.mid_approver_no midApproverNo,
+		    dd.mid_approval_state midApprovalState,
+		    dd.mid_approval_datetime midApprovalDatetime,
+		    dd.final_approver_no finalApproverNo,
+		    dd.final_approval_state finalApprovalState,
+		    dd.final_approval_datetime finalApprovalDatetime,
+		    dd.create_datetime createDatetime,
+		    dd.draft_doc_no draftDocNo
+		FROM 
+		    draft_doc dd
+	    INNER JOIN 
+	    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
+	    INNER JOIN 
+	    	emp e ON dd.drafter_emp_no = e.emp_no
+		WHERE 
+			(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND mid_approval_state = 1 AND final_approval_state = 0)
+		ORDER BY 
+				dd.create_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 기결 리스트 -->
+	<select id="getOneListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
+		SELECT 
+		    dt.tmp_name tmpName,
+		    e.emp_name empName,
+		    dd.title title,
+		    dd.doc_approver_state_no approverStateNo,
+		    dd.mid_approver_no midApproverNo,
+		    dd.mid_approval_state midApprovalState,
+		    dd.mid_approval_datetime midApprovalDatetime,
+		    dd.final_approver_no finalApproverNo,
+		    dd.final_approval_state finalApprovalState,
+		    dd.final_approval_datetime finalApprovalDatetime,
+		    dd.create_datetime createDatetime,
+		    dd.draft_doc_no draftDocNo
+		FROM 
+		    draft_doc dd
+	    INNER JOIN 
+	    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
+	    INNER JOIN 
+	    	emp e ON dd.drafter_emp_no = e.emp_no
+		WHERE 
+			(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
+		ORDER BY 
+				dd.create_datetime DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 전체 리스트 총갯수 -->
+	<select id="countAllList" resultType="int" parameterType="int">
+		SELECT COUNT(*) 
+		FROM 
+			draft_doc
+		WHERE 
+	    (mid_approver_no = #{empNo} OR final_approver_no = #{empNo})
+	</select>
+	<!-- 미결 리스트 총갯수 -->
+	<select id="countZeroTypeList" resultType="int" parameterType="int">
+		SELECT COUNT(*) 
+		FROM 
+			draft_doc
+		WHERE 
+			(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND final_approval_state = 0)
+	</select>
+	<!-- 기결 리스트 총갯수 -->
+	<select id="countOneTypeList" resultType="int" parameterType="int">
+		SELECT COUNT(*) 
+		FROM 
+			draft_doc
+		WHERE 
+			(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
+	</select>
+	<!-- 결재함 기안서 상태값 -->
+	<select id="getStateBox" parameterType="com.gd.foodbee.dto.ApprovalBoxStateDTO">
+		SELECT
+	        SUM(CASE WHEN dd.doc_approver_state_no = 0 THEN 1 ELSE 0 END) AS zeroState,
+	        SUM(CASE WHEN dd.doc_approver_state_no = 1 THEN 1 ELSE 0 END) AS oneState,
+	        SUM(CASE WHEN dd.doc_approver_state_no = 2 THEN 1 ELSE 0 END) AS twoState,
+	        SUM(CASE WHEN dd.doc_approver_state_no = 9 THEN 1 ELSE 0 END) AS nineState
+	   FROM 
+	        draft_doc dd
+		LEFT JOIN
+	        emp e ON dd.drafter_emp_no = e.emp_no
+	   LEFT JOIN 
+	   		doc_referrer dr ON dd.draft_doc_no = dr.draft_doc_no
+	   WHERE
+	   	(dd.mid_approver_no = #{empNo} OR dd.final_approver_no = #{empNo})
+	</select>
+	<!-- 기안서 상세-->
+	<select id="getDocOne" resultType="Map" parameterType="int">
+	    SELECT 
+		    dd.draft_doc_no draftDocNo, 
+		    dd.drafter_emp_no drafterEmpNo, 
+		    drafter.dpt_no dptNo,
+		    drafter.emp_name drafterEmpName, 
+		    drafterSign.approval_sign_file drafterSign,
+		    dd.create_datetime createDatetime, 
+		    dd.title title, 
+		    dd.content content, 
+		    dd.mid_approver_no midApproverNo,
+		    midApprover.emp_name midApproverName,
+		    midApproverSign.approval_sign_file midApproverSign,
+		    dd.mid_approval_state midApprovalState, 
+		    dd.mid_approval_datetime midApprovalDatetime, 
+		    dd.final_approver_no finalApproverNo, 
+		    finalApprover.emp_name finalApproverName,
+		    finalApproverSign.approval_sign_file finalApproverSign,
+		    dd.final_approval_state finalApprovalState, 
+		    dd.final_approval_datetime finalApprovalDatetime,
+		    dd.mid_approver_reason midApproverReason, 
+		    dd.final_approver_reason finalApproverReason, 
+		    dd.doc_approver_state_no docApproverState, 
+		    dd.tmp_no tmpNo
+		FROM 
+		    draft_doc dd
+		    LEFT JOIN emp drafter ON dd.drafter_emp_no = drafter.emp_no
+		    LEFT JOIN approval_sign drafterSign ON drafter.emp_no = drafterSign.emp_no
+		    LEFT JOIN emp midApprover ON dd.mid_approver_no = midApprover.emp_no
+		    LEFT JOIN approval_sign midApproverSign ON midApprover.emp_no = midApproverSign.emp_no
+		    LEFT JOIN emp finalApprover ON dd.final_approver_no = finalApprover.emp_no
+		    LEFT JOIN approval_sign finalApproverSign ON finalApprover.emp_no = finalApproverSign.emp_no
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</select>
+	<!-- 기안서Detail상세 -->
+	<select id="getDocDetailOne" resultType="com.gd.foodbee.dto.DraftDocDetailDTO" parameterType="int">
+		SELECT 
+			d.draft_doc_order draftDocOrder,
+			d.draft_doc_no draftDocNo,
+			d.start_date startDate,
+			d.end_date endDate,
+			d.type_name typeName,
+			d.amount amount,
+			d.description description,
+			d.text text
+		FROM 
+			draft_doc_detail d
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</select>
+	<!-- 기안서Detail List 출력 -->
+	<select id="getDocDetailList" resultType="com.gd.foodbee.dto.DraftDocDetailDTO" parameterType="int">
+		SELECT 
+			d.draft_doc_order draftDocOrder,
+			d.draft_doc_no draftDocNo,
+			d.start_date startDate,
+			d.end_date endDate,
+			d.type_name typeName,
+			d.amount amount,
+			d.description description,
+			d.text text
+		FROM 
+			draft_doc_detail d
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</select>
+	<!-- 기안서 파일 가져오기 -->
+	<select id="getDocFileOne" resultType="com.gd.foodbee.dto.DraftDocFileDTO" parameterType="int">
+		SELECT 
+			d.draft_doc_file_no draftDocFileNo,
+			d.original_file originalFile,
+			d.save_file saveFile,
+			d.`type` type,
+			d.create_datetime createDatetime,
+			d.update_datetime updateDatetime, 
+			d.draft_doc_no draftDocNo
+		FROM 
+			draft_doc_file d
+		WHERE 
+			d.draft_doc_no = #{draftDocNo}
+	</select>
+	<!-- 수신참조자 가져오기 -->
+	<select id="getDocReferrerOne" resultType ="Map" parameterType="int">
+		SELECT 
+			dr.draft_doc_no draftDocNo, 
+			GROUP_CONCAT(
+	        	CONCAT(dr.referrer_emp_no, '(', e.emp_name, ')') 
+	        	SEPARATOR ','
+	    	) referrerName 
+		FROM 
+			doc_referrer dr
+		LEFT JOIN 
+			emp e ON dr.referrer_emp_no = e.emp_no
+		WHERE 
+			dr.draft_doc_no = #{draftDocNo}
+		group BY 
+			dr.draft_doc_no 
+	</select>
+	<!-- 휴가 상세보기 -->
+	<select id="getDayOffOne" resultType="Map" parameterType="int">
 	SELECT 
-	    dt.tmp_name tmpName,
-	    e.emp_name empName,
-	    dd.title title,
-	    dd.doc_approver_state_no approverStateNo,
-	    dd.mid_approver_no midApproverNo,
-	    dd.mid_approval_state midApprovalState,
-	    dd.mid_approval_datetime midApprovalDatetime,
-	    dd.final_approver_no finalApproverNo,
-	    dd.final_approval_state finalApprovalState,
-	    dd.final_approval_datetime finalApprovalDatetime,
-	    dd.create_datetime createDatetime,
-	    dd.draft_doc_no draftDocNo
+		doh.start_date startDate, 
+		doh.end_date endDate, 
+		doh.cancle_YN cancleYN, 
+		doh.cancle_reason cancleReason, 
+		doh.use_year useYear, 
+		doh.emergency_contact emergencyContact, 
+		doh.type_name typeName
 	FROM 
-	    draft_doc dd
-    INNER JOIN 
-    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
-    INNER JOIN 
-    	emp e ON dd.drafter_emp_no = e.emp_no
+		day_off_history doh
 	WHERE 
-		(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
-	ORDER BY 
-			dd.create_datetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 전체 리스트 총갯수 -->
-<select id="countAllList" resultType="int" parameterType="int">
-	SELECT COUNT(*) 
-	FROM 
-		draft_doc
-	WHERE 
-    (mid_approver_no = #{empNo} OR final_approver_no = #{empNo})
-</select>
-<!-- 미결 리스트 총갯수 -->
-<select id="countZeroTypeList" resultType="int" parameterType="int">
-	SELECT COUNT(*) 
-	FROM 
-		draft_doc
-	WHERE 
-		(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND final_approval_state = 0)
-</select>
-<!-- 기결 리스트 총갯수 -->
-<select id="countOneTypeList" resultType="int" parameterType="int">
-	SELECT COUNT(*) 
-	FROM 
-		draft_doc
-	WHERE 
-		(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
-</select>
-<!-- 결재함 기안서 상태값 -->
-<select id="getStateBox" parameterType="com.gd.foodbee.dto.ApprovalBoxStateDTO">
-	SELECT
-        SUM(CASE WHEN dd.doc_approver_state_no = 0 THEN 1 ELSE 0 END) AS zeroState,
-        SUM(CASE WHEN dd.doc_approver_state_no = 1 THEN 1 ELSE 0 END) AS oneState,
-        SUM(CASE WHEN dd.doc_approver_state_no = 2 THEN 1 ELSE 0 END) AS twoState,
-        SUM(CASE WHEN dd.doc_approver_state_no = 9 THEN 1 ELSE 0 END) AS nineState
-   FROM 
-        draft_doc dd
-	LEFT JOIN
-        emp e ON dd.drafter_emp_no = e.emp_no
-   LEFT JOIN 
-   		doc_referrer dr ON dd.draft_doc_no = dr.draft_doc_no
-   WHERE
-   	(dd.mid_approver_no = #{empNo} OR dd.final_approver_no = #{empNo})
-</select>
-<!-- 기안서 상세-->
-<select id="getDocOne" resultType="Map" parameterType="int">
-    SELECT 
-	    dd.draft_doc_no draftDocNo, 
-	    dd.drafter_emp_no drafterEmpNo, 
-	    drafter.dpt_no dptNo,
-	    drafter.emp_name drafterEmpName, 
-	    drafterSign.approval_sign_file drafterSign,
-	    dd.create_datetime createDatetime, 
-	    dd.title title, 
-	    dd.content content, 
-	    dd.mid_approver_no midApproverNo,
-	    midApprover.emp_name midApproverName,
-	    midApproverSign.approval_sign_file midApproverSign,
-	    dd.mid_approval_state midApprovalState, 
-	    dd.mid_approval_datetime midApprovalDatetime, 
-	    dd.final_approver_no finalApproverNo, 
-	    finalApprover.emp_name finalApproverName,
-	    finalApproverSign.approval_sign_file finalApproverSign,
-	    dd.final_approval_state finalApprovalState, 
-	    dd.final_approval_datetime finalApprovalDatetime,
-	    dd.mid_approver_reason midApproverReason, 
-	    dd.final_approver_reason finalApproverReason, 
-	    dd.doc_approver_state_no docApproverState, 
-	    dd.tmp_no tmpNo
-	FROM 
-	    draft_doc dd
-	    LEFT JOIN emp drafter ON dd.drafter_emp_no = drafter.emp_no
-	    LEFT JOIN approval_sign drafterSign ON drafter.emp_no = drafterSign.emp_no
-	    LEFT JOIN emp midApprover ON dd.mid_approver_no = midApprover.emp_no
-	    LEFT JOIN approval_sign midApproverSign ON midApprover.emp_no = midApproverSign.emp_no
-	    LEFT JOIN emp finalApprover ON dd.final_approver_no = finalApprover.emp_no
-	    LEFT JOIN approval_sign finalApproverSign ON finalApprover.emp_no = finalApproverSign.emp_no
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</select>
-<!-- 기안서Detail상세 -->
-<select id="getDocDetailOne" resultType="com.gd.foodbee.dto.DraftDocDetailDTO" parameterType="int">
-	SELECT 
-		d.draft_doc_order draftDocOrder,
-		d.draft_doc_no draftDocNo,
-		d.start_date startDate,
-		d.end_date endDate,
-		d.type_name typeName,
-		d.amount amount,
-		d.description description,
-		d.text text
-	FROM 
-		draft_doc_detail d
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</select>
-<!-- 기안서Detail List 출력 -->
-<select id="getDocDetailList" resultType="com.gd.foodbee.dto.DraftDocDetailDTO" parameterType="int">
-	SELECT 
-		d.draft_doc_order draftDocOrder,
-		d.draft_doc_no draftDocNo,
-		d.start_date startDate,
-		d.end_date endDate,
-		d.type_name typeName,
-		d.amount amount,
-		d.description description,
-		d.text text
-	FROM 
-		draft_doc_detail d
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</select>
-<!-- 기안서 파일 가져오기 -->
-<select id="getDocFileOne" resultType="com.gd.foodbee.dto.DraftDocFileDTO" parameterType="int">
-	SELECT 
-		d.draft_doc_file_no draftDocFileNo,
-		d.original_file originalFile,
-		d.save_file saveFile,
-		d.`type` type,
-		d.create_datetime createDatetime,
-		d.update_datetime updateDatetime, 
-		d.draft_doc_no draftDocNo
-	FROM 
-		draft_doc_file d
-	WHERE 
-		d.draft_doc_no = #{draftDocNo}
-</select>
-<!-- 수신참조자 가져오기 -->
-<select id="getDocReferrerOne" resultType ="Map" parameterType="int">
-	SELECT 
-		dr.draft_doc_no draftDocNo, 
-		GROUP_CONCAT(
-        	CONCAT(dr.referrer_emp_no, '(', e.emp_name, ')') 
-        	SEPARATOR ','
-    	) referrerName 
-	FROM 
-		doc_referrer dr
-	LEFT JOIN 
-		emp e ON dr.referrer_emp_no = e.emp_no
-	WHERE 
-		dr.draft_doc_no = #{draftDocNo}
-	group BY 
-		dr.draft_doc_no 
-</select>
-<!-- 휴가 상세보기 -->
-<select id="getDayOffOne" resultType="Map" parameterType="int">
-SELECT 
-	doh.start_date startDate, 
-	doh.end_date endDate, 
-	doh.cancle_YN cancleYN, 
-	doh.cancle_reason cancleReason, 
-	doh.use_year useYear, 
-	doh.emergency_contact emergencyContact, 
-	doh.type_name typeName
-FROM 
-	day_off_history doh
-WHERE 
-	doh.draft_doc_no = #{draftDocNo}
-</select>
-<!-- 중간결재 승인 -->
-<update id="updateMidState" parameterType="int">
-	UPDATE 
-		draft_doc
-	SET 
-		mid_approval_state = 1, 
-		mid_approval_datetime = NOW(), 
-		doc_approver_state_no =1
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</update>
-<!-- 최종결재 승인 -->
-<update id="updateFinalState" parameterType="int">
-	UPDATE 
-		draft_doc
-	SET 
-		final_approval_state = 1, 
-		final_approval_datetime = NOW(), 
-		doc_approver_state_no =2
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</update>
-<!-- 중간결재 반려 -->
-<update id="updateMidRejection">
-	UPDATE 
-		draft_doc
-	SET 
-		mid_approval_state = 1, 
-		mid_approval_datetime = NOW(), 
-		doc_approver_state_no = 9,
-		mid_approver_reason = #{rejectionReason}
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</update>
-<!-- 최종결재 반려 -->
-<update id="updateFinalRejection">
-	UPDATE 
-		draft_doc
-	SET 
-		final_approval_state = 1, 
-		final_approval_datetime = NOW(), 
-		doc_approver_state_no =9,
-		final_approver_reason = #{rejectionReason}
-	WHERE 
-		draft_doc_no = #{draftDocNo}
-</update>
-<!-- 출장 테이블 insert -->
-<insert id="insertBusinessTrip" parameterType="com.gd.foodbee.dto.DraftDocDetailDTO">
-INSERT INTO 
-	day_off_history(draft_doc_no, emp_no start_date, end_date, use_year, emergency_contact, type_name)
-VALUES
-	(#{draftDocNo}, #{startDate},#{endDate},YEAR(#{startDate}),#{text},#{typeName}
-	);
-</insert>
-<!-- 휴가테이블 insert -->
-<insert id="insertDayOffTrip" parameterType="com.gd.foodbee.dto.DraftDocDetailDTO">
-
-</insert>
-<insert id="insertRevenue" parameterType="com.gd.foodbee.dto.DraftDocDetailDTO">
-
-</insert>
+		doh.draft_doc_no = #{draftDocNo}
+	</select>
+	<!-- 중간결재 승인 -->
+	<update id="updateMidState" parameterType="int">
+		UPDATE 
+			draft_doc
+		SET 
+			mid_approval_state = 1, 
+			mid_approval_datetime = NOW(), 
+			doc_approver_state_no =1
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</update>
+	<!-- 최종결재 승인 -->
+	<update id="updateFinalState" parameterType="int">
+		UPDATE 
+			draft_doc
+		SET 
+			final_approval_state = 1, 
+			final_approval_datetime = NOW(), 
+			doc_approver_state_no =2
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</update>
+	<!-- 중간결재 반려 -->
+	<update id="updateMidRejection">
+		UPDATE 
+			draft_doc
+		SET 
+			mid_approval_state = 1, 
+			mid_approval_datetime = NOW(), 
+			doc_approver_state_no = 9,
+			mid_approver_reason = #{rejectionReason}
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</update>
+	<!-- 최종결재 반려 -->
+	<update id="updateFinalRejection">
+		UPDATE 
+			draft_doc
+		SET 
+			final_approval_state = 1, 
+			final_approval_datetime = NOW(), 
+			doc_approver_state_no =9,
+			final_approver_reason = #{rejectionReason}
+		WHERE 
+			draft_doc_no = #{draftDocNo}
+	</update>
+	<!-- 출장 테이블 insert -->
+	<insert id="insertBusinessTrip" parameterType="Map">
+		INSERT INTO 
+			business_trip_history(draft_doc_no, emp_no, start_date, end_date, emergency_contact, business_trip_destination)
+		VALUES(
+			#{docDetail.draftDocNo}, #{doc.drafterEmpNo}, #{docDetail.startDate},#{docDetail.endDate},#{docDetail.text},#{docDetail.typeName}
+		);
+	</insert>
+	<!-- 휴가테이블 insert -->
+	<insert id="insertDayOffTrip" parameterType="Map">
+		INSERT INTO 
+			day_off_history(draft_doc_no, emp_no, start_date, end_date, use_year, emergency_contact, type_name)
+		VALUES(
+			#{docDetail.draftDocNo}, #{doc.drafterEmpNo}, #{docDetail.startDate},#{docDetail.endDate},YEAR(#{docDetail.startDate}),#{docDetail.text},#{docDetail.typeName}
+		);
+	</insert>
+	<insert id="insertRevenue" parameterType="Map">
+		INSERT INTO 
+			revenue_history(draft_doc_no, drafter_emp_no, category_name, reference_month, revenue)
+		VALUES(
+			#{docDetail.draftDocNo}, #{doc.drafterEmpNo}, #{docDetail.typeName}, #{docDetail.description},#{docDetail.amount}
+		);
+	</insert>
 </mapper>

@@ -92,11 +92,11 @@ public interface ApprovalBoxMapper {
 	int updateFinalRejection(int draftDocNo, String rejectionReason);
 	
 	// 출장 테이블insert
-	int insertBusinessTrip(DraftDocDetailDTO draftDocDetailDTO);
+	int insertBusinessTrip(Map<String, Object> m);
 	
 	// 휴가테이블 insert
-	int insertDayOffTrip(DraftDocDetailDTO draftDocDetailDTO);
+	int insertDayOffTrip(Map<String, Object> m);
 	
 	// 매출테이블 insert
-	int insertRevenue(DraftDocDetailDTO draftDocDetailDTO);
+	int insertRevenue(Map<String, Object> m);
 }

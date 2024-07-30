@@ -75,56 +75,61 @@
 	       	</c:if>
       </div>
 	</div>
-<script>
-	$(document).ready(function() {
-	    
-	    let drafter = '${businessTripOne.drafterEmpNo}';  
-	    let drafterName = '${businessTripOne.drafterEmpName}';  
-	    let midApprover = '${businessTripOne.midApproverNo}';
-	    let midApproverName = '${businessTripOne.midApproverName}';
-	    let finalApproverName = '${businessTripOne.finalApproverName}';
-	    let finalApprover = '${businessTripOne.finalApproverNo}';
-	    let referrerField = '${businessTripReferrer.referrerName}';
-	    //수신자가 없는경우
-	    if(referrerField === null || referrerField === '') {
-	    	referrerField = "수신자 없음";
-	    }
-	    let name = '${businessTripOne.drafterEmpName}';  
-	    let dptNo = '${businessTripOne.dptNo}';  
-	
-	    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
-	    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
-	    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-	    document.getElementById("referrerField").innerHTML = referrerField;
-	    $("#name").val(drafterName);
-	    $("#department").val(dptNo);
-	    
-    	//사원 결재사인
-	    let drafterSign = '${businessTripOne.drafterSign}';
-	    let midApproverSign = '${businessTripOne.midApproverSign}';
-	    let finalApproverSign = '${businessTripOne.finalApproverSign}';
-	    let midApprovalState = '${businessTripOne.midApprovalState}';
-	    let finalApprovalState = '${businessTripOne.finalApprovalState}';
-	    
-	    if (drafterSign) {
-	        $("#drafterSign").html(`<img src="${businessTripOne.drafterSign}">`);
-	    } else {
-	        $("#drafterSign").text("기안자 서명 없음");
-	    }
-	
-	    if (midApproverSign && midApprovalState == 1) {
-	        $("#midApproverSign").html(`<img src="${businessTripOne.midApproverSign}">`);
-	    } else {
-	        $("#midApproverSign").text("중간결재 서명전");
-	    }
-	
-	    if (finalApproverSign && finalApprovalState == 1) {
-	        $("#finalApproverSign").html(`<img src="${businessTripOne.finalApproverSign}">`);
-	    } else {
-	        $("#finalApproverSign").text("최종결재 서명전");
-	    }
-	});
-</script>
+	<script>
+		$(document).ready(function() {
+		    
+		    let drafter = '${businessTripOne.drafterEmpNo}';  
+		    let drafterName = '${businessTripOne.drafterEmpName}';  
+		    let midApprover = '${businessTripOne.midApproverNo}';
+		    let midApproverName = '${businessTripOne.midApproverName}';
+		    let finalApproverName = '${businessTripOne.finalApproverName}';
+		    let finalApprover = '${businessTripOne.finalApproverNo}';
+		    let referrerField = '${businessTripReferrer.referrerName}';
+		    //수신자가 없는경우
+		    if(referrerField === null || referrerField === '') {
+		    	referrerField = "수신자 없음";
+		    }
+		    let name = '${businessTripOne.drafterEmpName}';  
+		    let dptNo = '${businessTripOne.dptNo}';  
+		
+		    $("#drafterEmpNo").val(drafter);
+		    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+		    $("#midApproverNo").val(midApprover);
+		    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
+		    $("#finalApproverNo").val(finalApprover);
+		    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
+		    $("#referrerField").val(referrerField);
+		    $("#name").val(drafterName);
+		    $("#department").val(dptNo);
+		    $("#midApproverBtn").hide();
+		    $("#finalApproverBtn").hide();
+		    
+	    	//사원 결재사인
+		    let drafterSign = '${businessTripOne.drafterSign}';
+		    let midApproverSign = '${businessTripOne.midApproverSign}';
+		    let finalApproverSign = '${businessTripOne.finalApproverSign}';
+		    let midApprovalState = '${businessTripOne.midApprovalState}';
+		    let finalApprovalState = '${businessTripOne.finalApprovalState}';
+		    
+		    if (drafterSign) {
+		        $("#drafterSign").html(`<img src="${businessTripOne.drafterSign}">`);
+		    } else {
+		        $("#drafterSign").text("기안자 서명 없음");
+		    }
+		
+		    if (midApproverSign && midApprovalState == 1) {
+		        $("#midApproverSign").html(`<img src="${businessTripOne.midApproverSign}">`);
+		    } else {
+		        $("#midApproverSign").text("중간결재 서명전");
+		    }
+		
+		    if (finalApproverSign && finalApprovalState == 1) {
+		        $("#finalApproverSign").html(`<img src="${businessTripOne.finalApproverSign}">`);
+		    } else {
+		        $("#finalApproverSign").text("최종결재 서명전");
+		    }
+		});
+	</script>
 </div>	
 </body>
 </html>
