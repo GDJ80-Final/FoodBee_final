@@ -1,5 +1,6 @@
 package com.gd.foodbee.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomServiceImpl implements RoomService{
 	@Autowired RoomMapper roomMapper;
 	
-	private static final int ROW_PER_PAGE = 10;
+	private static final int ROW_PER_PAGE = 2;
 	
 	// 회의실 목록
 	// 파라미터 : X
@@ -134,11 +135,42 @@ public class RoomServiceImpl implements RoomService{
 	// 예약 취소
 	// 파라미터 : RoomRsvDTO rsv
 	// 반환 값 : X
-	// 사용 클래스 : RoomController.
+	// 사용 클래스 : RoomController.cancleRoomRsv
 	@Override
 	public int modifyRoomRsv(RoomRsvDTO rsv) {
 		log.debug(TeamColor.GREEN + "rsv => " + rsv.toString());
 		
 		return roomMapper.updateRoomRsv(rsv); 
+	}
+	
+	// 취소된 예약목록
+	// 파라미터 : int currentPage
+	// 반환 값 : List<HashMap<String, Object>>
+	// 사용 클래스 : RoomController.CancleRsvList
+	@Override
+	public List<HashMap<String, Object>> getCancleRsvList(int currentPage) {
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		
+		int beginRow = 0;
+        beginRow = (currentPage -1) * ROW_PER_PAGE;
+        log.debug(TeamColor.GREEN + "beginRow => " + beginRow);
+        
+		return roomMapper.selectCancleRsvList(beginRow, ROW_PER_PAGE);
+	}
+	
+	// 취소된 예약 cnt
+	// 파라미터 : X
+	// 반환 값 : int
+	// 사용 클래스 : RoomController.CancleRsvList
+	@Override
+	public int getCancleRsvLastPage() {
+		
+		int cnt = roomMapper.selectCancleRsvCnt();
+		log.debug(TeamColor.GREEN + "cnt => " + cnt);
+		
+		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
+		
+		return lastPage;
 	}
 }

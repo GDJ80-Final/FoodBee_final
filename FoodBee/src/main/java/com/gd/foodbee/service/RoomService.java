@@ -1,7 +1,7 @@
 package com.gd.foodbee.service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.gd.foodbee.dto.RoomDTO;
 import com.gd.foodbee.dto.RoomRsvDTO;
@@ -34,4 +34,11 @@ public interface RoomService {
 	
 	// 예약 취소
 	int modifyRoomRsv(RoomRsvDTO rsv);
+	
+	// 취소된 예약목록
+	List<HashMap<String, Object>> getCancleRsvList(int currentPage);
+	
+	// 취소된 예약 cnt
+	int getCancleRsvLastPage();	
+	
 }

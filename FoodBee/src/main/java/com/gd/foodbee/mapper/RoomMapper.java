@@ -1,5 +1,6 @@
 package com.gd.foodbee.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -41,10 +42,10 @@ public interface RoomMapper {
 	List<RoomRsvDTO> selectReservedTimes(int roomNo, String rsvDate);
 	
 	// 선택된 날짜별 전체 예약리스트 출력
-	// 파라미터 : HashMap<String,Object> m (beginRow, ROW_PER_PAGE, rsvDate)
+	// 파라미터 : String rsvDate, int beginRow, int rowPerPage
 	// 반환값 : List<RoomRsvDTO>
 	// 사용클래스 : RoomServiceImpl.getRsvListByDate
-	List<RoomRsvDTO> selectRsvListByDate( String rsvDate, int beginRow, int rowPerPage);
+	List<RoomRsvDTO> selectRsvListByDate(String rsvDate, int beginRow, int rowPerPage);
 	
 	// 선택된 날짜 예약 총 갯수
 	// 파라미터 : String rsvDate
@@ -53,7 +54,7 @@ public interface RoomMapper {
 	int selectRsvCntByDate(String rsvDate);
 	
 	// 내 예약리스트 출력
-	// 파라미터 : HashMap<String,Object> m (beginRow, ROW_PER_PAGE, empNo)
+	// 파라미터 : int empNo, int beginRow, int rowPerPage
 	// 반환값 : List<RoomRsvDTO>
 	// 사용클래스 : RoomServiceImpl.getRsvListByEmpNo
 	List<RoomRsvDTO> selectRsvListByEmpNo(int empNo, int beginRow, int rowPerPage);
@@ -70,5 +71,16 @@ public interface RoomMapper {
 	// 사용클래스 : RoomServiceImpl.modifyRoomRsv
 	int updateRoomRsv(RoomRsvDTO rsv);
 	
+	// 취소된 예약목록
+	// 파라미터 : int beginRow, int rowPerPage
+	// 반환값 : List<HashMap<String, Object>>
+	// 사용클래스 : RoomServiceImpl.getCancleRsvList
+	List<HashMap<String, Object>> selectCancleRsvList(int beginRow, int rowPerPage);
+	
+	// 취소된 예약 cnt
+	// 파라미터 : X
+	// 반환값 : int
+	// 사용클래스 : RoomServiceImpl.getCancleRsvCnt
+	int selectCancleRsvCnt();
 	
 }

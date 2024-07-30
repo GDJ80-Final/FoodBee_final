@@ -2,6 +2,7 @@ package com.gd.foodbee.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,5 +175,27 @@ public class RoomController {
 		log.debug(TeamColor.GREEN + "row => " + row);
 		
 		return "redirect:/room/roomRsvList";
+	}
+	
+	// 취소된 예약목록
+	// 파라미터 : X
+	// 반환 값 : List<HashMap<String, Object>>
+	// 사용 페이지 : /room/cancleRsvList
+	@GetMapping("/room/cancleRsvList")
+	public String cancleRsvList(Model model,
+							@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
+		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
+		
+		List<HashMap<String, Object>> list = roomService.getCancleRsvList(currentPage);
+		log.debug(TeamColor.GREEN + "list => " + list);
+		
+		int lastPage = roomService.getCancleRsvLastPage();
+		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("currentPage",currentPage);
+		model.addAttribute("lastPage",lastPage);
+		
+		return "/room/cancleRsvList";
 	}
 }

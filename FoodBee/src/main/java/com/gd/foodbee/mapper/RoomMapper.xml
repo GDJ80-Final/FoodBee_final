@@ -79,6 +79,7 @@
 		WHERE
 		 	rsv_date = #{rsvDate} 
 			AND room_no = #{roomNo}
+			AND rsv_state != 0
 	</select>
 	
 	<!-- 선택된 날짜별 전체 예약리스트 출력 -->
@@ -170,4 +171,45 @@
 			AND TIME(start_datetime) = #{startTime} 
 			AND rsv_date = #{rsvDate}
 	</update>
+	
+	<!-- 취소된 예약목록 -->
+	<select id="selectCancleRsvList" resultType="Map">
+		SELECT 
+			i.room_name roomName, 
+			e.rank_name rankName, 
+			e.emp_name empName, 
+			e.dpt_no dptNo, 
+			r.rsv_date rsvDate,
+			r.meeting_title meetingTitle, 
+			DATE_FORMAT(r.start_dateTime, '%H:%i') startTime, 
+			DATE_FORMAT(r.end_dateTime, '%H:%i') endTime, 
+			r.type type, 
+			r.users users,
+			CASE 
+				WHEN 
+					r.rsv_state = 0 THEN '취소' 
+			END rsvState
+		FROM 
+			room_rsv r 
+		INNER JOIN 
+			emp e ON r.emp_no = e.emp_no 
+		INNER JOIN 
+			room_info i ON r.room_no = i.room_no
+		WHERE 
+			rsv_state = 0
+		ORDER BY 
+			rsvDate DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	
+	<!-- 취소된 예약 cnt -->
+	<select id="selectCancleRsvCnt" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM 
+			room_rsv
+		WHERE 
+			rsv_state = 0
+	</select>
 </mapper>
