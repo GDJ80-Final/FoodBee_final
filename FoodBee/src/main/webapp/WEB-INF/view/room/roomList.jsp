@@ -20,7 +20,7 @@
 	</tr>
 	<c:forEach var="m" items="${list}">	
 		<tr>
-			<td style="height:200px;">
+			<td style="height:100%;">
 				<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
 					<input type="hidden" name="roomNo" value="${m.roomNo}">
 					<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
@@ -30,7 +30,7 @@
 					</a>
 				</form>	
 			</td>
-			<td style="height:200px;">
+			<td style="height:100%;">
 				<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="300px">				
 			</td>
 			<td style="height:200px;">${m.roomPlace}</td>

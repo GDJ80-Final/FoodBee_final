@@ -10,6 +10,18 @@ import com.gd.foodbee.dto.AttendanceDTO;
 @Mapper
 public interface AttendanceMapper {
 	
+	// 근태 출근
+	// 파라미터 : int empNo
+	// 반환값 : X
+	// 사용클래스 : AttendanceServiceImpl.addStartTime
+	int insertStartTime(int empNo);
+	
+	// 근태 퇴근
+	// 파라미터 : int empNo
+	// 반환값 : X
+	// 사용클래스 : AttendanceServiceImpl.modifyEndTime
+	int updateEndTime(int empNo);
+	
 	// 근태보고 출력
 	// 파라미터 : int empNo
 	// 반환값 : AttendanceDTO

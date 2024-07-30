@@ -39,8 +39,6 @@
             <th>해당 일자</th>
             <th>출근 시간</th>
             <th>퇴근 시간</th>
-            <th>출근 수정</th>
-            <th>퇴근 수정</th>
             <th>승인 상태</th>
             <th>수정 여부</th>
             <th>확정 일시</th>
@@ -90,6 +88,9 @@
             </div>
             <div class="modal-body">
                 <p id="updateReasonText"></p> <!-- 수정 사유 내용 -->
+                <br><br><br><hr>         
+                <p id="updateStartTime"></p> <!-- 출근 시간 내용 -->
+                <p id="updateEndTime"></p> <!-- 퇴근 시간 내용 -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -174,8 +175,6 @@ function updateTable(data) {
         row.append($('<td>').text(item.empNo));
         row.append($('<td>').text(item.empName));
         row.append($('<td>').text(item.date));
-        row.append($('<td>').text(item.startTime));
-        row.append($('<td>').text(item.endTime));
         row.append($('<td>').text(item.updateStartTime));
         row.append($('<td>').text(item.updateEndTime));
         row.append($('<td>').text(item.approvalState));
@@ -189,6 +188,8 @@ function updateTable(data) {
                 .addClass('btn btn-info btn-sm')
                 .click(function() {
                     $('#updateReasonText').text(item.updateReason); // 수정 사유를 모달에 표시
+                    $('#updateStartTime').text('수정 전 출근: ' + item.startTime); // 출근 시간 추가
+                    $('#updateEndTime').text('수정 전 퇴근: ' + item.endTime); // 퇴근 시간 추가
                     $('#updateReasonModal').modal('show'); // 모달 열기
                 });
             row.append($('<td>').append(updateStatusButton)); // 사유 확인 버튼 추가

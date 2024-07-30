@@ -7,6 +7,12 @@ import com.gd.foodbee.dto.AttendanceDTO;
 
 public interface AttendanceService {
 	
+	// 근태 출근
+	int addStartTime(int empNo);
+	
+	// 근태 퇴근
+	int modifyEndTime(int empNo);
+	
 	// 근태보고 출력
 	AttendanceDTO getTime(int empNo, String date);
 	

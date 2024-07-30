@@ -26,6 +26,34 @@ public class AttendanceController {
 	@Autowired 
 	private AttendanceService attendanceService;
 	
+	// 근태 출근
+	@PostMapping("/attendance/attendanceStartTime")
+	public String attendanceStartTime(HttpSession session) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
+		
+		int empNo = emp.getEmpNo();
+		
+		int row = attendanceService.addStartTime(empNo);
+		log.debug(TeamColor.GREEN + "row => " + row);
+		
+		return "redirect:/attendance/attendancePersonal";
+	}
+	
+	// 근태 퇴근
+	@PostMapping("/attendance/attendanceEndTime")
+	public String attendanceEndTime(HttpSession session) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
+		
+		int empNo = emp.getEmpNo();
+		
+		int row = attendanceService.modifyEndTime(empNo);
+		log.debug(TeamColor.GREEN + "row => " + row);
+		
+		return "redirect:/attendance/attendancePersonal";
+	}
+	
 	// 근태보고
 	// 파라미터 : HttpSession session
 	// 반환 값 : attendanceDTO, HashMap<String, Object> map
@@ -71,9 +99,18 @@ public class AttendanceController {
 		
 		int empNo = emp.getEmpNo();
 		String dptNo = emp.getDptNo();
+		String rankName = emp.getRankName();
+        
+		HashMap<String, Object> map = new HashMap<>();
 		
+	    if ("팀장".equals(rankName) || "부서장".equals(rankName) || "지사장".equals(rankName)) {
+	        // 팀장이거나 그 이상의 직급이면 CEO 정보
+	    	map = attendanceService.getCEO();
+	    } else {
+	        // 팀장 미만이면 팀장 정보
+	    	map = attendanceService.getTeamLeader(dptNo);
+	    }
 		AttendanceDTO attendanceDTO = attendanceService.getTime(empNo, date);
-		HashMap<String, Object> map = attendanceService.getTeamLeader(dptNo);
 		
 		model.addAttribute("attendanceDTO", attendanceDTO);
 		model.addAttribute("map", map);
@@ -126,9 +163,18 @@ public class AttendanceController {
 		
 		int empNo = emp.getEmpNo();
 		String dptNo = emp.getDptNo();
+		String rankName = emp.getRankName();
+        
+		HashMap<String, Object> map = new HashMap<>();
 		
+	    if ("팀장".equals(rankName) || "부서장".equals(rankName) || "지사장".equals(rankName)) {
+	        // 팀장이거나 그 이상의 직급이면 CEO 정보
+	    	map = attendanceService.getCEO();
+	    } else {
+	        // 팀장 미만이면 팀장 정보
+	    	map = attendanceService.getTeamLeader(dptNo);
+	    }
 		List<AttendanceDTO> list = attendanceService.getAttendancePersonal(empNo, currentPage, startDate, endDate);				
-		HashMap<String, Object> map = attendanceService.getTeamLeader(dptNo);
 		
 		int lastPage = attendanceService.getAttendancePersonalCnt(empNo);
 		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);

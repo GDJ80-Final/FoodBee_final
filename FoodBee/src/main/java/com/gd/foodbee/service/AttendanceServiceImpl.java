@@ -22,6 +22,20 @@ public class AttendanceServiceImpl implements AttendanceService {
 	
 	private static final int ROW_PER_PAGE = 10;
 	
+	// 근태 출근
+	public int addStartTime(int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		return attendanceMapper.insertStartTime(empNo);
+	}
+	
+	// 근태 퇴근
+	public int modifyEndTime(int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		return attendanceMapper.updateEndTime(empNo);
+	}
+	
 	// 근태보고 출력
 	// 파라미터 : int empNo, String date
 	// 반환 값 : AttendanceDTO

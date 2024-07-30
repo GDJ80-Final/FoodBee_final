@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.AttendanceMapper">
-
+	
+	<!-- 근태 출근 -->
+	<insert id="insertStartTime" parameterType="int">
+		INSERT INTO 
+			attendance (
+					date, 
+					emp_no, 
+					start_time, 
+					update_start_time)
+			VALUES (
+					CURDATE(), 
+					#{empNo}, 
+					NOW(), 
+					NOW())
+	</insert>
+	
+	<!-- 근태 퇴근 -->
+	<update id="updateEndTime" parameterType="int">
+		UPDATE 
+			attendance 
+		SET 
+			end_time = NOW(), 
+			update_end_time = NOW()
+		WHERE 
+			emp_no = #{empNo}
+	</update>
+	
 	<!-- 근태보고 출력 -->
 	<select id="selectTime" parameterType="map" resultType="com.gd.foodbee.dto.AttendanceDTO">
     	SELECT 
