@@ -42,7 +42,7 @@
                             <i class="icon-note menu-icon"></i><span class="nav-text">결재</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="./form-basic.html">기안 작성</a></li>
+                            <li><a href="${pageContext.request.contextPath}/approval/forms/basicForm">기안 작성</a></li>
                             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">내 문서함</a>
                                 <ul aria-expanded="false">
                                     <li><a href="${pageContext.request.contextPath}/approval/draftBox">기안함</a></li>
