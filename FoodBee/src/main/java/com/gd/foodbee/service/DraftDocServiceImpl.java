@@ -71,7 +71,7 @@ public class DraftDocServiceImpl implements DraftDocService{
 		// typeNames 값이 들어오지 않았다면 -> 기본기안서 
 		String [] typeNames = null;
 		int [] amounts = null;
-		String [] descriptions = null;
+		String [] texts = null;
 		if(Objects.isNull(draftDocRequestDTO.getTypeName())) {
 			log.debug("typeNames => null");
 		}else {
@@ -82,10 +82,10 @@ public class DraftDocServiceImpl implements DraftDocService{
 		}else {
 			amounts = draftDocRequestDTO.getAmount();
 		}
-		if(Objects.isNull(draftDocRequestDTO.getDescription())) {
-			log.debug(TeamColor.YELLOW + "amounts => null");
+		if(Objects.isNull(draftDocRequestDTO.getText())) {
+			log.debug("typeNames => null");
 		}else {
-			descriptions = draftDocRequestDTO.getDescription();
+			texts = draftDocRequestDTO.getText();
 		}
 		
 		if (Objects.isNull(typeNames)) {
@@ -102,8 +102,8 @@ public class DraftDocServiceImpl implements DraftDocService{
 					.endDate(Objects.isNull(draftDocRequestDTO.getEndDate()) ? null : draftDocRequestDTO.getEndDate())
 					.typeName(typeNames[i])
 					.amount(Objects.isNull(draftDocRequestDTO.getAmount()) ? 0 :amounts[i])
-					.description(Objects.isNull(draftDocRequestDTO.getDescription()) ? null : descriptions[i])
-					.text(Objects.isNull(draftDocRequestDTO.getText()) ? null : draftDocRequestDTO.getText())
+					.description(Objects.isNull(draftDocRequestDTO.getDescription()) ? null : draftDocRequestDTO.getDescription())
+					.text(Objects.isNull(draftDocRequestDTO.getText()) ? null : texts[i])
 					.build();
 				log.debug(TeamColor.YELLOW + "draftDocDetailDTO => " + draftDocDetailDTO);
 				// insert into draft_doc_detail 

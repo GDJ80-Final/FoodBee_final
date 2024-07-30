@@ -24,8 +24,8 @@ public class DraftDocRequestDTO {
 	private String endDate;
 	private String [] typeName;
 	private int [] amount;
-	private String [] description;
-	private String text;
+	private String description;
+	private String [] text;
 	
 	private MultipartFile[] docFiles;
 
