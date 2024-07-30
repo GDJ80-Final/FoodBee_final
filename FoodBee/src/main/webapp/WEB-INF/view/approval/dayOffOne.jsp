@@ -54,6 +54,28 @@
     <c:if test="${dayOffOne != null && dayOffOne.docApproverState == 0 && dayOffOne.drafterEmpNo eq empNo}">
     	<a href="">수정하기</a>
 	</c:if>
+	 <div id="updateAppral">
+			<!-- 중간승인자일 경우 -->
+	       	<c:if test="${dayOffOne.midApprovalState == 0 && dayOffOne.midApproverNo eq empNo}">
+	       		<a href="updateMidState?draftDocNo=${dayOffOne.draftDocNo}">중간승인</a> 	
+				<form method="post" action="updateMidRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${dayOffOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+	       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
+	       	<c:if test="${dayOffOne.docApproverState != 9 && dayOffOne.midApprovalState == 1 && dayOffOne.finalApprovalState == 0 && dayOffOne.finalApproverNo eq empNo}">
+	       		<a href="updateFinalState?draftDocNo=${dayOffOne.draftDocNo}">최종승인</a>
+	       		<form method="post" action="updateFinalRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${dayOffOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+      </div>
 </div>
 <script>
 $(document).ready(function() {
