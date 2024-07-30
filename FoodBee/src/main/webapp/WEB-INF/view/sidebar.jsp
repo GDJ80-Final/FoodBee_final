@@ -57,7 +57,7 @@
                             <i class="icon-notebook menu-icon"></i><span class="nav-text">근태 관리</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="${pageContext.request.contextPath}/attendance/attendacePersonal">근태 조회</a></li>
+                            <li><a href="${pageContext.request.contextPath}/attendance/attendancePersonal">근태 조회</a></li>
                             <li><a href="${pageContext.request.contextPath}/attendance/attendanceTeamMember">팀내 근태 조회</a></li>
                         </ul>
                     </li>

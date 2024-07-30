@@ -187,90 +187,91 @@
     </style>
 </head>
 <body>
-<div class="container">
-	<div class="tabs" id="tabs">
-	    <div class="tab" id="basicForm" data-form="basicForm">
-		    <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
-		    	기본기안서
-		    </a>
-	    </div>
-	    <div class="tab" id="revenueForm" data-form="revenueForm">
-		    <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
-		    	매출보고
-		    </a>
-	    </div>
-	    <div class="tab" id="chargeForm" data-form="chargeForm">
-		    <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
-		    	지출결의
-		    </a>
-	    </div>
-	    <div class="tab" id="businessTripForm" data-form="businessTripForm">
-		    <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
-		    	출장신청
-		    </a>
-	    </div>
-	    <div class="tab" id="dayOffForm" data-form="dayOffForm">
-		    <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
-		    	휴가신청
-		    </a>
-	    </div>
-	</div>
-	<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
-		<!-- 공통 영역 포함 -->
-	    <jsp:include page="./commonForm.jsp"></jsp:include>
-	    <!-- 공통 영역 끝 -->
-	    
-	    <!-- 양식 영역 시작 -->
-		<div class="form-section">
-	    	<div class="form-group">
-	            <label for="yearSelect"></label>
-				<select id="yearSelect"></select>
-				<label for="monthSelect">월 선택:</label>
-				<select id="monthSelect"></select>						       	        
-				<input type="hidden" id="description" name="description">
-	        </div>	            
-	        <div class="form-group">
-	        	<input type="hidden" name="tmpNo" value="5">
-	            <label for="title">제목:</label>
-	            <input type="text" id="title" name="title">
-	        </div>
-	        <div class="form-group">
-	            <label for="categoryContainer">내역:</label>
-	            <div id="categoryContainer"><hr>
-				    <div class="category-row" style="display: flex; flex-direction: column;">
-				        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-				            <label for="typeName">적요:</label>
-				            <input type="text" placeholder="지출내용" style="margin-right: 20px;" name="typeName">
-				            
-				            <label for="amount">금액:</label>
-				            <input type="text" placeholder="금액 입력" name="amount">원
-				        </div>
-				        <div style="display: flex; align-items: center;">
-				            <label for="description" style="margin-right: 10px;">비고:</label>
-				            <textarea style="width: 400px;" placeholder="상세내용" name="text"></textarea>
-				            
-				            <span class="add-category" style="margin-left: 10px;">+</span>
-				            <span class="remove-category" style="margin-left: 5px;">-</span>
-				        </div>
-				        <hr>
-				    </div>
+	<div class="container">
+		<div class="tabs" id="tabs">
+		    <div class="tab" id="basicForm" data-form="basicForm">
+			    <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
+			    	기본기안서
+			    </a>
+		    </div>
+		    <div class="tab" id="revenueForm" data-form="revenueForm">
+			    <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
+			    	매출보고
+			    </a>
+		    </div>
+		    <div class="tab" id="chargeForm" data-form="chargeForm">
+			    <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
+			    	지출결의
+			    </a>
+		    </div>
+		    <div class="tab" id="businessTripForm" data-form="businessTripForm">
+			    <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
+			    	출장신청
+			    </a>
+		    </div>
+		    <div class="tab" id="dayOffForm" data-form="dayOffForm">
+			    <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
+			    	휴가신청
+			    </a>
+		    </div>
+		</div>
+		<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
+			<!-- 공통 영역 포함 -->
+		    <jsp:include page="./commonForm.jsp"></jsp:include>
+		    <!-- 공통 영역 끝 -->
+		    
+		    <!-- 양식 영역 시작 -->
+			<div class="form-section">
+		    	<div class="form-group">
+		            <label for="yearSelect"></label>
+					<select id="yearSelect"></select>
+					<label for="monthSelect">월 선택:</label>
+					<select id="monthSelect"></select>						       	        
+					<input type="hidden" id="description" name="description">
+		        </div>	            
+		        <div class="form-group">
+		        	<input type="hidden" name="tmpNo" value="5">
+		            <label for="title">제목:</label>
+		            <input type="text" id="title" name="title">
+		        </div>
+		        <div class="form-group">
+		            <label for="categoryContainer">내역:</label>
+		            <div id="categoryContainer"><hr>
+					    <div class="category-row" style="display: flex; flex-direction: column;">
+					        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+					            <label for="typeName">적요:</label>
+					            <input type="text" placeholder="지출내용" style="margin-right: 20px;" name="typeName">
+					            
+					            <label for="amount">금액:</label>
+					            <input type="text" placeholder="금액 입력" name="amount">원
+					        </div>
+					        <div style="display: flex; align-items: center;">
+					            <label for="description" style="margin-right: 10px;">비고:</label>
+					            <textarea style="width: 400px;" placeholder="상세내용" name="text"></textarea>
+					            
+					            <span class="add-category" style="margin-left: 10px;">+</span>
+					            <span class="remove-category" style="margin-left: 5px;">-</span>
+					        </div>
+					        <hr>
+					    </div>
+					</div>
+		        </div>
+		        <div class="file-upload">
+		            <label for="attachment">첨부파일:</label>
+		            <input type="file" id="attachment" name="docFiles" multiple>
 				</div>
-	        </div>
-	        <div class="file-upload">
-	            <label for="attachment">첨부파일:</label>
-	            <input type="file" id="attachment" name="docFiles" multiple>
-			</div>
-		</div>	
-		<!-- 양식 영역 끝 -->
-		
-	    <div class="form-actions">
-	        <button type="reset" class="cancel-btn">취소</button>
-	        <button type="submit" id="submitBtn" class="submit-btn">제출</button>
-		</div>	
-	</form>
-</div>
-<!-- 모달 -->
-<jsp:include page="./empModal.jsp"></jsp:include>       
+			</div>	
+			<!-- 양식 영역 끝 -->
+			
+		    <div class="form-actions">
+		        <button type="reset" class="cancel-btn">취소</button>
+		        <button type="submit" id="submitBtn" class="submit-btn">제출</button>
+			</div>	
+		</form>
+	</div>
+	<!-- 모달 -->
+	<jsp:include page="./empModal.jsp"></jsp:include>
+ 
 <script>
 $(document).ready(function() {
 	// 호출되면 페이지에 담을 emp 정보 불러오기 

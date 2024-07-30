@@ -3,23 +3,59 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- theme meta -->
+<meta name="theme-name" content="quixlab" />
 <title>월별 매출 차트</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .content-body {
+        display: flex;
+    }
+    .left-section, .right-section {
+        padding: 20px;
+    }
+    .left-section {
+        width: 40%;
+    }
+    .right-section {
+        width: 60%;
+    }
+</style>
 </head>
 <body>
-<h1>매출 통계</h1><hr>
-<canvas id="donutChart" style="max-width: 500px;"></canvas>
-<div id="monthlyTotal"></div>
-<div id="previousMonthTotal"></div><br>
-<div>
-    <label for="yearSelect">년도 선택:</label>
-    <select id="yearSelect"></select>
-    <label for="monthSelect">월 선택:</label>
-    <select id="monthSelect"></select>
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+	
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<div class="content-body">
+    <section class="left-section">
+        <h1>매출 통계</h1>
+        <hr>
+        <canvas id="donutChart" style="max-width: 500px;"></canvas><br><br><br>
+        <div id="monthlyTotal"></div>
+        <div id="previousMonthTotal"></div>
+    </section>
+    <section class="right-section">
+        <div>
+            <label for="yearSelect">년도 선택:</label>
+            <select id="yearSelect"></select>
+            <label for="monthSelect">월 선택:</label>
+            <select id="monthSelect"></select>
+        </div>
+        <canvas id="totalChart" style="width:100%;max-width:800px; height:100%;max-height:600px;"></canvas>
+    </section>
 </div>
-<canvas id="totalChart" style="width:100%;max-width:700px"></canvas>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+
 
 <script>
 $(document).ready(function() {
@@ -74,8 +110,8 @@ $(document).ready(function() {
                 datasets: [{
                     backgroundColor: barColors,
                     data: revenue,
-                    barThickness: 40, // 막대 두께 설정
-                    maxBarThickness: 40 // 최대 막대 두께 설정
+                    barThickness: 20, // 막대 두께 설정
+                    maxBarThickness: 20 // 최대 막대 두께 설정
                 }]
             },
             options: {
@@ -246,11 +282,11 @@ $(document).ready(function() {
         let changeAmountText = (changeAmount || changeAmount === 0) ? formatNumber(changeAmount) + '원' : '-';
 
         // 월별 매출 합계를 div에 표시
-        let totalHtml = '이번달 총 매출: ' + formatNumber(currentMonthTotal) + '원<br>' +
-                        '저번달 총 매출: ' + formatNumber(previousMonthTotal) + '원<br>' +
-                        '저번달 대비 증감액: <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><br><br>';
+        let totalHtml = '<hr>이번달 총 매출: ' + formatNumber(currentMonthTotal) + '원<hr>' +
+                        '저번달 총 매출: ' + formatNumber(previousMonthTotal) + '원<hr>' +
+                        '저번달 대비 증감액: <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><hr>';
 
-        totalHtml += '실적 우수 품목: ' + highestCategory + ' (' + formatNumber(highestRevenue) + '원)<br>';
+        totalHtml += '실적 우수 품목: ' + highestCategory + ' (' + formatNumber(highestRevenue) + '원)<hr>';
         totalHtml += '실적 저조 품목: ' + lowestCategory + ' (' + formatNumber(lowestRevenue) + '원)<br>';
 
         $('#monthlyTotal').html(totalHtml);

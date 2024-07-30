@@ -57,6 +57,10 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+	
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<div class="content-body">
     <div id="reserved-times"></div>
     <h1>회의실 예약</h1>
     <form id="reservationForm" method="post" action="${pageContext.request.contextPath}/room/roomRsv">		
@@ -98,7 +102,7 @@
                         <button id="prev" class="arrow-button" type="button">◀</button>
                         <div id="image-container" style="display: flex; transition: transform 0.5s ease;">
                             <c:forEach var="m" items="${roomImg}">
-                                <img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="400px" style="flex: 0 0 auto;">
+                                <img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="100%" style="flex: 0 0 auto;">
                             </c:forEach>
                         </div>
                         <button id="next" class="arrow-button" type="button">▶</button>
@@ -133,14 +137,15 @@
             <tr>						
                 <td style="height:50px;">참석 인원</td>
                 <td>
-                    <input type="number" name="users" style="width: 30px;" min="1" max="${roomDTO.roomMax}">명
+                    <input type="number" name="users" style="width: 40px;" min="1" max="${roomDTO.roomMax}">명
                 </td>		
             </tr>
         </table>
         <button type="submit">예약</button>
         <button type="button" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>		
-    </form>	
-
+    </form>
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
     <script>
         $(document).ready(function() {
             // 09:00 부터 17:30 까지 30분 단위로 생성

@@ -104,6 +104,7 @@
 			room_info info	ON rsv.room_no = info.room_no
 		WHERE 
 			rsv.rsv_date = #{rsvDate}
+			AND rsv.rsv_state = 1
 		ORDER BY
 			startTime ASC
 		LIMIT

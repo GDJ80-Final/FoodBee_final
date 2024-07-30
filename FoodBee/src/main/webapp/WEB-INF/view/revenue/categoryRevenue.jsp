@@ -2,29 +2,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
-<h1>2024년 매출현황</h1>
-<!-- 연도 선택을 위한 셀렉트 박스 -->
-<select id="selectYear" onchange="fetchTotalData()">
-    <option value="2022">2022년</option>
-    <option value="2023">2023년</option>
-    <option value="2024" selected>2024년</option>
-</select>
-
-<div id="categoryButtons">
-    <button onclick="fetchTotalData()">전체</button>
-    <button onclick="fetchCategoryData('간편식')">간편식</button>
-    <button onclick="fetchCategoryData('쌀/곡물')">쌀/곡물</button>
-    <button onclick="fetchCategoryData('육/수산')">육/수산</button>
-    <button onclick="fetchCategoryData('음료/주류')">음료/주류</button>
-    <button onclick="fetchCategoryData('청과')">청과</button>
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+	
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<div class="content-body">
+	<h1>2024년 매출현황</h1>
+	<!-- 연도 선택을 위한 셀렉트 박스 -->
+	<select id="selectYear" onchange="fetchTotalData()">
+	    <option value="2022">2022년</option>
+	    <option value="2023">2023년</option>
+	    <option value="2024" selected>2024년</option>
+	</select>
+	
+	<div id="categoryButtons">
+	    <button onclick="fetchTotalData()">전체</button>
+	    <button onclick="fetchCategoryData('간편식')">간편식</button>
+	    <button onclick="fetchCategoryData('쌀/곡물')">쌀/곡물</button>
+	    <button onclick="fetchCategoryData('육/수산')">육/수산</button>
+	    <button onclick="fetchCategoryData('음료/주류')">음료/주류</button>
+	    <button onclick="fetchCategoryData('청과')">청과</button>
+	</div>
+	<canvas id="lineChart" style="width:100%;max-width:1200px"></canvas>
 </div>
-<canvas id="lineChart" style="width:100%;max-width:700px"></canvas>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
 //전체 데이터를 담을 변수
 let allData = [];
