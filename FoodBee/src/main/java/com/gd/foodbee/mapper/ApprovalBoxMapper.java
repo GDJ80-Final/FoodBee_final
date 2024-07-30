@@ -7,8 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
-import com.gd.foodbee.dto.DocReferrerDTO;
-import com.gd.foodbee.dto.DraftDocDTO;
+
 import com.gd.foodbee.dto.DraftDocDetailDTO;
 import com.gd.foodbee.dto.DraftDocFileDTO;
 
@@ -79,4 +78,25 @@ public interface ApprovalBoxMapper {
 	// 파라미터
 	// 반환값
 	Map<String,Object> getDayOffOne(int draftDocNo);
+	
+	// 중간결재 승인
+	int updateMidState(int draftDocNo);
+	
+	// 최종결재 승인
+	int updateFinalState(int draftDocNo);
+	
+	// 중간결재 반려
+	int updateMidRejection(int draftDocNo, String rejectionReason);
+	
+	// 최종결재 반려
+	int updateFinalRejection(int draftDocNo, String rejectionReason);
+	
+	// 출장 테이블insert
+	int insertBusinessTrip(DraftDocDetailDTO draftDocDetailDTO);
+	
+	// 휴가테이블 insert
+	int insertDayOffTrip(DraftDocDetailDTO draftDocDetailDTO);
+	
+	// 매출테이블 insert
+	int insertRevenue(DraftDocDetailDTO draftDocDetailDTO);
 }

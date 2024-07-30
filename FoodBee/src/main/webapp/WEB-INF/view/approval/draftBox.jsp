@@ -255,7 +255,17 @@
                 }
                 //승인자의 중간상태값, 최종상태값
                 let midApprovalState = getApprovalStateText(item.midApprovalState);
-                let finalApprovalState = getApprovalStateText(item.finalApprovalState);	          
+                let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
+                //승인날짜 null값 표시
+                let midApprovalDatetime = item.midApprovalDatetime;
+                if(midApprovalDatetime === null){
+                	midApprovalDatetime = "승인전";
+                }
+                let finalApprovalDatetime = item.finalApprovalDatetime;
+                if(finalApprovalDatetime === null){
+                	finalApprovalDatetime = "승인전";
+                }
+                
    				
                 let modifyButton = approvalStateNo === 0 ? `<a href=""><button>수정가능</button></a>` : '';
                 
@@ -267,9 +277,9 @@
                         "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                         "<td>" + approvalStateText + 
                         "<br>" + modifyButton + "</td>" +
-                        "<td>" + item.midApprovalDatetime + "</td>" +
+                        "<td>" + midApprovalDatetime + "</td>" +
                         "<td>" + midApprovalState + "</td>" +
-                        "<td>" + item.finalApprovalDatetime + "</td>" +
+                        "<td>" + finalApprovalDatetime + "</td>" +
                         "<td>" + finalApprovalState + "</td>" +
                         "<td>" + item.createDatetime + "</td>" +
                         "</tr>");
@@ -300,16 +310,24 @@
                  let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
             	
                  let modifyButton = `<a href=""><button>수정가능</button></a>`;
-                 
+                //승인날짜 null값 표시
+                 let midApprovalDatetime = item.midApprovalDatetime;
+                 if(midApprovalDatetime === null){
+                 	midApprovalDatetime = "승인전";
+                 }
+                 let finalApprovalDatetime = item.finalApprovalDatetime;
+                 if(finalApprovalDatetime === null){
+                 	finalApprovalDatetime = "승인전";
+                 }
              	// 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
                 		 "<td>" + item.tmpName + "</td>" +
                 		 "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "결재대기" + "<br>" + modifyButton + "</td>" +
-                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
-                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + finalApprovalDatetime + "</td>" +
                          "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
@@ -336,6 +354,7 @@
             $.each(json.oneDocList, function(index, item) {
             	//중간승인자의 상태값, 최종승인자의 상태값
            	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
+            	
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
             	
                 let newRow = $("<tr>" +

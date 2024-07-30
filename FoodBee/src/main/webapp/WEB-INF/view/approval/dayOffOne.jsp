@@ -72,11 +72,10 @@ $(document).ready(function() {
 	    let midApproverName = '${dayOffOne.midApproverName}';
 	    let finalApproverName = '${dayOffOne.finalApproverName}';
 	    let finalApprover = '${dayOffOne.finalApproverNo}';
-	    let referrerField = '${dayOffReferrer.referrerEmpNo}';
-	    let referrerName = '${dayOffReferrer.empName}';
+	    let referrerField = '${dayOffReferrer.referrerName}';
 	    //수신자가 없는경우
-	    if(referrerName === null || referrerName === '') {
-	        referrerName = "수신자 없음";
+	    if(referrerField === null || referrerField === '') {
+	    	referrerField = "수신자 없음";
 	    }
 	    let name = '${dayOffOne.drafterEmpName}';  
 	    let dptNo = '${dayOffOne.dptNo}';  
@@ -84,7 +83,7 @@ $(document).ready(function() {
 	    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
 	    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
 	    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-	    document.getElementById("referrerField").innerHTML = referrerField+"("+referrerName+")";
+	    document.getElementById("referrerField").innerHTML = referrerField;
 	    $("#name").val(drafterName);
 	    $("#department").val(dptNo);
 	    
@@ -92,6 +91,8 @@ $(document).ready(function() {
 	    let drafterSign = '${dayOffOne.drafterSign}';
 	    let midApproverSign = '${dayOffOne.midApproverSign}';
 	    let finalApproverSign = '${dayOffOne.finalApproverSign}';
+	    let midApprovalState = '${dayOffOne.midApprovalState}';
+	    let finalApprovalState = '${dayOffOne.finalApprovalState}';
 	    
 	    if (drafterSign) {
 	        $("#drafterSign").html(`<img src="${dayOffOne.drafterSign}">`);
@@ -99,16 +100,16 @@ $(document).ready(function() {
 	        $("#drafterSign").text("기안자 서명 없음");
 	    }
 	
-	    if (midApproverSign) {
+	    if (midApproverSign && midApprovalState == 1) {
 	        $("#midApproverSign").html(`<img src="${dayOffOne.midApproverSign}">`);
 	    } else {
-	        $("#midApproverSign").text("중간 결재자 서명 없음");
+	        $("#midApproverSign").text("중간 결재자 서명전");
 	    }
 	
-	    if (finalApproverSign) {
+	    if (finalApproverSign && finalApprovalState == 1) {
 	        $("#finalApproverSign").html(`<img src="${dayOffOne.finalApproverSign}">`);
 	    } else {
-	        $("#finalApproverSign").text("최종 결재자 서명 없음");
+	        $("#finalApproverSign").text("최종 결재자 서명전");
 	    }
 	});
 </script>

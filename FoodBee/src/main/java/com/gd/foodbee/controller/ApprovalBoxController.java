@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gd.foodbee.dto.ApprovalBoxDTO;
 import com.gd.foodbee.dto.ApprovalBoxStateDTO;
 import com.gd.foodbee.dto.DocReferrerDTO;
@@ -29,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ApprovalBoxController {
 	@Autowired
 	private ApprovalBoxService approvalBoxService;
-	
 	// 결재함
 	// 파라미터 : int currentPage, Model model, HttpSession session
 	// 반환값 : Model model
@@ -101,7 +102,7 @@ public class ApprovalBoxController {
 	//결재함 미결 리스트
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : Map<>allZeroList
-	//사용페이지 : /approval/approvalBox
+	//사용페이지
 	@GetMapping("/approval/approvalZeroList")
 	@ResponseBody
 	public Map<String,Object>approvalZeroList(int currentPage, int empNo){
@@ -123,7 +124,7 @@ public class ApprovalBoxController {
 	//결재함 기결 리스트
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : Map<>OneZeroList
-	//사용페이지 : /approval/approvalBox
+	//사용페이지
 	@GetMapping("/approval/approvalOneList")
 	@ResponseBody
 	public Map<String,Object>approvalOneList(int currentPage, int empNo){
@@ -162,7 +163,7 @@ public class ApprovalBoxController {
         log.debug(TeamColor.PURPLE + "revenueDetailOne=>" + revenueDetailOne);
         log.debug(TeamColor.PURPLE + "revenueFileOne=>" + revenueFileOne);
 		
-        model.addAttribute("empName", empNo);
+        model.addAttribute("empNo", empNo);
         model.addAttribute("revenueOne", revenueOne);
         model.addAttribute("revenueDetailOne", revenueDetailOne);
         model.addAttribute("revenueFileOne", revenueFileOne);
@@ -170,7 +171,10 @@ public class ApprovalBoxController {
         
 		return "/approval/revenueOne";
 	}
-	//휴가신청 상세보기페이지
+	// 휴가신청 상세보기페이지
+	// 파라미터 : int draftDocNo, Model model, HttpSession session
+	// 반환값 : Model model
+	// 사용페이지 
 	@GetMapping("/approval/dayOffOne")
 	public String dayOffOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -197,7 +201,10 @@ public class ApprovalBoxController {
         
 		return "/approval/dayOffOne";
 	}
-	//출장신청 상세보기페이지
+	// 출장신청 상세보기페이지
+	// 파라미터 : int draftDocNo, Model model, HttpSession session
+	// 반환값 : Model model
+	// 사용페이지 
 	@GetMapping("/approval/businessTripOne")
 	public String businessTripOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -224,7 +231,10 @@ public class ApprovalBoxController {
         
 		return "/approval/businessTripOne";
 	}
-	//기본기안서 상세보기페이지
+	// 기본기안서 상세보기페이지
+	// 파라미터 : int draftDocNo Model model, HttpSession session
+	// 반환값 : Model model
+	// 사용페이지 
 	@GetMapping("/approval/basicFormOne")
 	public String docOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -250,7 +260,9 @@ public class ApprovalBoxController {
         model.addAttribute("empNo", empNo);
 		return"/approval/basicFormOne";
 	}
-	//지출결의 상세보기페이지
+	// 지출결의 상세보기페이지
+	// 파라미터 : int draftDocNo, Model model, HttpSession session
+	// 반환값 : Model model
 	@GetMapping("/approval/chargeOne")
 	public String chargeOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -275,5 +287,66 @@ public class ApprovalBoxController {
         model.addAttribute("chargeReferrer", chargeReferrer);
         
 		return "/approval/chargeOne";
+	}
+	// 중간승인 업데이트
+	@GetMapping("/approval/updateMidState")
+	public String updateMidApprove(@RequestParam("draftDocNo") int draftDocNo) {
+		
+		approvalBoxService.updateMidState(draftDocNo);
+		
+		return "redirect:/approval/approvalBox";
+	}
+	
+	// 최종승인 업데이트
+	@GetMapping("/approval/updateFinalState")
+	public String updateFinalApprove(@RequestParam("draftDocNo") int draftDocNo) {
+		log.debug(TeamColor.PURPLE + "draftDocNo="+ draftDocNo);
+		
+		approvalBoxService.updateFinalState(draftDocNo);
+		
+		return"redirect:/approval/approvalBox";
+	}
+	
+	// 중간반려 업데이트
+	@PostMapping("/approval/updateMidRejection")
+	public String updateMidRejection(@RequestParam("draftDocNo") int draftDocNo,
+			@RequestParam("rejectionReason") String rejectionReason) {
+		log.debug(TeamColor.PURPLE + "rejectionReason=>" + rejectionReason);
+		
+		approvalBoxService.updateMidRejection(draftDocNo, rejectionReason);
+		
+		return "redirect:/approval/approvalBox";
+	}
+	
+	// 최종반려 업데이트
+	@PostMapping("/approval/updateFinalRejection")
+	public String updateFinalRejection(@RequestParam("draftDocNo") int draftDocNo,
+			@RequestParam("rejectionReason") String rejectionReason) {
+		log.debug(TeamColor.PURPLE + "rejectionReason=>" + rejectionReason);
+		
+		approvalBoxService.updateFinalRejection(draftDocNo, rejectionReason);
+		
+		return"redirect:/approval/approvalBox";
+	}
+	
+	// 출장기안서 최종승인
+	@GetMapping("/approval/updateTripFinalState")
+	public String updateTripFinalState(@RequestParam("draftDocNo") int draftDocNo) {
+		log.debug(TeamColor.PURPLE + "draftDocNo=>" + draftDocNo);
+		
+		approvalBoxService.updateFinalState(draftDocNo);
+		//기안서에 있는 내용이 출장 테이블로 일정이 들어가야됨
+		Map<String,Object> doc = approvalBoxService.getDocOne(draftDocNo);
+		DraftDocDetailDTO docDetail = approvalBoxService.getDocDetailOne(draftDocNo);
+		
+		Map<String,Object> insertTable = new HashMap<String,Object>();
+		insertTable.put("docDetail", docDetail);
+		if((Integer)(doc.get("tmpNo")) == 3) {
+			approvalBoxService.insertBusinessTrip(docDetail);
+		}
+		
+		
+		
+		return"redirect:/approval/approvalBox";
 	}
 }

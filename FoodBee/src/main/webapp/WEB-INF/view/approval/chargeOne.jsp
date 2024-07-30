@@ -52,32 +52,56 @@
 		         </c:otherwise>
 	     	 	</c:choose>      
      	 	<br>
-   	 	<c:if test="${chargeOne != null && chargeOne.docApproverState == 0 && cchargeOne.drafterEmpNo eq empNo}">
+   	 	<c:if test="${chargeOne != null && chargeOne.docApproverState == 0 && chargeOne.drafterEmpNo eq empNo}">
     		<a href="">수정하기</a>
 		</c:if> 
        </div>
+       <div id="updateAppral">
+			<!-- 중간승인자일 경우 -->
+	       	<c:if test="${chargeOne.midApprovalState == 0 && chargeOne.midApproverNo eq empNo}">
+	       		<a href="updateMidState?draftDocNo=${chargeOne.draftDocNo}">중간승인</a> 	
+				<form method="post" action="updateMidRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${chargeOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+	       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
+	       	<c:if test="${chargeOne.docApproverState != 9 && chargeOne.midApprovalState == 1 && chargeOne.finalApprovalState == 0 && chargeOne.finalApproverNo eq empNo}">
+	       		<a href="updateFinalState?draftDocNo=${chargeOne.draftDocNo}">최종승인</a>
+	       		<form method="post" action="updateFinalRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${chargeOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+      </div>
  <script>
 $(document).ready(function() {
-    
     let drafter = '${chargeOne.drafterEmpNo}';  
     let drafterName = '${chargeOne.drafterEmpName}';  
     let midApprover = '${chargeOne.midApproverNo}';
     let midApproverName = '${chargeOne.midApproverName}';
     let finalApproverName = '${chargeOne.finalApproverName}';
     let finalApprover = '${chargeOne.finalApproverNo}';
-    let referrerField = '${chargeReferrer.referrerEmpNo}';
-    let referrerName = '${chargeReferrer.empName}';
+    //수신 참조자
+    let referrerField = '${chargeReferrer.referrerName}';
+    document.getElementById("referrerField").innerHTML = referrerField;
     //수신자가 없는경우
-    if(referrerName === null || referrerName === '') {
-        referrerName = "수신자 없음";
+    if(referrerField === null || referrerField === '') {
+    	referrerField = "수신자 없음";
     }
+    //이름
     let name = '${chargeOne.drafterEmpName}';  
+    //부서번호
     let dptNo = '${chargeOne.dptNo}';  
 
     document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
     document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
     document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-    document.getElementById("referrerField").innerHTML = referrerField+"("+referrerName+")";
+    
     $("#name").val(drafterName);
     $("#department").val(dptNo);
     
@@ -85,23 +109,25 @@ $(document).ready(function() {
     let drafterSign = '${chargeOne.drafterSign}';
     let midApproverSign = '${chargeOne.midApproverSign}';
     let finalApproverSign = '${chargeOne.finalApproverSign}';
-    
+    let midApprovalState = '${chargeOne.midApprovalState}';
+    let finalApprovalState = '${chargeOne.finalApprovalState}';
+
     if (drafterSign) {
         $("#drafterSign").html(`<img src="${chargeOne.drafterSign}">`);
     } else {
         $("#drafterSign").text("기안자 서명 없음");
     }
 
-    if (midApproverSign) {
+    if (midApproverSign && midApprovalState == 1) {
         $("#midApproverSign").html(`<img src="${chargeOne.midApproverSign}">`);
     } else {
-        $("#midApproverSign").text("중간 결재자 서명 없음");
+        $("#midApproverSign").text("중간결재 서명전");
     }
 
-    if (finalApproverSign) {
+    if (finalApproverSign && finalApprovalState == 1) {
         $("#finalApproverSign").html(`<img src="${chargeOne.finalApproverSign}">`);
     } else {
-        $("#finalApproverSign").text("최종 결재자 서명 없음");
+        $("#finalApproverSign").text("최종결재 서명전");
     }
 });
 </script>

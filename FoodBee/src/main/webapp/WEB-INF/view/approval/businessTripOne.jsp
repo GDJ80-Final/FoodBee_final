@@ -51,6 +51,29 @@
    	 	<c:if test="${businessTripOne != null && businessTripOne.docApproverState == 0 && businessTripOne.drafterEmpNo eq empNo}">
     		<a href="">수정하기</a>
 		</c:if> 
+			<!-- 승인하는 부분 -->
+		<div id="updateAppral">
+			<!-- 중간승인자일 경우 -->
+	       	<c:if test="${businessTripOne.midApprovalState == 0 && businessTripOne.midApproverNo eq empNo}">
+	       		<a href="updateMidState?draftDocNo=${businessTripOne.draftDocNo}">중간승인</a> 	
+				<form method="post" action="updateMidRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${businessTripOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+	       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
+	       	<c:if test="${businessTripOne.docApproverState != 9 && businessTripOne.midApprovalState == 1 && businessTripOne.finalApprovalState == 0 && businessTripOne.finalApproverNo eq empNo}">
+	       		<a href="updateTripFinalState?draftDocNo=${businessTripOne.draftDocNo}">최종승인</a>
+	       		<form method="post" action="updateFinalRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${businessTripOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+      </div>
 	</div>
 <script>
 	$(document).ready(function() {
@@ -61,11 +84,10 @@
 	    let midApproverName = '${businessTripOne.midApproverName}';
 	    let finalApproverName = '${businessTripOne.finalApproverName}';
 	    let finalApprover = '${businessTripOne.finalApproverNo}';
-	    let referrerField = '${businessTripReferrer.referrerEmpNo}';
-	    let referrerName = '${businessTripReferrer.empName}';
+	    let referrerField = '${businessTripReferrer.referrerName}';
 	    //수신자가 없는경우
-	    if(referrerName === null || referrerName === '') {
-	        referrerName = "수신자 없음";
+	    if(referrerField === null || referrerField === '') {
+	    	referrerField = "수신자 없음";
 	    }
 	    let name = '${businessTripOne.drafterEmpName}';  
 	    let dptNo = '${businessTripOne.dptNo}';  
@@ -73,7 +95,7 @@
 	    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
 	    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
 	    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-	    document.getElementById("referrerField").innerHTML = referrerField+"("+referrerName+")";
+	    document.getElementById("referrerField").innerHTML = referrerField;
 	    $("#name").val(drafterName);
 	    $("#department").val(dptNo);
 	    
@@ -81,6 +103,8 @@
 	    let drafterSign = '${businessTripOne.drafterSign}';
 	    let midApproverSign = '${businessTripOne.midApproverSign}';
 	    let finalApproverSign = '${businessTripOne.finalApproverSign}';
+	    let midApprovalState = '${businessTripOne.midApprovalState}';
+	    let finalApprovalState = '${businessTripOne.finalApprovalState}';
 	    
 	    if (drafterSign) {
 	        $("#drafterSign").html(`<img src="${businessTripOne.drafterSign}">`);
@@ -88,16 +112,16 @@
 	        $("#drafterSign").text("기안자 서명 없음");
 	    }
 	
-	    if (midApproverSign) {
+	    if (midApproverSign && midApprovalState == 1) {
 	        $("#midApproverSign").html(`<img src="${businessTripOne.midApproverSign}">`);
 	    } else {
-	        $("#midApproverSign").text("중간 결재자 서명 없음");
+	        $("#midApproverSign").text("중간결재 서명전");
 	    }
 	
-	    if (finalApproverSign) {
+	    if (finalApproverSign && finalApprovalState == 1) {
 	        $("#finalApproverSign").html(`<img src="${businessTripOne.finalApproverSign}">`);
 	    } else {
-	        $("#finalApproverSign").text("최종 결재자 서명 없음");
+	        $("#finalApproverSign").text("최종결재 서명전");
 	    }
 	});
 </script>

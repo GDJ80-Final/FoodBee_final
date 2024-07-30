@@ -130,4 +130,46 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	public Map<String,Object> getDayOffOne(int draftDocNo){
 		return approvalBoxMapper.getDayOffOne(draftDocNo);
 	}
+	
+	//중간결재 승인
+	@Override
+	public int updateMidState(int draftDocNo) {
+		return approvalBoxMapper.updateMidState(draftDocNo);
+	}
+	
+	//최종결재 승인
+	@Override
+	public int updateFinalState(int draftDocNo) {
+		return approvalBoxMapper.updateFinalState(draftDocNo);
+	}
+	
+	//중간결재 반려
+	@Override
+	public int updateMidRejection(int draftDocNo, String rejectionReason) {
+		return approvalBoxMapper.updateMidRejection(draftDocNo, rejectionReason);
+	}
+	
+	//최종결재 반려
+	@Override
+	public int updateFinalRejection(int draftDocNo, String rejectionReason) {
+		return approvalBoxMapper.updateFinalRejection(draftDocNo, rejectionReason);
+	}
+	
+	//출장테이블 insert
+	@Override
+	public int insertBusinessTrip(DraftDocDetailDTO draftDocDetailDTO) {
+		return approvalBoxMapper.insertBusinessTrip(draftDocDetailDTO);
+	}
+	
+	//휴가테이블 insert
+	@Override
+	public int insertDayOffTrip(DraftDocDetailDTO draftDocDetailDTO) {
+		return approvalBoxMapper.insertDayOffTrip(draftDocDetailDTO);
+	}
+	
+	//매출테이블 insert
+	@Override
+	public int insertRevenue(DraftDocDetailDTO draftDocDetailDTO) {
+		return approvalBoxMapper.insertRevenue(draftDocDetailDTO);
+	}
 }

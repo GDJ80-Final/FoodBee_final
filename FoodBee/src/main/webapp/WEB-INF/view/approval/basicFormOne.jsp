@@ -36,10 +36,31 @@
             </c:otherwise>
         </c:choose>
     </div>
-    
 	<c:if test="${basicFormOne != null && basicFormOne.docApproverState == 0 && basicFormOne.drafterEmpNo eq empNo}">
     	<a href="">수정하기</a>
 	</c:if>
+	<div id="updateAppral">
+			<!-- 중간승인자일 경우 -->
+	       	<c:if test="${basicFormOne.midApprovalState == 0 && basicFormOne.midApproverNo eq empNo}">
+	       		<a href="updateMidState?draftDocNo=${basicFormOne.draftDocNo}">중간승인</a> 	
+				<form method="post" action="updateMidRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${basicFormOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+	       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
+	       	<c:if test="${basicFormOne.docApproverState != 9 && basicFormOne.midApprovalState == 1 && basicFormOne.finalApprovalState == 0 && basicFormOne.finalApproverNo eq empNo}">
+	       		<a href="updateFinalState?draftDocNo=${basicFormOne.draftDocNo}">최종승인</a>
+	       		<form method="post" action="updateFinalRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${basicFormOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+      </div>
 </div>	
 <script>
 console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
@@ -50,21 +71,23 @@ console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
 	    let midApproverName = '${basicFormOne.midApproverName}';
 	    let finalApproverName = '${basicFormOne.finalApproverName}';
 	    let finalApprover = '${basicFormOne.finalApproverNo}';
-	    let referrerField = '${basicReferrerOne.referrerEmpNo}';
-	    let referrerName = '${basicReferrerOne.empName}';
+	    let referrerField = '${basicReferrerOne.referrerName}';
+	   
 	    let name = '${basicFormOne.drafterEmpName}';  
 	    let dptNo = '${basicFormOne.dptNo}';  
 	
 	    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
 	    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
 	    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-	    document.getElementById("referrerField").innerHTML = referrerField+"("+referrerName+")";
+	    document.getElementById("referrerField").innerHTML = referrerField;
 	    $("#name").val(drafterName);
 	    $("#department").val(dptNo);
 	    
 	    let drafterSign = '${basicFormOne.drafterSign}';
 	    let midApproverSign = '${basicFormOne.midApproverSign}';
 	    let finalApproverSign = '${basicFormOne.finalApproverSign}';
+	    let midApprovalState = '${basicFormOne.midApprovalState}';
+	    let finalApprovalState = '${basicFormOne.finalApprovalState}';
 	    
 	    if (drafterSign) {
 	        $("#drafterSign").html(`<img src="${basicFormOne.drafterSign}">`);
@@ -72,13 +95,13 @@ console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
 	        $("#drafterSign").text("기안자 서명 없음");
 	    }
 	
-	    if (midApproverSign) {
+	    if (midApproverSign && midApprovalState == 1) {
 	        $("#midApproverSign").html(`<img src="${basicFormOne.midApproverSign}">`);
 	    } else {
 	        $("#midApproverSign").text("중간 결재자 서명 없음");
 	    }
 	
-	    if (finalApproverSign) {
+	    if (finalApproverSign && finalApprovalState == 1) {
 	        $("#finalApproverSign").html(`<img src="${basicFormOne.finalApproverSign}">`);
 	    } else {
 	        $("#finalApproverSign").text("최종 결재자 서명 없음");

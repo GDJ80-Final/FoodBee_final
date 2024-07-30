@@ -50,6 +50,28 @@
     		<a href="">수정하기</a>
 		</c:if> 
         </div>
+        <div id="updateAppral">
+			<!-- 중간승인자일 경우 -->
+	       	<c:if test="${revenueOne.midApprovalState == 0 && revenueOne.midApproverNo eq empNo}">
+	       		<a href="updateMidState?draftDocNo=${revenueOne.draftDocNo}">중간승인</a> 	
+				<form method="post" action="updateMidRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${revenueOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+	       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
+	       	<c:if test="${revenueOne.docApproverState != 9 && revenueOne.midApprovalState == 1 && revenueOne.finalApprovalState == 0 && revenueOne.finalApproverNo eq empNo}">
+	       		<a href="updateFinalState?draftDocNo=${revenueOne.draftDocNo}">최종승인</a>
+	       		<form method="post" action="updateFinalRejection" id="rejectionForm">
+				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+				   <input type="hidden" name="draftDocNo" value="${revenueOne.draftDocNo}">
+				   <br>
+				   <button type="submit">반려</button>
+				</form>
+	       	</c:if>
+      </div>
 </div> 
 <script>
 $(document).ready(function() {
@@ -60,11 +82,10 @@ $(document).ready(function() {
     let midApproverName = '${revenueOne.midApproverName}';
     let finalApproverName = '${revenueOne.finalApproverName}';
     let finalApprover = '${revenueOne.finalApproverNo}';
-    let referrerField = '${revenueReferrer.referrerEmpNo}';
-    let referrerName = '${revenueReferrer.empName}';
+    let referrerField = '${revenueReferrer.referrerName}';
     //수신자가 없는경우
-    if(referrerName === null || referrerName === '') {
-        referrerName = "수신자 없음";
+    if(referrerField === null || referrerField === '') {
+    	referrerField = "수신자 없음";
     }
     let name = '${revenueOne.drafterEmpName}';  
     let dptNo = '${revenueOne.dptNo}';  
@@ -72,7 +93,7 @@ $(document).ready(function() {
     document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
     document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
     document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-    document.getElementById("referrerField").innerHTML = referrerField+"("+referrerName+")";
+    document.getElementById("referrerField").innerHTML = referrerField;
     $("#name").val(drafterName);
     $("#department").val(dptNo);
     
@@ -80,6 +101,8 @@ $(document).ready(function() {
     let drafterSign = '${revenueOne.drafterSign}';
     let midApproverSign = '${revenueOne.midApproverSign}';
     let finalApproverSign = '${revenueOne.finalApproverSign}';
+    let midApprovalState = '${revenueOne.midApprovalState}';
+    let finalApprovalState = '${revenueOne.finalApprovalState}';
     
     if (drafterSign) {
         $("#drafterSign").html(`<img src="${revenueOne.drafterSign}">`);
@@ -87,16 +110,16 @@ $(document).ready(function() {
         $("#drafterSign").text("기안자 서명 없음");
     }
 
-    if (midApproverSign) {
+    if (midApproverSign && midApprovalState == 1) {
         $("#midApproverSign").html(`<img src="${revenueOne.midApproverSign}">`);
     } else {
-        $("#midApproverSign").text("중간 결재자 서명 없음");
+        $("#midApproverSign").text("중간결재 서명전");
     }
 
-    if (finalApproverSign) {
+    if (finalApproverSign && finalApprovalState == 1) {
         $("#finalApproverSign").html(`<img src="${revenueOne.finalApproverSign}">`);
     } else {
-        $("#finalApproverSign").text("최종 결재자 서명 없음");
+        $("#finalApproverSign").text("최종결재 서명전");
     }
 });
 </script>
