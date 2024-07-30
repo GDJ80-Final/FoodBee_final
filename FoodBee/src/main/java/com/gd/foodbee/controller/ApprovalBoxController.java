@@ -33,7 +33,7 @@ public class ApprovalBoxController {
 	private ApprovalBoxService approvalBoxService;
 	// 결재함
 	// 파라미터 : int currentPage, Model model, HttpSession session
-	// 반환값 : Model model
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/approval/approvalBox")
 	public String approvalBox(@RequestParam(name="currentPage", defaultValue="1") int currentPage,
@@ -144,7 +144,7 @@ public class ApprovalBoxController {
 	}
 	// 매출보고 상세보기페이지
 	// 파라미터 : int draftDocNo
-	// 반환값 : Model model
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/approval/revenueOne")
 	public String revenueOne(@RequestParam("draftDocNo") int draftDocNo,
@@ -173,7 +173,7 @@ public class ApprovalBoxController {
 	}
 	// 휴가신청 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
-	// 반환값 : Model model
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/approval/dayOffOne")
 	public String dayOffOne(@RequestParam("draftDocNo") int draftDocNo,
@@ -203,7 +203,7 @@ public class ApprovalBoxController {
 	}
 	// 출장신청 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
-	// 반환값 : Model model
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/approval/businessTripOne")
 	public String businessTripOne(@RequestParam("draftDocNo") int draftDocNo,
@@ -262,7 +262,7 @@ public class ApprovalBoxController {
 	}
 	// 지출결의 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
-	// 반환값 : Model model
+	// 반환값 : String(view)
 	@GetMapping("/approval/chargeOne")
 	public String chargeOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -329,23 +329,12 @@ public class ApprovalBoxController {
 		return"redirect:/approval/approvalBox";
 	}
 	
-	// 출장기안서 최종승인
+	// 최종승인
 	@GetMapping("/approval/updateTripFinalState")
-	public String updateTripFinalState(@RequestParam("draftDocNo") int draftDocNo) {
+	public String updateFinalState(@RequestParam("draftDocNo") int draftDocNo) {
 		log.debug(TeamColor.PURPLE + "draftDocNo=>" + draftDocNo);
 		
-		approvalBoxService.updateFinalState(draftDocNo);
-		//기안서에 있는 내용이 출장 테이블로 일정이 들어가야됨
-		Map<String,Object> doc = approvalBoxService.getDocOne(draftDocNo);
-		DraftDocDetailDTO docDetail = approvalBoxService.getDocDetailOne(draftDocNo);
-		
-		Map<String,Object> insertTable = new HashMap<String,Object>();
-		insertTable.put("docDetail", docDetail);
-		if((Integer)(doc.get("tmpNo")) == 3) {
-			approvalBoxService.insertBusinessTrip(docDetail);
-		}
-		
-		
+		approvalBoxService.updateFinalState(draftDocNo);		
 		
 		return"redirect:/approval/approvalBox";
 	}

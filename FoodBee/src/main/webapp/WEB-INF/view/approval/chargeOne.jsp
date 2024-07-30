@@ -98,12 +98,17 @@ $(document).ready(function() {
     //부서번호
     let dptNo = '${chargeOne.dptNo}';  
 
-    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
-    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
-    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-    
+    $("#drafterEmpNo").val(drafter);
+    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+    $("#midApproverNo").val(midApprover);
+    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
+    $("#finalApproverNo").val(finalApprover);
+    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
+    $("#referrerField").val(referrerField);
     $("#name").val(drafterName);
     $("#department").val(dptNo);
+    $("#midApproverBtn").hide();
+    $("#finalApproverBtn").hide();
     
 	//사원 결재사인
     let drafterSign = '${chargeOne.drafterSign}';

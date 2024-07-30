@@ -62,51 +62,56 @@
 	       	</c:if>
       </div>
 </div>	
-<script>
-console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
-	$(document).ready(function() {
-	    let drafter = '${basicFormOne.drafterEmpNo}';  
-	    let drafterName = '${basicFormOne.drafterEmpName}';  
-	    let midApprover = '${basicFormOne.midApproverNo}';
-	    let midApproverName = '${basicFormOne.midApproverName}';
-	    let finalApproverName = '${basicFormOne.finalApproverName}';
-	    let finalApprover = '${basicFormOne.finalApproverNo}';
-	    let referrerField = '${basicReferrerOne.referrerName}';
-	   
-	    let name = '${basicFormOne.drafterEmpName}';  
-	    let dptNo = '${basicFormOne.dptNo}';  
-	
-	    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
-	    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
-	    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
-	    document.getElementById("referrerField").innerHTML = referrerField;
-	    $("#name").val(drafterName);
-	    $("#department").val(dptNo);
-	    
-	    let drafterSign = '${basicFormOne.drafterSign}';
-	    let midApproverSign = '${basicFormOne.midApproverSign}';
-	    let finalApproverSign = '${basicFormOne.finalApproverSign}';
-	    let midApprovalState = '${basicFormOne.midApprovalState}';
-	    let finalApprovalState = '${basicFormOne.finalApprovalState}';
-	    
-	    if (drafterSign) {
-	        $("#drafterSign").html(`<img src="${basicFormOne.drafterSign}">`);
-	    } else {
-	        $("#drafterSign").text("기안자 서명 없음");
-	    }
-	
-	    if (midApproverSign && midApprovalState == 1) {
-	        $("#midApproverSign").html(`<img src="${basicFormOne.midApproverSign}">`);
-	    } else {
-	        $("#midApproverSign").text("중간 결재자 서명 없음");
-	    }
-	
-	    if (finalApproverSign && finalApprovalState == 1) {
-	        $("#finalApproverSign").html(`<img src="${basicFormOne.finalApproverSign}">`);
-	    } else {
-	        $("#finalApproverSign").text("최종 결재자 서명 없음");
-	    }
-	});
-</script>
+	<script>
+		console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
+			$(document).ready(function() {
+			    let drafter = '${basicFormOne.drafterEmpNo}';  
+			    let drafterName = '${basicFormOne.drafterEmpName}';  
+			    let midApprover = '${basicFormOne.midApproverNo}';
+			    let midApproverName = '${basicFormOne.midApproverName}';
+			    let finalApproverName = '${basicFormOne.finalApproverName}';
+			    let finalApprover = '${basicFormOne.finalApproverNo}';
+			    let referrerField = '${basicReferrerOne.referrerName}';
+			   
+			    let name = '${basicFormOne.drafterEmpName}';  
+			    let dptNo = '${basicFormOne.dptNo}';  
+			
+			    $("#drafterEmpNo").val(drafter);
+			    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+			    $("#midApproverNo").val(midApprover);
+			    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
+			    $("#finalApproverNo").val(finalApprover);
+			    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
+			    $("#referrerField").val(referrerField);
+			    $("#name").val(drafterName);
+			    $("#department").val(dptNo);
+			    $("#midApproverBtn").hide();
+			    $("#finalApproverBtn").hide();
+			    
+			    let drafterSign = '${basicFormOne.drafterSign}';
+			    let midApproverSign = '${basicFormOne.midApproverSign}';
+			    let finalApproverSign = '${basicFormOne.finalApproverSign}';
+			    let midApprovalState = '${basicFormOne.midApprovalState}';
+			    let finalApprovalState = '${basicFormOne.finalApprovalState}';
+			    
+			    if (drafterSign) {
+			        $("#drafterSign").html(`<img src="${basicFormOne.drafterSign}">`);
+			    } else {
+			        $("#drafterSign").text("기안자 서명 없음");
+			    }
+			
+			    if (midApproverSign && midApprovalState == 1) {
+			        $("#midApproverSign").html(`<img src="${basicFormOne.midApproverSign}">`);
+			    } else {
+			        $("#midApproverSign").text("중간 결재자 서명 없음");
+			    }
+			
+			    if (finalApproverSign && finalApprovalState == 1) {
+			        $("#finalApproverSign").html(`<img src="${basicFormOne.finalApproverSign}">`);
+			    } else {
+			        $("#finalApproverSign").text("최종 결재자 서명 없음");
+			    }
+			});
+	</script>
 </body>
 </html>
