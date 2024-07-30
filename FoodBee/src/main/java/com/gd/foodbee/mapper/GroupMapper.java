@@ -38,4 +38,10 @@ public interface GroupMapper {
 	// 반환 값 : List<GroupDTO>
 	// 사용 클래스 : GroupService.getTeamList
 	List<GroupDTO> selectTeamList();
+	
+	// 부서번호로 부서명 구하기
+	// 파라미터 : String dptNo
+	// 반환 값 : String 
+	// 사용 클래스 : GroupService.getDptName
+	String selectDptName(String dptNo);
 }

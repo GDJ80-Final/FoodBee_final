@@ -135,7 +135,7 @@
 		        휴가신청
 		        </a></div>
 		    </div>
-	    <form>
+	    <form method="post" action="${pageContext.request.contextPath}/approval/addDraft">
 	        <!-- 공통 영역 포함 -->
 	        <jsp:include page="./commonForm.jsp"></jsp:include>
 	        <!-- 공통 영역 끝 -->
@@ -144,15 +144,15 @@
 			<div class="form-section">        
 	        	<div class="form-group">
 	                <label for=place>출장지:</label>
-	                <input type="text" id="place" name="place">
+	                <input type="text" id="place" name="typeName">
 	                
 	                <label for="period" style="margin-left: 500px;">기간:</label>
-	                <input type="date" id="period" name="period"> ~
-	                <input type="date" id="period" name="period">
+	                <input type="date" id="period" name="startDate"> ~
+	                <input type="date" id="period" name="endDate">
 	            </div>
 	            <div class="form-group">
 	                <label for=emergency>비상연락:</label>
-	                <input type="text" id="emergency" name="emergency">
+	                <input type="text" id="emergency" name="text">
 	            </div>
 	            <div class="form-group">
 	                <label for="title">제목:</label>
@@ -164,7 +164,7 @@
 	            </div>            
 	            <div class="file-upload">
 	                <label for="attachment">첨부파일:</label>
-	                <input type="text" id="attachment" name="attachment">
+	                <input type="file" id="docFiles" name="docFiles" multiple>
 	                <button>찾기</button>
 	            </div>
           </div>	

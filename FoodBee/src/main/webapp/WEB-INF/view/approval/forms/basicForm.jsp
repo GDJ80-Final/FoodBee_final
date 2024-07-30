@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Insert title here</title>
     <style>
     	 body {
@@ -135,7 +136,8 @@
 		        휴가신청
 		        </a></div>
 		    </div>
-		    <form method="post" action="${pageContext.request.contextPath}/approval/addDraft">
+		    
+		    <form id="draftForm" method="post" action="${pageContext.request.contextPath}/approval/addDraft" enctype="multipart/form-data">
 		        <!-- 공통 영역 포함 -->
 		        <jsp:include page="./commonForm.jsp"></jsp:include>
 		        <!-- 공통 영역 끝 -->
@@ -152,25 +154,36 @@
 		            </div>
 		            <div class="file-upload">
 		                <label for="attachment">첨부파일:</label>
-		                <input type="text" id="attachment" name="attachment">
-		                <button>찾기</button>
+		                <input type="file" id="attachment" name="docFiles" multiple>
+		               
 		            </div>
 		        </div>	
 		        <!-- 양식 영역 끝 -->
 		        <div class="form-actions">
-		            <button class="cancel-btn">취소</button>
-		            <button class="submit-btn">제출</button>
+		            <button type="reset" class="cancel-btn">취소</button>
+		            <button  type="button" id="submitBtn" class="submit-btn">제출</button>
 		        </div>
 			</form>
+			
 	    </div>
 
-
-</body>
 <script>
 	$(document).ready(function(){
-	    let contextPath = "${pageContext.request.contextPath}";
-	    console.log(contextPath);
-	
+		// 호출되면 페이지에 담을 emp 정보 불러오기 
+		$.ajax({
+            url: '${pageContext.request.contextPath}/approval/forms/commonForm',
+            method: 'get',
+            success: function(json) {
+                $('#drafterEmpNo').val(json.empNo);
+                $('#drafter').text(json.empName + '(' + json.empNo + ')');
+                $('#name').val(json.empName);
+                $('#department').val(json.dptName)
+            },
+            error: function() {
+                alert('기본정보 불러오는데 실패했습니다 .');
+            }
+        });
+		
 	    $(".tab").click(function(){
 	        // 모든 탭에서 'active' 클래스 제거
 	        $(".tab").removeClass("active");
@@ -181,6 +194,12 @@
 	        let formName = $(this).data("form");
 	        console.log(formName);
 	    });
+	 	// 제출 버튼 클릭 시 폼 제출
+        $('#submitBtn').click(function() {
+            $('#draftForm').submit();
+        });
 	});
 </script>
+</body>
+
 </html>

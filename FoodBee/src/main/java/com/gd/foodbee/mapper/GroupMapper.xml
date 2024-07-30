@@ -45,4 +45,14 @@
 		WHERE 
 			dpt_name LIKE '%팀';	
 	</select>
+	<select id="selectDptName" parameterType="String" resultType="String">
+		SELECT
+			dpt_name dptName
+		FROM 
+			`group`
+		WHERE 
+			dpt_no = #{dptNo}
+	
+	
+	</select>
 </mapper>

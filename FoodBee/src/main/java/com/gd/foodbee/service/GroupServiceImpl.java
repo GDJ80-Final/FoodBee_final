@@ -63,6 +63,15 @@ public class GroupServiceImpl implements GroupService{
 		
 		return groupMapper.selectTeamList();
 	}
+	// 부서명 구하기
+	// 파라미터 : String dptNo
+	// 반환 값 : String
+	// 사용 클래스 : ApprovalController.commonForm
+	@Override
+	public String getDptName(String dptNo) {
+		
+		return groupMapper.selectDptName(dptNo);
+	}
 	
 
 	

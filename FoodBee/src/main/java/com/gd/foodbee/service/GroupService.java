@@ -20,4 +20,7 @@ public interface GroupService {
 	
 	// 전체 팀 리스트
 	List<GroupDTO> getTeamList();
+	
+	// 부서번호로 부서이름 구하기
+	String getDptName(String dptNo);
 }

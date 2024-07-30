@@ -1,14 +1,22 @@
 package com.gd.foodbee.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.DraftDocRequestDTO;
+import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.DraftDocService;
+import com.gd.foodbee.service.GroupService;
 import com.gd.foodbee.util.TeamColor;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -18,11 +26,37 @@ public class ApprovalController {
 	@Autowired
 	private DraftDocService draftDocService;
 	
+	@Autowired
+	private GroupService groupService;
 	
 	// 각 기안서 추가 
 	// 파라미터 : X
 	// 반환 값 : String(view)
 	// 사용 페이지 : /approval/forms/revenueForm,basic,dayOff,businessTripForm, chargeForm
+	@GetMapping("/approval/forms/commonForm")
+	@ResponseBody
+	public Map<String,Object> commonForm(HttpSession session) {
+		
+		//세션에서 값 구해서 기안자 이름 + 부서이름 넣어주기 
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		log.debug(TeamColor.YELLOW + "empNo" + empNo);
+		String empName = emp.getEmpName();
+		log.debug(TeamColor.YELLOW + "empName" + empName);
+		String dptNo = emp.getDptNo();
+		
+		String dptName = groupService.getDptName(dptNo);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("empNo", empNo);
+		map.put("empName", empName); 
+		map.put("dptName", dptName); 
+
+		
+		
+		return map;
+	}
 	@GetMapping("/approval/forms/revenueForm")
 	public String revenueForm() {
 		

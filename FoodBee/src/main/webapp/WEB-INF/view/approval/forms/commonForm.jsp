@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<html>
 <head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
 	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
@@ -57,6 +58,7 @@
         }
     </style>
 </head>
+<body>
     <div class="common-section">
         <table>
             <tr>
@@ -69,14 +71,16 @@
                 <td colspan="2">결재</td>
                                   
                 <td id="drafter">
-                기안자 이름(사번)
+                <input type="hidden" name="drafterEmpNo" id="drafterEmpNo">
+                
                 </td>
                 <td id="midApprover">
-                <input type="hidden" name="">
+                <input type="hidden" name="midApproverNo" id="midApproverNo">
                 <button type="button" id="midApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button>
                 </td>
                 <td id="finalApprover">
+                 <input type="hidden" name="finalApproverNo" id="finalApproverNo">
                 <button type="button"  id="finalApprover" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button></td>
             </tr>
@@ -89,15 +93,18 @@
             </tr>
             <tr>
                 <td>수신참조자</td>
-                <td colspan="4" id="referrerField"><button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
+                <td colspan="4">
+                
+                <input type="text" id="referrerField" style="width:80%;" name="referrerEmpNo" readonly>
+                <button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
             </tr>
         </table>
         <div class="form-section">
             <div class="form-group">
                 <label for="name">성명:</label>
-                <input type="text" id="name" name="name">
+                <input type="text" id="name" readonly>
                 <label for="department" style="margin-left: 10px;">부서:</label>
-                <input type="text" id="department" name="department">
+                <input type="text" id="department" readonly>
             </div>
          </div>
     </div>
@@ -169,6 +176,7 @@
 	    </div>
 	  </div>
 	</div>
+
 <script>
 		let currentPage = 1;
 		let lastPage = 1;
@@ -341,8 +349,10 @@
 			    console.log(action);
 			    if(action === 'mid'){
 			    	 $('#midApprover').text(selectedEmp);
+			    	 $('#midApproverNo').val(empNo);
 			    }else if(action === 'final'){
 			    	 $('#finalApprover').text(selectedEmp);
+			    	 $('#finalApproverNo').val(empNo);
 			    }else if(action === 'referrer'){
 			 
 				    let referrerField = $('#referrerField');
@@ -353,7 +363,7 @@
 				    console.log(empNo);
 				    
 				    if (currentVal) {
-				        empNosArray = currentVal.split(',').map(emp => emp.split('(')[1].split(')')[0]); 
+				        empNosArray = currentVal.split(','); 
 				        // 사원번호 배열로 변환
 				        console.log('empNosArray => ' + empNosArray);
 				        
@@ -362,14 +372,14 @@
 				            alert('이미 추가된 사원입니다.');
 				            return;
 				        } else {
-				            newVal = currentVal + ',' + empName + '(' + empNo + ')'; // 중복이 아니면 추가
+				            newVal = currentVal + ',' + empNo; // 중복이 아니면 추가
 				        }
 				        
 				    } else {
-				        newVal = empName + '(' + empNo + ')'; // 처음 추가할 때
+				        newVal = empNo ; // 처음 추가할 때
 				    }
 				    
-				    referrerField.text(newVal);
+				    referrerField.val(newVal);
 			    }
 			    
 			    
@@ -380,3 +390,5 @@
 			
 		});
 </script>
+</body>
+</html>

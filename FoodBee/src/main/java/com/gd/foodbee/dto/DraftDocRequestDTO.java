@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 public class DraftDocRequestDTO {
 	
 	private int drafterEmpNo;
-	private String createDatetime;
 	private String title;
 	private String content;
 	private int midApproverNo;
