@@ -23,4 +23,7 @@ public interface GroupService {
 	
 	// 부서번호로 부서이름 구하기
 	String getDptName(String dptNo);
+	
+	// 부서번호로 권한코드 구하기
+	String getAuthorityCodeByDptNo(String dptNo);
 }

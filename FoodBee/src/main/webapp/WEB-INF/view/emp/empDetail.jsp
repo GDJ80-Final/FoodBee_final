@@ -50,7 +50,12 @@
 	
 		const currentYear = new Date().getFullYear();
 		
+		// 팀 권한 코드
+		let teamAuthCode;
+		
 		$(document).ready(function() {
+			
+			
 			$('#year').hide();
 			$.ajax({
 				url:'${pageContext.request.contextPath}/emp/getEmpHr',
@@ -61,6 +66,17 @@
 					empInfo(json);
 				}
 			});
+			
+			// 팀 권한 코드 구하기
+			$.ajax({
+				url: '${pageContext.request.contextPath}/auth/getTeamAuth',
+				method:'get',
+				data:{dptNo : '${emp.dptNo}'},
+				success:function(json){
+					console.log(json);
+					teamAuthCode = json;
+				}
+			})
 			
 			$('#empInfo').click(function(){
 				$('#year').hide();
@@ -286,51 +302,54 @@
 					    '</div>'
 					);
 				
-				$.ajax({
-					url:'${pageContext.request.contextPath}/emp/getEmpPersnal',
-					method:'get',
-					data: {empNo : ${empNo}},
-					success:function(json){
-						console.log(json);
-						const addressArr = json.address.split("|");
-						const address = addressArr[0];
-						const addressDetail = addressArr[1];
-						$('#content').append(
-							    '<div class="mt-4">' +
-							        '<h5>개인</h5>' +
-							        '<div class="row g-3">' +
-								        '<div class="col-md-6">' +
-								            '<label class="form-label">개인 이메일</label>' +
-								            '<input type="email" class="form-control" id="empEmail" name="empEmail" value="' + json.empEmail + '" readonly>' +
-								        '</div>' +
-								        '<div class="col-md-6">' +
-								            '<label class="form-label">휴대폰 번호</label>' +
-								            '<input type="tel" class="form-control" id="contact" name="contact" value="' + json.contact + '" readonly>' +
-								        '</div>' +
+				// 인사팀만 보이게
+				if(teamAuthCode == 'G-1'){
+					$.ajax({
+						url:'${pageContext.request.contextPath}/emp/getEmpPersnal',
+						method:'get',
+						data: {empNo : ${empNo}},
+						success:function(json){
+							console.log(json);
+							const addressArr = json.address.split("|");
+							const address = addressArr[0];
+							const addressDetail = addressArr[1];
+							$('#content').append(
+								    '<div class="mt-4">' +
+								        '<h5>개인</h5>' +
+								        '<div class="row g-3">' +
+									        '<div class="col-md-6">' +
+									            '<label class="form-label">개인 이메일</label>' +
+									            '<input type="email" class="form-control" id="empEmail" name="empEmail" value="' + json.empEmail + '" readonly>' +
+									        '</div>' +
+									        '<div class="col-md-6">' +
+									            '<label class="form-label">휴대폰 번호</label>' +
+									            '<input type="tel" class="form-control" id="contact" name="contact" value="' + json.contact + '" readonly>' +
+									        '</div>' +
+									    '</div>' +
+									    '<div class="mt-3">' +
+									        '<div class="row mb-3">' +
+									            '<div class="col-md-9">' +
+									                '<label for="postNo" class="form-label">우편번호</label>' +
+									                '<input type="number" class="form-control" id="postNo" name="postNo" placeholder="우편번호" readonly value="' + json.postNo + '">' +
+									            '</div>' +
+									        '</div>' +
+									        '<div class="mb-3">' +
+									            '<label for="address" class="form-label">주소</label>' +
+									            '<input type="text" class="form-control" name="address" id="address" placeholder="주소" readonly value="' + address + '">' +
+									        '</div>' +
+									        '<div class="mb-3">' +
+									            '<label for="addressDetail" class="form-label">상세주소</label>' +
+									            '<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소" readonly value="' + addressDetail + '">' +
+									        '</div>' +
+									    '</div>' +
 								    '</div>' +
-								    '<div class="mt-3">' +
-								        '<div class="row mb-3">' +
-								            '<div class="col-md-9">' +
-								                '<label for="postNo" class="form-label">우편번호</label>' +
-								                '<input type="number" class="form-control" id="postNo" name="postNo" placeholder="우편번호" readonly value="' + json.postNo + '">' +
-								            '</div>' +
-								        '</div>' +
-								        '<div class="mb-3">' +
-								            '<label for="address" class="form-label">주소</label>' +
-								            '<input type="text" class="form-control" name="address" id="address" placeholder="주소" readonly value="' + address + '">' +
-								        '</div>' +
-								        '<div class="mb-3">' +
-								            '<label for="addressDetail" class="form-label">상세주소</label>' +
-								            '<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소" readonly value="' + addressDetail + '">' +
-								        '</div>' +
-								    '</div>' +
-							    '</div>' +
-							    '<div class="text-center mt-4">' +
-							        '<a href="${pageContext.request.contextPath}/emp/modifyEmpHr?empNo=' + json.empNo +'" class="btn btn-danger">수정</a>' +
-							    '</div>'
-							);
-					}
-				});
+								    '<div class="text-center mt-4">' +
+								        '<a href="${pageContext.request.contextPath}/emp/modifyEmpHr?empNo=' + json.empNo +'" class="btn btn-danger">수정</a>' +
+								    '</div>'
+								);
+						}
+					});
+				}
 			}
 			
 		});

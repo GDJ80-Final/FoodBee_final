@@ -52,7 +52,13 @@
 			`group`
 		WHERE 
 			dpt_no = #{dptNo}
-	
-	
+	</select>
+	<select id="selectAuthorityCodeByDptNo" parameterType="String" resultType="String">
+		SELECT
+			authority_code
+		FROM
+			`group`
+		WHERE
+			dpt_no = #{dptNo};
 	</select>
 </mapper>

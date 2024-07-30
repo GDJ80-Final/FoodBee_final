@@ -196,12 +196,15 @@ public class EmpController {
 	}
 	
 	//사원 목록 페이지
-	//파라미터 : X
+	//파라미터 : Model model, HttpSession session
 	//반환 값 : String(view)
 	//사용 페이지 : /emp/empList
 	@GetMapping("/emp/empList")
-	public String getEmpList() {
+	public String getEmpList(Model model,
+				HttpSession session) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		
+		model.addAttribute("emp", emp);
 		return "emp/empList";
 	}
 	
@@ -305,14 +308,18 @@ public class EmpController {
 	}
 	
 	// 사원 상세보기 페이지
-	// 파라미터 : int empNo
+	// 파라미터 : int empNo, Model model, HttpSession session
 	// 반환 값 : String(view)
 	// 사용 페이지 : /emp/empDetail
 	@GetMapping("/emp/empDetail")
 	public String empDetail(@RequestParam int empNo,
-				Model model) {
+				Model model,
+				HttpSession session) {
 		log.debug(TeamColor.RED + "empNo =>" + empNo);
 		
+		EmpDTO emp = (EmpDTO)session.getAttribute("emp");
+		
+		model.addAttribute("emp", emp);
 		model.addAttribute("empNo", empNo);
 		return "emp/empDetail";
 	}

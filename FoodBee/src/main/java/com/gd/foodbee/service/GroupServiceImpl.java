@@ -72,6 +72,16 @@ public class GroupServiceImpl implements GroupService{
 		
 		return groupMapper.selectDptName(dptNo);
 	}
+
+	// 부서 번호로 권한 코드 구하기
+	// 파라미터 : String dptNo
+	// 반환 값 : String
+	// 사용 클래스 : AuthorityController.getAuthCodeByDptNo
+	@Override
+	public String getAuthorityCodeByDptNo(String dptNo) {
+		
+		return groupMapper.selectAuthorityCodeByDptNo(dptNo);
+	}
 	
 
 	

@@ -73,9 +73,12 @@
 		let currentPage = 1;
 		let lastPage = 1;
 
+		// 팀 권한 코드
+		let teamAuthCode;
 	
 		$(document).ready(function() {
 			loadEmpList(1);
+			
 			
 			// 본사/지사 데이터
 			$.ajax({
@@ -115,6 +118,17 @@
 					});			
 				}
 			});
+			
+			// 팀 권한 코드 구하기
+			$.ajax({
+				url: '${pageContext.request.contextPath}/auth/getTeamAuth',
+				method:'get',
+				data:{dptNo : '${emp.dptNo}'},
+				success:function(json){
+					console.log(json);
+					teamAuthCode = json;
+				}
+			})
 			
 			
 			$('#searchBtn').click(function(){
@@ -265,9 +279,9 @@
 						'<td>' + item.extNo +'</td>' + 
 						'<td>' + item.startDate +'</td>' + 
 						'<td>' + item.signupYN +
-						(item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') +
+						(teamAuthCode == 'G-1' ? (item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') : '') +
 						'</td>' + 
-						'<td><button type="button" class="resetPw" value=\'{"empNo": "' + item.empNo + '", "empEmail": "' + item.empEmail + '"}\'>비밀번호 초기화</button></td>' +
+						(teamAuthCode == 'G-1' ? '<td><button type="button" class="resetPw" value=\'{"empNo": "' + item.empNo + '", "empEmail": "' + item.empEmail + '"}\'>비밀번호 초기화</button></td>' : '') +
 						'</tr>');
 			}
 			

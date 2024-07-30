@@ -44,4 +44,11 @@ public interface GroupMapper {
 	// 반환 값 : String 
 	// 사용 클래스 : GroupService.getDptName
 	String selectDptName(String dptNo);
+	
+	// 부서번호로 권한 코드 구하기
+	// 파라미터 : String dptNo
+	// 반환 값 : String
+	// 사용 클래스 : 
+	String selectAuthorityCodeByDptNo(String dptNo);
+
 }

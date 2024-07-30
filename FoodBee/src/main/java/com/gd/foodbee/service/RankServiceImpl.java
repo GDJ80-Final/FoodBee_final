@@ -17,7 +17,7 @@ public class RankServiceImpl implements RankService{
 	// 직급 이름으로 권한 구하기
 	// 파라미터 : String rankName
 	// 반환 값 : String
-	// 사용 클래스 : AythorityInterceptor.prehandle
+	// 사용 클래스 : AythorityInterceptor.prehandle, AuthorityController.getRankAuth
 	@Override
 	public String getAuthorityCodeByRankName(String rankName) {
 		

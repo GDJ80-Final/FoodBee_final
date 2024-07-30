@@ -99,17 +99,18 @@
     </div>
 
 	<script>
-		//휴가 내역 페이징
+		// 휴가 내역 페이징
 		let currentPage = 1;
 		let lastPage = 1;
 		
-		//휴가 내역 현재년도
+		
+		// 휴가 내역 현재년도
 		const currentYear = new Date().getFullYear();
 		$(document).ready(function() {
 			
 			// 프로필 사진
 		 	let originalSrc;
-			//새 사진이 선택됐는지 여부
+			// 새 사진이 선택됐는지 여부
 	        let newImageSelected = false;
 	        
 			$('#year').hide();
@@ -127,6 +128,7 @@
 					empInfo(json);
 				}
 			});
+			
 			
 			// 개인/인사정보 탭 클릭시
 			$("#empInfo").click(function(){
