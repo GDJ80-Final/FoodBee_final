@@ -7,7 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>일정 상세보기</h1>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+<h1>일정</h1>
 	<a href="schedule">돌아가기</a>
 		<table border="1">
 			<tr>
@@ -47,5 +52,7 @@
 		</table>
 	<a href="modifySchedule?scheduleNo=<c:out value='${one.scheduleNo}'/>">수정하기</a>
 	<a href="deleteSchedule?scheduleNo=<c:out value='${one.scheduleNo}'/>">삭제</a>
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </body>
 </html>

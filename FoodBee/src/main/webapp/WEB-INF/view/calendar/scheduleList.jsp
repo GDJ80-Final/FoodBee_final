@@ -8,6 +8,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
 	<h1>일정 리스트</h1>
 	<button id="calendar">달력📅</button>
 	<button id="addEvent">일정추가</button>
@@ -38,7 +43,8 @@
 	<span id="searchType">일정검색</span>
 	<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
 	<button id="searchBtn">검색</button>
-
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
     let currentPage = 1;
     let lastPage = 1;

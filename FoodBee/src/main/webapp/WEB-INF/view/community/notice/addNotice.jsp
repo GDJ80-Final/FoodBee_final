@@ -11,6 +11,11 @@
 </style>
 </head>
 <body>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
 <h1>공지사항 작성</h1>
     <div id="notice">
         <form method="post" action="addNoticeAction" enctype="multipart/form-data">
@@ -57,6 +62,8 @@
             <button type="submit">공지사항 등록</button>
         </form>
     </div>
+ </div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
 function addFileInput() {
     var fileContainer = document.getElementById('file-container');

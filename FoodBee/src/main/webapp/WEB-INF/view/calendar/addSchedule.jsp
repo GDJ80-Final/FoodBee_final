@@ -7,9 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
 <h3>일정추가</h3>
 <a href="schedule">돌아가기</a>
-<body>
 	<form method="post" action="addScheduleAction">
 		<table border="1">
 			<tr>
@@ -55,6 +59,7 @@
 		<input type="hidden" name="empNo" value='<c:out value="${empNo}"></c:out>'>
 		<button type="submit">추가</button>
 	</form>
-</body>
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </body>
 </html>

@@ -7,6 +7,11 @@
 <title>공지사항</title>
 </head>
 <body>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
 <h1>공지사항</h1>
 <button id="list" data-url="${pageContext.request.contextPath}/community/notice/allNoticeList" data-type="list">전체</button>
 <button id="emp" data-url="${pageContext.request.contextPath}/community/notice/allEmpList" data-type="emp">전사원</button>
@@ -27,11 +32,14 @@
 </table>
 
 <div id="paginationControls">
-    <!-- 페이지네이션 링크가 여기에 동적으로 추가됩니다 -->
+    <!-- 페이지네이션 링크가 여기에 동적으로 추가 -->
 </div>
  <c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
    	<a href="addNotice">공지사항 작성</a>
 </c:if>
+<!-- 템플릿 footer -->
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {

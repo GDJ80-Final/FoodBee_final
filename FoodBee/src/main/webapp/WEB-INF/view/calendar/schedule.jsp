@@ -4,12 +4,10 @@
 <!DOCTYPE html>
 <html>
  <head>
-   <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
    <style>
      #calendar {
-       max-width: 750px; 
-       height: 700px; 
+       max-width: 950px; 
+       height: 860px; 
        margin: 0 auto; 
        font-size: 10px;
      }
@@ -41,7 +39,20 @@
      }
    </style>
  </head>
-  <body>
+ <!-- CalnedarApI호출 -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
+<!-- 부트스트랩 -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- CalendarAPI script! -->    
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<body>
+<!-- 템플릿 헤더/사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<div class="content-body">  
     <div id="btn">
       <button id="allEvents">전체</button>
       <button id="personalEvents">개인</button>
@@ -136,179 +147,176 @@
         </div>
       </div>
     </div>
+</div>
+<!-- 템플릿 footer -->
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const events = [
+      // 개인일정
+      <c:forEach var="m" items="${list}">
+        {
+            title: '<c:out value="${m.title}" />',
+            start: '<c:out value="${m.startDatetime}" />',
+            end: '<c:out value="${m.endDatetime}" />',
+            color: '<c:out value="${m.type == '개인' ? '#FF6C6C' : '#BCE55C'}" />',
+            type: '개인',
+            description: '<c:out value="${m.content}" />',
+            scheduleNo: '<c:out value="${m.scheduleNo}" />'
+        },
+      </c:forEach>
+      // 팀일정
+       <c:forEach var="team" items="${teamList}">
+        {
+            title: '<c:out value="(팀)${team.title}" />',
+            start: '<c:out value="${team.startDatetime}" />',
+            end: '<c:out value="${team.endDatetime}" />',
+            color: '<c:out value="${team.type == '팀' ? '#BCE55C' : '#FF6C6C'}" />',
+            type: '팀',
+            description: '<c:out value="${team.content}" />',
+            scheduleNo: '<c:out value="${team.scheduleNo}" />',
+            empNo:'<c:out value="${team.empNo}" />'
 
-    <!-- CalendarAPI script! -->    
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const events = [
-          // 개인일정
-          <c:forEach var="m" items="${list}">
-            {
-                title: '<c:out value="${m.title}" />',
-                start: '<c:out value="${m.startDatetime}" />',
-                end: '<c:out value="${m.endDatetime}" />',
-                color: '<c:out value="${m.type == '개인' ? '#FF6C6C' : '#BCE55C'}" />',
-                type: '개인',
-                description: '<c:out value="${m.content}" />',
-                scheduleNo: '<c:out value="${m.scheduleNo}" />'
-            },
-          </c:forEach>
-          // 팀일정
-           <c:forEach var="team" items="${teamList}">
-            {
-                title: '<c:out value="(팀)${team.title}" />',
-                start: '<c:out value="${team.startDatetime}" />',
-                end: '<c:out value="${team.endDatetime}" />',
-                color: '<c:out value="${team.type == '팀' ? '#BCE55C' : '#FF6C6C'}" />',
-                type: '팀',
-                description: '<c:out value="${team.content}" />',
-                scheduleNo: '<c:out value="${team.scheduleNo}" />',
-                empNo:'<c:out value="${team.empNo}" />'
+        },
+      </c:forEach>
+      // 회의실 예약리스트
+      <c:forEach var="room" items="${roomRsvList}">
+        {
+          title: '<c:out value="회의" />',
+          start: '<c:out value="${room.startDatetime}" />',
+          end: '<c:out value="${room.endDatetime}" />',
+          <c:if test="${room.type == 'team'}">
+            color: '#BCE55C',
+          </c:if>
+          <c:if test="${room.type == 'personal'}">
+          color: '#FF6C6C',
+         </c:if>
+          //
+          <c:if test="${room.type == 'team'}">
+           	type : '팀',
+          </c:if>
+          <c:if test="${room.type == 'personal'}">
+          	type : '개인',
+         </c:if>
+          rsvEmp: '<c:out value="${room.empName}"/>',
+          roomNo: '<c:out value="Bee${room.roomNo}"/>',
+          roomPlace:'<c:out value="${room.roomPlace}"/>'
+        },
+      </c:forEach>
+      // 팀원 휴가리스트
+      <c:forEach var="off" items="${dayOffList}">
+        {
+          title: '<c:out value="${off.name}님 휴가" />',
+          start: '<c:out value="${off.startDate}" />',
+          end: '<c:out value="${off.endDate}" />',
+          color: '#BCE55C',
+          type: '팀',
+          dayOffEmp: '<c:out value="${off.name}" />',
+          contact: '<c:out value="${off.contact}" />'
+        },
+      </c:forEach>
+      // 팀원 출장리스트
+        <c:forEach var="trip" items="${businessTripList}">
+        {
+          title: '<c:out value="${trip.name}님 출장" />',
+          start: '<c:out value="${trip.startDate}" />',
+          end: '<c:out value="${trip.endDate}" />',
+          color: '#BCE55C',
+          type: '팀',
+          tripEmp: '<c:out value="${trip.name}" />',
+          destination: '<c:out value="${trip.destination}" />',
+          tripContact: '<c:out value="${trip.contact}" />'
+        },
+      </c:forEach>
+    ];
 
-            },
-          </c:forEach>
-          // 회의실 예약리스트
-          <c:forEach var="room" items="${roomRsvList}">
-            {
-              title: '<c:out value="회의" />',
-              start: '<c:out value="${room.startDatetime}" />',
-              end: '<c:out value="${room.endDatetime}" />',
-              <c:if test="${room.type == 'team'}">
-                color: '#BCE55C',
-              </c:if>
-              <c:if test="${room.type == 'personal'}">
-              color: '#FF6C6C',
-             </c:if>
-              //
-              <c:if test="${room.type == 'team'}">
-               	type : '팀',
-              </c:if>
-              <c:if test="${room.type == 'personal'}">
-              	type : '개인',
-             </c:if>
-              rsvEmp: '<c:out value="${room.empName}"/>',
-              roomNo: '<c:out value="Bee${room.roomNo}"/>',
-              roomPlace:'<c:out value="${room.roomPlace}"/>'
-            },
-          </c:forEach>
-          // 팀원 휴가리스트
-          <c:forEach var="off" items="${dayOffList}">
-            {
-              title: '<c:out value="${off.name}님 휴가" />',
-              start: '<c:out value="${off.startDate}" />',
-              end: '<c:out value="${off.endDate}" />',
-              color: '#BCE55C',
-              type: '팀',
-              dayOffEmp: '<c:out value="${off.name}" />',
-              contact: '<c:out value="${off.contact}" />'
-            },
-          </c:forEach>
-          // 팀원 출장리스트
-            <c:forEach var="trip" items="${businessTripList}">
-            {
-              title: '<c:out value="${trip.name}님 출장" />',
-              start: '<c:out value="${trip.startDate}" />',
-              end: '<c:out value="${trip.endDate}" />',
-              color: '#BCE55C',
-              type: '팀',
-              tripEmp: '<c:out value="${trip.name}" />',
-              destination: '<c:out value="${trip.destination}" />',
-              tripContact: '<c:out value="${trip.contact}" />'
-            },
-          </c:forEach>
-        ];
-
-        const calendarEl = document.getElementById('calendar');
-        const calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridDay'
-          },
-          expandRows: true,
-          events: events,
-          eventMouseEnter: function(info) {
-            info.el.classList.add('event-highlight'); // 이벤트에 highlight 클래스 추가
-          },
-          eventMouseLeave: function(info) {
-            info.el.classList.remove('event-highlight'); // highlight 클래스 제거
-          },
-          eventClick: function(info) {
-            if (info.event.title === '회의') {
-              $('#meeting').modal('show');
-              document.getElementById('meetingEmp').innerHTML = info.event.extendedProps.rsvEmp;
-              document.getElementById('meetingRoom').innerHTML = info.event.extendedProps.roomNo;
-              document.getElementById('meetingStartTime').innerHTML = info.event.start.toLocaleString();
-              document.getElementById('meetingEndTime').innerHTML = info.event.end.toLocaleString();
-            } else if (info.event.title.includes('님 휴가')) {
-              $('#dayOff').modal('show');
-              document.getElementById('dayOffEmp').innerHTML = info.event.extendedProps.dayOffEmp;
-              document.getElementById('startDate').innerHTML = info.event.start.toLocaleString();
-              document.getElementById('endDate').innerHTML = info.event.end.toLocaleString();
-              document.getElementById('contact').innerHTML = info.event.extendedProps.contact;
-            } else if (info.event.title.includes('님 출장')) {
-           	   $('#trip').modal('show');
-               document.getElementById('tripEmp').innerHTML = info.event.extendedProps.tripEmp;
-               document.getElementById('destination').innerHTML = info.event.extendedProps.destination;
-               document.getElementById('tripStartDate').innerHTML = info.event.start.toLocaleString();
-               document.getElementById('tripEndDate').innerHTML = info.event.end.toLocaleString();
-               document.getElementById('tripContact').innerHTML = info.event.extendedProps.tripContact;
-            } else if(info.event.title.includes('팀')){
-           	  $('#team').modal('show');
-       		  document.getElementById('teamTitle').innerHTML = info.event.title;
-              document.getElementById('teamMemo').innerHTML = info.event.extendedProps.description;
-              document.getElementById('teamModifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
-              document.getElementById('teamDeleteBtn').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
-          
-            } else {
-              $('#person').modal('show');
-              document.getElementById('personTitle').innerHTML = info.event.title;
-              document.getElementById('personMemo').innerHTML = info.event.extendedProps.description;
-              document.getElementById('modifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
-              document.getElementById('deleteBtn').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
-            }
-          }
-         
-        });
-	        document.getElementById('addEvent').addEventListener('click', function() {
-	    	    window.location.href = 'addSchedule';
-	   	  	});
-	        
-	        document.getElementById('allList').addEventListener('click', function() {
-	    	    window.location.href = 'scheduleList';
-	   	  	});
-        
-        // 전체 데이터를 백업해 둘 변수
-        let allEvents = calendar.getEvents();
-
-        // 일정 필터링 함수
-        function filterEventsByType(type) {
-          // 백업된 전체 데이터를 기반으로 필터링
-          const filteredEvents = allEvents.filter(event => event.extendedProps.type === type || type === '전체');
-          calendar.removeAllEvents();
-          calendar.addEventSource(filteredEvents);
-          calendar.render();
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridDay'
+      },
+      expandRows: true,
+      events: events,
+      eventMouseEnter: function(info) {
+        info.el.classList.add('event-highlight'); // 이벤트에 highlight 클래스 추가
+      },
+      eventMouseLeave: function(info) {
+        info.el.classList.remove('event-highlight'); // highlight 클래스 제거
+      },
+      eventClick: function(info) {
+        if (info.event.title === '회의') {
+          $('#meeting').modal('show');
+          document.getElementById('meetingEmp').innerHTML = info.event.extendedProps.rsvEmp;
+          document.getElementById('meetingRoom').innerHTML = info.event.extendedProps.roomNo;
+          document.getElementById('meetingStartTime').innerHTML = info.event.start.toLocaleString();
+          document.getElementById('meetingEndTime').innerHTML = info.event.end.toLocaleString();
+        } else if (info.event.title.includes('님 휴가')) {
+          $('#dayOff').modal('show');
+          document.getElementById('dayOffEmp').innerHTML = info.event.extendedProps.dayOffEmp;
+          document.getElementById('startDate').innerHTML = info.event.start.toLocaleString();
+          document.getElementById('endDate').innerHTML = info.event.end.toLocaleString();
+          document.getElementById('contact').innerHTML = info.event.extendedProps.contact;
+        } else if (info.event.title.includes('님 출장')) {
+       	   $('#trip').modal('show');
+           document.getElementById('tripEmp').innerHTML = info.event.extendedProps.tripEmp;
+           document.getElementById('destination').innerHTML = info.event.extendedProps.destination;
+           document.getElementById('tripStartDate').innerHTML = info.event.start.toLocaleString();
+           document.getElementById('tripEndDate').innerHTML = info.event.end.toLocaleString();
+           document.getElementById('tripContact').innerHTML = info.event.extendedProps.tripContact;
+        } else if(info.event.title.includes('팀')){
+       	  $('#team').modal('show');
+   		  document.getElementById('teamTitle').innerHTML = info.event.title;
+          document.getElementById('teamMemo').innerHTML = info.event.extendedProps.description;
+          document.getElementById('teamModifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+          document.getElementById('teamDeleteBtn').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+      
+        } else {
+          $('#person').modal('show');
+          document.getElementById('personTitle').innerHTML = info.event.title;
+          document.getElementById('personMemo').innerHTML = info.event.extendedProps.description;
+          document.getElementById('modifyLink').href = 'modifySchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
+          document.getElementById('deleteBtn').href = 'deleteSchedule?scheduleNo=' + info.event.extendedProps.scheduleNo;
         }
-        // 필터링 버튼 클릭 시
-        document.getElementById('allEvents').addEventListener('click', function() {
-          filterEventsByType('전체');
-        });
+      }
+     
+    });
+     document.getElementById('addEvent').addEventListener('click', function() {
+ 	    window.location.href = 'addSchedule';
+	  	});
+     
+     document.getElementById('allList').addEventListener('click', function() {
+ 	    window.location.href = 'scheduleList';
+	  	});
+    
+    // 전체 데이터를 백업해 둘 변수
+    let allEvents = calendar.getEvents();
 
-        document.getElementById('personalEvents').addEventListener('click', function() {
-          filterEventsByType('개인');
-        });
+    // 일정 필터링 함수
+    function filterEventsByType(type) {
+      // 백업된 전체 데이터를 기반으로 필터링
+      const filteredEvents = allEvents.filter(event => event.extendedProps.type === type || type === '전체');
+      calendar.removeAllEvents();
+      calendar.addEventSource(filteredEvents);
+      calendar.render();
+    }
+    // 필터링 버튼 클릭 시
+    document.getElementById('allEvents').addEventListener('click', function() {
+      filterEventsByType('전체');
+    });
 
-        document.getElementById('teamEvents').addEventListener('click', function() {
-          filterEventsByType('팀');
-        });
+    document.getElementById('personalEvents').addEventListener('click', function() {
+      filterEventsByType('개인');
+    });
 
-        calendar.render();
-      });
+    document.getElementById('teamEvents').addEventListener('click', function() {
+      filterEventsByType('팀');
+    });
+
+    calendar.render();
+  });
 </script>
 </body>
 </html>

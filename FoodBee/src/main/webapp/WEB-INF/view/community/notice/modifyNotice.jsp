@@ -7,6 +7,11 @@
 <title>공지사항 수정</title>
 </head>
 <body>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
     <h1>공지사항 수정</h1>
 
     <form action="modifyNoticeAction" method="post" enctype="multipart/form-data">
@@ -74,7 +79,8 @@
         <button type="submit">수정</button>
     </form>
     <a href="noticeOne?noticeNo=${one[0].noticeNo}">돌아가기</a>
-    
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

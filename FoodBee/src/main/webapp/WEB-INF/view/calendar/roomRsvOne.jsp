@@ -7,7 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>회의 예약상세</h1>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+<h1>회의실 예약</h1>
 <a href="scheduleList">돌아가기</a>
 		<table border="1">
 			<tr>
@@ -75,5 +80,7 @@
 				</td>
 			</tr>
 		</table>
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </body>
 </html>

@@ -7,6 +7,11 @@
 <title>공지사항 상세보기</title>
 </head>
 <body>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
 <h1>공지사항 상세보기</h1>
 <div>
     <c:choose>
@@ -60,5 +65,7 @@
         </c:when>
     </c:choose>
 </div>
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </body>
 </html>
