@@ -71,7 +71,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         if("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))){
         	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } else {
-            response.sendRedirect(request.getContextPath() + "/errorPage");
+            response.sendRedirect(request.getContextPath() + "/noAuthorityErrorPage");
         }
         return false;
     }
