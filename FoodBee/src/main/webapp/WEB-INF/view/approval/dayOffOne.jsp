@@ -102,9 +102,9 @@ $(document).ready(function() {
 	    let name = '${dayOffOne.drafterEmpName}';  
 	    let dptNo = '${dayOffOne.dptNo}';  
 	
-	    document.getElementById("drafter").innerHTML = drafter+"("+drafterName+")";
-	    document.getElementById("midApprover").innerHTML = midApprover+"("+midApproverName+")";
-	    document.getElementById("finalApprover").innerHTML = finalApprover+"("+finalApproverName+")";
+	    document.getElementById("drafterEmpNoField").innerHTML = drafter+"("+drafterName+")";
+	    document.getElementById("midApproverNoField").innerHTML = midApprover+"("+midApproverName+")";
+	    document.getElementById("finalApproverNoField").innerHTML = finalApprover+"("+finalApproverName+")";
 	    document.getElementById("referrerField").innerHTML = referrerField;
 	    $("#name").val(drafterName);
 	    $("#department").val(dptNo);
