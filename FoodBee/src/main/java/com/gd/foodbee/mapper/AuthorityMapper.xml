@@ -21,4 +21,12 @@
 		WHERE
 			g.dpt_no = #{dptNo};
 	</select>
+	<select id="selectAccessPageListByAuthorityCode" parameterType="String" resultType="String">
+		SELECT
+			access_page
+		FROM
+			authority
+		WHERE
+			authority_code = #{authorityCode};
+	</select>
 </mapper>

@@ -37,5 +37,15 @@ public class AuthorityServiceImpl implements AuthorityService{
 		
 		return authorityMapper.selectAccessPageListByDptNo(dptNo);
 	}
+	
+	// 접근 가능 페이지 리스트(권한 코드)
+	// 파라미터 : String authorityCode
+	// 반환 값 : List<String>
+	// 사용 클래스 : AuthorityInterceptor.preHandle
+	@Override
+	public List<String> getAccessPageListByAuthorityCode(String authorityCode) {
+		
+		return authorityMapper.selectAccessPageListByAuthorityCode(authorityCode);
+	}
 
 }

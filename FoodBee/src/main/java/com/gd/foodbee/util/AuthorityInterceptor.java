@@ -8,6 +8,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.AuthorityService;
+import com.gd.foodbee.service.RankService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 	@Autowired
 	private AuthorityService authorityService; 
 	
+	@Autowired
+	private RankService rankService;
+	
 	@Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
@@ -32,10 +36,18 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         List<String> rankAccessPage = authorityService.getAccessPageListByRankName(emp.getRankName());
         List<String> dptNoAccessPage = authorityService.getAccessPageListByDptNo(emp.getDptNo());
         
+        // 직급 권한 코드
+        String rankAuthorityCode = rankService.getAuthorityCodeByRankName(emp.getRankName());
+        
         log.debug(TeamColor.RED + "requestURI =>" +  requestURI);
         log.debug(TeamColor.RED + "rankAccessPage =>" +  rankAccessPage.toString());
         log.debug(TeamColor.RED + "dptNoAccessPage =>" + dptNoAccessPage.toString());
-        if(!emp.getRankName().equals("R-1")) {
+        log.debug(TeamColor.RED + "rankAuthorityCode =>" + rankAuthorityCode);
+        if(!rankAuthorityCode.equals("R-1")) {
+        	if(rankAuthorityCode.equals("R-3")) {
+        		rankAccessPage.addAll(authorityService.getAccessPageListByAuthorityCode("R-2"));
+        		log.debug(TeamColor.RED + "add rankAccessPage =>" + rankAccessPage.toString());
+        	}
         	for (String page : rankAccessPage) {
         		if (requestURI.contains(page)) {
         			log.debug(page);

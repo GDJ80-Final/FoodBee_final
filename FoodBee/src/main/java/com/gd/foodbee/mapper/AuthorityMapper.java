@@ -18,4 +18,10 @@ public interface AuthorityMapper {
 	// 반환 값 : List<String>
 	// 사용 클래스 : AuthorityService.getAccessPageListByDptNo
 	List<String> selectAccessPageListByDptNo(String dptNo);
+	
+	// 접근 가능 페이지 리스트(권한 코드)
+	// 파라미터 : String authorityCode
+	// 반환 값 : List<String>
+	// 사용 클래스 : AuthorityService.getAccessPageListByAuthorityCode
+	List<String> selectAccessPageListByAuthorityCode(String authorityCode);
 }
