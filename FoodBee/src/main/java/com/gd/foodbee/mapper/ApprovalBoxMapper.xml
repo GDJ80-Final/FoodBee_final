@@ -24,8 +24,8 @@
 	    INNER JOIN 
 	    	emp e ON dd.drafter_emp_no = e.emp_no
 		WHERE 
-		    (mid_approver_no = #{empNo}) OR (final_approver_no = #{empNo}) OR (mid_approval_state = 1 AND final_approval_state = 0)
-		    AND final_approval_state = 1
+		    mid_approver_no = #{empNo}
+		    OR final_approver_no = #{empNo} AND mid_approval_state = 1
 		ORDER BY 
 			dd.create_datetime DESC
 		LIMIT #{beginRow}, #{rowPerPage}

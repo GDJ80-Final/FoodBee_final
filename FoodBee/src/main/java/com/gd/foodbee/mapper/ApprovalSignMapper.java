@@ -20,6 +20,6 @@ public interface ApprovalSignMapper {
 	// 전자 서명 검색
 	// 파라미터 : int empNo
 	// 반환 값 : String
-	// 사용 클래스 : ApprovalSignService.saveApprovalSign	
+	// 사용 클래스 : ApprovalSignService.saveApprovalSign, ApprovalSignService.getApprovalSign
 	String selectApprovalSign(int empNo);
 }

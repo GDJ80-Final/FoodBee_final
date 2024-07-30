@@ -2,6 +2,7 @@ package com.gd.foodbee.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,5 +37,18 @@ public class ApprovalSignController {
 		approvalSignService.saveApprovalSign(empNo, url, request);
 		
 		return url;
+	}
+	
+	@GetMapping("/approval/getSign")
+	@ResponseBody
+	public void getSign(@RequestParam int approverNo) {
+		log.debug(TeamColor.RED + "approverNo" + approverNo);
+		
+		String result = approvalSignService.getApprovalSign(approverNo);
+		
+		if(result.equals("fail")) {
+			throw new RuntimeException();
+		}
+		
 	}
 }

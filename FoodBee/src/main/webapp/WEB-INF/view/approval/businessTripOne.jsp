@@ -55,7 +55,7 @@
 		<div id="updateAppral">
 			<!-- 중간승인자일 경우 -->
 	       	<c:if test="${businessTripOne.midApprovalState == 0 && businessTripOne.midApproverNo eq empNo}">
-	       		<a href="updateMidState?draftDocNo=${businessTripOne.draftDocNo}">중간승인</a> 	
+	       		<a href="updateMidState?draftDocNo=${businessTripOne.draftDocNo}" id="midApproval">중간승인</a> 	
 				<form method="post" action="updateMidRejection" id="rejectionForm">
 				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
 				   <input type="hidden" name="draftDocNo" value="${businessTripOne.draftDocNo}">
@@ -65,7 +65,7 @@
 	       	</c:if>
 	       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
 	       	<c:if test="${businessTripOne.docApproverState != 9 && businessTripOne.midApprovalState == 1 && businessTripOne.finalApprovalState == 0 && businessTripOne.finalApproverNo eq empNo}">
-	       		<a href="updateTripFinalState?draftDocNo=${businessTripOne.draftDocNo}">최종승인</a>
+	       		<a href="updateFinalState?draftDocNo=${businessTripOne.draftDocNo}" id="finalApproval">최종승인</a>
 	       		<form method="post" action="updateFinalRejection" id="rejectionForm">
 				   <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
 				   <input type="hidden" name="draftDocNo" value="${businessTripOne.draftDocNo}">
@@ -128,6 +128,48 @@
 		    } else {
 		        $("#finalApproverSign").text("최종결재 서명전");
 		    }
+		    
+		    $('#midApproval').click(function(e) {
+		        e.preventDefault();
+		       
+		        
+		        let link = $(this);
+		        $.ajax({
+		            url: '${pageContext.request.contextPath}/approval/getSign',
+		            method: 'GET',
+		            data: {
+		            	approverNo : midApprover
+		            },
+		            success: function(json) {
+		                window.location.href = link.attr('href');
+		            },
+		            error: function(xhr, status, error) {
+		                alert("결재사인을 등록을 해주세요");
+		                window.location.href = '${pageContext.request.contextPath}/myPage';
+		            }
+		        });
+		    });
+		    
+		    $('#finalApproval').click(function(e) {
+		        e.preventDefault();
+		       
+		        
+		        let link = $(this);
+		        $.ajax({
+		            url: '${pageContext.request.contextPath}/approval/getSign',
+		            method: 'GET',
+		            data: {
+		            	approverNo : finalApprover
+		            },
+		            success: function(json) {
+		                window.location.href = link.attr('href');
+		            },
+		            error: function(xhr, status, error) {
+		                alert("결재사인을 등록을 해주세요");
+		                window.location.href = '${pageContext.request.contextPath}/myPage';
+		            }
+		        });
+		    });
 		});
 	</script>
 </div>	

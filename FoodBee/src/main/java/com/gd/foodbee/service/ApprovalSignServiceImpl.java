@@ -41,4 +41,21 @@ public class ApprovalSignServiceImpl implements ApprovalSignService{
 		}
 		
 	}
+
+	
+	// 전자 서명 유무 체크
+	// 파라미터 : int empNo
+	// 반환 값 : String
+	// 사용 클래스 : 
+	@Override
+	public String getApprovalSign(int empNo) {
+		if(approvalSignMapper.selectApprovalSign(empNo) == null) {
+			return "fail";
+		}
+		return "succuess";
+	}
+	
+	
+	
+	
 }

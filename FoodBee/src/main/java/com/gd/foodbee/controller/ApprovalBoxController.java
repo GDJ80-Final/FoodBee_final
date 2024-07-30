@@ -21,6 +21,7 @@ import com.gd.foodbee.dto.DraftDocDetailDTO;
 import com.gd.foodbee.dto.DraftDocFileDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.ApprovalBoxService;
+import com.gd.foodbee.service.ApprovalSignService;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,8 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 public class ApprovalBoxController {
+	
 	@Autowired
 	private ApprovalBoxService approvalBoxService;
+	
+	@Autowired
+	private ApprovalSignService approvalSignService;
+	
 	// 결재함
 	// 파라미터 : int currentPage, Model model, HttpSession session
 	// 반환값 : String(view)
@@ -313,6 +319,7 @@ public class ApprovalBoxController {
 			@RequestParam("rejectionReason") String rejectionReason) {
 		log.debug(TeamColor.PURPLE + "rejectionReason=>" + rejectionReason);
 		
+		
 		approvalBoxService.updateMidRejection(draftDocNo, rejectionReason);
 		
 		return "redirect:/approval/approvalBox";
@@ -323,6 +330,7 @@ public class ApprovalBoxController {
 	public String updateFinalRejection(@RequestParam("draftDocNo") int draftDocNo,
 			@RequestParam("rejectionReason") String rejectionReason) {
 		log.debug(TeamColor.PURPLE + "rejectionReason=>" + rejectionReason);
+		
 		
 		approvalBoxService.updateFinalRejection(draftDocNo, rejectionReason);
 		
