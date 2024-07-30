@@ -152,7 +152,7 @@ public class DraftDocServiceImpl implements DraftDocService{
 			log.debug(TeamColor.YELLOW + "referre[0] =>" + referrers[0]);
 			for(int referrer:referrers) {
 				DocReferrerDTO docReferrerDTO = DocReferrerDTO.builder()
-							.docDraftNo(draftDocDTO.getDraftDocNo())
+							.draftDocNo(draftDocDTO.getDraftDocNo())
 							.referrerEmpNo(referrer)
 							.build();
 				log.debug(TeamColor.YELLOW + "docReferrerDTO =>" +docReferrerDTO );

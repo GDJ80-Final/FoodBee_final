@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class DocReferrerDTO {
 	private int referrerEmpNo;
-	private int docDraftNo;
+	private int draftDocNo;
 }
