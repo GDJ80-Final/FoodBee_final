@@ -212,15 +212,28 @@
  	console.log(dptNo);
 	
  	
- 	
+ 	// 팀 권한 코드
+	let teamAuthCode;
  	
  	
 	$(document).ready(function(){
 		
-		// 만일 세션에 담긴 dptNo 가 운영팀일 경우 게시글 강제삭제 버튼 생성
+		// 만일 세션에 담긴 dptNo로 권한 코드를 구해 G-3(운영팀)일 경우 게시글 강제삭제 버튼 생성
+		
+		// 팀 권한 코드 구하기
+		$.ajax({
+			url: '${pageContext.request.contextPath}/auth/getTeamAuth',
+			method:'get',
+			async: false,
+			data:{dptNo : '${emp.dptNo}'},
+			success:function(json){
+				console.log(json);
+				teamAuthCode = json;
+			}
+		})
 
 
-	 	if( dptNo === 'D017' || dptNo === 'D030' || dptNo === 'D043'){
+	 	if(teamAuthCode == 'G-3'){
 	 		// 게시글 강제 삭제 버튼 추가 
 	 		 $('#post-actions').append(
 	 				 '<button type="button" class="button delete" id="deleteBoardByAdmin" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>'
@@ -296,7 +309,7 @@
 							'</tr>'
 						);
 						// 관리자일 경우에만 "관리자 삭제" 버튼 추가
-		                if (dptNo === 'D017' || dptNo === 'D030' || dptNo === 'D043') {
+		                if (teamAuthCode == 'G-3') {
 		                    $('#comment').append('<tr><td><button type="button" id="deleteCommentByAdmin" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button></td></tr>');
 		                }
 					});
