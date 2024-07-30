@@ -31,7 +31,7 @@
         ***********************************-->
         <div class="nav-header">
             <div class="brand-logo">
-                <a href="index.html">
+                <a href="${pageContext.request.contextPath}/home">
                     <span class="brand-title">
                         <img src="#" alt="">
                     </span>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="header-right">
                     <ul class="clearfix">
-                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+            <!--             <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-email-outline"></i>
                                 <span class="badge badge-pill gradient-1">3</span>
                             </a>
@@ -92,7 +92,7 @@
                                     
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                 
                         
                         <!-- 프로필 -->

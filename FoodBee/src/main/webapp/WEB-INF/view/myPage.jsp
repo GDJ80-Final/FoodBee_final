@@ -28,27 +28,38 @@
     </style>
 </head>
 <body>
-    <div class="container form-container">
-        <form>
-            <div class="mb-4">
-                <h3>마이페이지</h3>
-                <div>
-					<button type="button" id="empInfo">개인/인사 정보</button>
-					<button type="button" id="changePw">비밀번호 변경</button>
-					<button type="button" id="dayOffHistory">휴가 내역</button>
-				</div>
-            </div>
-            <div>
-            	<h4 id="title">개인/인사 정보</h4>
-        	</div>
-        	<div id="year">
-        		<select id="yearSelect" class="form-select"></select>
-        	</div>
-			<div id="content">
-	           
-            </div>
-        </form>
-    </div>
+<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	<div class="content-body">
+	    <div class="container form-container">
+	        <form>
+	            <div class="mb-4">
+	                <h3>마이페이지</h3>
+	                <div>
+						<button type="button" id="empInfo">개인/인사 정보</button>
+						<button type="button" id="changePw">비밀번호 변경</button>
+						<button type="button" id="dayOffHistory">휴가 내역</button>
+					</div>
+	            </div>
+	            <div>
+	            	<h4 id="title">개인/인사 정보</h4>
+	        	</div>
+	        	<div id="year">
+	        		<select id="yearSelect" class="form-select"></select>
+	        	</div>
+				<div id="content">
+		           
+	            </div>
+	        </form>
+	    </div>
+	</div>
+</div>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
     
     <!-- 프로필 사진 변경 모달 -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">

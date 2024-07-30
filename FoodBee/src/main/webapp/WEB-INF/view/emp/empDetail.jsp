@@ -23,27 +23,37 @@
     </style>
 </head>
 <body>
-    <div class="container form-container">
-        <form>
-            <div class="mb-4">
-                <h3>사원조회</h3>
-                <div>
-					<button type="button" id="empInfo">개인/인사 정보</button>
-					<button type="button" id="dayOffHistory">휴가 내역</button>
-				</div>
-            </div>
-            <div>
-            	<h4 id="title">개인/인사 정보</h4>
-        	</div>
-        	<div id="year">
-        		<select id="yearSelect" class="form-select"></select>
-        	</div>
-			<div id="content">
-	           
-            </div>
-        </form>
-    </div>
-
+	<div id="main-wrapper">
+		<jsp:include page="../header.jsp"></jsp:include>
+		
+		<jsp:include page="../sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+		  <div class="content-body">
+		    <div class="container form-container">
+		        <form>
+		            <div class="mb-4">
+		                <h3>사원조회</h3>
+		                <div>
+							<button type="button" id="empInfo">개인/인사 정보</button>
+							<button type="button" id="dayOffHistory">휴가 내역</button>
+						</div>
+		            </div>
+		            <div>
+		            	<h4 id="title">개인/인사 정보</h4>
+		        	</div>
+		        	<div id="year">
+		        		<select id="yearSelect" class="form-select"></select>
+		        	</div>
+					<div id="content">
+			           
+		            </div>
+		        </form>
+		    </div>
+		 </div>
+	</div>
+ 		<jsp:include page="../footer.jsp"></jsp:include>
 	<script>
 		let currentPage = 1;
 		let lastPage = 1;

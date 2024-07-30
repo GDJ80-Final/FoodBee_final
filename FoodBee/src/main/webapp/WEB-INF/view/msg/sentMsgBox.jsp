@@ -4,39 +4,57 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoodBee:보낸 쪽지함</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	<button type="button" name="readYN" id="all" value="all">전체</button>
-	<button type="button" name="readYN" id="Y" value="Y">읽음</button>
-	<button type="button" name="readYN" id="N" value="N">안 읽음</button>
-	
-	<button type="button" name="toTrash" id="toTrash">휴지통</button>
-	<a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통으로 이동</a>
-	<table border="1">
-		<thead>
-			<tr>
-				<td><input type="checkbox" id="selectAll"></td>
-				<td>쪽지번호</td>
-				<td>받는이</td>
-				<td>제목</td>
-				<td>보낸일시</td>
-				<td>읽음여부</td>
-			</tr>
-		</thead>
-		<tbody id="msgTableBody">
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 		
-		</tbody>
-	</table>
-	<div>
-	<div id="page">
-        <button type="button" id="first">First</button>
-        <button type="button" id="pre">◁</button>
-        <button type="button" id="next">▶</button>
-        <button type="button" id="last">Last</button>
-	</div>
-	</div>
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  	<div class="content-body">
+			<button type="button" name="readYN" id="all" value="all">전체</button>
+			<button type="button" name="readYN" id="Y" value="Y">읽음</button>
+			<button type="button" name="readYN" id="N" value="N">안 읽음</button>
+			
+			<button type="button" name="toTrash" id="toTrash">휴지통</button>
+			<a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통으로 이동</a>
+			<table border="1">
+				<thead>
+					<tr>
+						<td><input type="checkbox" id="selectAll"></td>
+						<td>쪽지번호</td>
+						<td>받는이</td>
+						<td>제목</td>
+						<td>보낸일시</td>
+						<td>읽음여부</td>
+					</tr>
+				</thead>
+				<tbody id="msgTableBody">
+				
+				</tbody>
+			</table>
+			
+			<div id="page">
+		        <button type="button" id="first">First</button>
+		        <button type="button" id="pre">◁</button>
+		        <button type="button" id="next">▶</button>
+		        <button type="button" id="last">Last</button>
+			</div>
+		</div>
+	 	<!--**********************************
+	            Content body end
+	    ***********************************-->
+ 	</div>
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 	
+
+
 
 <script>
 

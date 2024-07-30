@@ -7,75 +7,87 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	<h1>사원 등록 및 초대</h1>
-	<form method="post" id="addEmpForm" action="${pageContext.request.contextPath}/addEmp">
-		<div>
-			사원번호 <input type="number" id="empNo" name="empNo" readonly>
-			<button type="button" id="createNoBtn">사원번호 생성</button>
-			<span id="noMsg" class="msg">${empNoErrorMsg}</span>
-		</div>
-		<div>
-			사원명 <input type="text" id="empName" name="empName" required>
-			<span id="nameMsg" class="msg">${empNameErrorMsg}</span>
-		</div>
-		<div>
-			상태
-			<select id="empState" name="empState">
-				<option value="">---상태 선택---
-				<option value="0">가발령
-				<option value="1">재직
-			</select> 
-			<span id="stateMsg" class="msg">${empStateErrorMsg}</span>
-		</div>
-		<div>
-			본사/지사
-			<select id="office">
-				<option value="">---본사/지사 선택---</option>
-			</select>
-			<span id="officeMsg" class="msg"></span>
-		</div>
-		<div>
-			부서
-			<select id="dept">
-				<option value="">---부서 선택---</option>
-			</select>
-			<span id="deptMsg" class="msg"></span>
-		</div>
-		<div>
-			팀
-			<select id="team" name="dptNo">
-				<option value="">---팀 선택---</option>
-			</select>
-			<span id="teamMsg" class="msg"></span>
-		</div>
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 		
-		<div>
-			직급 
-			<select id="rankName" name="rankName">
-				<option value="">---직급 선택---
-				<option value="사원">사원
-				<option value="대리">대리
-				<option value="팀장">팀장
-				<option value="부서장">부서장
-				<option value="지서장">지사장
-				<option value="CEO">CEO
-			</select>
-			<span id="rankMsg" class="msg">${rankNameErrorMsg}</span>
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+		  <div class="content-body">
+
+			<h1>사원 등록 및 초대</h1>
+			<form method="post" id="addEmpForm" action="${pageContext.request.contextPath}/addEmp">
+				<div>
+					사원번호 <input type="number" id="empNo" name="empNo" readonly>
+					<button type="button" id="createNoBtn">사원번호 생성</button>
+					<span id="noMsg" class="msg">${empNoErrorMsg}</span>
+				</div>
+				<div>
+					사원명 <input type="text" id="empName" name="empName" required>
+					<span id="nameMsg" class="msg">${empNameErrorMsg}</span>
+				</div>
+				<div>
+					상태
+					<select id="empState" name="empState">
+						<option value="">---상태 선택---
+						<option value="0">가발령
+						<option value="1">재직
+					</select> 
+					<span id="stateMsg" class="msg">${empStateErrorMsg}</span>
+				</div>
+				<div>
+					본사/지사
+					<select id="office">
+						<option value="">---본사/지사 선택---</option>
+					</select>
+					<span id="officeMsg" class="msg"></span>
+				</div>
+				<div>
+					부서
+					<select id="dept">
+						<option value="">---부서 선택---</option>
+					</select>
+					<span id="deptMsg" class="msg"></span>
+				</div>
+				<div>
+					팀
+					<select id="team" name="dptNo">
+						<option value="">---팀 선택---</option>
+					</select>
+					<span id="teamMsg" class="msg"></span>
+				</div>
+				
+				<div>
+					직급 
+					<select id="rankName" name="rankName">
+						<option value="">---직급 선택---
+						<option value="사원">사원
+						<option value="대리">대리
+						<option value="팀장">팀장
+						<option value="부서장">부서장
+						<option value="지서장">지사장
+						<option value="CEO">CEO
+					</select>
+					<span id="rankMsg" class="msg">${rankNameErrorMsg}</span>
+				</div>
+				
+				<div>
+					입사일 <input type="date" id="startDate" name="startDate" required>
+					<span id="dateMsg" class="msg">${startDateErrorMsg}</span>
+				</div>
+				<div>
+					이메일 <input type="email" id="empEmail" name="empEmail" required>
+					<span id="emailMsg" class="msg">${empEmailErrorMsg}</span>
+				</div>
+				<div>
+					<button type="button" id="addBtn">등록 및 초대</button>
+				</div>
+			</form>
 		</div>
-		
-		<div>
-			입사일 <input type="date" id="startDate" name="startDate" required>
-			<span id="dateMsg" class="msg">${startDateErrorMsg}</span>
-		</div>
-		<div>
-			이메일 <input type="email" id="empEmail" name="empEmail" required>
-			<span id="emailMsg" class="msg">${empEmailErrorMsg}</span>
-		</div>
-		<div>
-			<button type="button" id="addBtn">등록 및 초대</button>
-		</div>
-	</form>
-	
+	</div>
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 	
 	<script>
 	$(document).ready(function() {
 		$('#empState').change(function() {

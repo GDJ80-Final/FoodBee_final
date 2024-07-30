@@ -9,45 +9,56 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	<table>
-			<tr>
-				<td>쪽지번호</td>
-				<td>${m.msgNo}</td>
-			</tr>
-			<tr>
-				<td>보낸 이</td>
-				<td>${m.sender}</td>
-			</tr>
-			<tr>
-				<td>받는 이</td>
-				<td>${m.receivers}</td>
-			</tr>
-			<tr>
-				<td>제목</td>
-				<td>${m.title}</td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td>${m.content}</td>
-			</tr>
-		<!-- 파일 다운로드 -->
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 		
-			<c:set var="originalFiles" value="${fn:split(m.originalFiles, ',')}" />
-			<c:set var="saveFiles" value="${fn:split(m.saveFiles, ',')}" />
-			<tr>
-				<td>첨부파일</td>
-				<td>
-				<c:forEach var="file" items="${originalFiles}" varStatus="status">
-					 <a href="${pageContext.request.contextPath}/msg/download?file=${file}" download="${file}">
-					  ${saveFiles[status.index]}
-					 </a>
-
-	                 <br>
-	            </c:forEach>
-	            </td>
-			</tr>
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  	<div class="content-body">
+			<table>
+					<tr>
+						<td>쪽지번호</td>
+						<td>${m.msgNo}</td>
+					</tr>
+					<tr>
+						<td>보낸 이</td>
+						<td>${m.sender}</td>
+					</tr>
+					<tr>
+						<td>받는 이</td>
+						<td>${m.receivers}</td>
+					</tr>
+					<tr>
+						<td>제목</td>
+						<td>${m.title}</td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td>${m.content}</td>
+					</tr>
+				<!-- 파일 다운로드 -->
 				
-	</table>
+					<c:set var="originalFiles" value="${fn:split(m.originalFiles, ',')}" />
+					<c:set var="saveFiles" value="${fn:split(m.saveFiles, ',')}" />
+					<tr>
+						<td>첨부파일</td>
+						<td>
+						<c:forEach var="file" items="${originalFiles}" varStatus="status">
+							 <a href="${pageContext.request.contextPath}/msg/download?file=${file}" download="${file}">
+							  ${saveFiles[status.index]}
+							 </a>
+		
+			                 <br>
+			            </c:forEach>
+			            </td>
+					</tr>
+						
+			</table>
+		</div>
+	</div>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
 	$(document).ready(function(){
 		let empName = '${empName}';

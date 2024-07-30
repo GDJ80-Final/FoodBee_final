@@ -4,34 +4,50 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoodBee: 휴지통</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	
-	<button type="button" name="deleteMsg" id="deleteMsg">삭제</button>
-	<button type="button" name="toMsgBox" id="toMsgBox">쪽지함으로 복구</button>
-	<table border="1">
-		<thead>
-			<tr>
-				<td><input type="checkbox" id="selectAll"></td>
-				<td>쪽지번호</td>
-				<td>보낸이</td>
-				<td>받은이</td>
-				<td>제목</td>
-				<td>휴지통 이동 일시</td>
-			</tr>
-		</thead>
-		<tbody id="msgTableBody">
-		<!-- 동적으로 리스트 추가 -->
-		</tbody>
-	</table>
-	<div id="page">
-        <button type="button" id="first">First</button>
-        <button type="button" id="pre">◁</button>
-        <button type="button" id="next">▶</button>
-        <button type="button" id="last">Last</button>
-	</div>
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  	<div class="content-body">
+			<button type="button" name="deleteMsg" id="deleteMsg">삭제</button>
+			<button type="button" name="toMsgBox" id="toMsgBox">쪽지함으로 복구</button>
+			<table border="1">
+				<thead>
+					<tr>
+						<td><input type="checkbox" id="selectAll"></td>
+						<td>쪽지번호</td>
+						<td>보낸이</td>
+						<td>받은이</td>
+						<td>제목</td>
+						<td>휴지통 이동 일시</td>
+					</tr>
+				</thead>
+				<tbody id="msgTableBody">
+				<!-- 동적으로 리스트 추가 -->
+				</tbody>
+			</table>
+			<div id="page">
+		        <button type="button" id="first">First</button>
+		        <button type="button" id="pre">◁</button>
+		        <button type="button" id="next">▶</button>
+		        <button type="button" id="last">Last</button>
+			</div>
+			 	</div>
+	 	<!--**********************************
+	            Content body end
+	    ***********************************-->
+ 	</div>
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+
 <script>
 	let currentPage = 1;
 	let lastPage = 1;

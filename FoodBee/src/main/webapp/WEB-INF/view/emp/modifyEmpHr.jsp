@@ -23,93 +23,103 @@
     </style>
 </head>
 <body>
-    <div class="container form-container">
-        <form method="post" id="modifyForm" action="${pageContext.request.contextPath}/emp/modifyEmpHr">
-            <div class="mb-4">
-                <h5>사원수정</h5>
-                <div>
-				</div>
-            </div>
-			<div id="content">
-	           <div class="row">
-                    <div class="col-md-4">
-                        <div class="profile-img mb-3">
-                            <img id="profileImg" src="${pageContext.request.contextPath}/upload/profile_img/${empHr.originalFile}" alt="프로필 사진" class="img-fluid rounded mb-3">
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <h5>인사</h5>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">이름</label>
-                                <input type="text" class="form-control" value="${empHr.empName}" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">사원번호</label>
-                                <input type="text" name="empNo" class="form-control" value="${empHr.empNo}" readonly>
-                            </div>
-                            <div class="col-md-6">
-								 <label class="form-label">상태</label>
-								<select id="empState" name="empState" class="form-select">
-									<option value="0">가발령
-									<option value="1">재직
-									<option value="2">휴직
-									<option value="9">퇴직
-								</select> 
-								<span id="stateMsg" class="msg"></span>
-							</div> 
-                            <div class="col-md-6">
-                                <label class="form-label">본사/지사</label>
-								<select id="office" class="form-select">
-									<option value="">---본사/지사 선택---</option>
-								</select>
-								<span id="officeMsg" class="msg"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">부서</label>
-                                <select id="dept" class="form-select">
-									<option value="">---부서 선택---</option>
-								</select>
-								<span id="deptMsg" class="msg"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">팀</label>
-                                <select id="team" name="dptNo" class="form-select">
-									<option value="">---팀 선택---</option>
-								</select>
-								<span id="teamMsg" class="msg"></span>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">직급</label>
-                                <select id="rankName" name="rankName" class="form-select">
-									<option value="">---직급 선택---
-									<option value="사원">사원
-									<option value="대리">대리
-									<option value="팀장">팀장
-									<option value="부서장">부서장
-									<option value="지사장">지사장
-									<option value="CEO">CEO
-								</select>
-								<span id="rankMsg" class="msg"></span>
-                            </div>
-                            <div class="col-md-6">
-							    <label class="form-label">입사 일자</label>
-							    <input type="text" class="form-control" value="${empHr.startDate}" readonly>
-							</div>
-							<div class="col-md-6">
-							    <label class="form-label">퇴사 일자</label>
-							    <input type="date" id="endDate" name="endDate" class="form-control" value="${empHr.endDate}">
-							</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-4">
-                	<button type="button" id="modifyBtn" class="btn btn-danger">수정</button>
-               	</div>
-            </div>
-        </form>
-    </div>
-    
+<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  <div class="content-body">
+	    <div class="container form-container">
+	        <form method="post" id="modifyForm" action="${pageContext.request.contextPath}/emp/modifyEmpHr">
+	            <div class="mb-4">
+	                <h5>사원수정</h5>
+	                <div>
+					</div>
+	            </div>
+				<div id="content">
+		           <div class="row">
+	                    <div class="col-md-4">
+	                        <div class="profile-img mb-3">
+	                            <img id="profileImg" src="${pageContext.request.contextPath}/upload/profile_img/${empHr.originalFile}" alt="프로필 사진" class="img-fluid rounded mb-3">
+	                        </div>
+	                    </div>
+	                    <div class="col-md-8">
+	                        <h5>인사</h5>
+	                        <div class="row g-3">
+	                            <div class="col-md-6">
+	                                <label class="form-label">이름</label>
+	                                <input type="text" class="form-control" value="${empHr.empName}" readonly>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <label class="form-label">사원번호</label>
+	                                <input type="text" name="empNo" class="form-control" value="${empHr.empNo}" readonly>
+	                            </div>
+	                            <div class="col-md-6">
+									 <label class="form-label">상태</label>
+									<select id="empState" name="empState" class="form-select">
+										<option value="0">가발령
+										<option value="1">재직
+										<option value="2">휴직
+										<option value="9">퇴직
+									</select> 
+									<span id="stateMsg" class="msg"></span>
+								</div> 
+	                            <div class="col-md-6">
+	                                <label class="form-label">본사/지사</label>
+									<select id="office" class="form-select">
+										<option value="">---본사/지사 선택---</option>
+									</select>
+									<span id="officeMsg" class="msg"></span>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <label class="form-label">부서</label>
+	                                <select id="dept" class="form-select">
+										<option value="">---부서 선택---</option>
+									</select>
+									<span id="deptMsg" class="msg"></span>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <label class="form-label">팀</label>
+	                                <select id="team" name="dptNo" class="form-select">
+										<option value="">---팀 선택---</option>
+									</select>
+									<span id="teamMsg" class="msg"></span>
+	                            </div>
+	                            <div class="col-md-6">
+	                                <label class="form-label">직급</label>
+	                                <select id="rankName" name="rankName" class="form-select">
+										<option value="">---직급 선택---
+										<option value="사원">사원
+										<option value="대리">대리
+										<option value="팀장">팀장
+										<option value="부서장">부서장
+										<option value="지사장">지사장
+										<option value="CEO">CEO
+									</select>
+									<span id="rankMsg" class="msg"></span>
+	                            </div>
+	                            <div class="col-md-6">
+								    <label class="form-label">입사 일자</label>
+								    <input type="text" class="form-control" value="${empHr.startDate}" readonly>
+								</div>
+								<div class="col-md-6">
+								    <label class="form-label">퇴사 일자</label>
+								    <input type="date" id="endDate" name="endDate" class="form-control" value="${empHr.endDate}">
+								</div>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="text-center mt-4">
+	                	<button type="button" id="modifyBtn" class="btn btn-danger">수정</button>
+	               	</div>
+	            </div>
+	        </form>
+	    </div>
+ 	</div>
+</div>
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>   
     <script>
 	    $(document).ready(function() {
 	    	

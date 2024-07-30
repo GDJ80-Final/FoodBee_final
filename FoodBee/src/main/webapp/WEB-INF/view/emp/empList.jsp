@@ -7,68 +7,80 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-	<h1>사원목록</h1>
-
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  <div class="content-body">
+		<h1>사원목록</h1>
 	
-	<form>
-		<div>
-			본사/지사
-			<select id="office">
-				<option value="">---본사/지사 선택---</option>
-			</select>
-			부서
-			<select id="dept">
-				<option value="">---부서 선택---</option>
-			</select>
-			팀
-			<select id="team">
-				<option value="">---팀 선택---</option>
-			</select>
-			직급 
-			<select id="rankName" name="rankName">
-				<option value="">---직급 선택---
-				<option value="사원">사원
-				<option value="대리">대리
-				<option value="팀장">팀장
-				<option value="부서장">부서장
-				<option value="지서장">지사장
-				<option value="CEO">CEO
-			</select>
-			회원가입 
-			<select id="signupYN" name="signupYN">
-				<option value="">---회원가입 유무---
-				<option value="Y">Y
-				<option value="N">N
-			</select>
+		
+		<form>
+			<div>
+				본사/지사
+				<select id="office">
+					<option value="">---본사/지사 선택---</option>
+				</select>
+				부서
+				<select id="dept">
+					<option value="">---부서 선택---</option>
+				</select>
+				팀
+				<select id="team">
+					<option value="">---팀 선택---</option>
+				</select>
+				직급 
+				<select id="rankName" name="rankName">
+					<option value="">---직급 선택---
+					<option value="사원">사원
+					<option value="대리">대리
+					<option value="팀장">팀장
+					<option value="부서장">부서장
+					<option value="지서장">지사장
+					<option value="CEO">CEO
+				</select>
+				회원가입 
+				<select id="signupYN" name="signupYN">
+					<option value="">---회원가입 유무---
+					<option value="Y">Y
+					<option value="N">N
+				</select>
+			</div>
+			<div>
+				사원 번호
+				<input type="number" id="empNo" name="empNo">
+				
+				<button id="searchBtn" type="button">검색</button>
+			</div>
+		</form>
+		
+		<table border="1" id="empList">
+			<tr>
+				<th>본사/지사</th>
+				<th>부서</th>
+				<th>팀</th>
+				<th>직급</th>
+				<th>사원번호</th>
+				<th>사원명</th>
+				<th>내선번호</th>
+				<th>가입일</th>
+				<th>회원가입 유무</th>
+			</tr>
+		</table>
+		
+		<div id="page">
+	        <button type="button" id="first">First</button>
+	        <button type="button" id="pre">◁</button>
+	        <button type="button" id="next">▶</button>
+	        <button type="button" id="last">Last</button>
 		</div>
-		<div>
-			사원 번호
-			<input type="number" id="empNo" name="empNo">
-			
-			<button id="searchBtn" type="button">검색</button>
+		
 		</div>
-	</form>
-	
-	<table border="1" id="empList">
-		<tr>
-			<th>본사/지사</th>
-			<th>부서</th>
-			<th>팀</th>
-			<th>직급</th>
-			<th>사원번호</th>
-			<th>사원명</th>
-			<th>내선번호</th>
-			<th>가입일</th>
-			<th>회원가입 유무</th>
-		</tr>
-	</table>
-	
-	<div id="page">
-        <button type="button" id="first">First</button>
-        <button type="button" id="pre">◁</button>
-        <button type="button" id="next">▶</button>
-        <button type="button" id="last">Last</button>
 	</div>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
 		let currentPage = 1;
 		let lastPage = 1;

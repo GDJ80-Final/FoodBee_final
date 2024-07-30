@@ -14,26 +14,13 @@
     <style>
     	 body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            margin: 0;
         }
-        .container {
-            width: 900px;
-           
-            background-color: #fff;
-            border: 1px solid #ccc;
-            box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
-        }
+
         .tabs {
             display: flex;
             background-color: #f1f1f1;
             margin:10px;
            
-            
         }
         .tabs div {
             padding: 10px 20px;
@@ -164,7 +151,14 @@
     </style>
 </head>
 <body>
-
+<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	<div class="content-body">
 	<div class="container">
 		    <div class="tabs" id="tabs">
 		        <div class="tab" id="basicForm" data-form="basicForm">
@@ -220,8 +214,16 @@
 			</form>	
 			<!-- 폼 종료 -->
 	    </div>
+	</div>
+</div>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+	    
+	    
+	    
 		<!-- 모달 -->
 		<jsp:include page="./empModal.jsp"></jsp:include>
+		
+		
 <script>
 	$(document).ready(function(){
 		// 호출되면 페이지에 담을 emp 정보 불러오기 

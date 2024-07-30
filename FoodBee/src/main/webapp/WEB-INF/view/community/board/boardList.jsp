@@ -13,13 +13,6 @@
 	    padding: 0;
 	}
 	
-	.container {
-	    width: 80%;
-	    margin: 0 auto;
-	    padding: 20px;
-	    background-color: #fff;
-	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	}
 	
 	h1 {
 	    text-align: center;
@@ -132,50 +125,61 @@
 </style>
 </head>
 <body>
-	<div class="container">
-        <h1>익명 게시판</h1>
-        <div class="tab-menu">
-            <button class="tab-button" id="all">전체</button>
-            <button class="tab-button" id="chat">잡담</button>
-            <button class="tab-button" id="company">회사이야기</button>
-            <button class="tab-button" id="question">질문</button>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>카테고리</th>
-                    <th>제목</th>
-                    <th>작성 일자</th>
-                    <th>조회수</th>
-                    <th>좋아요</th>
-                </tr>
-            </thead>
-            <tbody class="most-liked" id="boardBodyMostLiked">
-               
-            </tbody>
-             <tbody id="boardBody">
-               
-            </tbody>
-        </table>
-        <div class="search-bar">
-            <select name="category" id="category">
-                <option value="all">카테고리</option>
-                <option value="chat">잡담</option>
-                <option value="company">회사이야기</option>
-                <option value="question">질문</option>
-            </select>
-            <input type="text" id="search" placeholder="제목을 입력하세요">
-            <button class="search-button" id="searchButton">검색</button>
-        </div>
-	 	<div id="page">
-	        <button type="button" id="first">First</button>
-	        <button type="button" id="pre">◁</button>
-	        <button type="button" id="next">▶</button>
-	        <button type="button" id="last">Last</button>
-		</div>
-        <button class="write-button" id="writeButton">글쓰기</button>
-    </div>
+<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	<div class="content-body">
+		<div class="container">
+	        <h1>익명 게시판</h1>
+	        <div class="tab-menu">
+	            <button class="tab-button" id="all">전체</button>
+	            <button class="tab-button" id="chat">잡담</button>
+	            <button class="tab-button" id="company">회사이야기</button>
+	            <button class="tab-button" id="question">질문</button>
+	        </div>
+	        <table>
+	            <thead>
+	                <tr>
+	                    <th>번호</th>
+	                    <th>카테고리</th>
+	                    <th>제목</th>
+	                    <th>작성 일자</th>
+	                    <th>조회수</th>
+	                    <th>좋아요</th>
+	                </tr>
+	            </thead>
+	            <tbody class="most-liked" id="boardBodyMostLiked">
+	               
+	            </tbody>
+	             <tbody id="boardBody">
+	               
+	            </tbody>
+	        </table>
+	        <div class="search-bar">
+	            <select name="category" id="category">
+	                <option value="all">카테고리</option>
+	                <option value="chat">잡담</option>
+	                <option value="company">회사이야기</option>
+	                <option value="question">질문</option>
+	            </select>
+	            <input type="text" id="search" placeholder="제목을 입력하세요">
+	            <button class="search-button" id="searchButton">검색</button>
+	        </div>
+		 	<div id="page">
+		        <button type="button" id="first">First</button>
+		        <button type="button" id="pre">◁</button>
+		        <button type="button" id="next">▶</button>
+		        <button type="button" id="last">Last</button>
+			</div>
+	        <button class="write-button" id="writeButton">글쓰기</button>
+	    </div>
+	</div>
+</div>
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
 
 	let currentPage = 1;

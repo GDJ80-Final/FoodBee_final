@@ -102,41 +102,52 @@
 </style>
 </head>
 <body>
-	 <div class="form-container">
-	 	<form method="post" action="${pageContext.request.contextPath}/msg/addMsg" id="addMsgForm" enctype="multipart/form-data">
-	        <table>
-	            <tr>
-	                <td><label for="recipient">받는사람:</label></td>
-	                <td>
-	                    <input type="text" name="recipientEmpNos" id="recipient" readonly>
-	                    <button type="button" class="btn btn-primary" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  							검색 
-						</button>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td><label for="title">제목:</label></td>
-	                <td><input type="text" name="title" id="title"></td>
-	            </tr>
-	            <tr>
-	                <td><label for="msgFile">첨부파일:</label></td>
-	                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple"></td>
-	            </tr>
-	            <tr>
-	                <td colspan="2">
-	                    <label for="message">쪽지쓰기:</label>
-	                    <textarea id="message" name="content" placeholder="쪽지쓰기 textarea"></textarea>
-	                </td>
-	            </tr>
-	            <tr>
-	                <td colspan="2" class="form-buttons">
-	                    <button class="cancel-btn">취소</button>
-	                    <button class="send-btn">보내기</button>
-	                </td>
-	            </tr>
-	        </table>
-        </form>
-    </div>
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  <div class="content-body">
+		 <div class="form-container">
+		 	<form method="post" action="${pageContext.request.contextPath}/msg/addMsg" id="addMsgForm" enctype="multipart/form-data">
+		        <table>
+		            <tr>
+		                <td><label for="recipient">받는사람:</label></td>
+		                <td>
+		                    <input type="text" name="recipientEmpNos" id="recipient" readonly>
+		                    <button type="button" class="btn btn-primary" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+	  							검색 
+							</button>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td><label for="title">제목:</label></td>
+		                <td><input type="text" name="title" id="title"></td>
+		            </tr>
+		            <tr>
+		                <td><label for="msgFile">첨부파일:</label></td>
+		                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple"></td>
+		            </tr>
+		            <tr>
+		                <td colspan="2">
+		                    <label for="message">쪽지쓰기:</label>
+		                    <textarea id="message" name="content" placeholder="쪽지쓰기 textarea"></textarea>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td colspan="2" class="form-buttons">
+		                    <button class="cancel-btn">취소</button>
+		                    <button class="send-btn">보내기</button>
+		                </td>
+		            </tr>
+		        </table>
+	        </form>
+	    </div>
+	</div>
+</div>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
     <!-- 모달 -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
