@@ -41,7 +41,7 @@
                 <td>${m.rsvState}</td>
             </tr>
             <c:if test="${empty list}">
-            	<td colspan="10">
+            	<td colspan="9">
 			    	<h3>취소 된 예약이 없습니다.</h3>
 			    </td>
 			</c:if>
