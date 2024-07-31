@@ -239,7 +239,7 @@ public class ApprovalBoxController {
 	}
 	// 기본기안서 상세보기페이지
 	// 파라미터 : int draftDocNo Model model, HttpSession session
-	// 반환값 : Model model
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/approval/basicFormOne")
 	public String docOne(@RequestParam("draftDocNo") int draftDocNo,
@@ -264,11 +264,13 @@ public class ApprovalBoxController {
         model.addAttribute("basicFormFileOne", basicFormFileOne);
         model.addAttribute("basicReferrerOne", basicReferrerOne); 
         model.addAttribute("empNo", empNo);
+        
 		return"/approval/basicFormOne";
 	}
 	// 지출결의 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
+	// 사용페이지
 	@GetMapping("/approval/chargeOne")
 	public String chargeOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -295,6 +297,9 @@ public class ApprovalBoxController {
 		return "/approval/chargeOne";
 	}
 	// 중간승인 업데이트
+	// 파라미터 : int draftDocNo
+	// 반환값 : /approval/approvalBox
+	// 사용페이지 
 	@GetMapping("/approval/updateMidState")
 	public String updateMidApprove(@RequestParam("draftDocNo") int draftDocNo) {
 		
@@ -304,6 +309,9 @@ public class ApprovalBoxController {
 	}
 	
 	// 최종승인 업데이트
+	// 파라미터 : int draftDocNo
+	// 반환값 : String view(approvalBox)
+	// 사용페이지
 	@GetMapping("/approval/updateFinalState")
 	public String updateFinalApprove(@RequestParam("draftDocNo") int draftDocNo) {
 		log.debug(TeamColor.PURPLE + "draftDocNo="+ draftDocNo);
@@ -314,6 +322,8 @@ public class ApprovalBoxController {
 	}
 	
 	// 중간반려 업데이트
+	// 파라미터 : int draftDocNo
+	// 반환값 : /approval/approvalBox
 	@PostMapping("/approval/updateMidRejection")
 	public String updateMidRejection(@RequestParam("draftDocNo") int draftDocNo,
 			@RequestParam("rejectionReason") String rejectionReason) {
@@ -326,6 +336,9 @@ public class ApprovalBoxController {
 	}
 	
 	// 최종반려 업데이트
+	// 파라미터 : int draftDocNo
+	// 반환값 : /approval/approvalBox
+	// 사용페이지 
 	@PostMapping("/approval/updateFinalRejection")
 	public String updateFinalRejection(@RequestParam("draftDocNo") int draftDocNo,
 			@RequestParam("rejectionReason") String rejectionReason) {
@@ -338,6 +351,9 @@ public class ApprovalBoxController {
 	}
 	
 	// 최종승인
+	// 파라미터 : int draftDocNo
+	// 반환값 : /approval/approvalBox
+	// 사용페이지 
 	@GetMapping("/approval/updateTripFinalState")
 	public String updateFinalState(@RequestParam("draftDocNo") int draftDocNo) {
 		log.debug(TeamColor.PURPLE + "draftDocNo=>" + draftDocNo);

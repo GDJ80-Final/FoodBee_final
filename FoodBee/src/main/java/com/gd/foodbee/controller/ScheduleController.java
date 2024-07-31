@@ -33,7 +33,7 @@ public class ScheduleController {
 	
 	// 캘린더 달력
 	// 파라미터 : int currentPage, Model model, HttpSession session
-	// 반환값 : List<>
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/calendar/schedule")
 	public String schdule(
@@ -81,7 +81,7 @@ public class ScheduleController {
 	}
 	// 일정리스트 페이지
 	// 파라미터 : int currentPage, Model model, HttpSession session
-	// 반환값 : String
+	// 반환값 : String(view)
 	// 사용페이지 
 	@GetMapping("/calendar/scheduleList")
 	public String scheduleList(
@@ -235,7 +235,10 @@ public class ScheduleController {
 		return"/calendar/businessTripScheduleOne";
 	}
 	
-	//휴가내역 상세보기
+	// 휴가내역 상세보기
+	// 파라미터 : int rsvNo, Model model
+	// 반환값 : String (view)
+	// 사용페이지 
 	@GetMapping("/calendar/roomRsvOne")
 	public String roomRsvOne(@RequestParam("rsvNo")int rsvNo,
 			Model model) {
@@ -267,7 +270,7 @@ public class ScheduleController {
 	// 개인일정 수정액션
 	// 파라미터 : int schdeulNo, ScheduleDTO scheduleDTO
 	// 반환값 : int 
-	// 사용페이지 : modifySchedule
+	// 사용페이지
 	@PostMapping("/calendar/modifyScheduleAction")
 	public String modifyScheduleAction(@RequestParam("scheduleNo")int scheduleNo,
 			ScheduleDTO scheduleDTO) {
@@ -293,7 +296,7 @@ public class ScheduleController {
 	
 	// 일정추가
 	// 파라미터 : Model model, HttpSession session
-	// 반환값 : String
+	// 반환값 : String(view)
 	// 사용페이지
 	@GetMapping("/calendar/addSchedule")
 	public String addSchedule(Model model, HttpSession session) {
