@@ -31,7 +31,7 @@ public class DraftBoxController {
 	// 기안함
 	// 파라미터 : int currentPage, Model model, HttpSession session
 	// 반환값 : DraftBoxStateDTO stateBox
-	// 사용페이지 : 
+	// 사용페이지 : /approval/draftBox
 	@GetMapping("/approval/draftBox")
 	public String draftBox(
 			@RequestParam(name="currentPage", defaultValue="1") int currentPage,
@@ -68,7 +68,7 @@ public class DraftBoxController {
 	// 기안서 전체보기
 	// 파라미터 : currentPage, empNo
 	// 반환값 : Map<>docList
-	// 사용페이지 : draftBox
+	// 사용페이지 : /approval/draftBox
 	@GetMapping("/approval/allDocList")
 	@ResponseBody
 	public Map<String,Object> allDocList(int currentPage, int empNo) {
@@ -90,7 +90,7 @@ public class DraftBoxController {
 	// 결재대기상태 리스트
 	// 파라미터 : currentPage, empNo
 	// 반환값 : Map<>zeroTypeList
-	// 사용페이지 : draftBox
+	// 사용페이지 : /approval/draftBox
 	@GetMapping("/approval/zeroDocList")
 	@ResponseBody
 	public Map<String,Object> zeroDocList(int currentPage, int empNo){
@@ -112,7 +112,7 @@ public class DraftBoxController {
 	// 승인중상태 리스트
 	// 파라미터 : currentPage, empNo
 	// 반환값 : Map<>oneTypeList
-	// 사용페이지 : draftBox
+	// 사용페이지 : /approval/draftBox
 	@GetMapping("/approval/oneDocList")
 	@ResponseBody
 	public Map<String,Object> oneDocList(int currentPage, int empNo){
@@ -132,7 +132,7 @@ public class DraftBoxController {
 	// 승인완료상태 리스트
 	// 파라미터 : currentPage, empNo
 	// 반환값 : Map<>twoTypeList
-	// 사용페이지 : draftBox
+	// 사용페이지 : /approval/draftBox
 	@GetMapping("/approval/twoDocList")
 	@ResponseBody
 	public Map<String,Object> twoDocList(int currentPage, int empNo){
@@ -153,7 +153,7 @@ public class DraftBoxController {
 	// 반려상태 리스트
 	// 파라미터 : currentPage, empNo
 	// 반환값 : Map<>nineTypeList
-	// 사용페이지 : draftBox
+	// 사용페이지 : /approval/draftBox
 	@GetMapping("/approval/nineDocList")
 	@ResponseBody
 	public Map<String,Object> nineDocList(int currentPage, int empNo){

@@ -1,134 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.DraftBoxMapper">
-<!-- 전체 기안리스트 -->
-<select id="allDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-		dd.drafter_emp_no drafterEmpNo,
-		dt.tmp_name tmpName,
-		dd.title title,
-		dd.doc_approver_state_no approvalStateNo,
-		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
-		dd.mid_approval_state midApprovalState,
-		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
-		dd.final_approval_state finalApprovalState,
-		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
-	FROM 
-		draft_doc dd
-	INNER JOIN 
-		doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	WHERE 
-		dd.drafter_emp_no = #{empNo} 
-	ORDER BY 
-		createDatetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 결재대기상태 리스트 -->
-<select id="zeroTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-		dd.drafter_emp_no drafterEmpNo,
-		dt.tmp_name tmpName,
-		dd.title title,
-		dd.doc_approver_state_no approvalStateNo,
-		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
-		dd.mid_approval_state midApprovalState,
-		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
-		dd.final_approval_state finalApprovalState,
-		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
-	FROM 
-		draft_doc dd
-	INNER JOIN 
-		doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	WHERE 
-		dd.drafter_emp_no = #{empNo} AND dd.doc_approver_state_no = 0
-	ORDER BY 
-		createDatetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 승인중상태 리스트 -->
-<select id="oneTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-		dd.drafter_emp_no drafterEmpNo,
-		dt.tmp_name tmpName,
-		dd.title title,
-		dd.doc_approver_state_no approvalStateNo,
-		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
-		dd.mid_approval_state midApprovalState,
-		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
-		dd.final_approval_state finalApprovalState,
-		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
-	FROM 
-		draft_doc dd
-	INNER JOIN 
-		doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	WHERE 
-		dd.drafter_emp_no = #{empNo} AND dd.doc_approver_state_no = 1
-	ORDER BY 
-		createDatetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 승인완료상태 리스트 -->
-<select id="twoTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-		dd.drafter_emp_no drafterEmpNo,
-		dt.tmp_name tmpName,
-		dd.title title,
-		dd.doc_approver_state_no approvalStateNo,
-		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
-		dd.mid_approval_state midApprovalState,
-		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
-		dd.final_approval_state finalApprovalState,
-		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
-	FROM 
-		draft_doc dd
-	INNER JOIN 
-		doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	WHERE 
-		dd.drafter_emp_no = #{empNo} AND dd.doc_approver_state_no = 2
-	ORDER BY 
-		createDatetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 반려상태 리스트 -->
-<select id="nineTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
-	SELECT 
-		dd.draft_doc_no draftDocNo,
-		dd.drafter_emp_no drafterEmpNo,
-		dt.tmp_name tmpName,
-		dd.title title,
-		dd.doc_approver_state_no approvalStateNo,
-		DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
-		dd.mid_approval_state midApprovalState,
-		DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
-		dd.final_approval_state finalApprovalState,
-		DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
-	FROM 
-		draft_doc dd
-	INNER JOIN 
-		doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	WHERE 
-		dd.drafter_emp_no = #{empNo} AND dd.doc_approver_state_no = 9
-	ORDER BY 
-		createDatetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 기안함 상태값 -->
-<select id="getStateBox" resultType="com.gd.foodbee.dto.DraftBoxStateDTO" parameterType="int">
-    SELECT
-        SUM(CASE WHEN dd.doc_approver_state_no = 0 THEN 1 ELSE 0 END) AS zeroState,
-        SUM(CASE WHEN dd.doc_approver_state_no = 1 THEN 1 ELSE 0 END) AS oneState,
-        SUM(CASE WHEN dd.doc_approver_state_no = 2 THEN 1 ELSE 0 END) AS twoState,
-        SUM(CASE WHEN dd.doc_approver_state_no = 9 THEN 1 ELSE 0 END) AS nineState
-    FROM 
-        draft_doc dd
-    LEFT JOIN
-        emp e ON dd.drafter_emp_no = e.emp_no
-    WHERE 
-        dd.drafter_emp_no = #{empNo}
-</select>
-
+	<!-- 전체 기안리스트 -->
+	<select id="allDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+			dd.drafter_emp_no drafterEmpNo,
+			dt.tmp_name tmpName,
+			dd.title title,
+			dd.doc_approver_state_no approvalStateNo,
+			DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+			dd.mid_approval_state midApprovalState,
+			DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+			dd.final_approval_state finalApprovalState,
+			DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
+		FROM 
+			draft_doc dd
+		INNER JOIN 
+			doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		WHERE 
+			dd.drafter_emp_no = #{empNo} 
+		ORDER BY 
+			createDatetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 결재대기상태 리스트 -->
+	<select id="zeroTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+			dd.drafter_emp_no drafterEmpNo,
+			dt.tmp_name tmpName,
+			dd.title title,
+			dd.doc_approver_state_no approvalStateNo,
+			DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+			dd.mid_approval_state midApprovalState,
+			DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+			dd.final_approval_state finalApprovalState,
+			DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
+		FROM 
+			draft_doc dd
+		INNER JOIN 
+			doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		WHERE 
+			dd.drafter_emp_no = #{empNo} 
+		AND dd.doc_approver_state_no = 0
+		ORDER BY 
+			createDatetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 승인중상태 리스트 -->
+	<select id="oneTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+			dd.drafter_emp_no drafterEmpNo,
+			dt.tmp_name tmpName,
+			dd.title title,
+			dd.doc_approver_state_no approvalStateNo,
+			DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+			dd.mid_approval_state midApprovalState,
+			DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+			dd.final_approval_state finalApprovalState,
+			DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
+		FROM 
+			draft_doc dd
+		INNER JOIN 
+			doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		WHERE 
+			dd.drafter_emp_no = #{empNo} 
+		AND dd.doc_approver_state_no = 1
+		ORDER BY 
+			createDatetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 승인완료상태 리스트 -->
+	<select id="twoTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+			dd.drafter_emp_no drafterEmpNo,
+			dt.tmp_name tmpName,
+			dd.title title,
+			dd.doc_approver_state_no approvalStateNo,
+			DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+			dd.mid_approval_state midApprovalState,
+			DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+			dd.final_approval_state finalApprovalState,
+			DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
+		FROM 
+			draft_doc dd
+		INNER JOIN 
+			doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		WHERE 
+			dd.drafter_emp_no = #{empNo} 
+		AND dd.doc_approver_state_no = 2
+		ORDER BY 
+			createDatetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 반려상태 리스트 -->
+	<select id="nineTypeDocList" parameterType="Map" resultType="com.gd.foodbee.dto.DraftBoxDTO">
+		SELECT 
+			dd.draft_doc_no draftDocNo,
+			dd.drafter_emp_no drafterEmpNo,
+			dt.tmp_name tmpName,
+			dd.title title,
+			dd.doc_approver_state_no approvalStateNo,
+			DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
+			dd.mid_approval_state midApprovalState,
+			DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
+			dd.final_approval_state finalApprovalState,
+			DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
+		FROM 
+			draft_doc dd
+		INNER JOIN 
+			doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		WHERE 
+			dd.drafter_emp_no = #{empNo} 
+		AND dd.doc_approver_state_no = 9
+		ORDER BY 
+			createDatetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 기안함 상태값 -->
+	<select id="getStateBox" resultType="com.gd.foodbee.dto.DraftBoxStateDTO" parameterType="int">
+	    SELECT
+	        SUM(CASE WHEN dd.doc_approver_state_no = 0 THEN 1 ELSE 0 END) AS zeroState,
+	        SUM(CASE WHEN dd.doc_approver_state_no = 1 THEN 1 ELSE 0 END) AS oneState,
+	        SUM(CASE WHEN dd.doc_approver_state_no = 2 THEN 1 ELSE 0 END) AS twoState,
+	        SUM(CASE WHEN dd.doc_approver_state_no = 9 THEN 1 ELSE 0 END) AS nineState
+	    FROM 
+	        draft_doc dd
+	    LEFT JOIN
+	        emp e ON dd.drafter_emp_no = e.emp_no
+	    WHERE 
+	        dd.drafter_emp_no = #{empNo}
+	</select>
 </mapper>

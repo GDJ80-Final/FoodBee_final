@@ -118,15 +118,18 @@ public interface ApprovalBoxMapper {
 	// 출장 테이블insert
 	// 파라미터 : Map
 	// 반환값 : int
+	// 사용클래스 : approvalBoxService.updateFinalState
 	int insertBusinessTrip(Map<String, Object> m);
 	
 	// 휴가테이블 insert
 	// 파라미터 : Map
 	// 반환값 : int
+	// 사용클래스 : approvalBoxService.updateFinalState
 	int insertDayOffTrip(Map<String, Object> m);
 	
 	// 매출테이블 insert
 	// 파라미터 : Map
 	// 반환값 : int
+	// 사용클래스 : approvalBoxService.updateFinalState
 	int insertRevenue(Map<String, Object> m);
 }

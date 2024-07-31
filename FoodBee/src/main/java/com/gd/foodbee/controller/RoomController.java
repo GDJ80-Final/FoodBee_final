@@ -34,7 +34,7 @@ public class RoomController {
 	private RoomMapper roomMapper;
 
 	// 회의실 목록
-	// 파라미터 : X
+	// 파라미터 : Model model
 	// 반환 값 : List<RoomDTO>
 	// 사용 페이지 : /room/roomList
 	@GetMapping("/room/roomList")	
@@ -178,7 +178,7 @@ public class RoomController {
 	}
 	
 	// 취소된 예약목록
-	// 파라미터 : X
+	// 파라미터 : Model model, int currentPage
 	// 반환 값 : List<HashMap<String, Object>>
 	// 사용 페이지 : /room/cancleRsvList
 	@GetMapping("/room/cancleRsvList")

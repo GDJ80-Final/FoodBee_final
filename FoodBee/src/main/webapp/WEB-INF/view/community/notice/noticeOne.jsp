@@ -15,10 +15,11 @@
 <!-- 템플릿 div -->
 <div class="content-body">
 <h1>공지사항 상세보기</h1>
+<a href="noticeList">돌아가기</a>
 <div>
     <c:choose>
         <c:when test="${not empty one}">
-            <table>
+            <table border="1">
                 <tr>
                     <th>제목</th> 
                     <td>${one[0].title}</td>
@@ -49,8 +50,6 @@
                     </td>
                 </tr>
             </table>
-            
-            <a href="noticeList">돌아가기</a>
             <c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
 			    <form action="deleteNotice" method="post">
 	                <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">

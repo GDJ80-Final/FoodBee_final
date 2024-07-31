@@ -1,469 +1,477 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.ScheduleMapper">
-<!-- 일정 테이블의 개인일정 -->
-<select id="scheduleList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
-	SELECT 
-		schedule_no scheduleNo, 
-		emp_no empNo, 
-		title, 
-		content, 
-		type, 
-		start_datetime startDatetime, 
-		end_datetime endDatetime 
-	FROM 
-		schedule
-	WHERE 
-		emp_no = #{empNo} AND type='개인'
-</select>
-<!-- 일정 테이블의 팀일정 -->
-<select id="teamScheduleList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
-	SELECT 
-		s.schedule_no scheduleNo, 
-		s.emp_no empNo, 
-		s.title title, 
-		s.content content, 
-		s.type type, 
-		s.start_datetime startDatetime, 
-		s.end_datetime endDatetime 
-	FROM 
-		schedule s
-	LEFT JOIN 
-		emp e
-	ON s.emp_no = e.emp_no
-	WHERE 
-		e.dpt_no = #{dptNo} AND s.`type`='팀';
-</select>
-<!-- 팀별 회의실 예약리스트 -->
-<select id="roomRsvList" parameterType="HashMap" resultType="HashMap">
-	SELECT  
-		r.rsv_no rsvNo, 
-		r.room_no roomNo, 
-		r.emp_no empNo, 
-		r.rsv_date rsvDate, 
-		r.start_datetime startDatetime, 
-		r.end_datetime endDatetime, 
-		r.`type` type, 
-		r.rsv_state rsvState,
-		ri.room_place roomPlace,
-		e.dpt_no dptNo, 
-		e.emp_name empName
-	FROM 
-		room_rsv r
-	INNER JOIN 
-		emp e ON r.emp_no = e.emp_no
-	INNER JOIN 
-		room_info ri ON r.room_no = ri.room_no
-	WHERE 
-		e.dpt_no = #{dptNo} AND r.rsv_state = 1
-
-</select>
-<!-- 팀원 휴가내역리스트 -->
-<select id="dayOffList" parameterType="HashMap" resultType="HashMap">
-	SELECT 
-		h.start_date startDate, 
-		h.end_date endDate, 
-		h.emergency_contact contact, 
-		e.emp_name name
-	FROM 
-		day_off_history h
-	INNER JOIN 
-		emp e ON h.emp_no = h.emp_no
-	WHERE 
-		e.dpt_no = #{dptNo}
-		AND 
-		h.cancle_YN = 'N'
-</select>
-<!-- 팀원 출장리스트 -->
-<select id="businessTripList" parameterType="HashMap" resultType="HashMap">
-	SELECT 
-		e.emp_name name, 
-		b.business_trip_destination destination, 
-		b.start_date startDate, 
-		b.end_date endDate, 
-		b.emergency_contact contact
-	FROM 
-		business_trip_history b
-	LEFT JOIN 
-		emp e ON b.emp_no = e.emp_no
-	WHERE 
-		e.dpt_no = #{dptNo}
-		AND 
-		b.cancle_YN = 'N'
-</select>
-<!-- 개인일정 전체리스트 -->
-<select id="personalList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
-	SELECT 
-		schedule_no scheduleNo, 
-		emp_no empNo, 
-		title, 
-		content, 
-		type, 
-		start_datetime startDatetime, 
-		end_datetime endDatetime
-	FROM 
-		schedule
-	WHERE 
-    	emp_no = #{empNo} 
-    <if test="search != null and search != ''">
-        AND (
-            title LIKE '%${search}%'
-            OR content LIKE '%${search}%'
-            OR DATE_FORMAT(start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-            OR DATE_FORMAT(start_datetime, '%m-%d') LIKE '%${search}%'
-            OR DATE_FORMAT(end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
-            OR DATE_FORMAT(end_datetime, '%m-%d') LIKE '%${search}%'
-        )
-    </if>
-    AND type = '개인'
-	ORDER BY 
-		start_datetime DESC
-	LIMIT #{beginRow}, #{rowPerPage}
-</select>
-<!-- 팀일정 전체 리스트 -->
-<select id="teamList" parameterType="HashMap" resultType="HashMap">
-	   SELECT 
-        '휴가' AS category,
-        '휴가내역' AS title,
-        DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') AS startDate,
-        DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') AS endDate,
-        e.emp_name AS empName,
-        doh.day_off_no AS uniqueNo
-    FROM 
-        day_off_history doh
-    JOIN 
-        emp e ON doh.emp_no = e.emp_no
-    WHERE 
-        e.dpt_no = #{dptNo}
-        <if test="search != null and search != ''">
-            AND (
-                '휴가내역' LIKE '%${search}%'
-                OR DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR e.emp_name LIKE '%${search}%'
-            )
-        </if>
-    UNION ALL
-    
-    SELECT
-        '출장' AS category,
-        '출장내역' AS title,
-        DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') AS startDate,
-        DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') AS endDate,
-        e.emp_name AS empName,
-        bth.business_trip_no AS uniqueNo
-    FROM 
-        business_trip_history bth
-    JOIN 
-        emp e ON bth.emp_no = e.emp_no
-    WHERE 
-        e.dpt_no = #{dptNo}
-        <if test="search != null and search != ''">
-            AND (
-                '출장내역' LIKE '%${search}%'
-                OR DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR e.emp_name LIKE '%${search}%'
-            )
-        </if>
-    UNION ALL
-    
-    SELECT
-        sc.type AS category,
-        sc.title AS title,
-        DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') AS startDate,
-        DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') AS endDate,
-        e.emp_name AS empName,
-        sc.schedule_no AS uniqueNo
-    FROM
-        schedule sc
-    JOIN 
-        emp e ON sc.emp_no = e.emp_no
-    WHERE 
-        sc.type = '팀' 
-        AND e.dpt_no = #{dptNo}
-        <if test="search != null and search != ''">
-            AND (
-                '팀' LIKE '%${search}%'
-                OR sc.title LIKE '%${search}%'
-                OR DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR e.emp_name LIKE '%${search}%'
-            )
-        </if>
-    ORDER BY
-        startDate DESC
-    LIMIT #{beginRow}, #{rowPerPage};
-</select>
-<!-- 회의일정 전체리스트 -->
-<select id="roomList" resultType="HashMap" parameterType="HashMap">
-     SELECT 
-        '개인' AS category,
-        r.rsv_no AS rsvNo,
-        ri.room_name AS roomName,
-        r.meeting_title AS meetingTitle,
-        ri.room_place AS roomPlace,
-        r.`type` AS type,
-        DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
-        DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
-        e.emp_name AS empName
-    FROM 
-        room_rsv r
-    INNER JOIN 
-        emp e ON r.emp_no = e.emp_no
-    INNER JOIN 
-        room_info ri ON ri.room_no = r.room_no
-    WHERE 
-        r.rsv_state = 1
-        AND r.`type` = 'personal'
-        AND e.emp_no = #{empNo}
-        <if test="search != null and search != ''">
-            AND (
-                '개인' LIKE '%${search}%'
-                OR r.meeting_title LIKE '%${search}%'
-                OR ri.room_name LIKE '%${search}%'
-                OR ri.room_place LIKE '%${search}%'
-                OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR e.emp_name LIKE '%${search}%'
-            )
-        </if>
-        
-    UNION ALL
-    
-    SELECT 
-        '팀' AS category,
-        r.rsv_no AS rsvNo,
-        ri.room_name AS roomName,
-        r.meeting_title AS meetingTitle,
-        ri.room_place AS roomPlace,
-        r.`type` AS type,
-        DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
-        DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
-        e.emp_name AS empName
-    FROM 
-        room_rsv r
-    INNER JOIN 
-        emp e ON r.emp_no = e.emp_no
-    INNER JOIN 
-        room_info ri ON ri.room_no = r.room_no
-    WHERE 
-        r.rsv_state = 1 AND r.`type` = 'team' AND e.dpt_no = #{dptNo}
-        <if test="search != null and search != ''">
-            AND (
-                '팀' LIKE '%${search}%'
-                OR r.meeting_title LIKE '%${search}%'
-                OR ri.room_name LIKE '%${search}%'
-                OR ri.room_place LIKE '%${search}%'
-                OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
-                OR e.emp_name LIKE '%${search}%'
-            )
-        </if>
-    ORDER BY 
-    	startDatetime DESC
-    LIMIT #{beginRow}, #{rowPerPage};
-</select>
-<!-- 개인일정 총갯수 -->
-<select id="countPerson" resultType="int" parameterType="int">
-    SELECT COUNT(*)
-    FROM schedule
-    WHERE emp_no = #{empNo} AND TYPE='개인'
-</select>
-<!-- 팀일정 총갯수 -->
-<select id="countTeam" resultType="int" parameterType="String">
-	SELECT COUNT(*) 
-	FROM (
-	    SELECT 
+	<!-- 일정 테이블의 개인일정 -->
+	<select id="scheduleList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
+		SELECT 
+			schedule_no scheduleNo, 
+			emp_no empNo, 
+			title, 
+			content, 
+			type, 
+			start_datetime startDatetime, 
+			end_datetime endDatetime 
+		FROM 
+			schedule
+		WHERE 
+			emp_no = #{empNo} 
+		AND type='개인'
+	</select>
+	<!-- 일정 테이블의 팀일정 -->
+	<select id="teamScheduleList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
+		SELECT 
+			s.schedule_no scheduleNo, 
+			s.emp_no empNo, 
+			s.title title, 
+			s.content content, 
+			s.type type, 
+			s.start_datetime startDatetime, 
+			s.end_datetime endDatetime 
+		FROM 
+			schedule s
+		LEFT JOIN 
+			emp e ON s.emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+		AND s.`type`='팀';
+	</select>
+	<!-- 팀별 회의실 예약리스트 -->
+	<select id="roomRsvList" parameterType="HashMap" resultType="HashMap">
+		SELECT  
+			r.rsv_no rsvNo, 
+			r.room_no roomNo, 
+			r.emp_no empNo, 
+			r.rsv_date rsvDate, 
+			r.start_datetime startDatetime, 
+			r.end_datetime endDatetime, 
+			r.`type` type, 
+			r.rsv_state rsvState,
+			ri.room_place roomPlace,
+			e.dpt_no dptNo, 
+			e.emp_name empName
+		FROM 
+			room_rsv r
+		INNER JOIN 
+			emp e ON r.emp_no = e.emp_no
+		INNER JOIN 
+			room_info ri ON r.room_no = ri.room_no
+		WHERE 
+			e.dpt_no = #{dptNo} 
+		AND r.rsv_state = 1
+	</select>
+	<!-- 팀원 휴가내역리스트 -->
+	<select id="dayOffList" parameterType="HashMap" resultType="HashMap">
+		SELECT 
+			h.start_date startDate, 
+			h.end_date endDate, 
+			h.emergency_contact contact, 
+			e.emp_name name
+		FROM 
+			day_off_history h
+		INNER JOIN 
+			emp e ON h.emp_no = h.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo}
+		AND h.cancle_YN = 'N'
+	</select>
+	<!-- 팀원 출장리스트 -->
+	<select id="businessTripList" parameterType="HashMap" resultType="HashMap">
+		SELECT 
+			e.emp_name name, 
+			b.business_trip_destination destination, 
+			b.start_date startDate, 
+			b.end_date endDate, 
+			b.emergency_contact contact
+		FROM 
+			business_trip_history b
+		LEFT JOIN 
+			emp e ON b.emp_no = e.emp_no
+		WHERE 
+			e.dpt_no = #{dptNo}
+		AND b.cancle_YN = 'N'
+	</select>
+	<!-- 개인일정 전체리스트 -->
+	<select id="personalList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
+		SELECT 
+			schedule_no scheduleNo, 
+			emp_no empNo, 
+			title, 
+			content, 
+			type, 
+			start_datetime startDatetime, 
+			end_datetime endDatetime
+		FROM 
+			schedule
+		WHERE 
+	    	emp_no = #{empNo} 
+	    <if test="search != null and search != ''">
+	        AND (
+	            title LIKE '%${search}%'
+	            OR content LIKE '%${search}%'
+	            OR DATE_FORMAT(start_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(start_datetime, '%m-%d') LIKE '%${search}%'
+	            OR DATE_FORMAT(end_datetime, '%Y-%m-%d %H:%i:%s') LIKE '%${search}%'
+	            OR DATE_FORMAT(end_datetime, '%m-%d') LIKE '%${search}%'
+	        )
+	    </if>
+	    AND type = '개인'
+		ORDER BY 
+			start_datetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
+	</select>
+	<!-- 팀일정 전체 리스트 -->
+	<select id="teamList" parameterType="HashMap" resultType="HashMap">
+		   SELECT 
 	        '휴가' AS category,
-	        doh.start_date AS startDate,
-	        doh.end_date AS endDate,
-	        doh.emp_no AS empNo,
-	        '휴가내역' AS title
+	        '휴가내역' AS title,
+	        DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') AS startDate,
+	        DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') AS endDate,
+	        e.emp_name AS empName,
+	        doh.day_off_no AS uniqueNo
 	    FROM 
 	        day_off_history doh
 	    JOIN 
 	        emp e ON doh.emp_no = e.emp_no
 	    WHERE 
 	        e.dpt_no = #{dptNo}
+	        <if test="search != null and search != ''">
+	            AND (
+	                '휴가내역' LIKE '%${search}%'
+	                OR DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR e.emp_name LIKE '%${search}%'
+	            )
+	        </if>
 	    UNION ALL
+	    
 	    SELECT
 	        '출장' AS category,
-	        bth.start_date AS startDate,
-	        bth.end_date AS endDate,
-	        bth.emp_no AS empNo,
-	        '출장내역' AS title
+	        '출장내역' AS title,
+	        DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') AS startDate,
+	        DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') AS endDate,
+	        e.emp_name AS empName,
+	        bth.business_trip_no AS uniqueNo
 	    FROM 
 	        business_trip_history bth
 	    JOIN 
 	        emp e ON bth.emp_no = e.emp_no
 	    WHERE 
 	        e.dpt_no = #{dptNo}
+	        <if test="search != null and search != ''">
+	            AND (
+	                '출장내역' LIKE '%${search}%'
+	                OR DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR e.emp_name LIKE '%${search}%'
+	            )
+	        </if>
 	    UNION ALL
+	    
 	    SELECT
 	        sc.type AS category,
-	        sc.start_datetime AS startDate,
-	        sc.end_datetime AS endDate,
-	        sc.emp_no AS empNo,
-	        sc.title AS title
+	        sc.title AS title,
+	        DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') AS startDate,
+	        DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') AS endDate,
+	        e.emp_name AS empName,
+	        sc.schedule_no AS uniqueNo
 	    FROM
 	        schedule sc
 	    JOIN 
 	        emp e ON sc.emp_no = e.emp_no
 	    WHERE 
 	        sc.type = '팀' 
+        AND e.dpt_no = #{dptNo}
+	        <if test="search != null and search != ''">
+	            AND (
+	                '팀' LIKE '%${search}%'
+	                OR sc.title LIKE '%${search}%'
+	                OR DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR e.emp_name LIKE '%${search}%'
+	            )
+	        </if>
+	    ORDER BY
+	        startDate DESC
+	    LIMIT 
+	    	#{beginRow}, #{rowPerPage};
+	</select>
+	<!-- 회의일정 전체리스트 -->
+	<select id="roomList" resultType="HashMap" parameterType="HashMap">
+	     SELECT 
+	        '개인' AS category,
+	        r.rsv_no AS rsvNo,
+	        ri.room_name AS roomName,
+	        r.meeting_title AS meetingTitle,
+	        ri.room_place AS roomPlace,
+	        r.`type` AS type,
+	        DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
+	        DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
+	        e.emp_name AS empName
+	    FROM 
+	        room_rsv r
+	    INNER JOIN 
+	        emp e ON r.emp_no = e.emp_no
+	    INNER JOIN 
+	        room_info ri ON ri.room_no = r.room_no
+	    WHERE 
+	        r.rsv_state = 1
+        AND r.`type` = 'personal'
+        AND e.emp_no = #{empNo}
+	        <if test="search != null and search != ''">
+	            AND (
+	                '개인' LIKE '%${search}%'
+	                OR r.meeting_title LIKE '%${search}%'
+	                OR ri.room_name LIKE '%${search}%'
+	                OR ri.room_place LIKE '%${search}%'
+	                OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR e.emp_name LIKE '%${search}%'
+	            )
+	        </if>
+	        
+	    UNION ALL
+	    
+	    SELECT 
+	        '팀' AS category,
+	        r.rsv_no AS rsvNo,
+	        ri.room_name AS roomName,
+	        r.meeting_title AS meetingTitle,
+	        ri.room_place AS roomPlace,
+	        r.`type` AS type,
+	        DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') AS startDatetime, 
+	        DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') AS endDatetime, 
+	        e.emp_name AS empName
+	    FROM 
+	        room_rsv r
+	    INNER JOIN 
+	        emp e ON r.emp_no = e.emp_no
+	    INNER JOIN 
+	        room_info ri ON ri.room_no = r.room_no
+	    WHERE 
+	        r.rsv_state = 1 AND r.`type` = 'team' AND e.dpt_no = #{dptNo}
+	        <if test="search != null and search != ''">
+	            AND (
+	                '팀' LIKE '%${search}%'
+	                OR r.meeting_title LIKE '%${search}%'
+	                OR ri.room_name LIKE '%${search}%'
+	                OR ri.room_place LIKE '%${search}%'
+	                OR DATE_FORMAT(r.start_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR DATE_FORMAT(r.end_datetime, '%Y-%m-%d %H:%i') LIKE '%${search}%'
+	                OR e.emp_name LIKE '%${search}%'
+	            )
+	        </if>
+	    ORDER BY 
+	    	startDatetime DESC
+	    LIMIT 
+	    	#{beginRow}, #{rowPerPage};
+	</select>
+	<!-- 개인일정 총갯수 -->
+	<select id="countPerson" resultType="int" parameterType="int">
+	    SELECT COUNT(*)
+	    FROM 
+	    	schedule
+	    WHERE 
+	    	emp_no = #{empNo} 
+    	AND TYPE='개인'
+	</select>
+	<!-- 팀일정 총갯수 -->
+	<select id="countTeam" resultType="int" parameterType="String">
+		SELECT COUNT(*) 
+		FROM (
+		    SELECT 
+		        '휴가' AS category,
+		        doh.start_date AS startDate,
+		        doh.end_date AS endDate,
+		        doh.emp_no AS empNo,
+		        '휴가내역' AS title
+		    FROM 
+		        day_off_history doh
+		    JOIN 
+		        emp e ON doh.emp_no = e.emp_no
+		    WHERE 
+		        e.dpt_no = #{dptNo}
+		    UNION ALL
+		    SELECT
+		        '출장' AS category,
+		        bth.start_date AS startDate,
+		        bth.end_date AS endDate,
+		        bth.emp_no AS empNo,
+		        '출장내역' AS title
+		    FROM 
+		        business_trip_history bth
+		    JOIN 
+		        emp e ON bth.emp_no = e.emp_no
+		    WHERE 
+		        e.dpt_no = #{dptNo}
+		    UNION ALL
+		    SELECT
+		        sc.type AS category,
+		        sc.start_datetime AS startDate,
+		        sc.end_datetime AS endDate,
+		        sc.emp_no AS empNo,
+		        sc.title AS title
+		    FROM
+		        schedule sc
+		    JOIN 
+		        emp e ON sc.emp_no = e.emp_no
+		    WHERE 
+		        sc.type = '팀' 
 	        AND e.dpt_no = #{dptNo}
-	) AS count_result;
-</select>
-<!-- 회의실 예약일정 총갯수 -->
-<select id="countRoom" parameterType="String" resultType="int">
-	SELECT COUNT(*)
-	FROM 
-	    room_rsv r
-	INNER JOIN 
-	    emp e ON r.emp_no = e.emp_no
-	WHERE 
-	    dpt_no = #{dptNo} AND r.rsv_state = 1
-</select>
-<!-- 일정 상세보기 -->
-<select id="scheduleOne" parameterType="Map" resultType="Map">
-	SELECT 
-	    s.schedule_no scheduleNo,
-	    s.emp_no empNo,
-	    s.title title,
-	    s.content content,
-	    s.type type,
-	    s.start_datetime startDatetime,
-	    s.end_datetime endDatetime,
-	    e.emp_name empName
-	FROM 
-	    schedule s
-	INNER JOIN 
-	    emp e ON s.emp_no = e.emp_no
-	WHERE 
-	    s.schedule_no =  #{scheduleNo}
-</select>
-<!-- 팀일정 상세보기 -->
-<select id="teamScheduleOne" parameterType="Map" resultType="Map">
-	SELECT 
-	    e.emp_name empName,
-	    sc.title title,
-	    sc.content content,
-	    sc.type type,
-	    sc.start_datetime startDateTime,
-	    sc.end_datetime endDateTime
-	FROM 
-	    schedule sc
-	LEFT JOIN 
-	    emp e ON sc.emp_no = e.emp_no 
-	WHERE 
-	    sc.type = '팀' 
+		) AS count_result;
+	</select>
+	<!-- 회의실 예약일정 총갯수 -->
+	<select id="countRoom" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM 
+		    room_rsv r
+		INNER JOIN 
+		    emp e ON r.emp_no = e.emp_no
+		WHERE 
+		    dpt_no = #{dptNo} 
+	    AND r.rsv_state = 1
+	</select>
+	<!-- 일정 상세보기 -->
+	<select id="scheduleOne" parameterType="Map" resultType="Map">
+		SELECT 
+		    s.schedule_no scheduleNo,
+		    s.emp_no empNo,
+		    s.title title,
+		    s.content content,
+		    s.type type,
+		    s.start_datetime startDatetime,
+		    s.end_datetime endDatetime,
+		    e.emp_name empName
+		FROM 
+		    schedule s
+		INNER JOIN 
+		    emp e ON s.emp_no = e.emp_no
+		WHERE 
+		    s.schedule_no =  #{scheduleNo}
+	</select>
+	<!-- 팀일정 상세보기 -->
+	<select id="teamScheduleOne" parameterType="Map" resultType="Map">
+		SELECT 
+		    e.emp_name empName,
+		    sc.title title,
+		    sc.content content,
+		    sc.type type,
+		    sc.start_datetime startDateTime,
+		    sc.end_datetime endDateTime
+		FROM 
+		    schedule sc
+		LEFT JOIN 
+		    emp e ON sc.emp_no = e.emp_no 
+		WHERE 
+		    sc.type = '팀' 
 	    AND sc.schedule_no = #{scheduleNo}
-</select>
-<!-- 휴가내역 상세보기 -->
-<select id="dayOffOne" parameterType="Map" resultType="com.gd.foodbee.dto.DayOffDTO">
-	SELECT 
-		doh.day_off_no dayOffNo,
-		e.emp_name empName, 
-		doh.start_date startDate, 
-		doh.end_date endDate,
-		doh.emergency_contact emergencyContact, 
-		doh.cancle_YN cancleYN,
-		doh.cancle_reason cancleReason,
-		doh.use_year useYear,
-		doh.type_name typeName,
-		dd.content content
-	FROM 
-		day_off_history doh
-	LEFT JOIN 
-		draft_doc dd ON dd.draft_doc_no = doh.draft_doc_no
-	LEFT JOIN 
-		emp e ON doh.emp_no = e.emp_no
-	WHERE 
-		day_off_no = #{scheduleNo}
-</select>
-<!-- 출장내역 상세보기 -->
-<select id="tripHistoryOne" parameterType="Map" resultType="com.gd.foodbee.dto.TripHistoryDTO">
-	SELECT 
-		e.emp_name empName, 
-		e.emp_no empNo, 
-		bth.business_trip_destination businessTripDestination,
-		bth.start_date startDate,
-		bth.end_date endDate,
-		bth.cancle_YN cancleYN,
-		bth.cancle_reason cancleReason,
-		bth.emergency_contact emergencyContact,
-		dd.content
-	FROM 
-		business_trip_history bth
-	LEFT JOIN 
-		draft_doc dd ON bth.draft_doc_no = dd.draft_doc_no
-	LEFT JOIN 
-		emp e ON bth.emp_no = e.emp_no
-	WHERE 
-		bth.business_trip_no = #{scheduleNo}
-</select>
-<!-- 회의실 에약 상세보기 -->
-<select id="roomRsvOne" parameterType="int" resultType="com.gd.foodbee.dto.RoomRsvDTO">
-	SELECT 
-		ri.room_name roomName, 
-		e.emp_name empName, 
-		ri.room_place roomPlace,
-		rr.meeting_title meetingTitle, 
-		rr.meeting_reason meetingReason, 
-		rr.users users, 
-		rr.start_datetime startTime, 
-		rr.end_datetime endTime,
-		rr.`type` type, 
-		rr.rsv_state rsvState
-	FROM 
-		room_rsv rr
-	INNER JOIN 
-		emp e ON rr.emp_no = e.emp_no
-	INNER JOIN 
-		room_info ri ON rr.room_no = ri.room_no
-	WHERE 
-		rr.rsv_no = #{rsvNo}
-</select>
-
-<!-- 일정 수정하기 -->
-<update id="modifySchedule" parameterType="Map">
-	UPDATE 
-		schedule
-	SET 
-		title = #{scheduleDTO.title},
-		content = #{scheduleDTO.content},
-		start_datetime = #{scheduleDTO.startDatetime},
-		end_datetime = #{scheduleDTO.endDatetime}
-	WHERE
-		emp_no = #{scheduleDTO.empNo} AND schedule_no = #{scheduleNo}
-</update>
-<!-- 일정 삭제 -->
-<delete id="deleteSchedule" parameterType="int">
-	DELETE 
-	FROM 
-		schedule
-	WHERE schedule_no = #{scheduleNo}
-</delete>
-<!-- 일정추가 -->
-<insert id="insertSchedule" parameterType="com.gd.foodbee.dto.ScheduleDTO">
-	<selectKey resultType="int" order="AFTER" keyProperty="scheduleNo">
-        SELECT LAST_INSERT_ID()
-    </selectKey>
-	    INSERT INTO schedule (
-	        emp_no,
-	        title,
-	        content,
-	        TYPE,
-	        start_datetime,
-	        end_datetime
-	    ) VALUES (
-	        #{empNo},
-	        #{title},
-	        #{content},
-	        #{type},
-	        #{startDatetime},
-	        #{endDatetime}
-	    );
-</insert>
+	</select>
+	<!-- 휴가내역 상세보기 -->
+	<select id="dayOffOne" parameterType="Map" resultType="com.gd.foodbee.dto.DayOffDTO">
+		SELECT 
+			doh.day_off_no dayOffNo,
+			e.emp_name empName, 
+			doh.start_date startDate, 
+			doh.end_date endDate,
+			doh.emergency_contact emergencyContact, 
+			doh.cancle_YN cancleYN,
+			doh.cancle_reason cancleReason,
+			doh.use_year useYear,
+			doh.type_name typeName,
+			dd.content content
+		FROM 
+			day_off_history doh
+		LEFT JOIN 
+			draft_doc dd ON dd.draft_doc_no = doh.draft_doc_no
+		LEFT JOIN 
+			emp e ON doh.emp_no = e.emp_no
+		WHERE 
+			day_off_no = #{scheduleNo}
+	</select>
+	<!-- 출장내역 상세보기 -->
+	<select id="tripHistoryOne" parameterType="Map" resultType="com.gd.foodbee.dto.TripHistoryDTO">
+		SELECT 
+			e.emp_name empName, 
+			e.emp_no empNo, 
+			bth.business_trip_destination businessTripDestination,
+			bth.start_date startDate,
+			bth.end_date endDate,
+			bth.cancle_YN cancleYN,
+			bth.cancle_reason cancleReason,
+			bth.emergency_contact emergencyContact,
+			dd.content
+		FROM 
+			business_trip_history bth
+		LEFT JOIN 
+			draft_doc dd ON bth.draft_doc_no = dd.draft_doc_no
+		LEFT JOIN 
+			emp e ON bth.emp_no = e.emp_no
+		WHERE 
+			bth.business_trip_no = #{scheduleNo}
+	</select>
+	<!-- 회의실 에약 상세보기 -->
+	<select id="roomRsvOne" parameterType="int" resultType="com.gd.foodbee.dto.RoomRsvDTO">
+		SELECT 
+			ri.room_name roomName, 
+			e.emp_name empName, 
+			ri.room_place roomPlace,
+			rr.meeting_title meetingTitle, 
+			rr.meeting_reason meetingReason, 
+			rr.users users, 
+			rr.start_datetime startTime, 
+			rr.end_datetime endTime,
+			rr.`type` type, 
+			rr.rsv_state rsvState
+		FROM 
+			room_rsv rr
+		INNER JOIN 
+			emp e ON rr.emp_no = e.emp_no
+		INNER JOIN 
+			room_info ri ON rr.room_no = ri.room_no
+		WHERE 
+			rr.rsv_no = #{rsvNo}
+	</select>
+	
+	<!-- 일정 수정하기 -->
+	<update id="modifySchedule" parameterType="Map">
+		UPDATE 
+			schedule
+		SET 
+			title = #{scheduleDTO.title},
+			content = #{scheduleDTO.content},
+			start_datetime = #{scheduleDTO.startDatetime},
+			end_datetime = #{scheduleDTO.endDatetime}
+		WHERE
+			emp_no = #{scheduleDTO.empNo} 
+		AND schedule_no = #{scheduleNo}
+	</update>
+	<!-- 일정 삭제 -->
+	<delete id="deleteSchedule" parameterType="int">
+		DELETE 
+		FROM 
+			schedule
+		WHERE 
+			schedule_no = #{scheduleNo}
+	</delete>
+	<!-- 일정추가 -->
+	<insert id="insertSchedule" parameterType="com.gd.foodbee.dto.ScheduleDTO">
+		<selectKey resultType="int" order="AFTER" keyProperty="scheduleNo">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey>
+		    INSERT INTO schedule (
+		        emp_no,
+		        title,
+		        content,
+		        TYPE,
+		        start_datetime,
+		        end_datetime
+		    ) VALUES (
+		        #{empNo},
+		        #{title},
+		        #{content},
+		        #{type},
+		        #{startDatetime},
+		        #{endDatetime}
+		    );
+	</insert>
 </mapper>

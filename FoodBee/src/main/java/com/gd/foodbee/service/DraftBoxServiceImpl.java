@@ -20,7 +20,10 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 	DraftBoxMapper draftBoxMapper;
 	private static final int ROW_PER_PAGE = 10;
 	 
-	//전체 기안리스트
+	// 전체 기안리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<DraftBoxDTO>
+	// 사용클래스 : DraftBoxController.allDocList
 	@Override
 	public List<DraftBoxDTO> getAllDocList(int currentPage, int empNo){
 		int beginRow = 0;
@@ -28,20 +31,31 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
 		return draftBoxMapper.allDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
-	//*전체 기안리스트의 총갯수
+	
+	// 전체 기안리스트의 총갯수
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.allDocList
 	@Override
 	public int countAllDocList(int empNo) {
 		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
 		return stateBox.totalCount();
 	}
-	//*전체 기안리스트의 Lastpage
+	
+	// 전체 기안리스트의 Lastpage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.allDocList
 	@Override
 	 public int getAllDocLastPage(int empNo) {
         int totalCount = countAllDocList(empNo);
         return (int) Math.ceil((double) totalCount / ROW_PER_PAGE);
     }
 	
-	//결재대기 기안서리스트
+	// 결재대기 기안서리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<DraftBoxDTO>
+	// 사용클래스 : DraftBoxController.zeroDocList
 	@Override
 	public List<DraftBoxDTO> getZeroDocList(int currentPage, int empNo){
 		int beginRow = 0;
@@ -49,20 +63,31 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
         return draftBoxMapper.zeroTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
-	//*결재대기 리스트 총갯수
+	
+	// 결재대기 리스트 총갯수
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.zeroDocList
 	@Override
 	public int countZeroDocList(int empNo) {
 		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
         return stateBox.getZeroState();
 	}
-	//*결재대기 리스트 LastPage
+	
+	// 결재대기 리스트 LastPage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.zeroDocList
 	@Override
 	public int getZeroDocLastPage(int empNo) {
 		int zeroStateCount = countZeroDocList(empNo);
         return (int) Math.ceil((double) zeroStateCount / ROW_PER_PAGE);
 	}
 	
-	//승인중 기안서리스트
+	// 승인중 기안서리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<DraftBoxDTO>
+	// 사용클래스 : DraftBoxController.oneDocList
 	@Override
 	public List<DraftBoxDTO> getOneDocList(int currentPage, int empNo){
 		int beginRow = 0;
@@ -70,20 +95,31 @@ public class DraftBoxServiceImpl implements DraftBoxService {
 
         return draftBoxMapper.oneTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
-	//*승인중 리스트 총갯수
+	
+	// 승인중 리스트 총갯수
+	// 파라미터 : int empNo;
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.oneDocList
 	@Override
 	public int countOneDocList(int empNo) {
 		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
         return stateBox.getOneState();
 	}
-	//*승인중 리스트 LastPage
+	
+	// 승인중 리스트 LastPage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.zeroDocList
 	@Override
 	public int getOneDocLastPage(int empNo) {
 		int oneStateCount = countOneDocList(empNo);
         return (int) Math.ceil((double) oneStateCount / ROW_PER_PAGE);
 	}
 	
-	//승인완료 기안서리스트
+	// 승인완료 기안서리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<DraftBoxDTO>
+	// 사용클래스 : DraftBoxController.twoDocList
 	@Override
 	public List<DraftBoxDTO> getTwoDocList(int currentPage, int empNo){
 		int beginRow = 0;
@@ -92,20 +128,29 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
         return draftBoxMapper.twoTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
-	//*승인완료 리스트 총갯수
+	// 승인완료 리스트 총갯수
+	// 파라미터 : int empNo;
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.twoDocList
 	@Override
 	public int countTwoDocList(int empNo) {
 		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
         return stateBox.getTwoState();
 	}
-	//*승인완료 리스트 LastPage
+	// 승인완료 리스트 LastPage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.twoDocList
 	@Override
 	public int getTwoDocLastPage(int empNo) {
 		int twoStateCount = countTwoDocList(empNo);
         return (int) Math.ceil((double) twoStateCount / ROW_PER_PAGE);
 	}
 	
-	//반려 기안서리스트
+	// 반려 기안서리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<DraftBoxDTO>
+	// 사용클래스 : DraftBoxController.nineDocList
 	@Override
 	public List<DraftBoxDTO> getNineDocList(int currentPage, int empNo){
 		int beginRow = 0;
@@ -113,20 +158,29 @@ public class DraftBoxServiceImpl implements DraftBoxService {
         
         return draftBoxMapper.nineTypeDocList(empNo, beginRow, ROW_PER_PAGE);
 	}
-	//*반려 리스트 총갯수
+	// 반려 리스트 총갯수
+	// 파라미터 : int empNo;
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.nineDocList
 	@Override
 	public int countNineDocList(int empNo) {
 		DraftBoxStateDTO stateBox = draftBoxMapper.getStateBox(empNo);
         return stateBox.getNineState();
 	}
-	//*반려 리스트 LastPage
+	//반려 리스트 LastPage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : DraftBoxController.nineDocList
 	@Override
 	public int getNineDocLastPage(int empNo) {
 		int twoStateCount = countNineDocList(empNo);
         return (int) Math.ceil((double) twoStateCount / ROW_PER_PAGE);
 	}
 	
-	//결재상태 건수(결재대기, 승인중, 승인완료, 반려)
+	// 결재상태 건수(결재대기, 승인중, 승인완료, 반려)
+	// 파라미터 : int empNo
+	// 반환값 : DraftBoxStateDTO
+	// 사용클래스 : DraftBoxController.draftBox
 	@Override
 	public DraftBoxStateDTO getStateBox(int empNo) {
 		return draftBoxMapper.getStateBox(empNo);

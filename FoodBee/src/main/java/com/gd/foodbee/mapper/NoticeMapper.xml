@@ -23,12 +23,12 @@
 		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
 		    (g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
-			AND
-		    n.type = '부서') 
-			OR
-			n.type ='전사원'
-		ORDER BY n.create_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		AND n.type = '부서') 
+			OR n.type ='전사원'
+		ORDER BY 
+			n.create_datetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 전사원공지사항 리스트 -->
 	<select id="allEmpNoticeList" parameterType="HashMap" resultType="HashMap">
@@ -48,8 +48,10 @@
 			emp e ON n.writer_emp_no = e.emp_no
 		WHERE 
 			type = '전사원'
-		ORDER BY n.create_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		ORDER BY
+			n.create_datetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 부서별공지사항 리스트 -->
 	<select id="allDptNoticeList" parameterType="HashMap" resultType="HashMap">
@@ -73,10 +75,11 @@
 		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
 		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
-			AND
-		    n.type = '부서'
-		ORDER BY n.create_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		AND n.type = '부서'
+		ORDER BY 
+			n.create_datetime DESC
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 공지사항의 총갯수 구하기 -->
 	<select id="countNoticeList" resultType="int">
@@ -89,10 +92,8 @@
 		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
 		   ( g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
-			AND
-		    n.type = '부서')
-		OR 
-			n.type='전사원';
+		AND n.type = '부서') 
+		OR n.type='전사원';
     </select>
     <!-- 전사원유형의 공지사항 총갯수 -->
     <select id="countEmpNoticeList" resultType="int">
@@ -116,8 +117,7 @@
 		    `group` g ON e.dpt_no = g.dpt_no
 		WHERE 
 		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
-			AND
-		    n.type = '부서'
+		AND n.type = '부서'
     </select>
     <!-- 공지사항 추가 -->
    <insert id="insertNotice" parameterType="com.gd.foodbee.dto.NoticeDTO">

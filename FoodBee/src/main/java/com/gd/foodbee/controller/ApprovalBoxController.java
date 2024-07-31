@@ -40,7 +40,7 @@ public class ApprovalBoxController {
 	// 결재함
 	// 파라미터 : int currentPage, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/approvalBox
 	@GetMapping("/approval/approvalBox")
 	public String approvalBox(@RequestParam(name="currentPage", defaultValue="1") int currentPage,
             Model model, HttpSession session) {
@@ -86,7 +86,7 @@ public class ApprovalBoxController {
 	// 결재함 전체 리스트
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : Map<>allList
-	// 사용페이지 : /approval/approvalBox
+	// 사용페이지 : /approval/approvalList
 	@GetMapping("/approval/approvalList")
 	@ResponseBody
 	public Map<String,Object>approvalListAll(int currentPage, int empNo){
@@ -105,10 +105,10 @@ public class ApprovalBoxController {
 		
 		return allList;
 	}
-	//결재함 미결 리스트
+	// 결재함 미결 리스트
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : Map<>allZeroList
-	//사용페이지
+	//사용페이지 : /approval/approvalZeroList
 	@GetMapping("/approval/approvalZeroList")
 	@ResponseBody
 	public Map<String,Object>approvalZeroList(int currentPage, int empNo){
@@ -127,10 +127,10 @@ public class ApprovalBoxController {
 		
 		return allZeroList;
 	}
-	//결재함 기결 리스트
+	// 결재함 기결 리스트
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : Map<>OneZeroList
-	//사용페이지
+	// 사용페이지 : /approval/approvalOneList
 	@GetMapping("/approval/approvalOneList")
 	@ResponseBody
 	public Map<String,Object>approvalOneList(int currentPage, int empNo){
@@ -151,7 +151,7 @@ public class ApprovalBoxController {
 	// 매출보고 상세보기페이지
 	// 파라미터 : int draftDocNo
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/revenueOne
 	@GetMapping("/approval/revenueOne")
 	public String revenueOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -180,7 +180,7 @@ public class ApprovalBoxController {
 	// 휴가신청 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/dayOffOne
 	@GetMapping("/approval/dayOffOne")
 	public String dayOffOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -210,7 +210,7 @@ public class ApprovalBoxController {
 	// 출장신청 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/businessTripOne
 	@GetMapping("/approval/businessTripOne")
 	public String businessTripOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -240,7 +240,7 @@ public class ApprovalBoxController {
 	// 기본기안서 상세보기페이지
 	// 파라미터 : int draftDocNo Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/basicFormOne
 	@GetMapping("/approval/basicFormOne")
 	public String docOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -270,7 +270,7 @@ public class ApprovalBoxController {
 	// 지출결의 상세보기페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지
+	// 사용페이지 : /approval/chargeOne
 	@GetMapping("/approval/chargeOne")
 	public String chargeOne(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -299,7 +299,7 @@ public class ApprovalBoxController {
 	// 중간승인 업데이트
 	// 파라미터 : int draftDocNo
 	// 반환값 : /approval/approvalBox
-	// 사용페이지 
+	// 사용페이지 : /approval/updateMidState
 	@GetMapping("/approval/updateMidState")
 	public String updateMidApprove(@RequestParam("draftDocNo") int draftDocNo) {
 		
@@ -310,8 +310,8 @@ public class ApprovalBoxController {
 	
 	// 최종승인 업데이트
 	// 파라미터 : int draftDocNo
-	// 반환값 : String view(approvalBox)
-	// 사용페이지
+	// 반환값 : /approval/approvalBox
+	// 사용페이지 : /approval/updateFinalState
 	@GetMapping("/approval/updateFinalState")
 	public String updateFinalApprove(@RequestParam("draftDocNo") int draftDocNo) {
 		log.debug(TeamColor.PURPLE + "draftDocNo="+ draftDocNo);
@@ -324,6 +324,7 @@ public class ApprovalBoxController {
 	// 중간반려 업데이트
 	// 파라미터 : int draftDocNo
 	// 반환값 : /approval/approvalBox
+	// 사용페이지 : /approval/updateMidRejection
 	@PostMapping("/approval/updateMidRejection")
 	public String updateMidRejection(@RequestParam("draftDocNo") int draftDocNo,
 			@RequestParam("rejectionReason") String rejectionReason) {
@@ -338,7 +339,7 @@ public class ApprovalBoxController {
 	// 최종반려 업데이트
 	// 파라미터 : int draftDocNo
 	// 반환값 : /approval/approvalBox
-	// 사용페이지 
+	// 사용페이지 : /approval/updateFinalRejection
 	@PostMapping("/approval/updateFinalRejection")
 	public String updateFinalRejection(@RequestParam("draftDocNo") int draftDocNo,
 			@RequestParam("rejectionReason") String rejectionReason) {
@@ -353,7 +354,7 @@ public class ApprovalBoxController {
 	// 최종승인
 	// 파라미터 : int draftDocNo
 	// 반환값 : /approval/approvalBox
-	// 사용페이지 
+	// 사용페이지 : /approval/updateTripFinalState
 	@GetMapping("/approval/updateTripFinalState")
 	public String updateFinalState(@RequestParam("draftDocNo") int draftDocNo) {
 		log.debug(TeamColor.PURPLE + "draftDocNo=>" + draftDocNo);

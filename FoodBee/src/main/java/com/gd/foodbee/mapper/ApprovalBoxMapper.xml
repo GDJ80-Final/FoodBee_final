@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.ApprovalBoxMapper">
-<!-- 전체 결재함 리스트 -->
+	<!-- 전체 결재함 리스트 -->
 	<select id="getApprovalListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
 		SELECT 
 			dd.draft_doc_no draftDocNo,
@@ -25,10 +25,12 @@
 	    	emp e ON dd.drafter_emp_no = e.emp_no
 		WHERE 
 		    mid_approver_no = #{empNo}
-		    OR final_approver_no = #{empNo} AND mid_approval_state = 1
+	    OR final_approver_no = #{empNo} 
+	    AND mid_approval_state = 1
 		ORDER BY 
 			dd.create_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 미결 리스트 -->
 	<select id="getZeroListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
@@ -53,10 +55,14 @@
 	    INNER JOIN 
 	    	emp e ON dd.drafter_emp_no = e.emp_no
 		WHERE 
-			(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND mid_approval_state = 1 AND final_approval_state = 0)
+			(mid_approver_no = #{empNo} AND mid_approval_state = 0) 
+			OR (final_approver_no = #{empNo} 
+			AND mid_approval_state = 1 
+			AND final_approval_state = 0)
 		ORDER BY 
 				dd.create_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 기결 리스트 -->
 	<select id="getOneListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
@@ -80,10 +86,14 @@
 	    INNER JOIN 
 	    	emp e ON dd.drafter_emp_no = e.emp_no
 		WHERE 
-			(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
+			(mid_approver_no = #{empNo} 
+			AND mid_approval_state = 1) 
+			OR (final_approver_no = #{empNo} 
+			AND final_approval_state = 1)
 		ORDER BY 
 				dd.create_datetime DESC
-		LIMIT #{beginRow}, #{rowPerPage}
+		LIMIT 
+			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 전체 리스트 총갯수 -->
 	<select id="countAllList" resultType="int" parameterType="int">
@@ -91,7 +101,8 @@
 		FROM 
 			draft_doc
 		WHERE 
-	    (mid_approver_no = #{empNo} OR final_approver_no = #{empNo})
+	    	(mid_approver_no = #{empNo} 
+	    OR final_approver_no = #{empNo})
 	</select>
 	<!-- 미결 리스트 총갯수 -->
 	<select id="countZeroTypeList" resultType="int" parameterType="int">
@@ -99,7 +110,8 @@
 		FROM 
 			draft_doc
 		WHERE 
-			(mid_approver_no = #{empNo} AND mid_approval_state = 0) OR (final_approver_no = #{empNo} AND final_approval_state = 0)
+			(mid_approver_no = #{empNo} AND mid_approval_state = 0) 
+		OR (final_approver_no = #{empNo} AND final_approval_state = 0)
 	</select>
 	<!-- 기결 리스트 총갯수 -->
 	<select id="countOneTypeList" resultType="int" parameterType="int">
@@ -107,7 +119,10 @@
 		FROM 
 			draft_doc
 		WHERE 
-			(mid_approver_no = #{empNo} AND mid_approval_state = 1) OR (final_approver_no = #{empNo} AND final_approval_state = 1)
+			(mid_approver_no = #{empNo} 
+			AND mid_approval_state = 1) 
+			OR (final_approver_no = #{empNo} 
+			AND final_approval_state = 1)
 	</select>
 	<!-- 결재함 기안서 상태값 -->
 	<select id="getStateBox" parameterType="com.gd.foodbee.dto.ApprovalBoxStateDTO">
@@ -123,7 +138,8 @@
 	   LEFT JOIN 
 	   		doc_referrer dr ON dd.draft_doc_no = dr.draft_doc_no
 	   WHERE
-	   	(dd.mid_approver_no = #{empNo} OR dd.final_approver_no = #{empNo})
+	   		(dd.mid_approver_no = #{empNo} 
+	   		OR dd.final_approver_no = #{empNo})
 	</select>
 	<!-- 기안서 상세-->
 	<select id="getDocOne" resultType="Map" parameterType="int">
@@ -227,18 +243,18 @@
 	</select>
 	<!-- 휴가 상세보기 -->
 	<select id="getDayOffOne" resultType="Map" parameterType="int">
-	SELECT 
-		doh.start_date startDate, 
-		doh.end_date endDate, 
-		doh.cancle_YN cancleYN, 
-		doh.cancle_reason cancleReason, 
-		doh.use_year useYear, 
-		doh.emergency_contact emergencyContact, 
-		doh.type_name typeName
-	FROM 
-		day_off_history doh
-	WHERE 
-		doh.draft_doc_no = #{draftDocNo}
+		SELECT 
+			doh.start_date startDate, 
+			doh.end_date endDate, 
+			doh.cancle_YN cancleYN, 
+			doh.cancle_reason cancleReason, 
+			doh.use_year useYear, 
+			doh.emergency_contact emergencyContact, 
+			doh.type_name typeName
+		FROM 
+			day_off_history doh
+		WHERE 
+			doh.draft_doc_no = #{draftDocNo}
 	</select>
 	<!-- 중간결재 승인 -->
 	<update id="updateMidState" parameterType="int">

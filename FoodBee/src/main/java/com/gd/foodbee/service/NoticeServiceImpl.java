@@ -42,7 +42,10 @@ public class NoticeServiceImpl implements NoticeService{
     
     private static final int ROW_PER_PAGE = 10;
     
-    //전체 공지사항리스트
+    // 전체 공지사항리스트
+	// 파라미터 : int currentPage, String dptNo
+	// 반환값 : List<>
+	// 사용클래스 : NoticeController.noticeList,allNoticeList
     @Override
     public List<HashMap<String,Object>> getNoticeList(int currentPage, String dptNo){
         
@@ -52,7 +55,10 @@ public class NoticeServiceImpl implements NoticeService{
         return noticeMapper.noticeList(dptNo, beginRow, ROW_PER_PAGE);
     }
     
-    //전사원 공지사항리스트
+    // 전사원 공지사항리스트
+	// 파라미터 : int currentPage
+	// 반환값 : List<>
+	// 사용클래스 : NoticeController.allEmpList
     @Override
     public List<HashMap<String,Object>> getAllEmpNoticeList(int currentPage){
     	
@@ -62,7 +68,10 @@ public class NoticeServiceImpl implements NoticeService{
         
         return noticeMapper.allEmpNoticeList(beginRow, ROW_PER_PAGE);
     }
-    //부서별 공지사항 리스트
+    // 부서별 공지사항 리스트
+	// 파라미터 : int currentPage, String dptNo
+	// 반환값 : List<>
+	// 사용클래스 : NoticeController.allDptList
     @Override
     public List<HashMap<String,Object>> getAllDptNoticeList(int currentPage, String dptNo){
     	
@@ -71,7 +80,10 @@ public class NoticeServiceImpl implements NoticeService{
 
         return noticeMapper.allDptNoticeList(dptNo, beginRow, ROW_PER_PAGE);
     }
-    //전체 공지사항 마지막페이지
+    // 전체 공지사항 마지막페이지
+	// 파라미터 : String dptNo
+	// 반환값 : int
+	// 사용클래스 : NoticeController.allNoticeList
     @Override
     public int allLastPage(String dptNo) {
     	int count = noticeMapper.countNoticeList(dptNo);
@@ -79,7 +91,10 @@ public class NoticeServiceImpl implements NoticeService{
 
     	return lastPage;
     }
-    //사원별 공지사항 마지막페이지
+    // 사원별 공지사항 마지막페이지
+	// 파라미터 : void
+	// 반환값 : int
+	// 사용클래스 : NoticeController.allEmpList
     @Override
     public int allEmpLastPage() {
     	int countEmp = noticeMapper.countEmpNoticeList();
@@ -87,7 +102,10 @@ public class NoticeServiceImpl implements NoticeService{
 
     	return empLastPage;
     }
-    //부서별 공지사항 마지막페이지
+    // 부서별 공지사항 마지막페이지
+	// 파라미터 : String dptNo
+	// 반환값 : int
+	// 사용클래스 : NoticeController.allDptList
     @Override
     public int allDptLastPage(String dptNo) {
     	int countDpt = noticeMapper.countDptNoticeList(dptNo);
@@ -96,7 +114,10 @@ public class NoticeServiceImpl implements NoticeService{
     	return dptLastPage;
     }
  
-    //공지사항 내용추가
+    // 공지사항 내용추가
+	// 파라미터 : NoticeRequestDTO noticeRequest, HttpServletRequest request
+	// 반환값 : X
+	// 사용클래스 : NoticeController.addNoticeAction
     @Override
 	public void addNotice(NoticeRequestDTO noticeRequest) {
 		NoticeDTO notice = NoticeDTO.builder()
@@ -142,7 +163,10 @@ public class NoticeServiceImpl implements NoticeService{
 	        }
 	    }
     }
-	//공지사항 상세보기
+	// 공지사항 상세보기
+	// 파라미터 : int noticeNo
+	// 반환값 : List<>
+	// 사용클래스 : NoticeController.noticeOne
     @Override
 	public List<Map<String,Object>> getNoticeOne(int noticeNo){
 		
@@ -150,7 +174,10 @@ public class NoticeServiceImpl implements NoticeService{
 	}
     
     
-    //공지사항 내용수정하기
+    // 공지사항 내용수정하기
+	// 파라미터 : int noticeNo, NoticeRequestDTO noticeRequest, HttpServletRequest request
+	// 반환값 : X
+	// 사용클래스 : NoticeController.modifyNoticeAction
     @Override
     public void getModifyNoticeList(int noticeNo, 
     		NoticeRequestDTO noticeRequest) {
@@ -200,9 +227,10 @@ public class NoticeServiceImpl implements NoticeService{
         }	
 	}
 
-  
-   
-    //공지사항 파일 삭제하기
+    // 공지사항 파일 삭제하기
+	// 파라미터 : String fileName, int noticeNo
+	// 반환값 : X
+	// 사용클래스 : NoticeController.deleteNoticeFile
     @Override
     public void getDeleteNoticeFile(String fileName, int noticeNo) {
     	//DTO랑 맞춰주는작업
@@ -214,12 +242,14 @@ public class NoticeServiceImpl implements NoticeService{
         noticeFileMapper.deleteNoticeFile(noticeFileDTO);
     }
 	
-	//공지사항 삭제하기
+	// 공지사항 삭제하기
+	// 파라미터 : int noticeNo
+	// 반환값 : int
+	// 사용클래스 : NoticeController.deleteNotice
     @Override
 	public int getDeleteNotice(int noticeNo) {
 		int delete = noticeMapper.deleteNotice(noticeNo);
 		
 		return delete;
 	}
-	
 }

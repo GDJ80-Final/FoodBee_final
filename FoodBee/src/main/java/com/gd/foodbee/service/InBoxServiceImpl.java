@@ -16,6 +16,9 @@ public class InBoxServiceImpl implements InBoxService {
 	private static final int ROW_PER_PAGE = 10;
 	
 	// 내 수신 전체 리스트
+	// 파라미터 : currentPage, empNo
+	// 반환값 : List<InBoxMapper>
+	// 사용클래스 : inBoxController.inBox 
 	@Override 
 	public List<InBoxDTO> getReferrerList(int currentPage, int empNo){
 		
@@ -26,6 +29,9 @@ public class InBoxServiceImpl implements InBoxService {
 	}
 	
 	// 수신참조된 전체리스트의 총갯수
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : inBoxController.inBox 
 	@Override
 	public int countAllReferrerList(int empNo) {
 		InBoxStateDTO stateBox = inBoxMapper.getStateBox(empNo);
@@ -33,6 +39,9 @@ public class InBoxServiceImpl implements InBoxService {
 	}
 	
 	// 수신참조된 리스트 LastPage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : inBoxController.inBox
 	@Override
 	public int allReferrerLastPage(int empNo) {
 		int totalCount = countAllReferrerList(empNo);
@@ -40,6 +49,9 @@ public class InBoxServiceImpl implements InBoxService {
 	}
 	
 	// 결재상태 건수(결재대기, 승인중, 승인완료, 반려) 
+	// 파라미터 : int empNo
+	// 반환값 : InBoxStateDTO
+	// 사용클래스 : InBoxController.inBox
 	@Override
 	public InBoxStateDTO getStateBox(int empNo) {
 		return inBoxMapper.getStateBox(empNo);

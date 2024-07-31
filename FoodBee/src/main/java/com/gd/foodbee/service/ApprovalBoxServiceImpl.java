@@ -19,15 +19,16 @@ import com.gd.foodbee.mapper.ApprovalBoxMapper;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @Transactional
 public class ApprovalBoxServiceImpl implements ApprovalBoxService {
-	//결재함 전체 리스트
 	@Autowired 
 	private ApprovalBoxMapper approvalBoxMapper;
 	private static final int ROW_PER_PAGE = 10;
 	
-	//내 결재함 전체리스트
+	// 내 결재함 전체리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<ApprovalBoxDTO>
+	// 사용클래스 : ApprovalBoxController.approvalListAll
 	@Override
 	public List<ApprovalBoxDTO> getApprovalListAll(int currentPage, int empNo){
 		
@@ -37,7 +38,10 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
         return approvalBoxMapper.getApprovalListAll(empNo, beginRow, ROW_PER_PAGE);
 	}
 	
-	//결재함 미결리스트
+	// 결재함 미결리스트
+	// 파라미터 : int currentpage, int empNo
+	// 반환값 : List<ApprovalBoxDTO>
+	// 사용클래스 : ApprovalBoxController.approvalZeroList
 	@Override
 	public List<ApprovalBoxDTO> getZeroListAll(int currentPage, int empNo){
 		int beginRow = 0;
@@ -46,7 +50,10 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
         return approvalBoxMapper.getZeroListAll(empNo, beginRow, ROW_PER_PAGE);
 	}
 	
-	//결재함 기결리스트
+	// 결재함 기결리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<ApprovalBoxDTO>
+	// 사용클래스 : ApprovalBoxController.approvalOneList
 	@Override
 	public List<ApprovalBoxDTO> getOneListAll(int currentPage, int empNo){
 		int beginRow = 0;
@@ -55,16 +62,25 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
         return approvalBoxMapper.getOneListAll(empNo, beginRow, ROW_PER_PAGE);
 	}
 	
-	//미결 총 갯수
+	// 미결 총 갯수
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.approvalBox
 	public int countZeroState(int empNo) {
 		return approvalBoxMapper.countZeroTypeList(empNo);
 	}
-	//기결 총 갯수
+	// 기결 총 갯수
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.approvalBox
 	public int countOneState(int empNo) {
 		return approvalBoxMapper.countOneTypeList(empNo);
 	}
 	
-	//결재함 전체 Lastpage
+	// 결재함 전체 Lastpage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.approvalListAll
 	@Override
 	public int getAllLastPage(int empNo) {
 		int count = approvalBoxMapper.countAllList(empNo);
@@ -73,7 +89,10 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		return lastPage;
 	}
 	
-	//미결 LastPage
+	// 미결 LastPage
+	// 파라미터 : int empNo
+	// 반환값: int
+	// 사용클래스 : ApprovalBoxService.approvalZeroList
 	@Override
 	public int getZeroLastPage(int empNo) {
 		int count = approvalBoxMapper.countZeroTypeList(empNo);
@@ -82,7 +101,10 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		return lastPage;
 	}
 	
-	//기결 LastPage
+	// 기결 LastPage
+	// 파라미터 : int empNo
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxService.approvalOneList
 	@Override
 	public int getOneLastPage(int empNo) {
 		int count = approvalBoxMapper.countOneTypeList(empNo);
@@ -92,12 +114,23 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	}
 	
 	// 결재상태 건수(결재대기, 승인중, 승인완료, 반려) 
+	// 파라미터 : int empNo
+	// 반환값 : com.gd.foodbee.dto.ApprovalBoxStateDTO
+	// 사용클래스 : ApprovalBoxController.approvalBox
 	@Override
 	public ApprovalBoxStateDTO getStateBox(int empNo) {
 		return approvalBoxMapper.getStateBox(empNo);
 	}
 	
-	// 기안서 상세
+	// 기안서 
+	// 파라미터 : int draftDocNo
+	// 반환값 : Map<>
+	// 사용클래스 
+	// 1.ApprovalBoxController.dayOffOne
+	// 2.ApprovalBoxController.businessTripOne
+	// 3.ApprovalBoxController.basicFormOne
+	// 4.ApprovalBoxController.chargeOne
+	// 5.ApprovalBoxController.revenueOne
 	@Override
 	public Map<String,Object> getDocOne(int draftDocNo) {
 		
@@ -105,42 +138,78 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 	}
 
 	// 기안서 detail 상세
+	// 파라미터 : int draftDocNo
+	// 반환값 : com.gd.foodbee.dto.DraftDocDetailDTO
+	// 사용클래스
+	// 1.ApprovalBoxController.dayOffOne
+	// 2.ApprovalBoxController.businessTripOne
+	// 3.ApprovalBoxController.basicFormOne
+	// 4.ApprovalBoxController.chargeOne
+	// 5.ApprovalBoxController.revenueOne
 	@Override
 	public DraftDocDetailDTO getDocDetailOne(int draftDocNo) {
 		return approvalBoxMapper.getDocDetailOne(draftDocNo);
 	}
 	
-	//기안서 detail List
+	// 기안서 detail List
+	// 파라미터 : int draftDocNo
+	// 반환값 :  List<DraftDocDetailDTO>
+	// 사용클래스 : ApprovalBoxController.chargeOne
 	@Override
 	public List<DraftDocDetailDTO> getDocDetailList(int draftDocNo){
 		return approvalBoxMapper.getDocDetailList(draftDocNo);
 	}
 	
-	//기안서 파일상세
+	// 기안서 파일상세
+	// 파라미터 : int draftDocNo
+	// 반환값 : List<DraftDocFileDTO>
+	// 사용클래스 
+	// 1.ApprovalBoxController.dayOffOne
+	// 2.ApprovalBoxController.businessTripOne
+	// 3.ApprovalBoxController.basicFormOne
+	// 4.ApprovalBoxController.chargeOne
+	// 5.ApprovalBoxController.revenueOne
 	@Override
 	public List<DraftDocFileDTO> getDocFileOne(int draftDocNo) {
 		return approvalBoxMapper.getDocFileOne(draftDocNo);
 	}
 	
-	//기안서 수신참조자
+	// 기안서 수신참조자
+	// 파라미터 : int draftDocNo
+	// 반환값 : Map<>
+	// 사용클래스 
+	// 1.ApprovalBoxController.dayOffOne
+	// 2.ApprovalBoxController.businessTripOne
+	// 3.ApprovalBoxController.basicFormOne
+	// 4.ApprovalBoxController.chargeOne
+	// 5.ApprovalBoxController.revenueOne
 	@Override
 	public Map<String,Object> getDocReferrerOne(int draftDocNo) {
 		return approvalBoxMapper.getDocReferrerOne(draftDocNo);
 	}
 	
-	//휴가상세정보
+	// 휴가상세정보
+	// 파라미터 : int draftDocNo
+	// 반환값 : Map<>
+	// 사용클래스 : approvalBoxController.dayOffOne
 	@Override
 	public Map<String,Object> getDayOffOne(int draftDocNo){
 		return approvalBoxMapper.getDayOffOne(draftDocNo);
 	}
 	
-	//중간결재 승인
+	// 중간결재 승인
+	// 파라미터 : int draftDocNo
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.updateMidApprove
 	@Override
 	public int updateMidState(int draftDocNo) {
 		return approvalBoxMapper.updateMidState(draftDocNo);
 	}
 	
-	//최종결재 승인
+	// 최종결재 승인
+	// 파라미터 : int draftDocNo
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.updateFinalApprove
 	@Override
 	public int updateFinalState(int draftDocNo) {
 		
@@ -175,13 +244,19 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		return row;
 	}
 	
-	//중간결재 반려
+	// 중간결재 반려
+	// 파라미터 : int draftDocNo, String rejectionReason
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.updateMidRejection
 	@Override
 	public int updateMidRejection(int draftDocNo, String rejectionReason) {
 		return approvalBoxMapper.updateMidRejection(draftDocNo, rejectionReason);
 	}
 	
-	//최종결재 반려
+	// 최종결재 반려
+	// 파라미터 : int draftDocNo, String rejectionReason
+	// 반환값 : int
+	// 사용클래스 : ApprovalBoxController.updateFinalRejection
 	@Override
 	public int updateFinalRejection(int draftDocNo, String rejectionReason) {
 		return approvalBoxMapper.updateFinalRejection(draftDocNo, rejectionReason);

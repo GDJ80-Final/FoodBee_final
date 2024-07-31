@@ -62,6 +62,9 @@
 	  background-color: #BCE55C;
 	  color: white;
 	}
+	.fc-toolbar-title {
+      font-size: 35px !important; /* 글자 크기 조정 */
+    }
    </style>
  </head>
  <!-- CalnedarApI호출 -->
@@ -266,8 +269,24 @@
 
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
+    	googleCalendarApiKey: 'AIzaSyCkYEplmU408e-CUsvLPamYSORLmJZ5OVw',
+    	  eventSources: [
+    	    {
+    	      googleCalendarId: '6c76111af4e39f3b3a7c6b38caee5ebaaf698a19f151719f7e0a2f85f9cdd0a4@group.calendar.google.com'
+    	    },
+    	    {
+    	      googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
+    	      className: 'ko_event',
+    	      color: 'white',
+    	      textColor: 'red'
+    	    }
+    	  ],
       initialView: 'dayGridMonth',
       contentHeight: 'auto',
+      expandRows: true,
+      nowIndicator: true, // 현재 시간 마크
+      dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+      locale: 'ko', // 한국어 설정
       eventDidMount: function(info) {
     	    // 일정이 렌더링된 후 바의 두께를 조정
     	    info.el.style.height = '22px'; // 바의 높이 조정 (두께 조정)
@@ -276,7 +295,7 @@
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridDay'
+        right: 'dayGridMonth,timeGridDay,listWeek'
       },
       expandRows: true,
       events: events,

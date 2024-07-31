@@ -29,7 +29,7 @@ public class InBoxController {
 	// 수신함
 	// 파라미터 : int currentPage, Model model, HttpSession session
 	// 반환값 : Model model
-	// 사용페이지 
+	// 사용페이지 : /approval/inBox
    @GetMapping("/approval/inBox")
     public String inBox(@RequestParam(name="currentPage", defaultValue="1") int currentPage,
                         Model model, HttpSession session) {
@@ -68,7 +68,7 @@ public class InBoxController {
    // 수신함 총리스트
    // 파라미터 : int currentPage, int empNo
    // 반환값 : Map<>
-   // 사용페이지 : inBox
+   // 사용페이지 : /approval/inBox
    @GetMapping("/approval/inBoxList")
    @ResponseBody
    public Map<String,Object> inBoxList(int currentPage, int empNo){

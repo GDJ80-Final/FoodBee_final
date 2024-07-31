@@ -18,7 +18,7 @@
 			`group`
 		WHERE 
 		    superior_dpt_no = #{dptNo} 
-		    AND dpt_name LIKE '%부서';
+	    AND dpt_name LIKE '%부서';
 	</select>
 	<select id="selectTeamListByDept" parameterType="String" resultType="com.gd.foodbee.dto.GroupDTO">
 		SELECT 
