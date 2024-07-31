@@ -12,4 +12,10 @@ public interface DraftDocMapper {
 	// 사용 클래스 : DraftDocService.addDraftDoc
 	int insertDraftDoc(DraftDocDTO draftDocDTO);
 	
+	//기안서 수정
+	// 파라미터 : DraftDocDTO draftDocDTO
+	// 반환 값 : int
+	// 사용 클래스 : DraftDocService.modifyDraftDoc
+	int updateDraftDoc(DraftDocDTO draftDocDTO);
+	
 }

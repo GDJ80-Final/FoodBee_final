@@ -19,7 +19,7 @@
 		<label for="period" style="margin-left: 500px;">기간:</label>
 		    <input type="date" id="period" name="period" value="${businessTripDetailOne.startDate}" disabled="disabled"> ~
 		    <input type="date" id="period" name="period" value="${businessTripDetailOne.endDate}" disabled="disabled">
-		</div>
+	</div>
 		<div class="form-group">
 		    <label for=emergency>비상연락:</label>
 		    <input type="text" id="emergency" name="emergency" value="${businessTripDetailOne.text}" >
@@ -75,6 +75,7 @@
 	       	</c:if>
       </div>
 	</div>
+</div>
 	<script>
 		$(document).ready(function() {
 		    
@@ -93,11 +94,11 @@
 		    let dptNo = '${businessTripOne.dptNo}';  
 		
 		    $("#drafterEmpNo").val(drafter);
-		    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+		    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
 		    $("#midApproverNo").val(midApprover);
-		    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
+		    $("#midApproverNoField").val(midApproverName+"("+midApprover+")");
 		    $("#finalApproverNo").val(finalApprover);
-		    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
+		    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 		    $("#referrerField").val(referrerField);
 		    $("#name").val(drafterName);
 		    $("#department").val(dptNo);
@@ -172,6 +173,5 @@
 		    });
 		});
 	</script>
-</div>	
 </body>
 </html>

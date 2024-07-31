@@ -11,4 +11,5 @@ public interface DraftDocFileMapper {
 	// 반환 값 : int
 	// 사용 클래스 : DraftDocService.addDraftDoc
 	int insertDraftDocFile(DraftDocFileDTO draftDocFileDTO);
+	
 }

@@ -52,9 +52,14 @@
        		</if>
 			
 		)
-	
-	
 	</insert>
+	<delete id="deleteDraftDocDetail" parameterType="int">
+		DELETE
+		FROM
+			draft_doc_detail
+		WHERE
+			draft_doc_no = #{draftDocNo}
+	</delete>
 
 
 

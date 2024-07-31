@@ -128,7 +128,7 @@
 		LIMIT 
 			#{beginRow}, #{rowPerPage}
 	</select>
-	<select id="selectEmpCount" parameterType="com.gd.foodbee.dto.EmpSearchDTO" resultType="int">
+	<select id="selectEmpCount" parameterType="Map" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM

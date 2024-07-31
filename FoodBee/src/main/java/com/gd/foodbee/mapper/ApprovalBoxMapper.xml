@@ -229,7 +229,7 @@
 		SELECT 
 			dr.draft_doc_no draftDocNo, 
 			GROUP_CONCAT(
-	        	CONCAT(dr.referrer_emp_no, '(', e.emp_name, ')') 
+	        	CONCAT(e.emp_name, '(', dr.referrer_emp_no, ')') 
 	        	SEPARATOR ','
 	    	) referrerName 
 		FROM 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gd.foodbee.dto.DraftDocRequestDTO;
@@ -101,6 +102,21 @@ public class ApprovalController {
 		draftDocService.addDraftDoc(draftDocRequestDTO);
 		
 		return "redirect:/approval/draftBox";
+	
+	}
+	
+	// 기안서 수정
+	// 파라미터 :
+	@PostMapping("/approval/modifyDraft")
+	public String modifyDraft(DraftDocRequestDTO draftDocRequestDTO,
+				@RequestParam(name = "draftDocNo") int draftDocNo) {
 		
+		log.debug(TeamColor.RED + "draftDocRequestDTO =>" + draftDocRequestDTO.toString());
+		log.debug(TeamColor.RED + "draftDocNo =>" + draftDocNo);
+		
+		draftDocService.modifyDraftDoc(draftDocRequestDTO, draftDocNo);
+		
+		return "redirect:/approval/draftBox";
+	
 	}
 }	

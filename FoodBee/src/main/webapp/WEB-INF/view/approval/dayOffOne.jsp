@@ -79,7 +79,7 @@
 </div>
 	<script>
 		$(document).ready(function() {
-				 let typeName = '${dayOffDetailOne.typeName}';
+				let typeName = '${dayOffDetailOne.typeName}';
 			    
 			    // Radio button check logic
 			    if (typeName === '연차') {
@@ -103,11 +103,11 @@
 			    let dptNo = '${dayOffOne.dptNo}';  
 			
 			    $("#drafterEmpNo").val(drafter);
-			    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+			    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
 			    $("#midApproverNo").val(midApprover);
-			    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
+			    $("#midApproverNoField").val(midApproverName+"("+midApprover+")");
 			    $("#finalApproverNo").val(finalApprover);
-			    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
+			    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 			    $("#referrerField").val(referrerField);
 			    $("#name").val(drafterName);
 			    $("#department").val(dptNo);

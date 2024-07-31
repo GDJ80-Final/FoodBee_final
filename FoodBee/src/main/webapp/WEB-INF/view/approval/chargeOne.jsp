@@ -14,7 +14,7 @@
 	<div class="form-section">
 	    <div class="form-group">
 	        <label for="monthYear">지출년월</label>
-	        <input type="text" id="monthYear" value="${chargeDetailList.description}" readonly="readonly">
+	        <input type="text" id="monthYear" value="${chargeDetailOne.description}" readonly="readonly">
 	    </div>
 	    <div class="form-group">
 	        <label for="title">제목:</label>
@@ -99,7 +99,7 @@
 		    let dptNo = '${chargeOne.dptNo}';  
 		
 		    $("#drafterEmpNo").val(drafter);
-		    $("#drafterEmpNoField").val(drafter+"("+drafterName+")");
+		    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
 		    $("#midApproverNo").val(midApprover);
 		    $("#midApproverNoField").val(midApprover+"("+midApproverName+")");
 		    $("#finalApproverNo").val(finalApprover);

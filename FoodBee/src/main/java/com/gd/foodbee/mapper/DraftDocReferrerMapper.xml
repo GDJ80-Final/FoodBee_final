@@ -11,4 +11,11 @@
 		)
 	
 	</insert>
+	<delete id="deleteDraftDocReferrer" parameterType="int">
+		DELETE
+		FROM
+			doc_referrer
+		WHERE
+			draft_doc_no = #{draftDocNo}
+	</delete>
 </mapper>

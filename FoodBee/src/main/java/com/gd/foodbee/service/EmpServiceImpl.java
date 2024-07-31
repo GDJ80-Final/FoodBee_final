@@ -272,12 +272,7 @@ public class EmpServiceImpl implements EmpService{
 		int empCount = empMapper.selectEmpCount(empSearchDTO);
 		log.debug(TeamColor.RED + "empCount =>" + empCount);
 		
-		int lastPage = 0;
-		if(empCount % ROW_PER_PAGE == 0) {
-			lastPage = empCount / ROW_PER_PAGE;
-		} else {
-			lastPage = empCount / ROW_PER_PAGE + 1;
-		}
+		int lastPage = (int) Math.ceil((double) empCount / ROW_PER_PAGE);
 		return lastPage;
 	}
 
