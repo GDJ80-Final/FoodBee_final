@@ -253,6 +253,8 @@
                 alert('기본정보 불러오는데 실패했습니다 .');
             }
         });
+		
+		// 결재사인 유무 체크
 		$('#submitBtn').click(function(e) {
 	        let drafterNo = $('#drafterEmpNo').val();
 	        console.log(drafterNo)
@@ -274,6 +276,9 @@
 	        });
 	    });
 		
+		
+		
+		/* 파일 여러 개 추가  */
 		let fileOrder = 1;
         // 파일 추가 버튼 클릭 시
         $('#addFileButton').click(function() {

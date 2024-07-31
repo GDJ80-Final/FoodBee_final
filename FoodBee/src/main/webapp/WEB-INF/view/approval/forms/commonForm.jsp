@@ -40,8 +40,8 @@
                 <td>수신참조자</td>
                 <td colspan="4">
                 
-                <input type="text" id="referrerField" style="width:80%;" name="referrerEmpNo" readonly>
-                
+                <input type="text" id="referrerField" style="width:80%;" name="referrerEmpName" readonly>
+                <input type="hidden" name="referrerEmpNo" id="referrerEmpNo" readonly>
                 <button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button>
                 <button type="button"  id="reset" class="search-btn">초기화</button>
                 </td>
@@ -325,7 +325,7 @@
 			       
 				    let referrerField = $('#referrerField');
 				    let referrerFieldVal = referrerField.val();
-				    let referrer = $('#referrer');
+				    let referrer = $('#referrerEmpNo');
 				    let referrerVal = referrer.val();
 				    let newReferrerFieldVal;
 				    let newReferrerVal;
