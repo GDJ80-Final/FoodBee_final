@@ -13,7 +13,7 @@
         #timeline {
             position: relative;
             height: 25px; /* 높이 조정 */
-            width: 80%;
+            width: 100%;
             border: 1px solid #000;
             background-color: #f1f1f1;
         }

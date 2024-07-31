@@ -37,7 +37,7 @@ public class AttendanceController {
 		int row = attendanceService.addStartTime(empNo);
 		log.debug(TeamColor.GREEN + "row => " + row);
 		
-		return "redirect:/attendance/attendancePersonal";
+		return "redirect:/home";
 	}
 	
 	// 근태 퇴근
@@ -51,7 +51,7 @@ public class AttendanceController {
 		int row = attendanceService.modifyEndTime(empNo);
 		log.debug(TeamColor.GREEN + "row => " + row);
 		
-		return "redirect:/attendance/attendancePersonal";
+		return "redirect:/home";
 	}
 	
 	// 근태보고

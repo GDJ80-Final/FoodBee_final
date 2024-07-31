@@ -227,9 +227,9 @@
 			    <div class="form-group">
 			        <label for="remaining">잔여 휴가:</label>
 			        
-			        <label for="period" style="margin-left: 400px;">기간:</label>
-			        <input type="date" id="period" name="startDate"> ~
-			        <input type="date" id="period" name="endDate">
+			        <label style="margin-left: 400px;">기간:</label>
+			        <input type="date" id="startDate" name="startDate"> ~
+			        <input type="date" id="endDate" name="endDate">
 			    </div>
 			    <div class="form-group">
 			        <label for=emergency>비상연락:</label>
@@ -283,6 +283,40 @@ $(document).ready(function() {
 	$('#submitBtn').click(function(e) {
         let drafterNo = $('#drafterEmpNo').val();
         console.log(drafterNo)
+        
+        // 폼 필드 유효성 검사
+        let typeName = $("input[name='typeName']:checked").val();
+        let startDate = $('#startDate').val();
+        let endDate = $('#endDate').val();
+        let emergency = $('#emergency').val();
+        let title = $('#title').val();
+        let content = $('#content').val();
+        
+        if (!typeName) {
+            alert("유형을 선택해주세요.");
+            return false;
+        }
+        if (!startDate) {
+            alert("시작 날짜를 입력해주세요.");
+            return false;
+        }
+        if (!endDate) {
+            alert("종료 날짜를 입력해주세요.");
+            return false;
+        }
+        if (!emergency) {
+            alert("비상연락처를 입력해주세요.");
+            return false;
+        }
+        if (!title) {
+            alert("제목을 입력해주세요.");
+            return false;
+        }
+        if (!content) {
+            alert("내용을 입력해주세요.");
+            return false;
+        }
+        
         $.ajax({
             url: '${pageContext.request.contextPath}/approval/getSign',
             method: 'get',
@@ -302,6 +336,7 @@ $(document).ready(function() {
     });
    
 });
+
 </script>
 </body>
 </html>

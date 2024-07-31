@@ -237,14 +237,14 @@
 					    <div class="category-row" style="display: flex; flex-direction: column;">
 					        <div style="display: flex; align-items: center; margin-bottom: 10px;">
 					            <label for="typeName">적요:</label>
-					            <input type="text" placeholder="지출내용" style="margin-right: 20px;" name="typeName">
+					            <input type="text" id="typeName" placeholder="지출내용" style="margin-right: 20px;" name="typeName">
 					            
 					            <label for="amount">금액:</label>
-					            <input type="text" placeholder="금액 입력" name="amount">원
+					            <input type="text" id="amount" placeholder="금액 입력" name="amount">원
 					        </div>
 					        <div style="display: flex; align-items: center;">
 					            <label for="description" style="margin-right: 10px;">비고:</label>
-					            <textarea style="width: 400px;" placeholder="상세내용" name="text"></textarea>
+					            <textarea style="width:400px;" id="text" placeholder="상세내용" name="text"></textarea>
 					            
 					            <span class="add-category" style="margin-left: 10px;">+</span>
 					            <span class="remove-category" style="margin-left: 5px;">-</span>
@@ -365,6 +365,30 @@ $(document).ready(function() {
 	$('#submitBtn').click(function(e) {
         let drafterNo = $('#drafterEmpNo').val();
         console.log(drafterNo)
+        
+        // 폼 필드 유효성 검사
+        let title = $('#title').val();
+        let typeName = $('#typeName').val();
+        let amount = $('#amount').val();
+        let text = $('#text').val();
+        
+        if (!title) {
+            alert("제목을 입력 해주세요.");
+            return false;
+        }
+        if (!typeName) {
+            alert("적요를 입력해주세요.");
+            return false;
+        }
+        if (!amount) {
+            alert("금액을 입력해주세요.");
+            return false;
+        }
+        if (!text) {
+            alert("비고를 입력해주세요.");
+            return false;
+        }
+        
         $.ajax({
             url: '${pageContext.request.contextPath}/approval/getSign',
             method: 'get',
