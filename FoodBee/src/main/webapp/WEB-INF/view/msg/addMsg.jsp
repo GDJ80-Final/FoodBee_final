@@ -286,7 +286,6 @@
 			
 			$('#searchBtn').click(function(){
 				currentPage = 1
-				getLastPage();
 				loadEmpList(currentPage);
 			});
 			
