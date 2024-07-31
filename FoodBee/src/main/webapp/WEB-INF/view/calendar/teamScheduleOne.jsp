@@ -5,9 +5,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.container{
+		margin-top: 20px;
+	}
+</style>
 </head>
 <body>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+<div class="container">
 <h1>팀일정 상세보기</h1>
+</div>
 <a href="scheduleList">돌아가기</a>
 		<table border="1">
 			<tr>
@@ -45,5 +59,8 @@
 				</td>
 			</tr>
 		</table>
+</div>
+</div>
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </body>
 </html>

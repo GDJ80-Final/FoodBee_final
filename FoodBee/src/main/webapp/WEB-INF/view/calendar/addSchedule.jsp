@@ -7,6 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
 <!-- 템플릿 헤더,사이드바 -->
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
@@ -59,6 +61,7 @@
 		<input type="hidden" name="empNo" value='<c:out value="${empNo}"></c:out>'>
 		<button type="submit">추가</button>
 	</form>
+</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </body>

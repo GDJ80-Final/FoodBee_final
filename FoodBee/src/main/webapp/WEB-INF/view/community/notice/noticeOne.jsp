@@ -7,6 +7,8 @@
 <title>공지사항 상세보기</title>
 </head>
 <body>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
 <!-- 템플릿 헤더,사이드바 -->
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
@@ -64,6 +66,7 @@
             </c:if>
         </c:when>
     </c:choose>
+</div>
 </div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>

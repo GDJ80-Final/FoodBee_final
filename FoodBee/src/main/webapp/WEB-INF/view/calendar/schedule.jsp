@@ -6,10 +6,11 @@
  <head>
    <style>
      #calendar {
-       max-width: 950px; 
-       height: 860px; 
+       max-width: 90%; /* 화면 너비에 맞추기 */
+       min-height: 1500px;
        margin: 0 auto; 
-       font-size: 10px;
+       font-size: 0.8em; /* 폰트 크기를 조정하여 더 작게 만듭니다. */
+       overflow: hidden; /* 스크롤을 숨깁니다. */
      }
      #btn {
        text-align: center; 
@@ -49,6 +50,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <body>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
 <!-- 템플릿 헤더/사이드바 -->
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
@@ -147,6 +150,7 @@
         </div>
       </div>
     </div>
+</div>
 </div>
 <!-- 템플릿 footer -->
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>

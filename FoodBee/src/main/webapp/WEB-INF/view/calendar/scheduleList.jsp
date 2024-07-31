@@ -6,22 +6,52 @@
 <meta charset="UTF-8">
 <title>Schedule List</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<style>
+	.content-title{
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	#main-wrapper .content-body{
+		margin-left: 270px;
+	}
+	#table-body{
+		margin-top:20px;
+	}
+	.group1{
+		margin-bottom: 10px;
+	}
+	 #scheduleTable {
+        width: 90%; /* 테이블의 폭을 100%로 설정 */
+        border-collapse: collapse; /* 테이블의 경계선 중복을 방지 */
+        text-align: center;
+    }
+</style>
 </head>
 <body>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
 <!-- 템플릿 헤더,사이드바 -->
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-	<h1>일정 리스트</h1>
-	<button id="calendar">달력📅</button>
-	<button id="addEvent">일정추가</button>
-	<br>
-	<button id="personBtn">내 일정</button>
-	<button id="teamBtn">팀 일정</button>
-	<button id="roomBtn">회의 일정</button>
+	<div class="content-title">	
+		<h1>일정 리스트</h1>
+	</div>
+	
+	<div class="group1">
+		<button id="calendar" class="btn btn-secondary btn-sm">달력📅</button>
+		<!-- <button id="addEvent">일정추가</button> -->
+	</div>
+	<div class="group2">	
+		<button id="personBtn" class="btn btn-outline-secondary btn-sm">내 일정</button>
+		<button id="teamBtn" class="btn btn-outline-secondary btn-sm">팀 일정</button>
+		<button id="roomBtn" class="btn btn-outline-secondary btn-sm">회의 일정</button>
+	</div>
 
-	<div>
+	<div id="table-body" class="table table-striped">
 		<table border="1" id="scheduleTable">
 			<thead id="tableHeader">
 				<!-- 버튼클릭시 변경되게 -->
@@ -43,6 +73,7 @@
 	<span id="searchType">일정검색</span>
 	<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
 	<button id="searchBtn">검색</button>
+</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
