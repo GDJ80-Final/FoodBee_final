@@ -213,9 +213,14 @@
 		                <textarea id="content" name="content" placeholder="출장 목적을 작성하세요."></textarea>
 		            </div>            
 		            <div class="file-upload">
-		                <label for="docFiles">첨부파일:</label>
-		                <input type="file" id="docFiles" name="docFiles" multiple>
-		                
+		                <label for="attachment">첨부파일:</label>
+		                <div id="fileInputsContainer">
+					        <div class="file-input-group" id="fileGroup1">
+					                <input type="file" id="attachment-1" name="docFiles">
+					        </div>
+					   </div>
+        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
+		                    
 		            </div>
 	          </div>	
 		        <!-- 양식 영역 끝 -->
@@ -268,7 +273,25 @@
 	            }
 	        });
 	    });
-	   
+		
+		let fileOrder = 1;
+        // 파일 추가 버튼 클릭 시
+        $('#addFileButton').click(function() {
+            fileOrder++;
+            let newFileInput = 
+                '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+                '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
+                 '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+                '</div>';
+            $('#fileInputsContainer').append(newFileInput);
+        });
+
+        // 파일 입력 필드 삭제 버튼 클릭 시
+        $(document).on('click', '.remove-file-button', function() {
+        	console.log('test');
+        	let fileGroupId = $(this).data('file-id');
+            $('#' + fileGroupId).remove();
+        });
 
 	});
 </script>

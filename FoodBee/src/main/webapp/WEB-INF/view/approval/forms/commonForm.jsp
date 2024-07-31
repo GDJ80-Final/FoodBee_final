@@ -19,12 +19,15 @@
                 <input type="text" name="midApproverNoField" id="midApproverNoField" value="" readonly>
                 <button type="button" id="midApproverBtn" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button>
+                <div class="error" id="midApproverError"></div>
                 </td>
                 <td id="finalApprover">
                  <input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
                  <input type="text" name="finalApproverNoField" id="finalApproverNoField" value="" readonly>
                 <button type="button"  id="finalApproverBtn" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
-                </button></td>
+                </button>
+                <div class="error" id="finalApproverError"></div>
+                </td>
             </tr>
             <tr class="sign">
                 <td colspan="2">결재</td>
@@ -38,7 +41,10 @@
                 <td colspan="4">
                 
                 <input type="text" id="referrerField" style="width:80%;" name="referrerEmpNo" readonly>
-                <button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button></td>
+                
+                <button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button>
+                <button type="button"  id="reset" class="search-btn">초기화</button>
+                </td>
             </tr>
         </table>
         <div class="form-section">
@@ -54,7 +60,86 @@
 	
  <script>
 	$(document).ready(function(){
+		/* 블러시 공백 검사 */
+	            // drafterEmpNoField 블러 이벤트
+            $('#drafterEmpNoField').blur(function() {
+                let value = $(this).val().trim();
+                if (value === '') {
+                    $('#drafterError').text('기안자를 선택해 주세요.');
+                } else {
+                    $('#drafterError').text('');
+                }
+            });
 
+            // midApproverNoField 블러 이벤트
+            $('#midApproverNoField').blur(function() {
+                let value = $(this).val().trim();
+                if (value === '') {
+                    $('#midApproverError').text('중간결재자를 선택해 주세요.');
+                } else {
+                    $('#midApproverError').text('');
+                }
+            });
+
+            // finalApproverNoField 블러 이벤트
+            $('#finalApproverNoField').blur(function() {
+                let value = $(this).val().trim();
+                if (value === '') {
+                    $('#finalApproverError').text('최종결재자를 선택해 주세요.');
+                } else {
+                    $('#finalApproverError').text('');
+                }
+            });
+
+            
+
+            // 제출 버튼 클릭 시 전체 유효성 검사
+            $('#submitBtn').click(function(e) {
+                e.preventDefault();
+
+                let isValid = true;
+
+                // drafterEmpNoField 유효성 검사
+                let drafterValue = $('#drafterEmpNoField').val().trim();
+                if (drafterValue === '') {
+                    $('#drafterError').text('기안자를 선택해 주세요.');
+                    isValid = false;
+                } else {
+                    $('#drafterError').text('');
+                }
+
+                // midApproverNoField 유효성 검사
+                let midApproverValue = $('#midApproverNoField').val().trim();
+                if (midApproverValue === '') {
+                    $('#midApproverError').text('중간결재자를 선택해 주세요.');
+                    isValid = false;
+                } else {
+                    $('#midApproverError').text('');
+                }
+
+                // finalApproverNoField 유효성 검사
+                let finalApproverValue = $('#finalApproverNoField').val().trim();
+                if (finalApproverValue === '') {
+                    $('#finalApproverError').text('최종결재자를 선택해 주세요.');
+                    isValid = false;
+                } else {
+                    $('#finalApproverError').text('');
+                }
+
+            });
+
+            // 취소 버튼 클릭 시 폼 초기화 및 에러 메시지 초기화
+            $('.cancel-btn').click(function() {
+                $('#form')[0].reset();
+                $('.error').text('');
+            });
+			
+            // 초기화 버튼 클릭 시 수신자 필드 초기화
+            $('#reset').click(function() {
+                $('#referrerField').val('');
+               
+            });
+		
 <!-- 사원선택 -->
 
 		let currentPage = 1;
@@ -237,37 +322,48 @@
 			    	 $('#finalApproverNoField').val(selectedEmp);
 			    }else if(action === 'referrer'){
 			 
+			       
 				    let referrerField = $('#referrerField');
-				    let currentVal = referrerField.val();
-				    let newVal;
+				    let referrerFieldVal = referrerField.val();
+				    let referrer = $('#referrer');
+				    let referrerVal = referrer.val();
+				    let newReferrerFieldVal;
+				    let newReferrerVal;
 				    let empNosArray = [];
-				    
+
 				    console.log(empNo);
-				    
-				    if (currentVal) {
-				        empNosArray = currentVal.split(','); 
-				        // 사원번호 배열로 변환
+
+				    // 현재 recipient 필드 값 가져오기 및 배열로 변환
+				    if (referrerVal) {
+				        empNosArray = referrerVal.split(','); // 사원 번호 배열로 변환
 				        console.log('empNosArray => ' + empNosArray);
-				        
+
 				        // 중복된 사번이 있으면
 				        if (empNosArray.includes(empNo)) {
 				            alert('이미 추가된 사원입니다.');
 				            return;
 				        } else {
-				            newVal = currentVal + ',' + empNo; // 중복이 아니면 추가
+				        	newReferrerVal = referrerVal + ',' + empNo; // 중복이 아니면 추가
 				        }
-				        
 				    } else {
-				        newVal = empNo ; // 처음 추가할 때
+				    	newReferrerVal = empNo; // 처음 추가할 때
 				    }
-				    
-				    referrerField.val(newVal);
-			    }
-			    
-			    
+
+				    // 사원 이름(empName(empNo))을 recipientField에 추가
+				    if (referrerFieldVal) {
+				    	newReferrerFieldVal = referrerFieldVal + ', ' + empName + '(' + empNo + ')'; // 기존 값에 추가
+				    } else {
+				    	newReferrerFieldVal = empName + '(' + empNo + ')'; // 처음 추가할 때
+				    }
+
+				    // 필드 값 업데이트
+				    referrerField.val(newReferrerFieldVal);
+				    referrer.val(newReferrerVal);
+
+				   
+			    };
 			    // 모달 닫기
 			    $('#staticBackdrop').modal('hide');
-				
 		    });
 			
 		});

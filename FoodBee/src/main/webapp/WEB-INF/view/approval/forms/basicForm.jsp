@@ -195,14 +195,22 @@
 		            	<input type="hidden" name="tmpNo" value="4">
 		                <label for="title">제목:</label>
 		                <input type="text" id="title" name="title">
+		                <div class="error" id="titleError"></div>
 		            </div>
 		            <div class="form-group">
 		                <label for="content">내용:</label>
 		                <textarea id="content" name="content"></textarea>
+		                <div class="error" id="contentError"></div>
 		            </div>
 		            <div class="file-upload">
 		                <label for="attachment">첨부파일:</label>
-		                <input type="file" id="attachment" name="docFiles" multiple>
+		                <div id="fileInputsContainer">
+					        <div class="file-input-group" id="fileGroup1">
+					                <input type="file" id="attachment-1" name="docFiles">
+					        </div>
+					   </div>
+        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
+		                
 		               
 		            </div>
 		        </div>	
@@ -243,27 +251,88 @@
             }
         });
 		
+		let fileOrder = 1;
 
-		$('#submitBtn').click(function(e) {
-	        let drafterNo = $('#drafterEmpNo').val();
-	        console.log(drafterNo)
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/approval/getSign',
-	            method: 'get',
-	            data: {
-	            	approverNo : drafterNo
-	            },
-	            success: function(json) {
-	            	console.log('sign 있음');
-	            	$('#form').submit();
-	            },
-	            error: function(xhr, status, error) {
-	            	e.preventDefault();
-	                alert("결재사인을 등록을 해주세요");
-	                window.location.href = '${pageContext.request.contextPath}/myPage';
-	            }
-	        });
-	    });
+        // 파일 추가 버튼 클릭 시
+        $('#addFileButton').click(function() {
+            fileOrder++;
+            let newFileInput = 
+                '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+                '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
+                 '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+                '</div>';
+            $('#fileInputsContainer').append(newFileInput);
+        });
+
+        // 파일 입력 필드 삭제 버튼 클릭 시
+        $(document).on('click', '.remove-file-button', function() {
+        	console.log('test');
+        	let fileGroupId = $(this).data('file-id');
+            $('#' + fileGroupId).remove();
+        });
+  
+        // 제출 버튼 클릭 시 전체 유효성 검사
+        $('#submitBtn').click(function(e) {
+            
+
+            // 공백 검사
+            let hasError = false;
+            if ($('#title').val().trim() === '') {
+                $('#titleError').text('제목을 입력해 주세요.');
+                hasError = true;
+            } else {
+                $('#titleError').text('');
+            }
+            if ($('#content').val().trim() === '') {
+                $('#contentError').text('내용을 입력해 주세요.');
+                hasError = true;
+            } else {
+                $('#contentError').text('');
+            }
+
+            // 공백 검사 후 AJAX 요청
+            if (!hasError) {
+                let drafterNo = $('#drafterEmpNo').val();
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/approval/getSign',
+                    method: 'get',
+                    data: {
+                        approverNo: drafterNo
+                    },
+                    success: function(json) {
+                        console.log('sign 있음');
+                        $('#form').submit();
+                    },
+                    error: function(xhr, status, error) {
+                    	e.preventDefault();
+                        alert("결재사인을 등록을 해주세요");
+                        window.location.href = '${pageContext.request.contextPath}/myPage';
+                    }
+                });
+            }
+        });
+		/* 기안서 입력 공백 검사 */
+		
+		 // 입력 필드 블러 이벤트 리스너
+        $('#title').blur(function() {
+            let title = $(this).val().trim();
+            if (title === '') {
+                $('#titleError').text('제목을 입력해 주세요.');
+            } else {
+                $('#titleError').text('');
+            }
+        });
+
+        $('#content').blur(function() {
+            let content = $(this).val().trim();
+            if (content === '') {
+                $('#contentError').text('내용을 입력해 주세요.');
+            } else {
+                $('#contentError').text('');
+            }
+        });
+
+
 
 	});
 </script>

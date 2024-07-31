@@ -69,7 +69,8 @@
 	
 	.form-buttons {
 	    display: flex;
-	    justify-content: flex-end;
+	    justify-content: center;
+	    margin-top: 20px;
 	}
 	
 	.cancel-btn,
@@ -97,7 +98,19 @@
 	.cancel-btn:hover {
 	    background-color: #b0b0b0;
 	}
-	
+	.add-file-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        .add-file-button:hover {
+            background-color: #555;
+        }
+      
 
 </style>
 </head>
@@ -131,9 +144,13 @@
 		                </td>
 		            </tr>
 		            <tr>
-		                <td><label for="msgFile">첨부파일:</label></td>
-		                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple">
-		                
+		                <td><label for="msgFile">첨부파일:</label>
+		             
+		                <td id="fileInputsContainer">         
+					        <div class="file-input-group" id="fileGroup1">
+					            <input type="file" id="attachment-1" name="msgFiles">
+					        </div>
+        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>	
 		                </td>
 		            </tr>
 		            <tr>
@@ -418,6 +435,24 @@
 			    $('#staticBackdrop').modal('hide');
 		    });
 			
+			let fileOrder = 1;
+	        // 파일 추가 버튼 클릭 시
+	        $('#addFileButton').click(function() {
+	            fileOrder++;
+	            let newFileInput = 
+	                '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+	                '<input type="file" id="attachment-${fileOrder}" name="msgFiles">'+
+	                 '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+	                '</div>';
+	            $('#fileInputsContainer').append(newFileInput);
+	        });
+
+	        // 파일 입력 필드 삭제 버튼 클릭 시
+	        $(document).on('click', '.remove-file-button', function() {
+	        	console.log('test');
+	        	let fileGroupId = $(this).data('file-id');
+	            $('#' + fileGroupId).remove();
+	        });
 			
 			/* 공백 검사, 유효성 검사 */
 			

@@ -74,17 +74,17 @@ public class DraftDocServiceImpl implements DraftDocService{
 		String [] typeNames = null;
 		int [] amounts = null;
 		String [] texts = null;
-		if(Objects.isNull(draftDocRequestDTO.getTypeName())) {
+		if(Objects.isNull(draftDocRequestDTO.getTypeName()) || draftDocRequestDTO.getTypeName().length == 0) {
 			log.debug("typeNames => null");
 		}else {
 			typeNames = draftDocRequestDTO.getTypeName();
 		}
-		if(Objects.isNull(draftDocRequestDTO.getAmount())) {
+		if(Objects.isNull(draftDocRequestDTO.getAmount()) || draftDocRequestDTO.getAmount().length == 0) {
 			log.debug(TeamColor.YELLOW + "amounts => null");
 		}else {
 			amounts = draftDocRequestDTO.getAmount();
 		}
-		if(Objects.isNull(draftDocRequestDTO.getText())) {
+		if(Objects.isNull(draftDocRequestDTO.getText()) || draftDocRequestDTO.getText().length == 0) {
 			log.debug("typeNames => null");
 		}else {
 			texts = draftDocRequestDTO.getText();
@@ -147,7 +147,7 @@ public class DraftDocServiceImpl implements DraftDocService{
 			
 		// insert draft_referrer
 		int [] referrers = null;
-		if(Objects.isNull(draftDocRequestDTO.getReferrerEmpNo())) {
+		if(Objects.isNull(draftDocRequestDTO.getReferrerEmpNo()) || draftDocRequestDTO.getReferrerEmpNo().length == 0) {
 			log.debug(TeamColor.YELLOW + "수신 참조자가 없습니다");
 		}else {
 			referrers = draftDocRequestDTO.getReferrerEmpNo();
