@@ -5,6 +5,25 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.content-title{
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	#main-wrapper .content-body{
+		margin-left: 270px;
+	}
+	#btn{
+		margin-top: 10px;
+	}
+	#scheduleTable {
+        width: 70%; /* 테이블의 폭을 100%로 설정 */
+        border-collapse: collapse; /* 테이블의 경계선 중복을 방지 */
+    }
+    #back{
+    	margin-bottom: 10px;
+    }
+</style>
 </head>
 <body>
 <!-- 메인템플릿 -->
@@ -14,8 +33,10 @@
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-<h1>일정</h1>
-	<a href="schedule">돌아가기</a>
+<div class="content-title">
+	<h1>일정</h1>
+</div>
+	<a href="scheduleList" class="btn btn-outline-secondary btn-sm" id="back">돌아가기</a>
 		<table border="1">
 			<tr>
 				<th>작성자</th>
@@ -52,8 +73,10 @@
 				</td>
 			</tr>
 		</table>
-	<a href="modifySchedule?scheduleNo=<c:out value='${one.scheduleNo}'/>">수정하기</a>
-	<a href="deleteSchedule?scheduleNo=<c:out value='${one.scheduleNo}'/>">삭제</a>
+		<div id="btn">
+			<a href="modifySchedule?scheduleNo=<c:out value='${one.scheduleNo}'/>" class="btn btn-secondary btn-sm">수정하기</a>
+			<a href="deleteSchedule?scheduleNo=<c:out value='${one.scheduleNo}'/>" class="btn btn-secondary btn-sm">삭제</a>
+		</div>
 </div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>

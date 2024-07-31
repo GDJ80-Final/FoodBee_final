@@ -65,6 +65,10 @@
 	.fc-toolbar-title {
       font-size: 35px !important; /* 글자 크기 조정 */
     }
+    .fc-event {
+      color: ivory !important;
+  	}
+
    </style>
  </head>
  <!-- CalnedarApI호출 -->
@@ -185,6 +189,12 @@
 </div>
 <!-- 템플릿 footer -->
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+<!-- 구글캘린더 script -->
+<link href='https://unpkg.com/@fullcalendar/core@4.4.2/main.min.css' rel='stylesheet' />
+ <link href='https://unpkg.com/@fullcalendar/daygrid@4.4.2/main.min.css' rel='stylesheet' />
+ <script src='https://unpkg.com/@fullcalendar/core@4.4.2/main.min.js'></script>
+ <script src='https://unpkg.com/@fullcalendar/daygrid@4.4.2/main.min.js'></script>
+ <script src='https://unpkg.com/@fullcalendar/google-calendar@4.4.2/main.min.js'></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const events = [
@@ -222,7 +232,6 @@
           end: '<c:out value="${room.endDatetime}" />',
           <c:if test="${room.type == 'team'}">
             color: '#BCE55C',
-           
           </c:if>
           <c:if test="${room.type == 'personal'}">
           color: '#FF6C6C',
@@ -267,25 +276,22 @@
       </c:forEach>
     ];
 
-    const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-    	googleCalendarApiKey: 'AIzaSyCkYEplmU408e-CUsvLPamYSORLmJZ5OVw',
-    	  eventSources: [
-    	    {
-    	      googleCalendarId: '6c76111af4e39f3b3a7c6b38caee5ebaaf698a19f151719f7e0a2f85f9cdd0a4@group.calendar.google.com'
-    	    },
-    	    {
-    	      googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com',
-    	      className: 'ko_event',
-    	      color: 'white',
-    	      textColor: 'red'
-    	    }
-    	  ],
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+    	 plugins: [ 'dayGrid', 'googleCalendar' ],
+    	 googleCalendarApiKey: 'AIzaSyCkYEplmU408e-CUsvLPamYSORLmJZ5OVw',
+    	 eventSources: [
+             {
+               googleCalendarId: 'f7cf9dc87835d6b44c764f1cf414e5ac92fd754500c39c4f7cae518b0799ef7f@group.calendar.google.com'
+             },
+             {
+                 googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com', 
+                 className: 'holiday-event' 
+              }
+           ],
       initialView: 'dayGridMonth',
       contentHeight: 'auto',
       expandRows: true,
-      nowIndicator: true, // 현재 시간 마크
-      dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
       locale: 'ko', // 한국어 설정
       eventDidMount: function(info) {
     	    // 일정이 렌더링된 후 바의 두께를 조정
@@ -342,6 +348,7 @@
       }
      
     });
+    
      document.getElementById('addEvent').addEventListener('click', function() {
  	    window.location.href = 'addSchedule';
 	  	});

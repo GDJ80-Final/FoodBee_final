@@ -6,8 +6,8 @@
 <meta charset="UTF-8">
 <title>Schedule List</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <style>
 	.content-title{
 		margin-top: 20px;
@@ -16,7 +16,7 @@
 	#main-wrapper .content-body{
 		margin-left: 270px;
 	}
-	#table-body{
+	.table-body{
 		margin-top:20px;
 	}
 	.group1{
@@ -42,7 +42,7 @@
 	</div>
 	
 	<div class="group1">
-		<button id="calendar" class="btn btn-secondary btn-sm">달력📅</button>
+		<a href="schedule" class="btn btn-secondary btn-sm">달력📅</a>
 		<!-- <button id="addEvent">일정추가</button> -->
 	</div>
 	<div class="group2">	
@@ -51,7 +51,7 @@
 		<button id="roomBtn" class="btn btn-outline-secondary btn-sm">회의 일정</button>
 	</div>
 
-	<div id="table-body" class="table table-striped">
+	<div class="table-body">
 		<table border="1" id="scheduleTable">
 			<thead id="tableHeader">
 				<!-- 버튼클릭시 변경되게 -->
@@ -427,14 +427,6 @@
            $('#first').prop('disabled', currentPage === 1);
            $('#last').prop('disabled', currentPage === lastPage);
        }
-      //일정추가 버튼
-      document.getElementById('addEvent').addEventListener('click', function() {
-  	    window.location.href = 'addSchedule';
- 	  	});
-      //달력으로 돌아가기버튼
-      document.getElementById('calendar').addEventListener('click', function(){
-    	  window.location.href='schedule';
-      })
     });
 </script>
 </body>
