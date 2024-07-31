@@ -113,7 +113,7 @@ public class MsgServiceImpl implements MsgService{
 							.recipientEmpNo(msgRecipient)
 							.build();
 				int msgRecipientRow = msgRecipientMapper.insertMsgRecipient(msgRecipientDTO);
-				if(msgRecipientRow != 0) {
+				if(msgRecipientRow != 1) {
 					throw new RuntimeException();
 				}
 				recipientOrder++;

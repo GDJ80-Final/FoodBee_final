@@ -116,7 +116,9 @@
 		            <tr>
 		                <td><label for="recipient">받는사람:</label></td>
 		                <td>
-		                    <input type="text" name="recipientEmpNos" id="recipient" readonly>
+		                    <input type="text" name="recipientField" id="recipientField" readonly>
+		                    <input type="hidden" name="recipientEmpNos" id="recipient" readonly>
+		                    <div id="recipientError" class="error"></div>
 		                    <button type="button" class="btn btn-primary" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
 	  							검색 
 							</button>
@@ -124,22 +126,27 @@
 		            </tr>
 		            <tr>
 		                <td><label for="title">제목:</label></td>
-		                <td><input type="text" name="title" id="title"></td>
+		                <td><input type="text" name="title" id="title">
+		                 <div id="titleError" class="error"></div>
+		                </td>
 		            </tr>
 		            <tr>
 		                <td><label for="msgFile">첨부파일:</label></td>
-		                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple"></td>
+		                <td><input type="file" name="msgFiles" id="msgFile" multiple="multiple">
+		                
+		                </td>
 		            </tr>
 		            <tr>
 		                <td colspan="2">
 		                    <label for="message">쪽지쓰기:</label>
 		                    <textarea id="message" name="content" placeholder="쪽지쓰기 textarea"></textarea>
+		                    <div id="messageError" class="error"></div>
 		                </td>
 		            </tr>
 		            <tr>
 		                <td colspan="2" class="form-buttons">
-		                    <button class="cancel-btn">취소</button>
-		                    <button class="send-btn">보내기</button>
+		                    <button class="cancel-btn" id="cancelBtn">취소</button>
+		                    <button class="send-btn" id="submitBtn">보내기</button>
 		                </td>
 		            </tr>
 		        </table>
@@ -368,36 +375,105 @@
 			//모달에서 사원 선택 
 			$(document).on('click', '#selectEmp', function() {
 				
-				let empNo = $(this).val();
-				let empName = $(this).data('name');
-			    let recipientField = $('#recipient');
-			    let currentVal = recipientField.val();
-			    let newVal;
+			    let empNo = $(this).val();
+			    let empName = $(this).data('name');
+			    let recipientField = $('#recipientField');
+			    let recipientFieldVal = recipientField.val();
+			    let recipient = $('#recipient');
+			    let recipientVal = recipient.val();
+			    let newRecipientFieldVal;
+			    let newRecipientVal;
 			    let empNosArray = [];
-			    
+
 			    console.log(empNo);
-			    
-			    if (currentVal) {
-			        empNosArray = currentVal.split(',').map(emp => emp.split('(')[1].split(')')[0]); 
-			        // 사원번호 배열로 변환
+
+			    // 현재 recipient 필드 값 가져오기 및 배열로 변환
+			    if (recipientVal) {
+			        empNosArray = recipientVal.split(','); // 사원 번호 배열로 변환
 			        console.log('empNosArray => ' + empNosArray);
-			        
+
 			        // 중복된 사번이 있으면
 			        if (empNosArray.includes(empNo)) {
 			            alert('이미 추가된 사원입니다.');
 			            return;
 			        } else {
-			            newVal = currentVal + ',' + empName + '(' + empNo + ')'; // 중복이 아니면 추가
+			            newRecipientVal = recipientVal + ',' + empNo; // 중복이 아니면 추가
 			        }
-			        
 			    } else {
-			        newVal = empName + '(' + empNo + ')'; // 처음 추가할 때
+			        newRecipientVal = empNo; // 처음 추가할 때
 			    }
-			    
-			    recipientField.val(newVal);
+
+			    // 사원 이름(empName(empNo))을 recipientField에 추가
+			    if (recipientFieldVal) {
+			        newRecipientFieldVal = recipientFieldVal + ', ' + empName + '(' + empNo + ')'; // 기존 값에 추가
+			    } else {
+			        newRecipientFieldVal = empName + '(' + empNo + ')'; // 처음 추가할 때
+			    }
+
+			    // 필드 값 업데이트
+			    recipientField.val(newRecipientFieldVal);
+			    recipient.val(newRecipientVal);
+
+			    // 모달 닫기
 			    $('#staticBackdrop').modal('hide');
 		    });
 			
+			
+			/* 공백 검사, 유효성 검사 */
+			
+		    // 입력 필드 블러 이벤트 리스너
+		    
+		    $('#recipient').blur(function() {
+		        let recipient = $(this).val().trim();
+		        if (recipient === '') {
+		            $('#recipientError').text('받는사람을 입력해 주세요.');
+		        } else {
+		            $('#recipientError').text('');
+		        }
+		    });
+
+		    $('#title').blur(function() {
+		        let title = $(this).val().trim();
+		        if (title === '') {
+		            $('#titleError').text('제목을 입력해 주세요.');
+		        } else {
+		            $('#titleError').text('');
+		        }
+		    });
+
+		    $('#message').blur(function() {
+		        let message = $(this).val().trim();
+		        if (message === '') {
+		            $('#messageError').text('쪽지 내용을 입력해 주세요.');
+		        } else {
+		            $('#messageError').text('');
+		        }
+		    });
+
+		    // 제출 버튼 클릭 시 전체 유효성 검사
+		    
+		    $('#submitBtn').click(function(e) {
+		        // 기본 폼 제출 방지
+		        e.preventDefault();
+
+		        // 모든 입력 필드 블러 이벤트 트리거
+		        $('#recipient').blur();
+		        $('#title').blur();
+		        $('#message').blur();
+
+		        // 유효성 검사 확인
+		        if ($('.error:contains("입력해 주세요")').length === 0) {
+		            $('#addMsgForm').submit();
+		        }
+		    });
+
+		    // 취소 버튼 클릭 시 폼 초기화 및 에러 메시지 초기화
+		    
+		    $('#cancelBtn').click(function() {
+		        $('#addMsgForm')[0].reset();
+		        $('.error').text(''); 
+		        // 모든 에러 메시지 초기화
+		    });
 		});
 	</script>
 </body>

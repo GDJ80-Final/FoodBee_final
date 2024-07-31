@@ -25,7 +25,7 @@
             padding: 10px;
         }
         .input-full {
-            width: 100%;
+            width: 80%;
             padding: 8px;
             box-sizing: border-box;
         }
@@ -73,31 +73,35 @@
 	                <tr>
 	                    <td>제목:</td>
 	                    <td><input type="text" name="title" id="title" class="input-full">
-	                    	<div id="error" class="error"></div>
+	                    	<div id="titleError" class="error"></div>
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <td>카테고리:</td>
 	                    <td>
-	                        <select name="boardCategory" class="input-full">
+	                        <select name="boardCategory" id="boardCategory" class="input-full">
 	                            <option value="잡담">잡담</option>
 	                            <option value="회사이야기">회사이야기</option>
 	                            <option value="질문">질문</option>
 	                        </select>
+	                        <div id="categoryError" class="error"></div>
 	                    </td>
 	                </tr>
 	                <tr>
 	                    <td>비밀번호:</td>
-	                    <td><input type="password" name="boardPw" class="input-full" required></td>
+	                    <td><input type="password" id="boardPw" name="boardPw" class="input-full" required>
+	                    <div id="passwordError" class="error"></div>
+	                    </td>
 	                </tr>
 	                <tr>
 	                    <td colspan="2">
-	                        <textarea name="content" placeholder="내용을 입력하세요..."></textarea>
+	                        <textarea id="content" name="content" placeholder="내용을 입력하세요..."></textarea>
+	                        <div id="contentError" class="error"></div>
 	                    </td>
 	                </tr>
 	                <tr class="button-row">
 	                    <td colspan="2">
-	                        <button type="submit">작성</button>
+	                        <button type="submit" id="submitBtn">작성</button>
 	                        <button type="reset" id="resetButton">취소</button>
 	                    </td>
 	                </tr>
@@ -110,8 +114,15 @@
 <script>
 	$(document).ready(function(){
 	    $('#resetButton').click(function(){
+	    	$('.error').text('');
 	        window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
 	    });
+	    // 비밀번호 유효성 검사 함수
+	    function validatePassword(password) {
+	        // 비밀번호 정규식: 대소문자, 숫자, 특수문자를 포함하여 8-16자
+	        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+	        return passwordRegex.test(password);
+	    }
 	    
 	    $('#title').blur(function() {
 	        let title = $(this).val();
@@ -121,6 +132,63 @@
 	        	$('#error').text('');
 	        }
 	    });
+	    // 제목 공백검사 
+	    $('#title').blur(function() {
+	        let title = $(this).val().trim();
+	        if (title === '') {
+	            $('#titleError').text('제목을 입력해 주세요.');
+	        } else {
+	            $('#titleError').text('');
+	        }
+	    });
+
+	    // 카테고리 공백검사
+	    $('#boardCategory').blur(function() {
+	        let boardCategory = $(this).val().trim();
+	        if (boardCategory === '') {
+	            $('#categoryError').text('카테고리를 선택해 주세요.');
+	        } else {
+	            $('#categoryError').text('');
+	        }
+	    });
+
+	    // 비밀번호 유효성검사
+	    $('#boardPw').blur(function() {
+	        let boardPw = $(this).val().trim();
+	        if (!validatePassword(boardPw)) {
+	            $('#passwordError').text('비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.');
+	        } else {
+	            $('#passwordError').text('');
+	        }
+	    });
+
+	    // 내용 필드 공백검사
+	    $('#content').blur(function() {
+	        let content = $(this).val().trim();
+	        if (content === '') {
+	            $('#contentError').text('내용을 입력해 주세요.');
+	        } else {
+	            $('#contentError').text('');
+	        }
+	    });
+
+	    // 제출 버튼 클릭 시 전체 유효성 검사
+	    $('#submitBtn').click(function(e) {
+	        // 기본 폼 제출 방지
+	        e.preventDefault();
+
+	        // 모든 입력 필드 블러 이벤트 트리거
+	        $('#title').blur();
+	        $('#boardCategory').blur();
+	        $('#boardPw').blur();
+	        $('#content').blur();
+
+	        // 유효성 검사 확인
+	        if ($('.error:contains("입력해 주세요"), .error:contains("선택해 주세요"), .error:contains("비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.")').length === 0) {
+	            $('#addBoardForm').submit();
+	        }
+	    });
+
 	})
 </script>
 </body>
