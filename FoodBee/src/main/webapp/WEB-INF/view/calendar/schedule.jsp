@@ -9,35 +9,59 @@
        max-width: 90%; /* 화면 너비에 맞추기 */
        min-height: 1500px;
        margin: 0 auto; 
-       font-size: 0.8em; /* 폰트 크기를 조정하여 더 작게 만듭니다. */
-       overflow: hidden; /* 스크롤을 숨깁니다. */
      }
-     #btn {
-       text-align: center; 
-       margin-top: 20px;
-     }
-     #btn button {
-       display: inline-block;
-       margin: 0 2px;
-       cursor: pointer; 
-       border: 1px solid transparent; 
-       border-radius: 4px; 
-     }
-     #allEvents {
-       background-color: #4C4C4C;
-       color: white;
-     }
-     #personalEvents {
-       background-color: #FFA7A7; 
-       color: white; 
-     }
-     #teamEvents {
-       background-color: #BCE55C; 
-       color: white; 
-     }
-     a{
-     	margin-right: 20px;
-     }
+    #btn-wrapper {
+   
+	  display: flex;
+	  justify-content: space-between;
+	  margin-bottom: 20px;
+	  margin-top:20px;
+	}
+	
+	#btn-left {
+	  display: flex;
+	  gap: 5px; /* 버튼 간의 간격 조정 */
+	  margin-left: 30px;
+	}
+	
+	#btn-right {
+	  display: flex;
+	  gap: 5px; /* 버튼 간의 간격 조정 */
+	  margin-right: 15px;
+	}
+	
+	#btn-left button, #btn-right button {
+	  display: inline-block;
+	  cursor: pointer;
+	  border: 1px solid transparent;
+	  border-radius: 4px;
+	  padding: 5px 10px; /* 버튼의 패딩 조정 */
+	}
+	
+	#addEvent {
+	  background-color: #007bff; /* 버튼 색상 */
+	  color: white;
+	}
+	
+	#allList {
+	  background-color: #28a745; /* 버튼 색상 */
+	  color: white;
+	}
+	
+	#allEvents {
+	  background-color: #4C4C4C;
+	  color: white;
+	}
+	
+	#personalEvents {
+	  background-color: #FFA7A7;
+	  color: white;
+	}
+	
+	#teamEvents {
+	  background-color: #BCE55C;
+	  color: white;
+	}
    </style>
  </head>
  <!-- CalnedarApI호출 -->
@@ -56,14 +80,18 @@
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <div class="content-body">  
-    <div id="btn">
-      <button id="allEvents">전체</button>
-      <button id="personalEvents">개인</button>
-      <button id="teamEvents">팀</button>
-      <button id="addEvent">일정추가</button>
-      <button id="allList">일정리스트</button>
-    </div>
-    <div id='calendar'></div>
+    <div id="btn-wrapper">
+		  <div id="btn-left">
+		    <button id="addEvent">일정추가</button>
+		    <button id="allList">일정리스트</button>
+		  </div>
+		  <div id="btn-right">
+		    <button id="allEvents">전체</button>
+		    <button id="personalEvents">개인</button>
+		    <button id="teamEvents">팀</button>
+		  </div>
+	</div>
+	<div id='calendar'></div>
 
     <!-- 개인 일정 모달 -->
     <div class="modal fade" id="person" tabindex="-1" aria-labelledby="personalModalLabel" aria-hidden="true">
@@ -191,9 +219,11 @@
           end: '<c:out value="${room.endDatetime}" />',
           <c:if test="${room.type == 'team'}">
             color: '#BCE55C',
+           
           </c:if>
           <c:if test="${room.type == 'personal'}">
           color: '#FF6C6C',
+       
          </c:if>
           //
           <c:if test="${room.type == 'team'}">
@@ -237,6 +267,12 @@
     const calendarEl = document.getElementById('calendar');
     const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
+      contentHeight: 'auto',
+      eventDidMount: function(info) {
+    	    // 일정이 렌더링된 후 바의 두께를 조정
+    	    info.el.style.height = '22px'; // 바의 높이 조정 (두께 조정)
+    	    info.el.style.borderRadius = '0';
+    	  },
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',

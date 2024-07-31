@@ -116,7 +116,7 @@ public class NoticeController {
 			
 		return empList;
 	}
-	// 모든 공지사항리스트
+	// [버튼]부서별 공지사항
 	// 파라미터 : int currentPage, String dptNo
 	// 반환값 : Map<> dptList
 	// 사용페이지 

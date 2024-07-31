@@ -4,17 +4,17 @@
 	<!-- 전체공지사항 리스트 -->
 	<select id="noticeList" parameterType="HashMap" resultType="HashMap" >	
 		SELECT 
-		    n.notice_no AS noticeNo, 
-		    n.writer_emp_no AS writerEmpNo, 
-		    n.dpt_no AS dptNo, 
-		    n.title AS title, 
-		    n.content AS content, 
-		    n.create_datetime AS createDatetime, 
-		    n.update_datetime AS updateDatetime, 
-		    n.type AS type, 
-		    e.emp_name AS name,
-		    g.dpt_name AS superiorDptName,
-		    g.superior_dpt_no AS superiorDptNo
+		    n.notice_no noticeNo, 
+		    n.writer_emp_no writerEmpNo, 
+		    n.dpt_no dptNo, 
+		    n.title title, 
+		    n.content content, 
+		    DATE_FORMAT(n.create_datetime, '%Y-%m-%d') createDatetime,  
+		    n.update_datetime updateDatetime, 
+		    n.type type, 
+		    e.emp_name name,
+		    g.dpt_name superiorDptName,
+		    g.superior_dpt_no superiorDptNo
 		FROM 
 		    notice n 
 		INNER JOIN 
@@ -38,7 +38,7 @@
 			n.dpt_no dptNo, 
 			n.title title, 
 			n.content content, 
-			n.create_datetime createDatetime, 
+			DATE_FORMAT(n.create_datetime, '%Y-%m-%d') createDatetime, 
 			n.update_datetime updateDatetime, 
 			n.type type, 
 			e.emp_name name
@@ -54,17 +54,17 @@
 	<!-- 부서별공지사항 리스트 -->
 	<select id="allDptNoticeList" parameterType="HashMap" resultType="HashMap">
 		SELECT 
-		    n.notice_no AS noticeNo, 
-		    n.writer_emp_no AS writerEmpNo, 
-		    n.dpt_no AS dptNo, 
-		    n.title AS title, 
-		    n.content AS content, 
-		    n.create_datetime AS createDatetime, 
-		    n.update_datetime AS updateDatetime, 
-		    n.type AS type, 
-		    e.emp_name AS name,
-		    g.dpt_name AS superiorDptName,
-		    g.superior_dpt_no AS superiorDptNo
+		    n.notice_no noticeNo, 
+		    n.writer_emp_no writerEmpNo, 
+		    n.dpt_no dptNo, 
+		    n.title title, 
+		    n.content content, 
+		    DATE_FORMAT(n.create_datetime, '%Y-%m-%d') createDatetime,  
+		    n.update_datetime updateDatetime, 
+		    n.type type, 
+		    e.emp_name name,
+		    g.dpt_name superiorDptName,
+		    g.superior_dpt_no superiorDptNo
 		FROM 
 		    notice n 
 		INNER JOIN 
