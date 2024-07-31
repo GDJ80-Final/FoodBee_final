@@ -183,7 +183,7 @@
 		        </a></div>
 		    </div>
 		    
-		    <form method="post" action="${pageContext.request.contextPath}/approval/addDraft" enctype="multipart/form-data">
+		    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/addDraft" enctype="multipart/form-data">
 		        <!-- 공통 영역 -->
 				<jsp:include page="./commonForm.jsp"></jsp:include>
 		       
@@ -209,7 +209,7 @@
 		        <!-- 양식 영역 끝 -->
 		        <div class="form-actions">
 		            <button type="reset" class="cancel-btn">취소</button>
-		            <button  type="submit" id="submitBtn" class="submit-btn">제출</button>
+		            <button type="button" id="submitBtn" class="submit-btn">제출</button>
 		        </div>
 			</form>	
 			<!-- 폼 종료 -->
@@ -243,9 +243,29 @@
             }
         });
 		
-	   
 
-		});
+		$('#submitBtn').click(function(e) {
+	        let drafterNo = $('#drafterEmpNo').val();
+	        console.log(drafterNo)
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/approval/getSign',
+	            method: 'get',
+	            data: {
+	            	approverNo : drafterNo
+	            },
+	            success: function(json) {
+	            	console.log('sign 있음');
+	            	$('#form').submit();
+	            },
+	            error: function(xhr, status, error) {
+	            	e.preventDefault();
+	                alert("결재사인을 등록을 해주세요");
+	                window.location.href = '${pageContext.request.contextPath}/myPage';
+	            }
+	        });
+	    });
+
+	});
 </script>
 </body>
 

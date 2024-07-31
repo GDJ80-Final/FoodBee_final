@@ -358,6 +358,28 @@ $(document).ready(function() {
         const description = year + '-' + month;
         $('#description').val(description);
     });
+ 	
+	$('#submitBtn').click(function(e) {
+        let drafterNo = $('#drafterEmpNo').val();
+        console.log(drafterNo)
+        $.ajax({
+            url: '${pageContext.request.contextPath}/approval/getSign',
+            method: 'get',
+            data: {
+            	approverNo : drafterNo
+            },
+            success: function(json) {
+            	console.log('sign 있음');
+            	$('#form').submit();
+            },
+            error: function(xhr, status, error) {
+            	e.preventDefault();
+                alert("결재사인을 등록을 해주세요");
+                window.location.href = '${pageContext.request.contextPath}/myPage';
+            }
+        });
+    });
+   
 });
 </script>
 </body>
