@@ -98,9 +98,10 @@
 </div>
  		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
+	let boardNo = $('#boardNo').val();
 	$(document).ready(function(){
 	    $('#resetButton').click(function(){
-	        window.location.href = '${pageContext.request.contextPath}/community/board/boardOne?boardNo='+$('#boardNo');
+	        window.location.href = '${pageContext.request.contextPath}/community/board/boardOne?boardNo='+boardNo;
 	    });
 	    
 	    $('#title').blur(function() {

@@ -44,7 +44,7 @@ public class MsgServiceImpl implements MsgService{
 	@Autowired
 	private FileFormatter fileFormatter;
 	
-	private static final int ROW_PER_PAGE = 2;
+	private static final int ROW_PER_PAGE = 10;
 	
 	
 	// 새 쪽지 작성

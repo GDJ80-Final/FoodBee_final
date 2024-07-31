@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FoodBee:받은 쪽지함</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 </head>
 <body>
 	<div id="main-wrapper">
@@ -34,47 +35,65 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="email-left-box"><a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
+                                <div class="email-left-box">
+                                <a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
                                     <div class="mail-list mt-4"><a href="email-inbox.html" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>Inbox</b> </a>
                                         
                                     </div>
-                                    <h5 class="mt-5 m-b-10">Categories</h5>
-                                    <div class="list-group mail-list"><a href="#" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>Work</a>  <a href="#" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>Private</a>  <a href="#"
-                                        class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>Support</a>  <a href="#" class="list-group-item border-0"><span class="fa fa-tags f-s-14 mr-2"></span>Social</a>
+                                    <h5 class="mt-5 m-b-10">Filter</h5>
+                                    <div class="list-group mail-list">
+                                    	<button type="button" name="readYN" id="all" value="all" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>ALL</button>  
+                                    	<button type="button" name="readYN" id="Y" value="Y" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>read</button>  
+                                    	<button type="button" name="readYN" id="N" value="N"class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>unread</button>  
+                                    </div>
+                                    <h5 class="mt-5 m-b-10"></h5>
+                                    <div class="list-group mail-list">
+                                    	 <button class="btn btn-danger btn-block" id="toTrash">휴지통으로 이동</button> 
                                     </div>
                                 </div>
                                 <div class="email-right-box">
-                                    <div role="toolbar" class="toolbar">
-                                        <div class="btn-group">
-                                            <button aria-expanded="false" class="btn btn-dark" type="button" name="readYN" id="all" value="all">전체 <span class="caret m-l-5"></span>
-                                            </button>
-                                            <button aria-expanded="false" class="btn btn-dark" type="button" name="readYN" id="Y" value="Y">읽음 <span class="caret m-l-5"></span>
-                                            </button>
-                                            <button aria-expanded="false" class="btn btn-dark" type="button" name="readYN" id="N" value="N">안 읽음 <span class="caret m-l-5"></span>
-                                            </button>
-                                            <button type="button" name="toTrash" class="btn btn-info" id="toTrash">휴지통</button>
-                                        </div>
-                                    </div>
-                                    <div class="email-list m-t-15" id="messageList">
-
+                                    
+                                    <div class="email-list m-t-15">
+													<!-- Table Headers -->
+			                            <div class="table-responsive">
+			                                <table class="table">
+			                                    <thead>
+			                                        <tr>
+			                                            <th scope="col"><input type="checkbox" id="selectAll"></th>
+			                                            <th scope="col">보낸이</th>
+			                                            <th scope="col">제목</th>
+			                                            <th scope="col">읽음 여부</th>
+			                                            <th scope="col">보낸일시</th>
+			                                        </tr>
+			                                    </thead>
+			                                    <tbody id="messageList">
+			                                        <!-- Example Row -->
+			                                        
+			                                        <!-- Additional rows will be added here -->
+			                                    </tbody>
+			                                </table>
+			                            </div>
                                      
                              
                                 
                                     </div>
-                                    <!-- panel -->
-                                    <div class="row">
-                                        <div class="col-7">
-                                            
-                                        </div>
-                                        <div class="col-5">
-<!--                                             <div class="btn-group float-right">
-                                                <button class="btn btn-gradient" type="button"><i class="fa fa-angle-left"></i>
-                                                </button>
-                                                <button class="btn btn-dark" type="button"><i class="fa fa-angle-right"></i>
-                                                </button>
-                                            </div> -->
-                                        </div>
-                                    </div>
+                                    <!-- panel & page -->
+                                  	<div class="bootstrap-pagination">
+                                    <nav>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                                            </li>
+                                            <li class="page-item active"><div class="page-link" id="currentPage"></div>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -147,37 +166,19 @@
 
                     lastPage = json.lastPage;
                     console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
-
+					$('#currentPage').text(currentPage);
                     $('#messageList').empty();
                     json.msgList.forEach(function(item){
                         console.log(item);
                         $('#messageList').append(
-                                '<div class="message" id="message">' +
-                                '<a href="${pageContext.request.contextPath}/msg/msgOne?msgNo=' + item.msgNo + '">' +
-                                '<div class="col-mail col-mail-1">' +
-                                '<div class="email-checkbox">' +
-                                '<input type="checkbox" name="msgNo" id="msgNo' + item.msgNo + '" value="' + item.msgNo + '">' +
-                                '<label class="toggle" for="msgNo' + item.msgNo + '"></label>' +
-                                '</div></div>' +
-                                '<div class="col-mail col-mail-2">' +
-                                '<div class="subject">'  +   
-                                '<span style="margin-right: 50px;">' + item.empName + '</span>' + 
-                                '<span style="margin-right: 50px;">' + item.title + '</span>' + 
-                                '<span style="margin-right: 200px;">' + item.createDatetime + '</span>' + 
-                                '<span>' + item.readYN + '</span>' + 
-                                '</div>' +
-                                /* '<div class="text-right">' + item.createDatetime + '</div>' +
-                                '<div class="text-center" id="readYN">' + item.readYN + '</div>' + */
-                                '</div></a></div>'
-                            );
-                            /* '<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
-                            '<td>'+ item.msgOrder + '</td>'+
+                            '<tr><td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
                             '<td>'+ item.empName + '</td>'+
                             '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
                                     item.msgNo +'">'+ item.title + '</a></td>'+
-                            '<td>'+ item.createDatetime + '</td>'+
-                            '<td id="readYN">'+ item.readYN + '</td>'+
-                            '</tr>' */
+                            '<td id="readYN">'+ item.readYN  + '</td>'+
+                            '<td>'+ item.createDatetime+ '</td>'+
+                            '</tr>');
+                          
                         
                     });
                 	// 페이지 변경 시 전체선택 체크박스는 초기화 
@@ -190,10 +191,10 @@
 		//페이징 버튼 활성화
         function updateBtnState() {
             console.log("update");
-            $('#pre').prop('disabled', currentPage === 1);
-            $('#next').prop('disabled', currentPage === lastPage);
-            $('#first').prop('disabled', currentPage === 1);
-            $('#last').prop('disabled', currentPage === lastPage);
+            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
         }
 		//이전 
         $('#pre').click(function() {
