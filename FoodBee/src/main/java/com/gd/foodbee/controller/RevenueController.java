@@ -85,4 +85,17 @@ public class RevenueController {
 		return list;
 	}
 	
+	// 사용 가능한 연도를 가져옴
+	// 파라미터 : X
+	// 반환 값 : List<String>
+	// 사용 페이지 : /categoryRevenue
+    @GetMapping("/revenue/getAvailableYears")
+    @ResponseBody
+    public List<String> getAvailableYears() {
+    	
+        List<String> years = revenueService.getYear();
+        log.debug(TeamColor.GREEN + "Available years => " + years.toString());
+        
+        return years;
+    }
 }

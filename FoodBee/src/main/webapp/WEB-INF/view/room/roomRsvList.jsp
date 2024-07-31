@@ -10,70 +10,76 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-<div class="content-body">
-	<h1>전체 예약 목록</h1>
-	<a href="${pageContext.request.contextPath}/room/roomRsvList">전체 예약</a>
-	<a href="${pageContext.request.contextPath}/room/myRoomRsvList">내 예약</a>
-	
-	<form id="dateForm" method="get" action="${pageContext.request.contextPath}/room/roomRsvList">
-	    <input type="date" id="dateInput" name="date" value="${rsvDate}">
-	</form>
-	
-	<table class="table table-bordered">
-	    <thead>
-	        <tr>   
-	            <th>예약 날짜</th>
-	            <th>예약시간</th>
-	            <th>제목</th>
-	            <th>예약자</th>
-	            <th>&nbsp;</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <c:forEach var="rsv" items="${rsvListByDate}">
-	            <tr>
-	                <td>${rsv.rsvDate}</td>
-	                <td>${rsv.startTime} ~ ${rsv.endTime}</td>
-	                <td>
-	                    <a href="#" class="info-link" data-reason="${rsv.meetingReason}" data-users="${rsv.users}" data-name="${rsv.roomName}">
-	                        ${rsv.meetingTitle}
-	                    </a>
-	                </td>
-	                <td>${rsv.empName}</td>
-	                <td>&nbsp;</td>
-	            </tr>
-		       
-	        </c:forEach>
-			<c:if test="${empty rsvListByDate}">
-			    <tr>
-			    	<td colspan="5">
-			    		<h3>등록 된 예약이 없습니다.</h3>
-			    	</td>
-			    </tr>
-			</c:if>
-	    </tbody>
-	</table>
-	
-	<!-- 정보 모달 구조 -->
-	<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
-	    <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="infoModalLabel">회의 정보</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <div class="modal-body">
-	                <p id="modalName"></p>
-	                <p id="modalReason"></p>
-	                <p id="modalUsers"></p>                
-	            </div>
-	        </div>
-	    </div>
+	<div class="content-body">
+	<div class="container">
+		<h1>전체 예약 목록</h1>
+		<a href="${pageContext.request.contextPath}/room/roomRsvList">전체 예약</a>
+		<a href="${pageContext.request.contextPath}/room/myRoomRsvList">내 예약</a>
+		<c:if test="${rankName eq '팀장'}">
+			<a href="${pageContext.request.contextPath}/room/cancleRsvList">예약 취소</a>
+		</c:if>
+		<form id="dateForm" method="get" action="${pageContext.request.contextPath}/room/roomRsvList">
+		    <input type="date" id="dateInput" name="date" value="${rsvDate}">
+		</form>
+		
+		<table class="table table-bordered">
+		    <thead>
+		        <tr>   
+		            <th>예약 날짜</th>
+		            <th>예약시간</th>
+		            <th>제목</th>
+		            <th>예약자</th>
+		            <th>&nbsp;</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <c:forEach var="rsv" items="${rsvListByDate}">
+		            <tr>
+		                <td>${rsv.rsvDate}</td>
+		                <td>${rsv.startTime} ~ ${rsv.endTime}</td>
+		                <td>
+		                    <a href="#" class="info-link" data-reason="${rsv.meetingReason}" data-users="${rsv.users}" data-name="${rsv.roomName}">
+		                        ${rsv.meetingTitle}
+		                    </a>
+		                </td>
+		                <td>${rsv.empName}</td>
+		                <td>&nbsp;</td>
+		            </tr>
+			       
+		        </c:forEach>
+				<c:if test="${empty rsvListByDate}">
+				    <tr>
+				    	<td colspan="5">
+				    		<h3>등록 된 예약이 없습니다.</h3>
+				    	</td>
+				    </tr>
+				</c:if>
+		    </tbody>
+		</table>
+		
+		<!-- 정보 모달 구조 -->
+		<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="infoModalLabel">회의 정보</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <p id="modalName"></p>
+		                <p id="modalReason"></p>
+		                <p id="modalUsers"></p>                
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</div>
 	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>

@@ -52,4 +52,14 @@ public class RevenueServiceImpl implements RevenueService{
 		return revenueMapper.selectCategoryRevenue(referenceMonth, categoryName);
 	}
 	
+	// 사용 가능한 연도를 가져옴
+	// 파라미터 : X
+	// 반환 값 : List<String>
+	// 사용 클래스 : RevenueController.
+	@Override
+	public List<String> getYear() {
+		
+		return revenueMapper.selectYear();
+	}
+	
 }

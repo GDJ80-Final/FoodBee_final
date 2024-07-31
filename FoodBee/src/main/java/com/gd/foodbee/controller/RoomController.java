@@ -34,7 +34,7 @@ public class RoomController {
 	private RoomMapper roomMapper;
 
 	// 회의실 목록
-	// 파라미터 : Model model
+	// 파라미터 : X
 	// 반환 값 : List<RoomDTO>
 	// 사용 페이지 : /room/roomList
 	@GetMapping("/room/roomList")	
@@ -112,11 +112,15 @@ public class RoomController {
 	// 반환 값 : List<RoomRsvDTO> rsvListByDate, String rsvDate, int currentPage, int lastPage
 	// 사용 페이지 : /room/roomRsvList
 	@GetMapping("/room/roomRsvList")
-	public String roomRsvList(Model model, @RequestParam(name = "date", required = false) String rsvDate,
-										   @RequestParam(name="currentPage", defaultValue="1") int currentPage) {
+	public String roomRsvList(Model model, HttpSession session,
+											@RequestParam(name = "date", required = false) String rsvDate,
+											@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
 		log.debug(TeamColor.GREEN + "rsvDate => " + rsvDate);
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
+		String rankName = emp.getRankName();
 		if (rsvDate == null || rsvDate.isEmpty()) {
             // 기본값으로 오늘 날짜 설정
 			rsvDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -132,6 +136,7 @@ public class RoomController {
 		model.addAttribute("rsvDate", rsvDate);
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("lastPage", lastPage);
+		model.addAttribute("rankName",rankName);
 
 		return "/room/roomRsvList";
 	}
@@ -149,9 +154,10 @@ public class RoomController {
 		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		
 		int empNo = emp.getEmpNo();
+		String rankName = emp.getRankName();
 		
 		List<RoomRsvDTO> rsvListByEmpNo = roomService.getRsvListByEmpNo(empNo, currentPage);
-		log.debug(TeamColor.GREEN + rsvListByEmpNo.toString()); 			
+		log.debug(TeamColor.GREEN + rsvListByEmpNo.toString());
 		
 		int lastPage = roomService.getRsvByEmpNoLastPage(empNo);
 		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
@@ -159,6 +165,7 @@ public class RoomController {
 		model.addAttribute("rsvListByEmpNo",rsvListByEmpNo);
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("lastPage",lastPage);
+		model.addAttribute("rankName",rankName);
 
 		return "/room/myRoomRsvList";
 	}
@@ -178,23 +185,25 @@ public class RoomController {
 	}
 	
 	// 취소된 예약목록
-	// 파라미터 : Model model, int currentPage
+	// 파라미터 : X
 	// 반환 값 : List<HashMap<String, Object>>
 	// 사용 페이지 : /room/cancleRsvList
 	@GetMapping("/room/cancleRsvList")
-	public String cancleRsvList(Model model,
+	public String cancleRsvList(Model model, HttpSession session,
 							@RequestParam(name="currentPage", defaultValue="1") int currentPage) {
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
-		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
 		List<HashMap<String, Object>> list = roomService.getCancleRsvList(currentPage);
 		log.debug(TeamColor.GREEN + "list => " + list);
-		
+		String rankName = emp.getRankName();
 		int lastPage = roomService.getCancleRsvLastPage();
 		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("lastPage",lastPage);
+		model.addAttribute("rankName",rankName);
 		
 		return "/room/cancleRsvList";
 	}

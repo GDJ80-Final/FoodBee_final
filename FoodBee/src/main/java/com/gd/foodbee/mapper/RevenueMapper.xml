@@ -42,5 +42,12 @@
 			AND YEAR(reference_month) = #{referenceMonth}
 	</select>
 	
+	<!-- 사용 가능한 연도를 가져옴 -->
+    <select id="selectYear" resultType="String">
+		SELECT 
+        	DISTINCT SUBSTRING(reference_month, 1, 4) year
+        FROM 
+        	revenue_history
+    </select>
 	
 </mapper>

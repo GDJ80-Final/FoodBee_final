@@ -8,42 +8,65 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 </head>
 <body>
+<div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-<div class="content-body">
-	<h1>2024년 매출현황</h1>
-	<!-- 연도 선택을 위한 셀렉트 박스 -->
-	<select id="selectYear" onchange="fetchTotalData()">
-	    <option value="2022">2022년</option>
-	    <option value="2023">2023년</option>
-	    <option value="2024" selected>2024년</option>
-	</select>
-	
-	<div id="categoryButtons">
-	    <button onclick="fetchTotalData()">전체</button>
-	    <button onclick="fetchCategoryData('간편식')">간편식</button>
-	    <button onclick="fetchCategoryData('쌀/곡물')">쌀/곡물</button>
-	    <button onclick="fetchCategoryData('육/수산')">육/수산</button>
-	    <button onclick="fetchCategoryData('음료/주류')">음료/주류</button>
-	    <button onclick="fetchCategoryData('청과')">청과</button>
+	<div class="content-body">
+	<div class="container">
+	    <h1 id="pageTitle">2024년 매출현황</h1>
+	    <!-- 연도 선택을 위한 셀렉트 박스 -->
+	    <select id="selectYear" onchange="fetchTotalData()">
+	        <!-- 연도 옵션은 동적으로 추가될 예정 -->
+	    </select>
+	    
+	    <div id="categoryButtons">
+	        <button onclick="fetchTotalData()">전체</button>
+	        <button onclick="fetchCategoryData('간편식')">간편식</button>
+	        <button onclick="fetchCategoryData('쌀/곡물')">쌀/곡물</button>
+	        <button onclick="fetchCategoryData('육/수산')">육/수산</button>
+	        <button onclick="fetchCategoryData('음료/주류')">음료/주류</button>
+	        <button onclick="fetchCategoryData('청과')">청과</button>
+	    </div>
+	    <canvas id="lineChart" style="width:100%;max-width:1200px"></canvas>
 	</div>
-	<canvas id="lineChart" style="width:100%;max-width:1200px"></canvas>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
-//전체 데이터를 담을 변수
 let allData = [];
 const colors = {
-	    "간편식": "red",
-	    "쌀/곡물": "orange",
-	    "육/수산": "yellow",
-	    "음료/주류": "green",
-	    "청과": "blue"
-	};
-// 전체 데이터를 가져오는 함수
+    "간편식": "red",
+    "쌀/곡물": "orange",
+    "육/수산": "yellow",
+    "음료/주류": "green",
+    "청과": "blue"
+};
+
+function fetchAvailableYears() {
+    $.ajax({
+        url: "${pageContext.request.contextPath}/revenue/getAvailableYears",
+        method: 'GET',
+        dataType: 'json',
+        success: function(years) {
+            console.log("사용 가능한 연도:", years);
+            const selectYear = $('#selectYear');
+            selectYear.empty();
+            years.forEach(year => {
+                selectYear.append(new Option(year + '년', year));
+            });
+
+            const currentYear = new Date().getFullYear();
+            selectYear.val(currentYear);
+            fetchTotalData();
+        },
+        error: function(xhr, status, error) {
+            console.error("사용 가능한 연도 데이터 AJAX 에러:", error);
+        }
+    });
+}
+
 function fetchTotalData() {
-    const selectedYear = document.getElementById('selectYear').value;
+    const selectedYear = $('#selectYear').val();
 
     $.ajax({
         url: "${pageContext.request.contextPath}/revenue/getTotalRevenue",
@@ -51,10 +74,11 @@ function fetchTotalData() {
         dataType: 'json',
         data: { year: selectedYear },
         success: function(json) {
-        	const data = json;
+            const data = json;
             console.log(selectedYear + " 전체 데이터:", data);
             allData = data;
             updateChart(allData);
+            updateTitle(selectedYear);
         },
         error: function(xhr, status, error) {
             console.error(selectedYear + " 전체 데이터 AJAX 에러:", error);
@@ -62,9 +86,8 @@ function fetchTotalData() {
     });
 }
 
-// 카테고리별 데이터를 가져오는 함수
 function fetchCategoryData(category) {
-    const selectedYear = document.getElementById('selectYear').value;
+    const selectedYear = $('#selectYear').val();
 
     $.ajax({
         url: "${pageContext.request.contextPath}/revenue/getCategoryRevenue",
@@ -72,9 +95,10 @@ function fetchCategoryData(category) {
         dataType: 'json',
         data: { year: selectedYear, category: category },
         success: function(json) {
-        	const data = json;
+            const data = json;
             console.log(category + " 카테고리 데이터:", data);
             updateChart(data);
+            updateTitle(selectedYear);
         },
         error: function(xhr, status, error) {
             console.error(category + " 카테고리 데이터 AJAX 에러:", error);
@@ -82,10 +106,8 @@ function fetchCategoryData(category) {
     });
 }
 
-// 차트 업데이트 함수
 function updateChart(data) {
     if (data && data.length > 0) {
-        // 데이터를 가공하여 카테고리별로 매출 데이터 분리
         const categories = [...new Set(data.map(item => item.categoryName))];
         const months = [...new Set(data.map(item => item.referenceMonth))].sort();
         const revenueData = categories.map(category => {
@@ -99,7 +121,6 @@ function updateChart(data) {
         console.log("Revenue Data:", revenueData);
         console.log("Months:", months);
 
-        // 차트 생성 코드
         const ctx = document.getElementById('lineChart').getContext('2d');
         const lineChart = new Chart(ctx, {
             type: 'line',
@@ -141,10 +162,12 @@ function updateChart(data) {
     }
 }
 
+function updateTitle(year) {
+    $('#pageTitle').text(year + '년 매출현황');
+}
 
-// 페이지 로드 시 초기 데이터 호출 (전체 카테고리 데이터로)
 $(document).ready(function() {
-    fetchTotalData(); // 페이지 로드 시 선택된 연도의 전체 카테고리 데이터를 먼저 받아옴
+    fetchAvailableYears();
 });
 </script>
 </body>

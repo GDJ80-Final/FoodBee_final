@@ -57,93 +57,97 @@
     </style>
 </head>
 <body>
+<div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-<div class="content-body">
-    <div id="reserved-times"></div>
-    <h1>회의실 예약</h1>
-    <form id="reservationForm" method="post" action="${pageContext.request.contextPath}/room/roomRsv">		
-        <input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
-        <input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
-
-        <div>예약된 시간 </div>
-        <c:forEach var="m" items="${reservedTimes}">
-            <input type="hidden" value="${m.startDateTime}" id="startDateTime_${m.index}">
-            <input type="hidden" value="${m.endDateTime}" id="endDateTime_${m.index}">	   
-        </c:forEach>
-        <!-- 타임라인 -->
-        <div id="timeline"></div>
-
-        <label for="start-time">시작 시간:</label>
-        <select id="start-time" name="startTime">
-            <option selected="selected">:::선택:::</option>        
-        </select>
-
-        <label for="end-time">종료 시간:</label>
-        <select id="end-time" name="endTime">
-            <option selected="selected">:::선택:::</option>       
-        </select>
-
-        <br>		
-        <label for="type">유형 :</label>
-        <input type="radio" name="type" value="team"> 팀
-        <input type="radio" name="type" value="personal"> 개인용무
-
-        <table border="1">
-            <tr>
-                <td style="width:300px; height:50px;">회의실 명</td>
-                <td>${roomDTO.roomName}</td>
-            </tr>		
-            <tr>
-                <td style="width:25%; height:50px;">이미지</td>			
-                <td>
-                    <div id="image-slider" style="position: relative; width: 400px; overflow: hidden;">
-                        <button id="prev" class="arrow-button" type="button">◀</button>
-                        <div id="image-container" style="display: flex; transition: transform 0.5s ease;">
-                            <c:forEach var="m" items="${roomImg}">
-                                <img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="100%" style="flex: 0 0 auto;">
-                            </c:forEach>
-                        </div>
-                        <button id="next" class="arrow-button" type="button">▶</button>
-                    </div>	
-                </td>			
-            </tr>
-
-            <tr>
-                <td style="width:25%; height:50px;">위치</td>
-                <td>${roomDTO.roomPlace}</td>
-            </tr>
-            <tr>
-                <td style="width:25%; height:50px;">수용인원</td>
-                <td>최대 ${roomDTO.roomMax}명</td>
-            </tr>			
-            <tr>						
-                <td style="width:25%; height:50px;">비품</td>
-                <td>${roomDTO.info}</td>
-            </tr>
-            <tr>						
-                <td style="width:25%; height:50px;">제목</td>
-                <td>
-                    <input type="text" name="meetingTitle" placeholder="공식적인 제목을 적어주세요." style="width: 500px;">
-                </td>		
-            </tr>
-            <tr>
-                <td>목적</td>
-                <td colspan="4">
-                    <textarea style="width: 60%; height: 200px;" placeholder="회의실을 사용하는 목적을 작성해주세요." name="meetingReason"></textarea>
-                </td>
-            </tr>
-            <tr>						
-                <td style="height:50px;">참석 인원</td>
-                <td>
-                    <input type="number" name="users" style="width: 40px;" min="1" max="${roomDTO.roomMax}">명
-                </td>		
-            </tr>
-        </table>
-        <button type="submit">예약</button>
-        <button type="button" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>		
-    </form>
+	<div class="content-body">
+	<div class="container">
+	    <div id="reserved-times"></div>
+	    <h1>회의실 예약</h1>
+	    <form id="reservationForm" method="post" action="${pageContext.request.contextPath}/room/roomRsv">		
+	        <input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
+	        <input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
+	
+	        <div>예약된 시간 </div>
+	        <c:forEach var="m" items="${reservedTimes}">
+	            <input type="hidden" value="${m.startDateTime}" id="startDateTime_${m.index}">
+	            <input type="hidden" value="${m.endDateTime}" id="endDateTime_${m.index}">	   
+	        </c:forEach>
+	        <!-- 타임라인 -->
+	        <div id="timeline"></div>
+	
+	        <label for="start-time">시작 시간:</label>
+	        <select id="start-time" name="startTime">
+	            <option selected="selected">:::선택:::</option>        
+	        </select>
+	
+	        <label for="end-time">종료 시간:</label>
+	        <select id="end-time" name="endTime">
+	            <option selected="selected">:::선택:::</option>       
+	        </select>
+	
+	        <br>		
+	        <label for="type">유형 :</label>
+	        <input type="radio" name="type" value="team"> 팀
+	        <input type="radio" name="type" value="personal"> 개인용무
+	
+	        <table border="1">
+	            <tr>
+	                <td style="width:300px; height:50px;">회의실 명</td>
+	                <td>${roomDTO.roomName}</td>
+	            </tr>		
+	            <tr>
+	                <td style="width:25%; height:50px;">이미지</td>			
+	                <td>
+	                    <div id="image-slider" style="position: relative; width: 400px; overflow: hidden;">
+	                        <button id="prev" class="arrow-button" type="button">◀</button>
+	                        <div id="image-container" style="display: flex; transition: transform 0.5s ease;">
+	                            <c:forEach var="m" items="${roomImg}">
+	                                <img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="100%" style="flex: 0 0 auto;">
+	                            </c:forEach>
+	                        </div>
+	                        <button id="next" class="arrow-button" type="button">▶</button>
+	                    </div>	
+	                </td>			
+	            </tr>
+	
+	            <tr>
+	                <td style="width:25%; height:50px;">위치</td>
+	                <td>${roomDTO.roomPlace}</td>
+	            </tr>
+	            <tr>
+	                <td style="width:25%; height:50px;">수용인원</td>
+	                <td>최대 ${roomDTO.roomMax}명</td>
+	            </tr>			
+	            <tr>						
+	                <td style="width:25%; height:50px;">비품</td>
+	                <td>${roomDTO.info}</td>
+	            </tr>
+	            <tr>						
+	                <td style="width:25%; height:50px;">제목</td>
+	                <td>
+	                    <input type="text" name="meetingTitle" placeholder="공식적인 제목을 적어주세요." style="width: 500px;">
+	                </td>		
+	            </tr>
+	            <tr>
+	                <td>목적</td>
+	                <td colspan="4">
+	                    <textarea style="width: 60%; height: 200px;" placeholder="회의실을 사용하는 목적을 작성해주세요." name="meetingReason"></textarea>
+	                </td>
+	            </tr>
+	            <tr>						
+	                <td style="height:50px;">참석 인원</td>
+	                <td>
+	                    <input type="number" name="users" style="width: 40px;" min="1" max="${roomDTO.roomMax}">명
+	                </td>		
+	            </tr>
+	        </table>
+	        <button type="submit">예약</button>
+	        <button type="button" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>		
+	    </form>
+	</div>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
     <script>

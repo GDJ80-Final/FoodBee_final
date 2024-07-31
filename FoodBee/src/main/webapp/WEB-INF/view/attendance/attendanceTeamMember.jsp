@@ -23,89 +23,93 @@
 </style>
 </head>
 <body>
+<div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-<div class="content-body">
-	<h1>팀원 근태 조회</h1>
-	
-	<!-- 필터링 버튼 -->
-	<button onclick="loadAllAttendanceData(1)">전체</button>
-	<button onclick="loadAttendanceDataByStatus('1', 1)">미승인</button>
-	<button onclick="loadAttendanceDataByStatus('2', 1)">승인</button>
-	<button onclick="loadAttendanceDataByStatus('9', 1)">반려</button>
-	<br>
-	<!-- 사원명 검색 입력 필드 -->
-	<input type="text" id="search" placeholder="사원명으로 검색">
-	<button onclick="performSearch()">검색</button>
-	
-	<!-- 데이터를 표시할 테이블 -->
-	<table id="attendanceTable">
-	    <thead>
-	        <tr>
-	            <th>사원 번호</th>
-	            <th>사원 이름</th>
-	            <th>해당 일자</th>
-	            <th>출근 시간</th>
-	            <th>퇴근 시간</th>
-	            <th>승인 상태</th>
-	            <th>수정 여부</th>
-	            <th>확정 일시</th>
-	            <th>&nbsp;</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <!-- 데이터는 동적으로 삽입 -->
-	    </tbody>
-	</table>
-	
-	<!-- 페이지네이션 -->
-	<div class="pagination" id="pagination">
-	    <!-- 페이지네이션 링크는 동적으로 삽입 -->
+	<div class="content-body">
+	<div class="container">
+		<h1>팀원 근태 조회</h1>
+		
+		<!-- 필터링 버튼 -->
+		<button onclick="loadAllAttendanceData(1)">전체</button>
+		<button onclick="loadAttendanceDataByStatus('1', 1)">미승인</button>
+		<button onclick="loadAttendanceDataByStatus('2', 1)">승인</button>
+		<button onclick="loadAttendanceDataByStatus('9', 1)">반려</button>
+		<br>
+		<!-- 사원명 검색 입력 필드 -->
+		<input type="text" id="search" placeholder="사원명으로 검색">
+		<button onclick="performSearch()">검색</button>
+		
+		<!-- 데이터를 표시할 테이블 -->
+		<table id="attendanceTable">
+		    <thead>
+		        <tr>
+		            <th>사원 번호</th>
+		            <th>사원 이름</th>
+		            <th>해당 일자</th>
+		            <th>출근 시간</th>
+		            <th>퇴근 시간</th>
+		            <th>승인 상태</th>
+		            <th>수정 여부</th>
+		            <th>확정 일시</th>
+		            <th>&nbsp;</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <!-- 데이터는 동적으로 삽입 -->
+		    </tbody>
+		</table>
+		
+		<!-- 페이지네이션 -->
+		<div class="pagination" id="pagination">
+		    <!-- 페이지네이션 링크는 동적으로 삽입 -->
+		</div>
+		
+		<!-- 반려 사유 입력 모달 구조 -->
+		<div class="modal fade" id="rejectionReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectionReasonModalLabel" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="rejectionReasonModalLabel">반려 사유 입력</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <textarea id="rejectionReason" placeholder="반려 사유를 입력하세요." rows="3" class="form-control"></textarea>
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		                <button type="button" class="btn btn-primary" id="submitRejection">확인</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+		<!-- 수정 사유 확인 모달 -->
+		<div class="modal fade" id="updateReasonModal" tabindex="-1" role="dialog" aria-labelledby="updateReasonModalLabel" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="updateReasonModalLabel">수정 사유</h5>
+		                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                    <span aria-hidden="true">&times;</span>
+		                </button>
+		            </div>
+		            <div class="modal-body">
+		                <p id="updateReasonText"></p> <!-- 수정 사유 내용 -->
+		                <br><br><br><hr>         
+		                <p id="updateStartTime"></p> <!-- 출근 시간 내용 -->
+		                <p id="updateEndTime"></p> <!-- 퇴근 시간 내용 -->
+		            </div>
+		            <div class="modal-footer">
+		                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
 	</div>
-	
-	<!-- 반려 사유 입력 모달 구조 -->
-	<div class="modal fade" id="rejectionReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectionReasonModalLabel" aria-hidden="true">
-	    <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="rejectionReasonModalLabel">반려 사유 입력</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <div class="modal-body">
-	                <textarea id="rejectionReason" placeholder="반려 사유를 입력하세요." rows="3" class="form-control"></textarea>
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	                <button type="button" class="btn btn-primary" id="submitRejection">확인</button>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-	
-	<!-- 수정 사유 확인 모달 -->
-	<div class="modal fade" id="updateReasonModal" tabindex="-1" role="dialog" aria-labelledby="updateReasonModalLabel" aria-hidden="true">
-	    <div class="modal-dialog" role="document">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="updateReasonModalLabel">수정 사유</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <div class="modal-body">
-	                <p id="updateReasonText"></p> <!-- 수정 사유 내용 -->
-	                <br><br><br><hr>         
-	                <p id="updateStartTime"></p> <!-- 출근 시간 내용 -->
-	                <p id="updateEndTime"></p> <!-- 퇴근 시간 내용 -->
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	            </div>
-	        </div>
-	    </div>
 	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>

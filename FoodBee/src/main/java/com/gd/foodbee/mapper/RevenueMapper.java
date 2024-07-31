@@ -26,4 +26,10 @@ public interface RevenueMapper {
 	// 반환값 : List<RevenueDTO>
 	// 사용클래스 : RevenueServiceImpl.getCategoryRevenue
 	List<RevenueDTO> selectCategoryRevenue(String referenceMonth, String categoryName);
+	
+	// 사용 가능한 연도를 가져옴
+	// 파라미터 : X
+	// 반환값 : List<String>
+	// 사용클래스 : RevenueServiceImpl.
+	List<String> selectYear();
 }

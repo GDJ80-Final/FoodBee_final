@@ -185,7 +185,7 @@
 	            Content body start
 	        ***********************************-->
 	<div class="content-body">
-
+	<div class="container">
 		<div class="tabs" id="tabs">
 		    <div class="tab" id="basicForm" data-form="basicForm">
 			    <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
@@ -266,6 +266,7 @@
 			     <button type="submit" id="submitBtn" class="submit-btn">제출</button>
 		     </div>
 		</form>      
+	</div>
 	</div>
 </div>
  		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>

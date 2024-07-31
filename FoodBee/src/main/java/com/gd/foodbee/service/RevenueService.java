@@ -14,4 +14,7 @@ public interface RevenueService {
 	
 	// 카테고리 별 매출
 	List<RevenueDTO> getCategoryRevenue(String referenceMonth, String categoryName);
+	
+	// 사용 가능한 연도를 가져옴
+	List<String> getYear();
 }

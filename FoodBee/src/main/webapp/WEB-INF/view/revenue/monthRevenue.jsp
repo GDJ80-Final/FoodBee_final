@@ -33,6 +33,7 @@ body {
 </style>
 </head>
 <body>
+<div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
@@ -50,9 +51,10 @@ body {
             <select id="yearSelect"></select>
             <label for="monthSelect">월 선택:</label>
             <select id="monthSelect"></select>
-        </div>
+        </div><br>
         <canvas id="totalChart" style="width:100%;max-width:800px; height:100%;max-height:600px;"></canvas>
     </section>
+</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 
@@ -287,7 +289,7 @@ $(document).ready(function() {
                         '저번달 대비 증감액: <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><hr>';
 
         totalHtml += '실적 우수 품목: ' + highestCategory + ' (' + formatNumber(highestRevenue) + '원)<hr>';
-        totalHtml += '실적 저조 품목: ' + lowestCategory + ' (' + formatNumber(lowestRevenue) + '원)<br>';
+        totalHtml += '실적 저조 품목: ' + lowestCategory + ' (' + formatNumber(lowestRevenue) + '원)<hr>';
 
         $('#monthlyTotal').html(totalHtml);
     }

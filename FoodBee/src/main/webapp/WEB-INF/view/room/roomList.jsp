@@ -7,41 +7,45 @@
 <title>회의실 목록</title>
 </head>
 <body>
+<div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-<div class="content-body">
-	<h1>회의실 목록</h1>
-	<input type="date" id="dateInput">
-	<a href="${pageContext.request.contextPath}/room/roomRsvList">예약 리스트</a>
-	
-	<table border="1">
-		<tr>
-			<td style="width:300px; height:50px;">회의실 명</td>
-			<td style="width:25%; height:50px;">이미지</td>
-			<td style="width:25%; height:50px;">위치</td>
-			<td style="width:25%; height:50px;">수용인원</td>
-		</tr>
-		<c:forEach var="m" items="${list}">	
+	<div class="content-body">
+	<div class="container">
+		<h1>회의실 목록</h1>
+		<input type="date" id="dateInput">
+		<a href="${pageContext.request.contextPath}/room/roomRsvList">예약 리스트</a>
+		
+		<table border="1">
 			<tr>
-				<td style="height:100%;">
-					<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
-						<input type="hidden" name="roomNo" value="${m.roomNo}">
-						<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
-						
-						<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
-							${m.roomName}
-						</a>
-					</form>	
-				</td>
-				<td style="height:100%;">
-					<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="300px">				
-				</td>
-				<td style="height:200px;">${m.roomPlace}</td>
-				<td style="height:200px;">최대 ${m.roomMax}명</td>
+				<td style="width:300px; height:50px;">회의실 명</td>
+				<td style="width:25%; height:50px;">이미지</td>
+				<td style="width:25%; height:50px;">위치</td>
+				<td style="width:25%; height:50px;">수용인원</td>
 			</tr>
-		</c:forEach>	
-	</table>
+			<c:forEach var="m" items="${list}">	
+				<tr>
+					<td style="height:100%;">
+						<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
+							<input type="hidden" name="roomNo" value="${m.roomNo}">
+							<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
+							
+							<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
+								${m.roomName}
+							</a>
+						</form>	
+					</td>
+					<td style="height:100%;">
+						<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="300px">				
+					</td>
+					<td style="height:200px;">${m.roomPlace}</td>
+					<td style="height:200px;">최대 ${m.roomMax}명</td>
+				</tr>
+			</c:forEach>	
+		</table>
+	</div>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
