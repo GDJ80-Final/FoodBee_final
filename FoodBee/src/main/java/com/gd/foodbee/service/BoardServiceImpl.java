@@ -249,9 +249,9 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	// 최근 1주내의 top 5 인기글 뽑기
-	// 파라미터 : 
-	// 반환 값 :
-	// 사용 클래스 : 
+	// 파라미터 : X
+	// 반환 값 : List<Map<String,Object>>
+	// 사용 클래스 : boardController.getMostLikedList
 	@Override
 	public List<Map<String, Object>> getMostLikedBoard() {
 		

@@ -46,7 +46,9 @@ public class DraftDocServiceImpl implements DraftDocService{
 	private FilePath filePath;
 	
 	// 새기안서 추가
-	// 파라미터 : 
+	// 파라미터 : DraftDocRequestDTO draftDocRequestDTO
+	// 반환 값 : X
+	// 사용 클래스 : ApprovalController.addDraft
 	@Override
 	public void addDraftDoc(DraftDocRequestDTO draftDocRequestDTO) {
 		

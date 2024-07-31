@@ -30,9 +30,9 @@ public class ApprovalController {
 	private GroupService groupService;
 	
 	// 각 기안서 추가 
-	// 파라미터 : X
-	// 반환 값 : String(view)
-	// 사용 페이지 : /approval/forms/revenueForm,basic,dayOff,businessTripForm, chargeForm
+	// 파라미터 : HttpSession session
+	// 반환 값 : Map<String,Object>
+	// 사용 페이지 : /approval/forms/commonForm
 	@GetMapping("/approval/forms/commonForm")
 	@ResponseBody
 	public Map<String,Object> commonForm(HttpSession session) {
@@ -57,6 +57,11 @@ public class ApprovalController {
 		
 		return map;
 	}
+	
+	// 각 기안서 추가 
+	// 파라미터 : X
+	// 반환 값 : String(view)
+	// 사용 페이지 : /approval/forms/revenueForm,basic,dayOffForm,businessTripForm, chargeForm
 	@GetMapping("/approval/forms/revenueForm")
 	public String revenueForm() {
 		

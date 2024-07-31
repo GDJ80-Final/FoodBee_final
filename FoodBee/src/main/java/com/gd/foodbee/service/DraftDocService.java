@@ -1,11 +1,7 @@
 package com.gd.foodbee.service;
 
 
-
-
 import com.gd.foodbee.dto.DraftDocRequestDTO;
-
-
 
 
 public interface DraftDocService {
