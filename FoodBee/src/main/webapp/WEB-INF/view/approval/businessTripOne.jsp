@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>출장 신청서</h1>
-<a href="draftBox">돌아가기</a>
+<a href="${pageContext.request.contextPath}/approval/draftBox">돌아가기</a>
 <jsp:include page="./forms/commonForm.jsp"></jsp:include>
 <div class="form-section">        
 	<div class="form-group">

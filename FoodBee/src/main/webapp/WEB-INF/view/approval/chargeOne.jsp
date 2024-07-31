@@ -9,12 +9,12 @@
 </head>
 <body>
 	<h1>지출결의서</h1>
-	<a href="draftBox">돌아가기</a>
+	<a href="${pageContext.request.contextPath}/approval/draftBox">돌아가기</a>
 	<jsp:include page="./forms/commonForm.jsp"></jsp:include>
 	<div class="form-section">
 	    <div class="form-group">
 	        <label for="monthYear">지출년월</label>
-	        <input type="text" id="monthYear" value="${chargeDetailOne.description}" readonly="readonly">
+	        <input type="text" id="monthYear" value="${chargeDetailList.description}" readonly="readonly">
 	    </div>
 	    <div class="form-group">
 	        <label for="title">제목:</label>
@@ -23,14 +23,16 @@
 	    <div class="form-group">
 	        <label for="content">내역:</label>
 	        <div id="categoryContainer">
-	            <div class="category-row" style="display: flex; align-items: center;">
-	                <label for="expenditure">적요:</label>
-	                <input type="text" class="expenditureInput" placeholder="지출내용" style="margin-right: 20px;" value="${chargeDetailOne.typeName}">
-	                <label for="charge">금액:</label>
-	                <input type="text" class="chargeInput" placeholder="금액 입력" value="${chargeDetailOne.amount}">원
-	                <label for="note" style="margin-left: 20px;">비고:</label>
-	                <textarea style="width: 400px; margin-top: 20px;" placeholder="상세내용">${chargeOne.content}</textarea>
-	            </div>
+	        	<c:forEach items="${chargeDetailOne}" var="detail">
+		            <div class="category-row" style="display: flex; align-items: center;">
+		                <label for="expenditure">적요:</label>
+		                <input type="text" class="expenditureInput" placeholder="지출내용" style="margin-right: 20px;" value="${detail.typeName}">
+		                <label for="charge">금액:</label>
+		                <input type="text" class="chargeInput" placeholder="금액 입력" value="${detail.amount}">원
+		                <label for="note" style="margin-left: 20px;">비고:</label>
+		                <textarea style="width: 400px; margin-top: 20px;" placeholder="상세내용">${detail.text}</textarea>
+		            </div>
+	            </c:forEach>
 	        </div>
 	    </div>
 	    <div class="file-upload">

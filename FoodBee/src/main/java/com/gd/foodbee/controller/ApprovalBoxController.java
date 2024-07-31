@@ -280,13 +280,13 @@ public class ApprovalBoxController {
 
 		// 기안서상세, detail, 파일
         Map<String,Object>chargeOne = approvalBoxService.getDocOne(draftDocNo);
-        DraftDocDetailDTO chargeDetailOne = approvalBoxService.getDocDetailOne(draftDocNo);
+        List<DraftDocDetailDTO> chargeDetailOne = approvalBoxService.getDocDetailList(draftDocNo);
         List<DraftDocFileDTO> chargeFileOne = approvalBoxService.getDocFileOne(draftDocNo);
         Map<String,Object> chargeReferrer = approvalBoxService.getDocReferrerOne(draftDocNo);
         
-        log.debug(TeamColor.PURPLE + "revenueOne=>" + chargeOne);
-        log.debug(TeamColor.PURPLE + "revenueDetailOne=>" + chargeDetailOne);
-        log.debug(TeamColor.PURPLE + "revenueFileOne=>" + chargeFileOne);
+        log.debug(TeamColor.PURPLE + "chargeOne=>" + chargeOne);
+        log.debug(TeamColor.PURPLE + "chargeDetailOne=>" + chargeDetailOne);
+        log.debug(TeamColor.PURPLE + "chargeFileOne=>" + chargeFileOne);
 		
         model.addAttribute("empNo", empNo);
         model.addAttribute("chargeOne", chargeOne);

@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>매출보고 기안서</h1>
-<a href="draftBox">돌아가기</a>
+<a href="${pageContext.request.contextPath}/approval/draftBox">돌아가기</a>
 <jsp:include page="./forms/commonForm.jsp"></jsp:include>
 <div class="form-section">
         <div class="form-group">
@@ -23,7 +23,7 @@
 	        <c:forEach items="${revenueDetailOne}" var="detail">
 		       <div class="category-row" style="display: flex; align-items: center;">
 		            <label for="categorySelect">카테고리:</label>
-		            <input type="text" class="custom-category-input" value="${detail.description}" readonly>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		            <input type="text" class="custom-category-input" value="${detail.typeName}" readonly>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		            <label for="revenue">매출액:</label>
 		            <input type="text" class="revenueInput" value="${detail.amount}" readonly>원
 		        </div>
