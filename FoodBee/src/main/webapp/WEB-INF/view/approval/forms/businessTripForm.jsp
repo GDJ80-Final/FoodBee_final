@@ -125,23 +125,14 @@
         .form-section {
             padding: 20px;
         }
-         .form-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            width: 80px;
-            margin-right: 10px;
-        }
+        
         .form-group input[type="text"], .form-group textarea {
             flex: 1;
             padding: 8px;
             border: 1px solid #ccc;
         }
-        .form-group input[type="text"]:first-child {
-            margin-right: 20px;
-        }
+     
+
         .form-group textarea {
             height: 100px;
             resize: none;
@@ -195,22 +186,30 @@
 		        		<input type="hidden" name="tmpNo" value="3">
 		                <label for=place>출장지:</label>
 		                <input type="text" id="place" name="typeName">
+		                <div class="error" id="placeError"></div>
+		            </div>
+		            <div class="form-group">
 		                
-		                <label for="period" style="margin-left: 200px;">기간:</label>
-		                <input type="date" id="period" name="startDate"> ~
-		                <input type="date" id="period" name="endDate">
+		                <label for="period">기간:</label>
+		                <input type="date" name="startDate" id="startDate"> ~
+		                <input type="date" name="endDate" id="endDate">
+		                <div class="error" id="periodError"></div>
+		                
 		            </div>
 		            <div class="form-group">
 		                <label for=emergency>비상연락:</label>
 		                <input type="text" id="emergency" name="text">
+		                <div class="error" id="emergencyError"></div>
 		            </div>
 		            <div class="form-group">
 		                <label for="title">제목:</label>
 		                <input type="text" id="title" name="title">
+		                <div class="error" id="titleError"></div>
 		            </div>
 		            <div class="form-group">
 		                <label for="content">내용:</label>
 		                <textarea id="content" name="content" placeholder="출장 목적을 작성하세요."></textarea>
+		                 <div class="error" id="contentError"></div>
 		            </div>            
 		            <div class="file-upload">
 		                <label for="attachment">첨부파일:</label>
@@ -253,9 +252,123 @@
                 alert('기본정보 불러오는데 실패했습니다 .');
             }
         });
+		// 오늘 이전의 날짜는 선택하지 못하게 막아주기
+		let date = new Date();
+		let year = date.getFullYear();
+		console.log(year);
+		// padStart => 자릿수 맞추기 위해 씀 
+		let month = String(date.getMonth()+1).padStart(2,'0');
+		console.log(month);
+		let day = String(date.getDate()).padStart(2,'0');
+		console.log(day);
+		let today = year+ '-' + month + '-' + day;
+		console.log(today);
+		$('#startDate').attr('min',today);
+		$('#endDate').attr('min',today);
+		
+		
+		// 공백/유효성 검사
+		$('#place').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#placeError').text('출장지를 입력해 주세요.');
+            } else {
+                $('#placeError').text('');
+            }
+        });
+		
+		$('#startDate, #endDate').blur(function() {
+	        let startDate = $('#startDate').val();
+	        let endDate = $('#endDate').val();
+	        
+	        
+	        
+	        // 날짜 필드가 비어 있는지 확인
+	        if (startDate === '' || endDate === '') {
+	            $('#periodError').text('기간을 입력해 주세요.');
+	        } else {
+	            // 날짜 비교 및 오류 메시지 설정
+	            if (new Date(startDate) > new Date(endDate)) {
+	                $('#periodError').text('종료 날짜는 시작 날짜 이후여야 합니다.');
+	            } else {
+	                $('#periodError').text('');
+	            }
+	        }
+	    });
+
+        $('#emergency').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#emergencyError').text('비상연락을 입력해 주세요.');
+            } else {
+                $('#emergencyError').text('');
+            }
+        });
+
+        $('#title').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#titleError').text('제목을 입력해 주세요.');
+            } else {
+                $('#titleError').text('');
+            }
+        });
+
+        $('#content').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#contentError').text('내용을 입력해 주세요.');
+            } else {
+                $('#contentError').text('');
+            }
+        });
+
+		
 		
 		// 결재사인 유무 체크
 		$('#submitBtn').click(function(e) {
+            // 공백 및 날짜 유효성 검사
+            let hasError = false;
+            if ($('#place').val().trim() === '') {
+                $('#placeError').text('출장지를 입력해 주세요.');
+                hasError = true;
+            } else {
+                $('#placeError').text('');
+            }
+
+            let startDate = $('#startDate').val();
+            let endDate = $('#endDate').val();
+            if (startDate === '' || endDate === '') {
+                $('#periodError').text('기간을 입력해 주세요.');
+                hasError = true;
+            } else if (new Date(startDate) > new Date(endDate)) {
+                $('#periodError').text('종료 날짜는 시작 날짜 이후여야 합니다.');
+                hasError = true;
+            } else {
+                $('#periodError').text('');
+            }
+
+            if ($('#emergency').val().trim() === '') {
+                $('#emergencyError').text('비상연락을 입력해 주세요.');
+                hasError = true;
+            } else {
+                $('#emergencyError').text('');
+            }
+
+            if ($('#title').val().trim() === '') {
+                $('#titleError').text('제목을 입력해 주세요.');
+                hasError = true;
+            } else {
+                $('#titleError').text('');
+            }
+
+            if ($('#content').val().trim() === '') {
+                $('#contentError').text('내용을 입력해 주세요.');
+                hasError = true;
+            } else {
+                $('#contentError').text('');
+            }
+            if (!hasError) {
 	        let drafterNo = $('#drafterEmpNo').val();
 	        console.log(drafterNo)
 	        $.ajax({
@@ -274,7 +387,8 @@
 	                window.location.href = '${pageContext.request.contextPath}/myPage';
 	            }
 	        });
-	    });
+	      }
+	   });
 		
 		
 		
@@ -297,6 +411,8 @@
         	let fileGroupId = $(this).data('file-id');
             $('#' + fileGroupId).remove();
         });
+        
+       
 
 	});
 </script>
