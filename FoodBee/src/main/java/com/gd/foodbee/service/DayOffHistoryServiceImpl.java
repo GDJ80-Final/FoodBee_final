@@ -56,5 +56,15 @@ public class DayOffHistoryServiceImpl implements DayOffHistoryService{
 		return cnt;
 	}
 
+	// 사용 휴가 개수
+	// 파라미터 : int empNo, String year
+	// 반환 값 : int
+	// 사용 클래스 : DayOffHistoryController.getRemainingDayOff
+	@Override
+	public double getUsedDayOff(int empNo, String year) {
+		double cnt = dayOffHistoryMapper.selectDayOffCnt(empNo, year);
+		return cnt;
+	}
+
 
 }

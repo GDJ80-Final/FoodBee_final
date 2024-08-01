@@ -1,5 +1,6 @@
 package com.gd.foodbee.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +26,12 @@ public class DayOffHistoryController {
 	@Autowired
 	private EmpService empService;
 	
-	@PostMapping("/emp/getDayOffHistoryList")
-	@ResponseBody
 	// 휴가내역리스트
 	// 파라미터 : int empNo, String year, int currentPage
 	// 반환값 : Map<String, Object>
 	// 사용 페이지 : /myPage
+	@PostMapping("/emp/getDayOffHistoryList")
+	@ResponseBody
 	public Map<String, Object> getDayOffHistoryList(@RequestParam int empNo,
 				@RequestParam String year,
 				@RequestParam int currentPage){
@@ -38,11 +39,12 @@ public class DayOffHistoryController {
 		double dayOff = empService.getDayOff(empNo, year);
 		List<Map<String, Object>> list = dayOffHistoryService.getDayOffHistoryList(empNo, year, currentPage);
 		int lastPage = dayOffHistoryService.getDayOffLastPage(empNo, year);
-		int cnt = dayOffHistoryService.getDayOffCnt(empNo, year);
+		double cnt = dayOffHistoryService.getUsedDayOff(empNo, year);
 		
-		log.debug(TeamColor.PURPLE + "list=>" + list);
-		log.debug(TeamColor.PURPLE + "lastPage=>" + lastPage);
-		log.debug(TeamColor.PURPLE + "cnt=>" + cnt);
+		log.debug(TeamColor.RED + "dayOff=>" + dayOff);
+		log.debug(TeamColor.RED + "list=>" + list);
+		log.debug(TeamColor.RED + "lastPage=>" + lastPage);
+		log.debug(TeamColor.RED + "cnt=>" + cnt);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("dayOff", dayOff);
@@ -51,5 +53,19 @@ public class DayOffHistoryController {
 		map.put("cnt", cnt);
 		
 		return map;
+	}
+	
+	// 잔여 휴가
+	// 파라미터 : int empNo
+	// 반환 값 : int
+	// 사용 페이지 : 
+	@PostMapping("/emp/getRemainingDayOff")
+	@ResponseBody
+	public double getRemainingDayOff(@RequestParam int empNo, 
+			@RequestParam String year) {
+		double dayOff = empService.getDayOff(empNo, year);
+		double cnt = dayOffHistoryService.getUsedDayOff(empNo, year);
+		
+		return dayOff - cnt;
 	}
 }

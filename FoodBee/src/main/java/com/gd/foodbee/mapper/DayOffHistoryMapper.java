@@ -20,4 +20,10 @@ public interface DayOffHistoryMapper {
 	// 사용 클래스 : DayOffHistoryService.getDayOffLastPage
 	int selectDayOffHistoryCnt(int empNo, String year);
 	
+	// 사용 휴가 계산
+	// 파라미터 : int empNo, String year
+	// 반환 값 : double
+	// 사용 클래스 : DayOffHistoryService.getRemainingDayOff
+	double selectDayOffCnt(int empNo, String year);
+	
 }

@@ -13,4 +13,7 @@ public interface DayOffHistoryService {
 	
 	// 휴가 내역 개수
 	int getDayOffCnt(int empNo, String year);
+	
+	// 사용 휴가 계산
+	double getUsedDayOff(int empNo, String year);
 }

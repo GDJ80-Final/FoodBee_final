@@ -17,10 +17,11 @@
 		WHERE
 			h.emp_no = #{empNo}
 			AND h.use_year = #{year}
+			AND h.cancle_YN = 'N'
 		ORDER BY h.start_date DESC
 		LIMIT #{startRow}, #{rowPerPage}
 	</select>
-	<select id="selectDayOffHistoryCnt">
+	<select id="selectDayOffHistoryCnt" parameterType="Map" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
@@ -28,5 +29,23 @@
 		WHERE
 			emp_no = #{empNo}
 			AND use_year = #{year}
+	</select>
+	<select id="selectDayOffCnt" parameterType="Map" resultType="double">
+		SELECT
+			COALESCE (
+				SUM(
+				CASE 
+			    	WHEN type_name = '연차' THEN 1
+			    	WHEN type_name = '반차' THEN 0.5
+		    		ELSE 0
+		    		END
+	    		), 0
+    		)AS cnt
+		FROM
+			day_off_history
+		WHERE
+			emp_no = #{empNo}
+			AND use_year = #{year}
+			AND cancle_YN = 'N'
 	</select>
 </mapper>
