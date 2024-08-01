@@ -102,6 +102,7 @@ public class ScheduleController {
 	    
 	    model.addAttribute("empNo", empNo);
 	    model.addAttribute("dptNo", dptNo);
+	    model.addAttribute("currentPage", currentPage);
 	    
 	    return "/calendar/scheduleList";
 	}

@@ -8,15 +8,33 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <style>
+	.content-title{
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	#main-wrapper .content-body{
+		margin-left: 270px;
+	}
+	
 	#noticeTable {
         width: 90%; 
         border-collapse: collapse; 
         text-align: center;
+        margin: 0 auto; 
+        font-weight: bold;
     }
     
     #group{
     	margin-top:10px;
     	margin-bottom: 10px;
+    }
+    
+    #noticeTable #tableHeader{
+    	color:black;
+    }
+    #page{
+    	align-items: center;
+    	margin-top: 10px;
     }
 </style>
 </head>
@@ -28,39 +46,52 @@
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-<h1>공지사항</h1>
-<div id="addNotice">
-	<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
-	   	<a href="addNotice" class="btn btn-secondary btn-sm">공지사항 작성</a>
-	</c:if>
-</div>
-<div id="group">
-	<button id="listBtn" class="btn btn-outline-secondary btn-sm">전체</button>
-	<button id="empBtn" class="btn btn-outline-secondary btn-sm">전사원</button>
-	<button id="dptBtn" class="btn btn-outline-secondary btn-sm">부서별</button>
-</div>
-<div id="table-body" class="table table-striped">
-	<table border="1" id="noticeTable">
-	    <thead>
-	        <tr>
-	            <th>번호</th>
-	            <th>유형</th>
-	            <th>제목</th>
-	            <th>작성자</th>
-	            <th>작성일자</th>
-	        </tr>
-	    </thead>
-	    <tbody id="noticeTableBody">
-	    </tbody>
-	</table>
-</div>
-	<input type="hidden" id="hiddenPage" value="all">
-	<div id="page">
-	    <button type="button" id="first">First</button>
-	    <button type="button" id="pre">◁</button>
-	    <button type="button" id="next">▶</button>
-	    <button type="button" id="last">Last</button>
+	<div class="content-title">	
+		<h1>공지사항 리스트</h1>
 	</div>
+	<div id="addNotice">
+		<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
+		   	<a href="addNotice" class="btn btn-secondary btn-sm">공지사항 작성</a>
+		</c:if>
+	</div>
+	<div id="group">
+		<button id="listBtn" class="btn btn-outline-secondary btn-sm">전체</button>
+		<button id="empBtn" class="btn btn-outline-secondary btn-sm">전사원</button>
+		<button id="dptBtn" class="btn btn-outline-secondary btn-sm">부서별</button>
+	</div>
+	<div id="table-body" class="table table-striped">
+		<table border="1" id="noticeTable">
+		    <thead>
+		        <tr>
+		            <th>번호</th>
+		            <th>유형</th>
+		            <th>제목</th>
+		            <th>작성자</th>
+		            <th>작성일자</th>
+		        </tr>
+		    </thead>
+		    <tbody id="noticeTableBody">
+		    </tbody>
+		</table>
+	</div>
+	<input type="hidden" id="hiddenPage" value="all">
+	<!-- panel & page -->
+	<div class="bootstrap-pagination" id="page">
+         <nav>
+             <ul class="pagination justify-content-center">
+                 <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                 </li>
+                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                 </li>
+                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+                 </li>
+                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                 </li>
+                 <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                 </li>
+             </ul>
+         </nav>
+     </div>
 <!-- 템플릿 footer -->
 </div>
 </div>

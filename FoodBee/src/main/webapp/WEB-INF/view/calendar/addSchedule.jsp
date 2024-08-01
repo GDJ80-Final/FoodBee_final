@@ -5,6 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	#main-wrapper .content-body{
+			margin-left: 270px;
+			margin-top:20px;
+	}
+	td{
+	padding: 8px;
+	}
+</style>
 </head>
 <body>
 <!-- 메인템플릿 -->
@@ -14,10 +23,10 @@
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-<h3>일정추가</h3>
-<a href="schedule">돌아가기</a>
-	<form method="post" action="addScheduleAction">
-		<table border="1">
+<h2>일정추가</h2>
+<a href="schedule" class="btn btn-secondary btn-sm">돌아가기</a>
+	<form method="post" action="addScheduleAction" onsubmit="return validateForm()">
+		<table>
 			<tr>
 				<th>작성자</th>
 				<td>
@@ -25,15 +34,19 @@
 				</td>
 			</tr>
 			<tr>
-				<th>시작일시</th>
+				<th>
+					<label for="startDate">시작일시</label>
+				</th>
 				<td>
-					<input type="datetime-local" name="startDatetime">
+					<input type="datetime-local" name="startDatetime" id="startDate">
 				</td>
 			</tr>
 			<tr>
-				<th>종료일시</th>
+				<th>
+					<label for="endDate">종료일시</label>
+				</th>
 				<td>
-					<input type="datetime-local" name="endDatetime">
+					<input type="datetime-local" name="endDatetime" id="endDate">
 				</td>
 			</tr>
 			<tr>
@@ -48,21 +61,61 @@
 				</td>
 			</tr>
 			<tr>
-				<th>제목</th>
-				<td><input type="text" name="title"></td>
+				<th>
+					<label for="title">제목</label>
+				</th>
+				<td><input type="text" name="title" id="title"></td>
 			</tr>
 			<tr>
-				<th>메모</th>
+				<th>
+					<label for="content">메모</label>
+				</th>
 				<td>
-					<textarea rows="3" cols="30" name="content"></textarea>
+					<textarea rows="3" cols="30" name="content" id="content"></textarea>
 				</td>
 			</tr>
 		</table>
 		<input type="hidden" name="empNo" value='<c:out value="${empNo}"></c:out>'>
-		<button type="submit">추가</button>
+		<button type="submit" class="btn btn-secondary btn-sm">추가</button>
 	</form>
 </div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+<script>
+	//제목, 내용이 공백이 되지 않도록 공백검사!
+	function validateForm() {
+	    var title = document.getElementById('title').value.trim();
+	    var content = document.getElementById('content').value.trim();
+	    var startDate = document.getElementById('startDate').value.trim();
+	    var endDate = document.getElementById('endDate').value.trim();
+	    
+	    if (startDate === "") {
+	        alert("시작일시를 정해주세요");
+	        return false;
+	    }
+	
+	    if (endDate === "") {
+	        alert("종료일시를 정해주세요");
+	        return false;
+	    }
+	    
+	    if (new Date(startDate) > new Date(endDate)) {
+	        alert("종료일시는 시작일시 이후로 부탁드려요");
+	        return false;
+	    }
+	
+	    if (title === "") {
+	        alert("제목을 입력해주세요");
+	        return false;
+	    }
+	
+	    if (content === "") {
+	        alert("내용을 입력해주세요");
+	        return false;
+	    }
+	  
+	    return true;
+	}
+</script>
 </body>
 </html>

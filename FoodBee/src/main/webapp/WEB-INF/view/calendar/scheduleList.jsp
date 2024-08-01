@@ -21,11 +21,28 @@
 	}
 	.group1{
 		margin-bottom: 10px;
+		margin-left: 55px;
+	}
+	.group2{
+		margin-left: 55px;
 	}
 	 #scheduleTable {
         width: 90%; /* 테이블의 폭을 100%로 설정 */
         border-collapse: collapse; /* 테이블의 경계선 중복을 방지 */
         text-align: center;
+        margin: 0 auto; /* 테이블을 중앙 정렬 */
+        font-weight: bold;
+    }
+    #scheduleTable #tableHeader{
+    	color:black;
+    }
+    #page{
+    	align-items: center;
+    	margin-top: 10px;
+    }
+     #searchBody {
+        margin-left: 55px;
+        margin-top:8px;
     }
 </style>
 </head>
@@ -42,17 +59,21 @@
 	</div>
 	
 	<div class="group1">
-		<a href="schedule" class="btn btn-secondary btn-sm">달력📅</a>
+		<a href="schedule" class="btn btn-outline-secondary btn-sm">달력📅</a>
 		<!-- <button id="addEvent">일정추가</button> -->
 	</div>
 	<div class="group2">	
-		<button id="personBtn" class="btn btn-outline-secondary btn-sm">내 일정</button>
-		<button id="teamBtn" class="btn btn-outline-secondary btn-sm">팀 일정</button>
-		<button id="roomBtn" class="btn btn-outline-secondary btn-sm">회의 일정</button>
+		<button id="personBtn" class="btn btn-secondary btn">내 일정</button>
+		<button id="teamBtn" class="btn btn-secondary btn">팀 일정</button>
+		<button id="roomBtn" class="btn btn-secondary btn">회의 일정</button>
 	</div>
-
+	<div id="searchBody">
+			<span id="searchType">일정검색</span>
+			<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
+			<button id="searchBtn" class="btn btn-danger btn-sm">검색</button>
+	</div>
 	<div class="table-body">
-		<table border="1" id="scheduleTable">
+		<table border="1" id="scheduleTable" class="table table-striped">
 			<thead id="tableHeader">
 				<!-- 버튼클릭시 변경되게 -->
 			</thead>
@@ -63,17 +84,25 @@
 	</div>
 	<input type="hidden" id="hiddenPage" value="person">
 	<!--히든 구역을 이용해서 페이징 상태를 저장해둔다 -->
-	<div id="page">
-		<button type="button" id="first">First</button>
-		<button type="button" id="pre">◁</button>
-		<button type="button" id="next">▶</button>
-		<button type="button" id="last">Last</button>
-	</div>
+	 <!-- panel & page -->
+	<div class="bootstrap-pagination" id="page">
+         <nav>
+             <ul class="pagination justify-content-center">
+                 <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                 </li>
+                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                 </li>
+                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+                 </li>
+                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                 </li>
+                 <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                 </li>
+             </ul>
+         </nav>
+     </div>
 	<br>
-	<span id="searchType">일정검색</span>
-	<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
-	<button id="searchBtn">검색</button>
-</div>
+	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>

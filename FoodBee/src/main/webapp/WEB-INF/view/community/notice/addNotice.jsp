@@ -38,7 +38,7 @@
 <div class="content-body">
 <h1>공지사항 작성</h1>
     <div id="notice">
-        <form method="post" action="addNoticeAction" enctype="multipart/form-data">
+        <form method="post" action="addNoticeAction" enctype="multipart/form-data" onsubmit="return validateForm()">
             <table>
                 <tr>
                     <th>작성자</th>
@@ -49,7 +49,7 @@
                 <tr>
                     <th>제목</th>
                     <td>
-                        <input type="text" name="title">
+                        <input type="text" name="title" id="title">
                     </td>
                 </tr>
                 <tr>
@@ -77,7 +77,7 @@
                  <tr>
                     <th>내용</th>
                     <td>
-                    	<textarea rows="8" cols="50" name="content"></textarea>
+                    	<textarea rows="8" cols="50" name="content" placeholder="공지사항을 작성해주세요" id="content"></textarea>
                     </td>
                 </tr>
             </table>
@@ -111,10 +111,27 @@
 	    fileInputWrapper.appendChild(removeButton);
 	    fileContainer.appendChild(fileInputWrapper);
 	}
-	
+	//선택 파일 제거 
 	function removeFileInput(button) {
 	    var fileInputWrapper = button.parentNode;
 	    fileInputWrapper.parentNode.removeChild(fileInputWrapper);
+	}
+	// 제목, 내용이 공백이 되지 않도록 공백검사!
+	function validateForm() {
+	    var title = document.getElementById('title').value.trim();
+	    var content = document.getElementById('content').value.trim();
+
+	    if (title === "") {
+	        alert("제목을 입력하지 않았습니다.");
+	        return false;
+	    }
+
+	    if (content === "") {
+	        alert("내용을 입력하지 않았습니다.");
+	        return false;
+	    }
+
+	    return true;
 	}
 </script>
 </body>
