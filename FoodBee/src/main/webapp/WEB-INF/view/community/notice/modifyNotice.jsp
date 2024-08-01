@@ -5,6 +5,23 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항 수정</title>
+<style>
+	.add-file-button {
+		margin-top: 10px;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 5px;
+		background-color: #333;
+		color: #fff;
+		cursor: pointer;
+	}
+	.add-file-button:hover {
+		background-color: #555;
+	}
+	#btnSubmit {
+		width:100px;
+	}
+</style>
 </head>
 <body>
 <!-- 메인템플릿 -->
@@ -18,14 +35,14 @@
 
     <form action="modifyNoticeAction" method="post" enctype="multipart/form-data">
        <input type="hidden" name="noticeNo" value="${one[0].noticeNo}">
-        <table border="1">
+        <table>
             <tr>
                 <th>제목</th>
-                <td><input type="text" name="title" value="${one[0].title}"></td>
+                <td><input type="text" name="title" value="${one[0].title}" class="form-control bg-transparent flex-grow-1 me-2"></td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td><input type="text" name="empName" value="${one[0].empName}" readonly></td>
+                <td><input type="text" name="empName" value="${one[0].empName}" class="form-control bg-transparent flex-grow-1 me-2" readonly></td>
             </tr>
             <tr>
                 <th>카테고리</th>
@@ -50,7 +67,7 @@
             </tr>
             <tr>
                 <th>내용</th>
-                <td><textarea rows="7" cols="50" name="content">${one[0].content}</textarea></td>
+                <td><textarea rows="7" cols="50" name="content" class="textarea_editor form-control bg-light">${one[0].content}</textarea></td>
             </tr>
             <tr>
                 <th>첨부파일</th>
@@ -69,16 +86,18 @@
                             <br>
                         </c:forEach>
                     </div>
-                    추가 
                     <br>
-                    <input type="file" name="files" multiple="multiple">
-			        <c:if test="${one[0].files == null || one[0].files.isEmpty()}">
-			            <input type="file" name="files" multiple="multiple">
-			        </c:if>
+			          <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
+			          <button type="button" class="add-file-button mb-3" id="addFileButton">+ 파일 추가</button>	               
+                    <div class="form-group" id="fileInputsContainer">
+					     <div class="file-input-group" id="fileGroup1">
+					          <input type="file" name="files" multiple="multiple">
+					     </div>   
+                   </div>
                 </td>
             </tr>
         </table>
-        <button type="submit">수정</button>
+        <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">수정</button>
     </form>
     <a href="noticeOne?noticeNo=${one[0].noticeNo}">돌아가기</a>
 </div>
@@ -108,6 +127,24 @@
                 }
             });
         });
+    });
+    let fileOrder = 1;
+ 	// 파일 추가 버튼 클릭 시
+    $('#addFileButton').click(function() {
+        fileOrder++;
+        let newFileInput = 
+            '<div class="file-input-group d-flex align-items-center mt-3" id="fileGroup${fileOrder}">'+
+            '<input type="file" id="attachment-${fileOrder}" name="files">'+
+             '<button type="button" class="btn btn-danger remove-file-button mt-2 ms-3" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+            '</div>';
+        $('#fileInputsContainer').append(newFileInput);
+    });
+
+    // 파일 입력 필드 삭제 버튼 클릭 시
+    $(document).on('click', '.remove-file-button', function() {
+    	console.log('test');
+    	let fileGroupId = $(this).data('file-id');
+        $('#' + fileGroupId).remove();
     });
 </script>
 </body>
