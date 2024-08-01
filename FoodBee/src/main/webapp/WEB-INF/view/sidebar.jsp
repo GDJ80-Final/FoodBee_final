@@ -33,7 +33,7 @@
                             <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">일정</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="${pageContext.request.contextPath}/calendar/schedule">Calender</a></li>
+                            <li><a href="${pageContext.request.contextPath}/calendar/schedule">캘린더</a></li>
                             <li><a href="${pageContext.request.contextPath}/calendar/scheduleList">일정 조회</a></li>
                         </ul>
                     </li>

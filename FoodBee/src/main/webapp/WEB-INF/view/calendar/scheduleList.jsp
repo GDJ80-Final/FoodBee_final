@@ -44,6 +44,7 @@
         margin-left: 55px;
         margin-top:8px;
     }
+
 </style>
 </head>
 <body>
@@ -247,6 +248,9 @@
                 </tr>
             `);
             
+            if(json.personalList == ""){
+            	tableBody.append("<tr><td colspan='4'>개인일정이 없습니다.</td></tr>");
+            }else{
             $.each(json.personalList, function(index, item) {
                 let newRow = $("<tr>" +
                         "<td>" + item.scheduleNo + "</td>" +
@@ -256,8 +260,8 @@
                         "</tr>");
                 
                     tableBody.append(newRow);
-            });
-            
+            	});
+            }
             $("#tableBody").show();
         }
         <!-- json 받은 값으로 페이지 재구성 (팀 일정 리스트 화면에 붙여주기) -->
@@ -284,7 +288,10 @@
 	               <th>작성자</th>
 	           </tr>
 	       `);
-	          
+	        
+	       if(json.teamListAll == ""){
+           	tableBody.append("<tr><td colspan='5'>팀일정이 없습니다.</td></tr>");
+           }else{
 	       $.each(json.teamListAll, function(index, item) {
 	           // 상세보기 링크 URL 설정
 	           console.log("uniqueNo=>" + item.uniqueNo); // 디버깅용 로그
@@ -323,8 +330,8 @@
 	                   "</tr>");
 	           
 	           tableBody.append(newRow);
-       });
-       
+       			});
+           }
              $("#tableBody").show();
        }
        <!-- json 받은 값으로 페이지 재구성 (회의실 일정 리스트 화면에 붙여주기) -->
@@ -351,7 +358,9 @@
                     <th>예약자이름</th>
                 </tr>
             `);
-
+            if(json.roomListAll == ""){
+               	tableBody.append("<tr><td colspan='6'>회의일정이 없습니다.</td></tr>");
+            }else{
             $.each(json.roomListAll, function(index, item) {
                 let newRow = $("<tr>" +
                         "<td>" + item.category + "</td>" +
@@ -363,8 +372,9 @@
                         "</tr>");
                   
                 tableBody.append(newRow);
-            });
-         
+           		});
+            }
+            
             $("#tableBody").show();
         }
 

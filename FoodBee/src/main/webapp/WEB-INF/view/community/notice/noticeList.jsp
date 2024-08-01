@@ -5,39 +5,28 @@
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<style>
-	.content-title{
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
-	#main-wrapper .content-body{
-		margin-left: 270px;
-	}
-	
-	#noticeTable {
-        width: 90%; 
-        border-collapse: collapse; 
-        text-align: center;
-        margin: 0 auto; 
-        font-weight: bold;
-    }
-    
-    #group{
-    	margin-top:10px;
-    	margin-bottom: 10px;
-    }
-    
-    #noticeTable #tableHeader{
-    	color:black;
-    }
-    #page{
-    	align-items: center;
-    	margin-top: 10px;
-    }
-</style>
 </head>
+<style>
+	#groupBtn {
+	    display: flex;
+	    justify-content: space-around; /* 또는 space-between, space-evenly */
+	    gap: 10px; /* 버튼 사이의 간격 */
+	}
+	#groupBtn .btn {
+	    flex: 1; /* 모든 버튼의 너비를 동일하게 만듭니다 */
+	    text-align: center; /* 버튼 내부 텍스트를 가운데 정렬 */
+	    margin: 0; /* 버튼 사이의 여백을 제거 */
+	    padding: 10px; /* 버튼의 내부 여백을 설정 */
+	    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기를 설정 */
+	}
+	#addNotice{
+		margin-left: auto;
+		margin-bottom: 10px;
+	}
+	th{
+		font-weight: bold;
+	}
+</style>
 <body>
 <!-- 메인템플릿 -->
 <div id="main-wrapper">
@@ -46,55 +35,76 @@
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-	<div class="content-title">	
-		<h1>공지사항 리스트</h1>
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">커뮤니티</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">공지사항</a></li>
+             </ol>
+         </div>
+   	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">
+			 		<div class="card-body">	
+			 
+			 		<!-- 여기서부터 내용시작 -->
+			 		
+				 		<div id="addNotice">
+							<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
+							   	<a href="addNotice" class="btn btn-primary btn-block">공지사항 작성</a>
+							</c:if>
+						</div>
+						<div id="groupBtn">						
+							<button id="listBtn" class="btn btn-primary btn-block">전체</button>
+							<button id="empBtn" class="btn btn-primary btn-block">전사공지</button>
+							<button id="dptBtn" class="btn btn-primary btn-block">부서공지</button>
+						</div>
+
+						<div id="table-body" class="table-responsive">
+							<table border="1" id="noticeTable" class="table table-striped">
+							    <thead>
+							        <tr>
+							            <th>번호</th>
+							            <th>공지구분</th>
+							            <th>제목</th>
+							            <th>작성자</th>
+							            <th>작성일자</th>
+							        </tr>
+							    </thead>
+							    <tbody id="noticeTableBody">
+							    </tbody>
+							</table>
+						</div>
+						<input type="hidden" id="hiddenPage" value="all">
+						<!-- panel & page -->
+						<div class="bootstrap-pagination" id="page">
+					         <nav>
+					             <ul class="pagination justify-content-center">
+					                 <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
+					                 </li>
+					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+					                 </li>
+					                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+					                 </li>
+					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+					                 </li>
+					                 <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
+					                 </li>
+					             </ul>
+					         </nav>
+					     </div>
+						<!-- 여기가 내용끝! --> 		
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
-	<div id="addNotice">
-		<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
-		   	<a href="addNotice" class="btn btn-secondary btn-sm">공지사항 작성</a>
-		</c:if>
-	</div>
-	<div id="group">
-		<button id="listBtn" class="btn btn-outline-secondary btn-sm">전체</button>
-		<button id="empBtn" class="btn btn-outline-secondary btn-sm">전사원</button>
-		<button id="dptBtn" class="btn btn-outline-secondary btn-sm">부서별</button>
-	</div>
-	<div id="table-body" class="table table-striped">
-		<table border="1" id="noticeTable">
-		    <thead>
-		        <tr>
-		            <th>번호</th>
-		            <th>유형</th>
-		            <th>제목</th>
-		            <th>작성자</th>
-		            <th>작성일자</th>
-		        </tr>
-		    </thead>
-		    <tbody id="noticeTableBody">
-		    </tbody>
-		</table>
-	</div>
-	<input type="hidden" id="hiddenPage" value="all">
-	<!-- panel & page -->
-	<div class="bootstrap-pagination" id="page">
-         <nav>
-             <ul class="pagination justify-content-center">
-                 <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
-                 </li>
-                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
-                 </li>
-                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
-                 </li>
-                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
-                 </li>
-                 <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
-                 </li>
-             </ul>
-         </nav>
-     </div>
+</div><!-- content-body마지막 -->
+</div><!-- 메인마지막 -->
 <!-- 템플릿 footer -->
-</div>
-</div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -190,6 +200,10 @@ $(document).ready(function() {
 		let tableBody = $("#noticeTableBody");
         tableBody.empty();
         
+        if(json.list == ""){
+        	alert("공지사항이 존재하지 않습니다");
+        	tableBody.append("<tr><td colspan='5'>공지사항이 작성되지 않았습니다.</td></tr>");
+        }else{
         $.each(json.list, function(index, item) {
 
             let newRow = $("<tr>" +
@@ -200,7 +214,8 @@ $(document).ready(function() {
                 "<td>" + item.createDatetime + "</td>" +
                 "</tr>");
             tableBody.append(newRow);
-        });
+        	});
+        }
 	}
 	
 	//전사원별
@@ -216,16 +231,21 @@ $(document).ready(function() {
 		let tableBody = $("#noticeTableBody");
         tableBody.empty();
         
+        if(json.allEmpList == ""){
+        	alert("전사운별 공지사항이 없습니다");
+        	tableBody.append("<tr><td colspan='5'>전사원별 공지사항이 작성되지 않았습니다.</td></tr>");
+        }else{
         $.each(json.allEmpList, function(index, item) {
-            let newRow = $("<tr>" +
-                "<td>" + item.noticeNo + "</td>" +
-                "<td>" + item.type + "</td>" +
-                "<td><a href='" + "${pageContext.request.contextPath}/community/notice/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
-                "<td>" + item.name + "</td>" +
-                "<td>" + item.createDatetime + "</td>" +
-                "</tr>");
-            tableBody.append(newRow);
-        });
+	            let newRow = $("<tr>" +
+	                "<td>" + item.noticeNo + "</td>" +
+	                "<td>" + item.type + "</td>" +
+	                "<td><a href='" + "${pageContext.request.contextPath}/community/notice/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
+	                "<td>" + item.name + "</td>" +
+	                "<td>" + item.createDatetime + "</td>" +
+	                "</tr>");
+	            tableBody.append(newRow);
+       	  	});
+       }
 	}
 	//부서별
 	function updateDptNotice(json){
@@ -240,8 +260,11 @@ $(document).ready(function() {
 		let tableBody = $("#noticeTableBody");
         tableBody.empty();
         
+        if(json.allDptList == ""){
+        	alert("부서별 공지사항이 없습니다");
+        	tableBody.append("<tr><td colspan='5'>부서별 공지사항이 작성되지 않았습니다.</td></tr>");
+        }else{
         $.each(json.allDptList, function(index, item) {
-          
             let newRow = $("<tr>" +
                 "<td>" + item.noticeNo + "</td>" +
                 "<td>" + item.type + "</td>" +
@@ -250,7 +273,8 @@ $(document).ready(function() {
                 "<td>" + item.createDatetime + "</td>" +
                 "</tr>");
             tableBody.append(newRow);
-        });
+        	});
+        }
 	}
 	
 	<!-- pre 버튼 클릭 시 동작 -->
