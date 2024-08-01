@@ -5,20 +5,32 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-.file-container {
-    margin-bottom: 10px;
-}
-.file-input-wrapper {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
-.file-input-wrapper input[type="file"] {
-    margin-right: 10px;
-}
+	#main-wrapper .content-body{
+			margin-left: 270px;
+			margin-top:20px;
+		}
+	.file-container {
+	    margin-bottom: 10px;
+	}
+	.file-input-wrapper {
+	    display: flex;
+	    align-items: center;
+	    margin-bottom: 5px;
+	}
+	.file-input-wrapper input[type="file"] {
+	    margin-right: 10px;
+	}
+	#addFile{
+		margin-bottom: 5px;
+	}
+	td{
+		padding: 8px;
+	}
 </style>
 </head>
 <body>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
 <!-- 템플릿 헤더,사이드바 -->
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
@@ -55,11 +67,11 @@
                         <div id="file-container">
                             <div class="file-input-wrapper">
                                 <input type="file" name="files" multiple="multiple">
-                                <button type="button" onclick="removeFileInput(this)">제거</button>
+                                <button type="button" onclick="removeFileInput(this)" class="btn btn-outline-secondary btn-sm">제거</button>
                                 <!-- this는 file-container 전체 -->
                             </div>
                         </div>
-                        <button type="button" onclick="addFileInput()">파일 추가</button>
+                        <button type="button" onclick="addFileInput()" class="btn btn-secondary btn-sm" id="addFile">파일 추가</button>
                     </td>
                 </tr>
                  <tr>
@@ -71,9 +83,10 @@
             </table>
      		<input type="hidden" name="dptNo" value="${dptNo}">
      		<input type="hidden" name="writerEmpNo" value="${empNo}">
-            <button type="submit">공지사항 등록</button>
+            <button type="submit" class="btn btn-secondary btn-sm">공지사항 등록</button>
         </form>
     </div>
+ </div>
  </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
