@@ -12,6 +12,16 @@
 <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
 <link href="css/style.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+     .items-align-center {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         text-align: center;
+         
+     }
+</style>
 </head>
 <body class="h-100">
     
@@ -39,10 +49,14 @@
                 <div class="col-xl-6">
                     <div class="form-input-content">
                         <div class="card login-form mb-0">
-                            <div class="card-body pt-5">
-                                <a class="text-center" href="#"> <h4>FOODBEE<br><br>사원 로그인 </h4></a>
+                            <div class="card-body pt-2">
+                                <div class="items-align-center"> 
+                                <img src="${pageContext.request.contextPath}/upload/img/logo.png" width="260" height="200">
+                                <h4>인트라넷 로그인</h4>
+                                
+                                </div>
         
-                                <form class="mt-5 mb-5 login-input" method="post" id="signinForm" action="${pageContext.request.contextPath}/login">
+                                <form class="mt-3 mb-5 login-input" method="post" id="signinForm" action="${pageContext.request.contextPath}/login">
                                     <div class="form-group">
                                         <input type="number" id="empNo" name="empNo" class="form-control" placeholder="사원번호" value="<%= request.getAttribute("empNo") %>" required>
                                         <span id="noMsg" class="nomsg"></span>
@@ -53,7 +67,7 @@
                                     </div>
                                     <input type="checkbox" name="saveId" value="O"> &nbsp;&nbsp;아이디 저장
                                     <br><br>
-                                    <button class="btn login-form__btn submit w-100" id="btn">Sign In</button>
+                                    <button class="btn login-form__btn submit w-100" id="btn">로그인</button>
                                 </form>
                                 <p class="mt-5 login-form__footer"><a href="/foodbee/findPw" class="text-primary">비밀번호 찾기</a></p>
                             </div>

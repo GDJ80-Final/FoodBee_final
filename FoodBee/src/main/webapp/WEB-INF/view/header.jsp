@@ -11,7 +11,6 @@
     <!-- Custom Stylesheet -->
     <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
 	
-
 </head>
 		<!--*******************
         	Preloader start
@@ -32,9 +31,9 @@
         <div class="nav-header">
             <div class="brand-logo">
                 <a href="${pageContext.request.contextPath}/home">
-                    <span class="brand-title">
-                        <img src="#" alt="">
-                    </span>
+                    
+                  
+                  
                 </a>
             </div>
         </div>
