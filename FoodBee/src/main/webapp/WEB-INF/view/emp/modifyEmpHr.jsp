@@ -108,6 +108,10 @@
 								    <label class="form-label">퇴사 일자</label>
 								    <input type="date" id="endDate" name="endDate" class="form-control" value="${empHr.endDate}">
 								</div>
+								<div class="col-md-6">
+								    <label class="form-label">내선 번호</label>
+								    <input type="text" id="extNo" name="extNo" class="form-control" value="${empHr.extNo}">
+								</div>
 	                        </div>
 	                    </div>
 	                </div>

@@ -225,7 +225,8 @@
             </if>
             end_date = #{endDate},
 			emp_state = #{empState},
-			rank_name = #{rankName}
+			rank_name = #{rankName},
+			ext_no = #{extNo}
 		WHERE
 			emp_no = #{empNo}
 	</update>

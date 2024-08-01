@@ -699,6 +699,12 @@
 					                	) +
 					                '</div>' +
 					                '<div class="col-md-6">' +
+					                    '<label class="form-label">내선 번호</label>' +
+					                    '<input type="text" class="form-control" value="' + json.extNo + '" readonly>' +
+					                '</div>' +
+					                '<div class="col-md-6">' +
+					                '</div>' +
+					                '<div class="col-md-6">' +
 						                '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signModal">' +
 							                '전자 서명 수정' +
 							            '</button>' +

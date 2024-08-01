@@ -338,7 +338,7 @@ public class EmpController {
 	
 	// 사원 상세보기(인사)
 	// 파라미터 : int empNo
-	// 반환 값 : String(view)
+	// 반환 값 : Map<String, Object>
 	// 사용 페이지 : /emp/empDetail	
 	@GetMapping("/emp/getEmpHr")
 	@ResponseBody

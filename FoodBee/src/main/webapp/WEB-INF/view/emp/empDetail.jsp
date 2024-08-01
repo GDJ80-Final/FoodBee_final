@@ -256,6 +256,7 @@
 			
 			function empInfo(json){
 				endDate = json.endDate;
+				console.log(json.extNo);
 				if(endDate == null){
 					endDate = '';
 				}
@@ -309,6 +310,10 @@
 					                	    '<input type="text" class="form-control" value="' + endDate + '" readonly>'
 					                		: ''
 				                		) +
+					                '</div>' +
+						                '<div class="col-md-6">' +
+					                    '<label class="form-label">내선 번호</label>' +
+					                    '<input type="text" class="form-control" value="' + json.extNo + '" readonly>' +
 					                '</div>' +
 					            '</div>' +
 					        '</div>' +
