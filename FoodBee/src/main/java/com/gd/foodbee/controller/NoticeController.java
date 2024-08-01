@@ -233,38 +233,59 @@ public class NoticeController {
 		model.addAttribute("one", one);
 		return "/community/notice/modifyNotice";
 	}
-	// 공지사항 수정액션
-	// 파라미터 : int noticeNo, NoticeRequest noticeRequest
-	// 반혼값 : /community/notice/noticeOne
-	// 사용페이지 /community/notice/modifyNotice
-	@PostMapping("/community/notice/modifyNoticeAction")
-	public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
-			NoticeRequestDTO noticeRequest) {
-		log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
-		log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
-		
-	  try{
-	        noticeService.getModifyNoticeList(noticeNo, noticeRequest);
-	    } catch (Exception e) {
-	        log.error("공지사항 수정 중 오류 발생", e);
-	    }
-		
-	    return "redirect:/community/notice/noticeOne?noticeNo=" + noticeNo;
-	}
-	
-	// 공지사항 파일삭제
-	// 파라미터 : String fileName, int noticeNo
-	// 반환값 : /community/notice/modifyNotice
-	// 사용페이지 : /community/notice/modifyNotice
-	@PostMapping("/deleteNoticeFile")
-	public String deleteNoticeFile(@RequestParam("file") String fileName, 
-			@RequestParam("noticeNo") int noticeNo) {
-	    
-	    noticeService.getDeleteNoticeFile(fileName, noticeNo);
-	    
-	    return "redirect:/community/notice/modifyNotice?noticeNo=" + noticeNo;
-	}
-	
+	 // 공지사항 수정액션
+    // 파라미터 : int noticeNo, NoticeRequestDTO noticeRequest
+    // 반환값 : /community/notice/noticeOne
+    // 사용페이지 : /community/notice/modifyNotice
+    @PostMapping("/community/notice/modifyNoticeAction")
+    public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
+                                     NoticeRequestDTO noticeRequest) {
+        log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
+        log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
+
+        try {
+            // 삭제할 파일 처리
+            if (noticeRequest.getDeleteFiles() != null && !noticeRequest.getDeleteFiles().isEmpty()) {
+                for (String fileName : noticeRequest.getDeleteFiles()) {
+                    noticeService.getDeleteNoticeFile(fileName, noticeNo);
+                }
+            }
+
+            noticeService.getModifyNoticeList(noticeNo, noticeRequest);
+        } catch (Exception e) {
+            log.error("공지사항 수정 중 오류 발생", e);
+        }
+
+        return "redirect:/community/notice/noticeOne?noticeNo=" + noticeNo;
+    }
+
+	/*
+	 * // 공지사항 수정액션 // 파라미터 : int noticeNo, NoticeRequest noticeRequest // 반혼값 :
+	 * /community/notice/noticeOne // 사용페이지 /community/notice/modifyNotice
+	 * 
+	 * @PostMapping("/community/notice/modifyNoticeAction") public String
+	 * modifyNoticeAction(@RequestParam("noticeNo") int noticeNo, NoticeRequestDTO
+	 * noticeRequest) { log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" +
+	 * noticeRequest); log.debug(TeamColor.PURPLE + "file값 있는지확인=>" +
+	 * noticeRequest.getFiles());
+	 * 
+	 * try{ noticeService.getModifyNoticeList(noticeNo, noticeRequest); } catch
+	 * (Exception e) { log.error("공지사항 수정 중 오류 발생", e); }
+	 * 
+	 * return "redirect:/community/notice/noticeOne?noticeNo=" + noticeNo; }
+	 * 
+	 * // 공지사항 파일삭제 // 파라미터 : String fileName, int noticeNo // 반환값 :
+	 * /community/notice/modifyNotice // 사용페이지 : /community/notice/modifyNotice
+	 * 
+	 * @PostMapping("/deleteNoticeFile") public String
+	 * deleteNoticeFile(@RequestParam("file") String fileName,
+	 * 
+	 * @RequestParam("noticeNo") int noticeNo) {
+	 * 
+	 * noticeService.getDeleteNoticeFile(fileName, noticeNo);
+	 * 
+	 * return "redirect:/community/notice/modifyNotice?noticeNo=" + noticeNo; }
+	 */
 	// 공지사항 삭제
 	// 파라미터 : int noticeNo
 	// 반환값 : /community/notice/noticeList

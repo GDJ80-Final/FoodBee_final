@@ -86,6 +86,7 @@
                             <br>
                         </c:forEach>
                     </div>
+                    <input type="hidden" id="deleteFiles" name="deleteFiles">
                     <br>
 			          <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
 			          <button type="button" class="add-file-button mb-3" id="addFileButton">+ 파일 추가</button>	               
@@ -105,29 +106,19 @@
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $(".deleteFile").click(function(e) {
-            e.preventDefault();
-            let filename = $(this).data("file");
-            let noticeNo = "${one[0].noticeNo}";
+     $(document).ready(function() {
+    	 let deleteFiles = []; //삭제된 파일을 담아서 저장
 
-            $.ajax({
-                url: "${pageContext.request.contextPath}/deleteNoticeFile",
-                type: "POST",
-                data: {
-                    file: filename,
-                    noticeNo: noticeNo
-                },
-                success: function(response) {
-                    alert("파일이 삭제되었습니다.");
-                    location.reload();
-                },
-                error: function() {
-                    alert("파일 삭제에 실패하였습니다.");
-                }
-            });
-        });
-    });
+    	// 파일 삭제 버튼 클릭 시
+         $(".deleteFile").click(function(e) {
+             e.preventDefault();
+             let filename = $(this).data("file");
+             deleteFiles.push(filename);
+             $(this).parent().remove(); // 해당 파일만 제거
+             $("#deleteFiles").val(deleteFiles.join(",")); // 삭제된 파일 정보 업데이트
+         });
+     });
+     
     let fileOrder = 1;
  	// 파일 추가 버튼 클릭 시
     $('#addFileButton').click(function() {
@@ -145,7 +136,7 @@
     	console.log('test');
     	let fileGroupId = $(this).data('file-id');
         $('#' + fileGroupId).remove();
-    });
+    }); 
 </script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.gd.foodbee.dto;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
@@ -21,5 +23,6 @@ public class NoticeRequestDTO {
 	private String saveFile;
 	private String originalFile;
 	private MultipartFile[] files;
+	private List<String> deleteFiles;
 	
 }
