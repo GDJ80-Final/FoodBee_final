@@ -78,7 +78,7 @@
                                   	<div class="bootstrap-pagination">
                                     <nav>
                                         <ul class="pagination justify-content-center">
-                                            <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                                            <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
                                             </li>
                                             <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
                                             </li>
@@ -86,19 +86,20 @@
                                             </li>
                                             <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
                                             </li>
-                                            <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                                            <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
                                             </li>
                                         </ul>
                                     </nav>
                                 </div>
+                              	<div class="text-right m-t-15">
+		       						<button class="btn btn-danger m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="deleteMsg"><i class="ti-close m-r-5 f-s-12"></i> 쪽지 삭제</button>
+		   						</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-			<div class="text-right m-t-15">
-		       <button class="btn btn-danger m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="deleteMsg"><i class="ti-close m-r-5 f-s-12"></i> 쪽지 삭제</button>
-		    </div>
+	
           </div>
        </div>
 

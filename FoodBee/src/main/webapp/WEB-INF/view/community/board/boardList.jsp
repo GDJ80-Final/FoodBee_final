@@ -248,7 +248,7 @@
 									'<td>'+ item.boardOrder +'</td>'+
 									'<td>'+ item.boardCategory + '</td>'+
 									'<td><a id="title" href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
-											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
+											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ '[BEST] &nbsp;' + item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
 									'<td>'+ item.createDatetime + '</td>'+
 									'<td>'+ item.view + '</td>'+
 									'<td>'+ item.likeCnt + '</td>'+

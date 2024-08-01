@@ -44,13 +44,13 @@
                                     </div>
                                     <h5 class="mt-5 m-b-10">Filter</h5>
                                     <div class="list-group mail-list">
-                                    	<button type="button" name="readYN" id="all" value="all" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>ALL
+                                    	<button type="button" name="readYN" id="all" value="all" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>전체
                                     	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
                                     	</button>  
-                                    	<button type="button" name="readYN" id="Y" value="Y" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>READ
+                                    	<button type="button" name="readYN" id="Y" value="Y" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>읽음
                                     	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntRead">${msgCntRead}</span>
                                     	</button>  
-                                    	<button type="button" name="readYN" id="N" value="N"class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>UNREAD
+                                    	<button type="button" name="readYN" id="N" value="N"class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>안 읽음
                                     	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntUnread">${msgCntUnread}</span>
                                     	</button>  
                                     </div>
@@ -89,7 +89,7 @@
                                   	<div class="bootstrap-pagination">
                                     <nav>
                                         <ul class="pagination justify-content-center">
-                                            <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                                            <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
                                             </li>
                                             <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
                                             </li>
@@ -97,11 +97,11 @@
                                             </li>
                                             <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
                                             </li>
-                                            <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                                            <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
                                             </li>
                                         </ul>
                                     </nav>
-                                </div>
+                                  </div>
                                 </div>
                             </div>
                         </div>

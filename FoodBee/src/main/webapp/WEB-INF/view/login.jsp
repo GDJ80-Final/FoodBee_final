@@ -55,7 +55,7 @@
                                     <br><br>
                                     <button class="btn login-form__btn submit w-100" id="btn">Sign In</button>
                                 </form>
-                                <p class="mt-5 login-form__footer">비밀번호를 까먹으셨나요? <a href="/foodbee/findPw" class="text-primary">비밀번호 찾기</a></p>
+                                <p class="mt-5 login-form__footer"><a href="/foodbee/findPw" class="text-primary">비밀번호 찾기</a></p>
                             </div>
                         </div>
                     </div>

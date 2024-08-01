@@ -8,7 +8,7 @@
                 <th>최종결재자</th>
             </tr>
             <tr>
-                <td colspan="2">결재</td>
+                <td colspan="2">결재자</td>
                                   
                 <td>
                 <input type="hidden" name="drafterEmpNo" id="drafterEmpNo" value="" >
