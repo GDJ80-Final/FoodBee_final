@@ -25,7 +25,7 @@
     <script src="${pageContext.request.contextPath}/js/styleSwitcher.js"></script>
 
     <!-- Chartjs -->
-    <script src="${pageContext.request.contextPath}/plugins/chart.js/Chart.bundle.min.js"></script>
+    <%-- <script src="${pageContext.request.contextPath}/plugins/chart.js/Chart.bundle.min.js"></script> --%>
     <!-- Circle progress -->
     <script src="${pageContext.request.contextPath}/plugins/circle-progress/circle-progress.min.js"></script>
     <!-- Datamap -->
@@ -39,7 +39,7 @@
     <script src="${pageContext.request.contextPath}/plugins/moment/moment.min.js"></script>
     <script src="${pageContext.request.contextPath}/plugins/pg-calendar/js/pignose.calendar.min.js"></script>
     <!-- ChartistJS -->
-    <script src="${pageContext.request.contextPath}/plugins/chartist/js/chartist.min.js"></script>
+    <%-- <script src="${pageContext.request.contextPath}/plugins/chartist/js/chartist.min.js"></script>
     <script src="${pageContext.request.contextPath}/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
-
+ --%>
     <script src="${pageContext.request.contextPath}/js/dashboard/dashboard-1.js"></script>
