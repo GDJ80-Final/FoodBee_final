@@ -12,6 +12,10 @@
 <a href="${pageContext.request.contextPath}/approval/draftBox">돌아가기</a>
 <jsp:include page="./forms/commonForm.jsp"></jsp:include>
 <div class="form-section">
+		<div class="form-group">
+	        <label for="monthYear">매출년월</label>
+	        <input type="text" id="monthYear" value="${revenueDetailOne[0].description}" readonly="readonly">
+	    </div>
         <div class="form-group">
             <label for="title">제목:</label>
             <input type="text" id="title" name="title" value="${revenueOne.title}" readonly="readonly">
@@ -47,7 +51,7 @@
      	 	</c:choose>      
      	 	<br>
    	 	<c:if test="${revenueOne != null && revenueOne.docApproverState == 0 && revenueOne.drafterEmpNo eq empNo}">
-    		<a href="">수정하기</a>
+    		<a href="${pageContext.request.contextPath}/approval/modifyRevenueForm?draftDocNo=${revenueOne.draftDocNo}">수정하기</a>
 		</c:if> 
         </div>
         <div id="updateAppral">
@@ -77,9 +81,7 @@
 		$(document).ready(function() {
 		    
 		    let drafter = '${revenueOne.drafterEmpNo}';
-		    console.log(drafter);
 		    let drafterName = '${revenueOne.drafterEmpName}';  
-		    console.log(drafterName);
 		    let midApprover = '${revenueOne.midApproverNo}';
 		    let midApproverName = '${revenueOne.midApproverName}';
 		    let finalApproverName = '${revenueOne.finalApproverName}';

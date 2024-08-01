@@ -37,7 +37,7 @@
         </c:choose>
     </div>
 	<c:if test="${basicFormOne != null && basicFormOne.docApproverState == 0 && basicFormOne.drafterEmpNo eq empNo}">
-    	<a href="">수정하기</a>
+    	<a href="${pageContext.request.contextPath}/approval/modifyBasicForm?draftDocNo=${basicFormOne.draftDocNo}">수정하기</a>
 	</c:if>
 	<div id="updateAppral">
 			<!-- 중간승인자일 경우 -->

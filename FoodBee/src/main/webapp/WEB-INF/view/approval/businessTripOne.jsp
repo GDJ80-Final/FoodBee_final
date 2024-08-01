@@ -49,7 +49,7 @@
      	 	</c:choose>      
      	 	<br>
    	 	<c:if test="${businessTripOne != null && businessTripOne.docApproverState == 0 && businessTripOne.drafterEmpNo eq empNo}">
-    		<a href="">수정하기</a>
+    		<a href="${pageContext.request.contextPath}/approval/modifyBusinessTripForm?draftDocNo=${businessTripOne.draftDocNo}">수정하기</a>
 		</c:if> 
 			<!-- 승인하는 부분 -->
 		<div id="updateAppral">

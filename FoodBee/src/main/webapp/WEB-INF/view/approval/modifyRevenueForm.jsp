@@ -186,22 +186,28 @@
 		            <div class="form-group">
 					    <label for="categoryContainer">내역:</label>
 					    <div id="categoryContainer"><hr>
-					        <div class="category-row" style="display: flex; align-items: center;">
-					            <label for="categorySelect">카테고리:</label>
-					            <select class="categorySelect" name="typeName">
-					                <option value="category0">==선택==</option>
-					                <option value="간편식">간편식</option>
-					                <option value="쌀/곡물">쌀/곡물</option>
-					                <option value="육/수산">육/수산</option>
-					                <option value="음료/주류">음료/주류</option>
-					                <option value="청과">청과</option>
-					            </select>
-					            
-					            <label for="revenue">매출액:</label>
-					            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount">원
-					            <span class="add-category">+</span>
-					            <span class="remove-category">-</span>
-					        </div><hr>
+					    	<c:forEach items="${revenueDetailOne}" var="detail">
+						        <div class="category-row" style="display: flex; align-items: center;">
+						            <label for="categorySelect">카테고리:</label>
+						            <select class="categorySelect" id="categorySelect" name="typeName">
+						                <option value="category0">==선택==</option>
+						                <option value="간편식">간편식</option>
+						                <option value="쌀/곡물">쌀/곡물</option>
+						                <option value="육/수산">육/수산</option>
+						                <option value="음료/주류">음료/주류</option>
+						                <option value="청과">청과</option>
+						            </select>
+						            
+						            <script>
+						            	$("#categorySelect").val("${detail.typeName}")
+						            </script>
+						            
+						            <label for="revenue">매출액:</label>
+						            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" value="${detail.amount}">원
+						            <span class="add-category">+</span>
+						            <span class="remove-category">-</span>
+						        </div><hr>
+					        </c:forEach>
 					    </div>
 					</div>
 			        <div class="file-upload">
@@ -235,6 +241,7 @@
 		
 <script>
 	$(document).ready(function(){
+		
 		let drafter = '${revenueOne.drafterEmpNo}';
 	    console.log(drafter);
 	    let drafterName = '${revenueOne.drafterEmpName}';  
@@ -316,7 +323,10 @@
 
 	    // 초기 월 설정
 	    updateMonthSelect(initialYear);
-	    monthSelect.val(initialMonth < 10 ? '0' + initialMonth : initialMonth);
+	    let yearAndMonth = '${revenueDetailOne[0].description}'.split('-');
+	    let selectedMonth = yearAndMonth[1];
+	    console.log(selectedMonth);
+	    monthSelect.val(selectedMonth);
 	    
 	    // 카테고리 추가 기능
 	    $(document).on('click', '.add-category', function() {

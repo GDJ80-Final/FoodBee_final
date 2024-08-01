@@ -14,7 +14,7 @@
 	<div class="form-section">
 	    <div class="form-group">
 	        <label for="monthYear">지출년월</label>
-	        <input type="text" id="monthYear" value="${chargeDetailOne.description}" readonly="readonly">
+	        <input type="text" id="monthYear" value="${chargeDetailOne[0].description}" readonly="readonly">
 	    </div>
 	    <div class="form-group">
 	        <label for="title">제목:</label>
@@ -52,7 +52,7 @@
 	        </c:choose>
 	        <br>
 	        <c:if test="${chargeOne != null && chargeOne.docApproverState == 0 && chargeOne.drafterEmpNo eq empNo}">
-	            <a href="">수정하기</a>
+	            <a href="${pageContext.request.contextPath}/approval/modifyChargeForm?draftDocNo=${chargeOne.draftDocNo}">수정하기</a>
 	        </c:if>
 	    </div>
 	    <div id="updateAppral">

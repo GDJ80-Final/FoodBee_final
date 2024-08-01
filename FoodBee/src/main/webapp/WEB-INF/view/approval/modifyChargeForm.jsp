@@ -171,9 +171,9 @@
 		        <!-- 양식 영역 시작 -->
 				<div class="form-section">
 			    	<div class="form-group">
-			            <label for="yearSelect"></label>
+			            <label for="yearSelect">지출년월</label>
 						<select id="yearSelect"></select>
-						<label for="monthSelect">월 선택:</label>
+						<label for="monthSelect"></label>
 						<select id="monthSelect"></select>						       	        
 						<input type="hidden" id="description" name="description" value="${chargeDetailOne[0].description}">
 			        </div>	            
@@ -315,12 +315,18 @@
 	            const monthValue = month < 10 ? '0' + month : month;
 	            monthSelect.append(new Option(monthValue + '월', monthValue));
 	        }
+	        console.log('end');
 	    }
 
 	    // 초기 월 설정
 	    updateMonthSelect(initialYear);
-	    monthSelect.val(initialMonth < 10 ? '0' + initialMonth : initialMonth);
+	    let yearAndMonth = '${chargeDetailOne[0].description}'.split('-');
+	    let selectedMonth = yearAndMonth[1];
+	    console.log(selectedMonth);
+	    monthSelect.val(selectedMonth);
 	    
+	    
+
 		// 카테고리 추가 기능
 		$(document).on('click', '.add-category', function() {
 		    const newRow = `	            		    	
