@@ -87,10 +87,10 @@ public interface EmpMapper {
     int updateEmpHr(EmpDTO empDTO);
     
     // 사원 인원 카운트
-    // 파라미터 : EmpSearchDTO empSearchDTO
+    // 파라미터 : EmpSearchDTO empSearchDTO, int empNo
     // 반환 값 : int
     // 사용 클래스 : EmpService.getLastPage
-    int selectEmpCount(EmpSearchDTO empSearchDTO);
+    int selectEmpCount(EmpSearchDTO empSearchDTO, int empNo);
     
     // 마이 페이지에서 비밀번호 변경
     // 파라미터 : int empNo, String oldPw, String newPw

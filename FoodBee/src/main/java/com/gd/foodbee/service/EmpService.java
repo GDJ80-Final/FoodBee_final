@@ -50,7 +50,7 @@ public interface EmpService {
 	void modifyEmpHr(EmpDTO empDTO);
 	
 	// 사원수로 사원 목록 마지막 페이지 구하기
-	int getLastPage(EmpSearchDTO empSearchDTO);
+	int getLastPage(EmpSearchDTO empSearchDTO, int empNo);
 	
 	// 마이페이지에서 비밀번호 변경
 	void modifyEmpPwMyPage(int empNo, String oldPw, String newPw);

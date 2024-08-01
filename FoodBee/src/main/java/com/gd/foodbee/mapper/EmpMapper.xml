@@ -141,23 +141,24 @@
 			`group` o ON d.superior_dpt_no = o.dpt_no
 		WHERE
 			1=1
-			<if test="officeName != null and officeName != ''">
-                AND o.dpt_name = #{officeName}
+			AND emp_no != #{empNo}
+			<if test="empSearchDTO.officeName != null and empSearchDTO.officeName != ''">
+                AND o.dpt_name = #{empSearchDTO.officeName}
             </if>
-            <if test="deptName != null and deptName != ''">
-                AND d.dpt_name = #{deptName}
+            <if test="empSearchDTO.deptName != null and empSearchDTO.deptName != ''">
+                AND d.dpt_name = #{empSearchDTO.deptName}
             </if>
-           <if test="teamName != null and teamName != ''">
-                AND t.dpt_name = #{teamName}
+           <if test="empSearchDTO.teamName != null and empSearchDTO.teamName != ''">
+                AND t.dpt_name = #{empSearchDTO.teamName}
             </if>
-            <if test="rankName != null and rankName != ''">
-                AND e.rank_name = #{rankName}
+            <if test="empSearchDTO.rankName != null and empSearchDTO.rankName != ''">
+                AND e.rank_name = #{empSearchDTO.rankName}
             </if>
-            <if test="signupYN != null and signupYN != ''">
-                AND e.signup_YN = #{signupYN}
+            <if test="empSearchDTO.signupYN != null and empSearchDTO.signupYN != ''">
+                AND e.signup_YN = #{empSearchDTO.signupYN}
             </if>
-            <if test="empNo != null and empNo != ''">
-                AND e.emp_no LIKE '%${empNo}%'
+            <if test="empSearchDTO.empNo != null and empSearchDTO.empNo != ''">
+                AND e.emp_no LIKE '%${empSearchDTO.empNo}%'
             </if>
 	</select>
 	<select id="selectEmpEmailByEmpNo" parameterType="int" resultType="String">

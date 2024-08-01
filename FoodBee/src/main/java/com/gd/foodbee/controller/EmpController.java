@@ -214,7 +214,7 @@ public class EmpController {
 	//사용 페이지 : /emp/empList
 	@GetMapping("/emp/searchEmp")
 	@ResponseBody
-	public Map<String, Object> searhEmpList(EmpSearchDTO empSearchDTO, 
+	public Map<String, Object> searhEmpList(EmpSearchDTO empSearchDTO,
 				@RequestParam(name="currentPage", defaultValue = "1") int currentPage,
 				HttpSession session) {
 		log.debug(TeamColor.RED + "officeName =>" + empSearchDTO.getOfficeName());
@@ -224,9 +224,10 @@ public class EmpController {
 		log.debug(TeamColor.RED + "signupYN =>" + empSearchDTO.getSignupYN());
 		log.debug(TeamColor.RED + "empNo =>" + empSearchDTO.getEmpNo());
 		
-		int lastPage = empService.getLastPage(empSearchDTO);
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
+		int lastPage = empService.getLastPage(empSearchDTO, empNo);
+
 		log.debug(TeamColor.RED + "lastPage =>" + lastPage);
 		
 		Map<String, Object> map = new HashMap<>();

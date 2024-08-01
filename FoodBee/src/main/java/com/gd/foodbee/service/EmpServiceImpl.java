@@ -267,9 +267,9 @@ public class EmpServiceImpl implements EmpService{
 	// 반환 값 : int
 	// 사용 클래스 : EmpController.searhEmpList
 	@Override
-	public int getLastPage(EmpSearchDTO empSearchDTO) {
+	public int getLastPage(EmpSearchDTO empSearchDTO, int empNo) {
 		
-		int empCount = empMapper.selectEmpCount(empSearchDTO);
+		int empCount = empMapper.selectEmpCount(empSearchDTO, empNo);
 		log.debug(TeamColor.RED + "empCount =>" + empCount);
 		
 		int lastPage = (int) Math.ceil((double) empCount / ROW_PER_PAGE);
