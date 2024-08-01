@@ -78,7 +78,7 @@
 			    let referrerField = '${basicReferrerOne.referrerName}';
 			   
 			    let name = '${basicFormOne.drafterEmpName}';  
-			    let dptNo = '${basicFormOne.dptNo}';  
+			    let dptName = '${basicFormOne.dptName}';  
 			    
 			    if(${empNo} == drafter){
 					$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
@@ -96,7 +96,7 @@
 			    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 			    $("#referrerField").val(referrerField);
 			    $("#name").val(drafterName);
-			    $("#department").val(dptNo);
+			    $("#department").val(dptName);
 			    $("#midApproverBtn").hide();
 			    $("#finalApproverBtn").hide();
 			    

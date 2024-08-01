@@ -94,7 +94,7 @@
 		    	referrerField = "수신자 없음";
 		    }
 		    let name = '${businessTripOne.drafterEmpName}';  
-		    let dptNo = '${businessTripOne.dptNo}';  
+		    let dptName = '${businessTripOne.dptName}';  
 		
 		    if(${empNo} == drafter){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
@@ -112,7 +112,7 @@
 		    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 		    $("#referrerField").val(referrerField);
 		    $("#name").val(drafterName);
-		    $("#department").val(dptNo);
+		    $("#department").val(dptName);
 		    $("#midApproverBtn").hide();
 		    $("#finalApproverBtn").hide();
 		    

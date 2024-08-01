@@ -221,7 +221,7 @@
 	    $('#referrerEmpNo').val(referrerVal);
 	    
 	    let name = '${basicFormOne.drafterEmpName}';  
-	    let dptNo = '${basicFormOne.dptNo}';  
+	    let dptName = '${basicFormOne.dptName}';  
 	
 	    $("#drafterEmpNo").val(drafter);
 	    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
@@ -231,7 +231,7 @@
 	    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 	    $("#referrerField").val(referrerField);
 	    $("#name").val(drafterName);
-	    $("#department").val(dptNo);
+	    $("#department").val(dptName);
 	    
 	    let drafterSign = '${basicFormOne.drafterSign}';
 	    let midApproverSign = '${basicFormOne.midApproverSign}';

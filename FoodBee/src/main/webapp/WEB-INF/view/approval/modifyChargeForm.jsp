@@ -253,7 +253,7 @@
 	    //이름
 	    let name = '${chargeOne.drafterEmpName}';  
 	    //부서번호
-	    let dptNo = '${chargeOne.dptNo}';  
+	    let dptName = '${chargeOne.dptName}';  
 	
 	    $("#drafterEmpNo").val(drafter);
 	    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
@@ -263,7 +263,7 @@
 	    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
 	    $("#referrerField").val(referrerField);
 	    $("#name").val(drafterName);
-	    $("#department").val(dptNo);
+	    $("#department").val(dptName);
 	    $("#midApproverBtn").hide();
 	    $("#finalApproverBtn").hide();
 	    

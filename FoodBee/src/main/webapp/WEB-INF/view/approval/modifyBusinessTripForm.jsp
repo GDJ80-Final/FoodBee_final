@@ -232,7 +232,7 @@
 	    $('#referrerEmpNo').val(referrerVal);
 	    
 	    let name = '${businessTripOne.drafterEmpName}';  
-	    let dptNo = '${businessTripOne.dptNo}';  
+	    let dptName = '${businessTripOne.dptName}';  
 	
 	    $("#drafterEmpNo").val(drafter);
 	    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
@@ -242,7 +242,7 @@
 	    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 	    $("#referrerField").val(referrerField);
 	    $("#name").val(drafterName);
-	    $("#department").val(dptNo);
+	    $("#department").val(dptName);
 	    $("#midApproverBtn").hide();
 	    $("#finalApproverBtn").hide();
 	    

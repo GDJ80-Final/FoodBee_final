@@ -104,7 +104,7 @@
 		    	referrerField = "수신자 없음";
 		    }
 		    let name = '${dayOffOne.drafterEmpName}';  
-		    let dptNo = '${dayOffOne.dptNo}';  
+		    let dptName = '${dayOffOne.dptName}';  
 		    
 		    if(${empNo} == drafter){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
@@ -122,7 +122,7 @@
 		    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
 		    $("#referrerField").val(referrerField);
 		    $("#name").val(drafterName);
-		    $("#department").val(dptNo);
+		    $("#department").val(dptName);
 		    $("#midApproverBtn").hide();
 		    $("#finalApproverBtn").hide();
 		    

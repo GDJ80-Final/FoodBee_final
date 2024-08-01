@@ -102,7 +102,7 @@
 		    //이름
 		    let name = '${chargeOne.drafterEmpName}';  
 		    //부서번호
-		    let dptNo = '${chargeOne.dptNo}';  
+		    let dptName = '${chargeOne.dptName}';  
 		    
 		    if(${empNo} == drafter){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
@@ -120,7 +120,7 @@
 		    $("#finalApproverNoField").val(finalApprover+"("+finalApproverName+")");
 		    $("#referrerField").val(referrerField);
 		    $("#name").val(drafterName);
-		    $("#department").val(dptNo);
+		    $("#department").val(dptName);
 		    $("#midApproverBtn").hide();
 		    $("#finalApproverBtn").hide();
 		    

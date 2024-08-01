@@ -165,15 +165,24 @@
 		    dd.mid_approver_reason midApproverReason, 
 		    dd.final_approver_reason finalApproverReason, 
 		    dd.doc_approver_state_no docApproverState, 
-		    dd.tmp_no tmpNo
+		    dd.tmp_no tmpNo,
+		    g.dpt_name dptName
 		FROM 
 		    draft_doc dd
-		    LEFT JOIN emp drafter ON dd.drafter_emp_no = drafter.emp_no
-		    LEFT JOIN approval_sign drafterSign ON drafter.emp_no = drafterSign.emp_no
-		    LEFT JOIN emp midApprover ON dd.mid_approver_no = midApprover.emp_no
-		    LEFT JOIN approval_sign midApproverSign ON midApprover.emp_no = midApproverSign.emp_no
-		    LEFT JOIN emp finalApprover ON dd.final_approver_no = finalApprover.emp_no
-		    LEFT JOIN approval_sign finalApproverSign ON finalApprover.emp_no = finalApproverSign.emp_no
+	    LEFT JOIN 
+	    	emp drafter ON dd.drafter_emp_no = drafter.emp_no
+	    LEFT JOIN 
+	    	approval_sign drafterSign ON drafter.emp_no = drafterSign.emp_no
+	    LEFT JOIN 
+    		emp midApprover ON dd.mid_approver_no = midApprover.emp_no
+	    LEFT JOIN 
+   			approval_sign midApproverSign ON midApprover.emp_no = midApproverSign.emp_no
+	    LEFT JOIN 
+    		emp finalApprover ON dd.final_approver_no = finalApprover.emp_no
+	    LEFT JOIN 
+   			approval_sign finalApproverSign ON finalApprover.emp_no = finalApproverSign.emp_no
+    	INNER JOIN
+    		`group` g ON g.dpt_no = drafter.dpt_no
 		WHERE 
 			draft_doc_no = #{draftDocNo}
 	</select>
