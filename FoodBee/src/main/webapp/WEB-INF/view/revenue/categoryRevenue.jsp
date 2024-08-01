@@ -35,11 +35,11 @@
 <script>
 let allData = [];
 const colors = {
-    "간편식": "red",
-    "쌀/곡물": "orange",
-    "육/수산": "yellow",
-    "음료/주류": "green",
-    "청과": "blue"
+    "간편식": "#7571F9",
+    "쌀/곡물": "#ff9696",
+    "육/수산": "#9097c4",
+    "음료/주류": "#e62739",
+    "청과": "#cddcff"
 };
 
 function fetchAvailableYears() {

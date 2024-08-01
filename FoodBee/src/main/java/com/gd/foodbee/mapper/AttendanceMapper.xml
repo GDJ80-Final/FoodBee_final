@@ -112,6 +112,8 @@
 		        	approval_state = 2 THEN '승인'
 		        WHEN 
 		        	approval_state = 9 THEN '반려'
+		        WHEN 
+		        	approval_state = 0 THEN '등록 전'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
@@ -175,6 +177,8 @@
 		        	a.approval_state = 2 THEN '승인'
 		        WHEN 
 		        	a.approval_state = 9 THEN '반려'
+		        WHEN 
+		        	a.approval_state = 0 THEN '등록 전'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
@@ -220,6 +224,8 @@
 		        	a.approval_state = 2 THEN '승인'
 		        WHEN 
 		        	a.approval_state = 9 THEN '반려'
+		        WHEN 
+		        	a.approval_state = 0 THEN '등록 전'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 

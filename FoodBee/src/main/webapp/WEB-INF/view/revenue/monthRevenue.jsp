@@ -63,7 +63,8 @@ body {
 $(document).ready(function() {
     const categoryName = [];
     const revenue = [];
-    const barColors = ["red", "orange", "yellow", "green", "blue"];
+    const barColors = ["#7571F9", "#ff9696", "#9097c4", "#e62739", "#cddcff"];
+
     let preRevenue = []; // 이전 달 매출 데이터 배열
 
     // 현재 날짜를 가져와 셀렉트 박스에 년도와 월 추가
@@ -112,8 +113,8 @@ $(document).ready(function() {
                 datasets: [{
                     backgroundColor: barColors,
                     data: revenue,
-                    barThickness: 20, // 막대 두께 설정
-                    maxBarThickness: 20 // 최대 막대 두께 설정
+                    barThickness: 40, // 막대 두께 설정
+                    maxBarThickness: 40 // 최대 막대 두께 설정
                 }]
             },
             options: {

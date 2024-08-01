@@ -32,24 +32,49 @@
 				<td>승인상태</td>
 				<td>수정여부</td>
 			</tr>
-			<c:forEach var="m" items="${list}">
-				<tr>
-					<td>${m.empNo}</td>
-					<td>${m.date}</td>
-					<td>&nbsp;&nbsp;&nbsp;${m.updateStartTime}<br>등록:${m.startTime}</td>
-					<td>&nbsp;&nbsp;&nbsp;${m.updateEndTime}<br>등록:${m.endTime}</td>
-					<td>${map.rankName} ${map.empName}</td>
-					
-					<c:if test="${m.approvalState eq '승인' || m.approvalState eq '미승인'}">
-					    <td>${m.approvalState}</td>
-					</c:if>
-					<c:if test="${m.approvalState eq '반려'}">
-					    <td><a href="${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}">${m.approvalState}</a></td>
-					</c:if>
-					
-					<td>${m.updateStatus}</td>
-				</tr>
-			</c:forEach>
+			<c:choose>
+		        <c:when test="${empty list}">
+		            <tr>
+		                <td colspan="7" style="text-align:center;">등록된 근무시간이 없습니다.</td>
+		            </tr>
+		        </c:when>
+		        <c:otherwise>
+		            <c:forEach var="m" items="${list}">
+		            	<tr>
+		                	<td>${m.empNo}</td>
+		                    <td>${m.date}</td>
+		                    <td>&nbsp;&nbsp;&nbsp;${m.updateStartTime}<br>등록:${m.startTime}</td>
+		                    <td>&nbsp;&nbsp;&nbsp;${m.updateEndTime}<br>등록:${m.endTime}</td>
+		                    <td>
+		                        <c:choose>
+		                            <c:when test="${not empty map.rankName and not empty map.empName}">
+		                                ${map.rankName} ${map.empName}
+		                            </c:when>
+		                            <c:otherwise>
+		                                없음
+		                            </c:otherwise>
+		                        </c:choose>
+		                    </td>
+		                    
+		                    <c:if test="${m.approvalState eq '승인' || m.approvalState eq '미승인' || m.approvalState eq '등록 전'}">
+		                        <td>${m.approvalState}</td>
+		                    </c:if>
+		                    <c:if test="${m.approvalState eq '반려'}">
+		                        <td><a href="${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}">${m.approvalState}</a></td>
+		                    </c:if>
+		                    
+		                    <c:choose>
+		                        <c:when test="${empty m.endTime}">
+		                            <td>X</td>
+		                        </c:when>
+		                        <c:otherwise>
+		                            <td>${m.updateStatus}</td>
+		                        </c:otherwise>
+		                    </c:choose>
+		                </tr>
+		            </c:forEach>
+		        </c:otherwise>
+		    </c:choose>
 		</table>
 		<div>
 		    <c:if test="${param.startDate == null || param.endDate == null}">

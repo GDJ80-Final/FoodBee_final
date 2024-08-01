@@ -17,22 +17,41 @@
 		<form method="post" action="${pageContext.request.contextPath}/attendance/attendanceFinalTime">
 			<input type="hidden" name="date" value="${attendanceDTO.date}">
 			<table border="1">
-				<tr>
-					<td>확인일자</td>
-					<td>${attendanceDTO.date}</td>
-				</tr>
-				<tr>
-					<td>출근 시간</td>
-					<td>${attendanceDTO.updateStartTime}</td>
-				</tr>
-				<tr>
-					<td>퇴근 시간</td>
-					<td>${attendanceDTO.updateEndTime}</td>
-				</tr>
-				<tr>
-					<td>승인자</td>
-					<td>${map.rankName} ${map.empName}</td>
-				</tr>	
+			<c:choose>
+			    <c:when test="${empty attendanceDTO.date and empty attendanceDTO.updateStartTime and empty attendanceDTO.updateEndTime and empty map.rankName and empty map.empName}">
+			        <tr>
+			            <td colspan="2" style="text-align:center;">등록된 근무가 없습니다.</td>
+			        </tr>
+			    </c:when>
+			    
+			    <c:otherwise>
+			        <tr>
+			            <td>확인일자</td>
+			            <td>${attendanceDTO.date}</td>
+			        </tr>
+			        <tr>
+			            <td>출근 시간</td>
+			            <td>${attendanceDTO.updateStartTime}</td>
+			        </tr>
+			        <tr>
+			            <td>퇴근 시간</td>
+			            <td>${attendanceDTO.updateEndTime}</td>
+			        </tr>
+			        <tr>
+			            <td>승인자</td>
+			            <td>
+			                <c:choose>
+			                    <c:when test="${not empty map.rankName and not empty map.empName}">
+			                        ${map.rankName} ${map.empName}
+			                    </c:when>
+			                    <c:otherwise>
+			                        없음
+			                    </c:otherwise>
+			                </c:choose>
+			            </td>
+			        </tr>
+			    </c:otherwise>
+			</c:choose>
 			</table>
 			<c:if test="${attendanceDTO.date ne null}">
 				<button type="button" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceModify?date=${attendanceDTO.date}'">수정</button>
