@@ -257,13 +257,20 @@
 								'<th>가입일</th>' +
 								'<th>회원가입 유무</th>' +
 								'</tr>');
-						json.empList.forEach(function(item){
-							console.log(item);
-							
-							empList(item);
-							
-							
-						});
+
+						if(json.empList.length != 0){
+							json.empList.forEach(function(item){
+								console.log(item);
+								
+								empList(item);
+								
+								
+							});
+						} else {
+							$('#empList').append('<tr>'+
+                            '<td colspan="10" style="text-align:center;">조회된 사원이 없습니다.</td>'+
+                            '</tr>')
+						}
 						
 						updateBtnState();
 					}
