@@ -172,8 +172,8 @@
 				<div class="form-section">
 					<div class="form-group">
 						<label for="category">유형:</label>
-						<input type="radio" id="category" name="typeName" value="연차"> 연차          
-						<input type="radio" id="category" name="typeName" value="반차" style="margin-left: 20px;"> 반차
+						<input type="radio" id="categoryYear" name="typeName" value="연차"> 연차          
+						<input type="radio" id="categoryHalf" name="typeName" value="반차" style="margin-left: 20px;"> 반차
 				    </div>
 				    <div class="form-group">
 				        <label for="remaining">잔여 휴가:</label>

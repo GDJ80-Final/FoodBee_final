@@ -291,6 +291,26 @@
 	            }
 	        });
 	    });
+		
+		/* 파일 여러 개 추가  */
+		let fileOrder = 1;
+        // 파일 추가 버튼 클릭 시
+        $('#addFileButton').click(function() {
+            fileOrder++;
+            let newFileInput = 
+                '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+                '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
+                 '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+                '</div>';
+            $('#fileInputsContainer').append(newFileInput);
+        });
+
+        // 파일 입력 필드 삭제 버튼 클릭 시
+        $(document).on('click', '.remove-file-button', function() {
+        	console.log('test');
+        	let fileGroupId = $(this).data('file-id');
+            $('#' + fileGroupId).remove();
+        });
 
 	});
 </script>
