@@ -642,6 +642,7 @@
 				if(endDate == null){
 					endDate = '';
 				}
+				console.log(json.empState);
 				
 				// 인사정보
 				$('#content').append(
@@ -690,9 +691,12 @@
 					                    '<label class="form-label">입사 일자</label>' +
 					                    '<input type="text" class="form-control" value="' + json.startDate + '" readonly>' +
 					                '</div>' +
-					                '<div class="col-md-6">' +
-					                    '<label class="form-label">퇴사 일자</label>' +
-					                    '<input type="text" class="form-control" value="' + endDate + '" readonly>' +
+					                '<div class="col-md-6">'+
+						                (json.empState == '퇴직' ?
+					                	    '<label class="form-label">퇴사 일자</label>' +
+					                	    '<input type="text" class="form-control" value="' + endDate + '" readonly>'
+						                	: ''
+					                	) +
 					                '</div>' +
 					                '<div class="col-md-6">' +
 						                '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signModal">' +
@@ -702,6 +706,7 @@
 					            '</div>' +
 					        '</div>' +
 					    '</div>'
+					    
 					);
 				
 				// 개인정보

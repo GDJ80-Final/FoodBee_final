@@ -304,8 +304,11 @@
 					                    '<input type="text" class="form-control" value="' + json.startDate + '" readonly>' +
 					                '</div>' +
 					                '<div class="col-md-6">' +
-					                    '<label class="form-label">퇴사 일자</label>' +
-					                    '<input type="text" class="form-control" value="' + endDate + '" readonly>' +
+					                	(json.empState == '퇴직' ?
+					                	    '<label class="form-label">퇴사 일자</label>' +
+					                	    '<input type="text" class="form-control" value="' + endDate + '" readonly>'
+					                		: ''
+				                		) +
 					                '</div>' +
 					            '</div>' +
 					        '</div>' +
