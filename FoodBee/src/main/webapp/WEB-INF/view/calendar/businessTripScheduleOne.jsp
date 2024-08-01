@@ -51,7 +51,12 @@
 		        <tr>
 		            <th>취소유무</th>
 		            <td>
-		                <input type="text" value="<c:out value="${tripHistoryOne.cancleYN}"/>" readonly="readonly">
+			            <c:if test="${tripHistoryOne.cancleYN == 'N'}">
+				      		<input type="text" readonly="readonly" value="취소X">
+				      	</c:if>
+				      	<c:if test="${tripHistoryOne.cancleYN == 'Y'}">
+				      		<input type="text" readonly="readonly" value="취소O">
+				      	</c:if>
 		            </td>
 		        </tr>
 		        <c:if test="${tripHistoryOne.cancleYN == 'Y'}">

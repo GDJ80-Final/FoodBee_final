@@ -11,7 +11,6 @@
        margin: 0 auto; 
      }
     #btn-wrapper {
-   
 	  display: flex;
 	  justify-content: space-between;
 	  margin-bottom: 20px;
@@ -59,7 +58,7 @@
 	}
 	
 	#teamEvents {
-	  background-color: #BCE55C;
+	  background-color: #65D35D;
 	  color: white;
 	}
 	.fc-toolbar-title {
@@ -204,7 +203,7 @@
             title: '<c:out value="${m.title}" />',
             start: '<c:out value="${m.startDatetime}" />',
             end: '<c:out value="${m.endDatetime}" />',
-            color: '<c:out value="${m.type == '개인' ? '#FF6C6C' : '#BCE55C'}" />',
+            color: '<c:out value="${m.type == '개인' ? '#FF8383' : '#65D35D'}" />',
             type: '개인',
             description: '<c:out value="${m.content}" />',
             scheduleNo: '<c:out value="${m.scheduleNo}" />'
@@ -216,7 +215,7 @@
             title: '<c:out value="(팀)${team.title}" />',
             start: '<c:out value="${team.startDatetime}" />',
             end: '<c:out value="${team.endDatetime}" />',
-            color: '<c:out value="${team.type == '팀' ? '#BCE55C' : '#FF6C6C'}" />',
+            color: '<c:out value="${team.type == '팀' ? '#65D35D' : '#FF8383'}" />',
             type: '팀',
             description: '<c:out value="${team.content}" />',
             scheduleNo: '<c:out value="${team.scheduleNo}" />',
@@ -231,10 +230,10 @@
           start: '<c:out value="${room.startDatetime}" />',
           end: '<c:out value="${room.endDatetime}" />',
           <c:if test="${room.type == 'team'}">
-            color: '#BCE55C',
+            color: '#65D35D',
           </c:if>
           <c:if test="${room.type == 'personal'}">
-          color: '#FF6C6C',
+          color: '#FF8383',
        
          </c:if>
           //
@@ -255,7 +254,7 @@
           title: '<c:out value="${off.name}님 휴가" />',
           start: '<c:out value="${off.startDate}" />',
           end: '<c:out value="${off.endDate}" />',
-          color: '#BCE55C',
+          color: '#65D35D',
           type: '팀',
           dayOffEmp: '<c:out value="${off.name}" />',
           contact: '<c:out value="${off.contact}" />'
@@ -267,7 +266,7 @@
           title: '<c:out value="${trip.name}님 출장" />',
           start: '<c:out value="${trip.startDate}" />',
           end: '<c:out value="${trip.endDate}" />',
-          color: '#BCE55C',
+          color: '#65D35D',
           type: '팀',
           tripEmp: '<c:out value="${trip.name}" />',
           destination: '<c:out value="${trip.destination}" />',

@@ -219,6 +219,7 @@ public class ScheduleController {
 		
 		return"/calendar/dayOffScheduleOne";
 	}
+	
 	// 출장내역 상세보기
 	// 파라미터 : int scheduleNo, Model model
 	// 반환값 : tripHistoryOne

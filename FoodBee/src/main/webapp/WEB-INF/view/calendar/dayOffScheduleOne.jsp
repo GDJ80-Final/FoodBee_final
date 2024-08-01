@@ -56,7 +56,12 @@
     <tr>
       <th>취소유무</th>
       <td>
-          <input type="text" value="<c:out value="${dayOffOne.cancleYN}"/>" readonly="readonly">
+      	<c:if test="${dayOffOne.cancleYN == 'N'}">
+      		<input type="text" readonly="readonly" value="취소X">
+      	</c:if>
+      	<c:if test="${dayOffOne.cancleYN == 'Y'}">
+      		<input type="text" readonly="readonly" value="취소O">
+      	</c:if>
       </td>
   	</tr>
 	<c:if test="${dayOffOne.cancleYN == 'Y'}">

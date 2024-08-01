@@ -8,6 +8,14 @@
 .file-container {
     margin-bottom: 10px;
 }
+.file-input-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.file-input-wrapper input[type="file"] {
+    margin-right: 10px;
+}
 </style>
 </head>
 <body>
@@ -45,7 +53,11 @@
                     <th>첨부파일</th>
                      <td>
                         <div id="file-container">
-                            <input type="file" name="files" multiple="multiple"><br>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="files" multiple="multiple">
+                                <button type="button" onclick="removeFileInput(this)">제거</button>
+                                <!-- this는 file-container 전체 -->
+                            </div>
                         </div>
                         <button type="button" onclick="addFileInput()">파일 추가</button>
                     </td>
@@ -65,14 +77,32 @@
  </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script>
-function addFileInput() {
-    var fileContainer = document.getElementById('file-container');
-    var newFileInput = document.createElement('input');
-    newFileInput.type = 'file';
-    newFileInput.name = 'files';
-    newFileInput.multiple = 'multiple';
-    fileContainer.appendChild(newFileInput);
-}
+	function addFileInput() {
+	    var fileContainer = document.getElementById('file-container');
+	    var fileInputWrapper = document.createElement('div');
+	    fileInputWrapper.className = 'file-input-wrapper';
+	
+	    var newFileInput = document.createElement('input');
+	    newFileInput.type = 'file';
+	    newFileInput.name = 'files';
+	    newFileInput.multiple = 'multiple';
+	
+	    var removeButton = document.createElement('button');
+	    removeButton.type = 'button';
+	    removeButton.innerText = '제거';
+	    removeButton.onclick = function() {
+	        removeFileInput(removeButton);
+	    };
+	
+	    fileInputWrapper.appendChild(newFileInput);
+	    fileInputWrapper.appendChild(removeButton);
+	    fileContainer.appendChild(fileInputWrapper);
+	}
+	
+	function removeFileInput(button) {
+	    var fileInputWrapper = button.parentNode;
+	    fileInputWrapper.parentNode.removeChild(fileInputWrapper);
+	}
 </script>
 </body>
 </html>
