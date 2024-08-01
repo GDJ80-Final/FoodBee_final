@@ -146,7 +146,7 @@
 	<select id="noticeOne" parameterType="int" resultType="Map">
 		SELECT 
 			n.notice_no noticeNo, 
-			n.create_datetime createDatetime, 
+			DATE_FORMAT(n.create_datetime, '%Y-%m-%d') createDatetime, 
 			n.dpt_no dptNo, 
 			n.title title, 
 			n.content content, 

@@ -6,26 +6,19 @@
 <meta charset="UTF-8">
 <title>공지사항</title>
 </head>
-<style>
-	#groupBtn {
+<style>	
+	#addNotice {
 	    display: flex;
-	    justify-content: space-around; /* 또는 space-between, space-evenly */
-	    gap: 10px; /* 버튼 사이의 간격 */
+	    justify-content: flex-end; /* 버튼을 오른쪽으로 정렬 */
+	    margin-bottom: 10px;
 	}
-	#groupBtn .btn {
-	    flex: 1; /* 모든 버튼의 너비를 동일하게 만듭니다 */
-	    text-align: center; /* 버튼 내부 텍스트를 가운데 정렬 */
-	    margin: 0; /* 버튼 사이의 여백을 제거 */
-	    padding: 10px; /* 버튼의 내부 여백을 설정 */
-	    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기를 설정 */
+	#addNotice .btn {
+	    width: 150px; /* 버튼의 가로 길이 조정 */
 	}
-	#addNotice{
-		margin-left: auto;
-		margin-bottom: 10px;
+	th {
+	    font-weight: bold;
 	}
-	th{
-		font-weight: bold;
-	}
+	
 </style>
 <body>
 <!-- 메인템플릿 -->
@@ -49,19 +42,20 @@
 			<div class="col-lg-12">
 			 	<div class="card">
 			 		<div class="card-body">	
-			 
 			 		<!-- 여기서부터 내용시작 -->
-			 		
 				 		<div id="addNotice">
 							<c:if test="${rankName == '팀장' || rankName == 'CEO' || rankName == '부서장' || rankName == '지사장'}">
-							   	<a href="addNotice" class="btn btn-primary btn-block">공지사항 작성</a>
+							   	<a href="addNotice" class="btn btn-info btn-block">공지사항 작성</a>
 							</c:if>
 						</div>
-						<div id="groupBtn">						
-							<button id="listBtn" class="btn btn-primary btn-block">전체</button>
-							<button id="empBtn" class="btn btn-primary btn-block">전사공지</button>
-							<button id="dptBtn" class="btn btn-primary btn-block">부서공지</button>
-						</div>
+						<ul class="nav nav-pills mb-3">
+                            <li class="nav-item"><a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false" id="listBtn">전체</a>
+                            </li>
+                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="empBtn">전사공지</a>
+                            </li>
+                            <li class="nav-item"><a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true" id="dptBtn">부서공지</a>
+                            </li>
+                        </ul>
 
 						<div id="table-body" class="table-responsive">
 							<table border="1" id="noticeTable" class="table table-striped">
@@ -80,7 +74,7 @@
 						</div>
 						<input type="hidden" id="hiddenPage" value="all">
 						<!-- panel & page -->
-						<div class="bootstrap-pagination" id="page">
+						<div class="bootstrap-pagination mt-3" id="page">
 					         <nav>
 					             <ul class="pagination justify-content-center">
 					                 <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
