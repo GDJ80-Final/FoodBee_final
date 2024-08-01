@@ -26,6 +26,15 @@ public class AttendanceController {
 	@Autowired 
 	private AttendanceService attendanceService;
 	
+	// 최신 근태 기록
+	@GetMapping("/attendance/loadAttendanceRecord")
+	@ResponseBody
+    public AttendanceDTO loadAttendanceRecord(@RequestParam("empNo") int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+        return attendanceService.getAttendanceRecord(empNo);
+    }
+	
 	// 근태 출근
 	@PostMapping("/attendance/attendanceStartTime")
 	public String attendanceStartTime(HttpSession session) {

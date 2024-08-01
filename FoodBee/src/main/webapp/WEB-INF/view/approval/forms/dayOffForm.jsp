@@ -245,9 +245,15 @@
 			        <textarea id="content" name="content" placeholder="휴가 사유을 작성하세요."></textarea>
 			    </div>
 			    <div class="file-upload">
-			        <label for="attachment">첨부파일:</label>
-			        <input type="file" id="attachment" name="docFiles" multiple>
-			    </div>
+                <label for="attachment">첨부파일:</label>
+	                <div id="fileInputsContainer">
+				        <div class="file-input-group" id="fileGroup1">
+				        	<input type="file" id="attachment-1" name="docFiles">
+				        </div>
+				    </div>
+	      			<button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>		                
+		               
+		     	</div>
 			</div>
 		    <!-- 양식 영역 끝 -->
 			<div class="form-actions">

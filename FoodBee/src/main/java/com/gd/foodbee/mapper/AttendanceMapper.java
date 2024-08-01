@@ -10,6 +10,12 @@ import com.gd.foodbee.dto.AttendanceDTO;
 @Mapper
 public interface AttendanceMapper {
 	
+	// 최신 근태 기록
+	// 파라미터 : int empNo
+	// 반환값 : AttendanceDTO
+	// 사용클래스 : AttendanceServiceImpl.getAttendanceRecord
+	AttendanceDTO selectAttendanceRecord(int empNo);
+	
 	// 근태 출근
 	// 파라미터 : int empNo
 	// 반환값 : X

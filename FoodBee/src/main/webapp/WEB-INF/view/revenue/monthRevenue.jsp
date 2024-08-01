@@ -75,7 +75,7 @@ $(document).ready(function() {
     const monthSelect = $('#monthSelect');
 
     // 최근 2년치 년도를 추가
-    for (let year = currentYear; year >= currentYear - 2; year--) {
+    for (let year = currentYear; year >= currentYear - 1; year--) {
         yearSelect.append(new Option(year + '년', year));
     }
 

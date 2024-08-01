@@ -22,6 +22,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	
 	private static final int ROW_PER_PAGE = 10;
 	
+	// 최신 근태 기록
+	public AttendanceDTO getAttendanceRecord(int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		return attendanceMapper.selectAttendanceRecord(empNo);
+	}
+	
 	// 근태 출근
 	public int addStartTime(int empNo) {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);

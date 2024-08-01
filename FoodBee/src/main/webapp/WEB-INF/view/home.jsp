@@ -11,12 +11,10 @@
 <title>home</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
-#stopwatch {
-    font-size: 20px; /* 폰트 크기 */
-    color: black; /* 글자 색상 */
-    margin-top: 10px; /* 위쪽 여백 */
-    display: block; /* 항상 표시되도록 설정 */
-}
+    #attendanceTime, #departureTime {
+        font-size: 1.2em; /* 텍스트 크기를 키워서 보이기 쉽게 합니다. */
+        color: black; /* 텍스트 색상을 검정색으로 지정합니다. */
+    }
 </style>
 </head>
 <body>
@@ -37,90 +35,185 @@
 			<br>
 			<button type="button" id="attendanceStartButton">출근</button>
             <button type="button" id="attendanceEndButton">퇴근</button>
-            <!-- 스톱워치 표시 영역 -->
-            <div id="stopwatch">경과 시간: 00시간 00분 00초</div>
+			<!-- 출퇴근 시간 표시 영역 -->
+			<div id="attendanceTime" style="display:none;">출근 시간:</div>
+			<div id="departureTime" style="display:none;">퇴근 시간:</div>
+			<div id="workTime" style="display:none;">근무 시간:</div>
 	 	</div>
  	</div>
+ 	
  	<jsp:include page="./footer.jsp"></jsp:include>
  	
 	<script>
-    let stopwatchInterval;
-    let elapsedTime = 0;
+	window.onload = function() {
+        const currentEmpNo = "${emp.empNo}"; // 현재 empNo 값을 가져옵니다.
 
-    function checkAttendanceStatus() {
-        const attendanceDate = localStorage.getItem('attendanceDate');
-        const currentDate = new Date().toISOString().split('T')[0];
-
-        if (attendanceDate !== currentDate) {
-            document.getElementById('attendanceStartButton').style.display = 'inline';
-            document.getElementById('attendanceEndButton').style.display = 'inline';
+        // 출퇴근 시간을 초기화하는 함수
+        function resetAttendanceTimes() {
             localStorage.removeItem('attendanceDate');
-            document.getElementById('stopwatch').innerText = '경과 시간: 00시간 00분 00초';
-            elapsedTime = 0;
-            clearInterval(stopwatchInterval);
+            localStorage.removeItem('startTime');
+            localStorage.removeItem('endTime');
+            document.getElementById('attendanceTime').textContent = '출근 시간: 없음';
+            document.getElementById('departureTime').textContent = '퇴근 시간: 없음';
+            document.getElementById('workTime').textContent = '근무 시간: 0시간 0분';
+            document.getElementById('attendanceStartButton').style.display = 'inline-block';
+            document.getElementById('attendanceEndButton').style.display = 'inline-block';
         }
-    }
 
-    window.onload = function() {
-        checkAttendanceStatus();
-    };
+        // 날짜가 바뀌었는지 확인하는 함수
+        function checkDateChange() {
+            const storedDate = localStorage.getItem('attendanceDate');
+            const currentDate = new Date().toISOString().split('T')[0];
 
-    document.getElementById('attendanceStartButton').onclick = function() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/attendance/attendanceStartTime',
-            method: 'POST',
-            success: function(response) {
-                alert("출근 시간이 등록되었습니다.");
-                const today = new Date().toISOString().split('T')[0];
-                localStorage.setItem('attendanceDate', today);
-                startStopwatch();
-            },
-            error: function(xhr, status, error) {
-                alert("출근 등록에 실패했습니다.");
-                console.error(error);
+            if (storedDate !== currentDate) {
+                resetAttendanceTimes();
+                localStorage.setItem('attendanceDate', currentDate);
+            } else {
+                const startTime = localStorage.getItem('startTime');
+                const endTime = localStorage.getItem('endTime');
+                if (startTime) {
+                    document.getElementById('attendanceTime').innerText = '출근 시간: ' + startTime;
+                    document.getElementById('attendanceTime').style.display = 'block';
+                    document.getElementById('attendanceStartButton').style.display = 'none';
+                }
+                if (endTime) {
+                    document.getElementById('departureTime').innerText = '퇴근 시간: ' + endTime;
+                    document.getElementById('workTime').innerText = '근무 시간: ' + calculateWorkTime(startTime, endTime);
+                    document.getElementById('departureTime').style.display = 'block';
+                    document.getElementById('workTime').style.display = 'block';
+                    document.getElementById('attendanceEndButton').style.display = 'none';
+                }
             }
-        });
-    };
+        }
 
-    document.getElementById('attendanceEndButton').onclick = function() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/attendance/attendanceEndTime',
-            method: 'POST',
-            success: function(response) {
-                alert("퇴근 시간이 등록되었습니다.");
-                clearInterval(stopwatchInterval);
-                document.getElementById('stopwatch').innerText = '경과 시간: 00시간 00분 00초';
-            },
-            error: function(xhr, status, error) {
-                alert("퇴근 등록에 실패했습니다.");
-                console.error(error);
+     	// 시간을 한국 시간으로 포맷하는 함수 (연도와 초를 제외)
+        function formatTime(date) {
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // 월 (0부터 시작하므로 +1)
+            const day = String(date.getDate()).padStart(2, '0'); // 일
+            const hours = String(date.getHours()).padStart(2, '0'); // 시
+            const minutes = String(date.getMinutes()).padStart(2, '0'); // 분
+            
+            return month + '-' + day + ' ' + hours + ':' + minutes; // 형식: MM-DD HH:mm
+        }
+
+        // 근무 시간 계산 함수
+        function calculateWorkTime(startTime, endTime) {
+            if (startTime && endTime) {
+                const start = new Date(startTime);
+                const end = new Date(endTime);
+                const workTimeInSeconds = (end - start) / 1000;
+                const hours = Math.floor(workTimeInSeconds / 3600);
+                const minutes = Math.floor((workTimeInSeconds % 3600) / 60);
+                return hours + '시간 ' + minutes + '분';
             }
-        });
+            return '0시간 0분';
+        }
+
+        // 로그인 시 이전 empNo와 비교하여 로컬 스토리지 초기화
+        function checkEmpNoChange() {
+            const storedEmpNo = localStorage.getItem('empNo');
+            if (storedEmpNo && storedEmpNo !== currentEmpNo) {
+                resetAttendanceTimes(); // empNo가 변경되면 기록 초기화
+            }
+            localStorage.setItem('empNo', currentEmpNo); // 현재 empNo 저장
+        }
+
+        // 출근 버튼 클릭 시
+        document.getElementById('attendanceStartButton').onclick = function() {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/attendance/attendanceStartTime',
+                method: 'POST',
+                success: function(response) {
+                    alert("출근 시간이 등록되었습니다.");
+                    const now = new Date();
+                    let formattedTime = formatTime(now);
+                    localStorage.setItem('startTime', formattedTime);
+                    localStorage.setItem('attendanceDate', now.toISOString().split('T')[0]);
+                    document.getElementById('attendanceTime').innerText = '출근 시간: ' + formattedTime;
+                    document.getElementById('attendanceTime').style.display = 'block';
+                    document.getElementById('attendanceStartButton').style.display = 'none';
+                    console.log("출근 시간:", formattedTime);
+                },
+                error: function(xhr, status, error) {
+                    alert("출근 등록에 실패했습니다.");
+                    console.error(error);
+                }
+            });
+        };
+
+        // 퇴근 버튼 클릭 시
+        document.getElementById('attendanceEndButton').onclick = function() {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/attendance/attendanceEndTime',
+                method: 'POST',
+                success: function(response) {
+                    alert("퇴근 시간이 등록되었습니다.");
+                    const now = new Date();
+                    let formattedTime = formatTime(now);
+                    localStorage.setItem('endTime', formattedTime);
+                    localStorage.setItem('attendanceDate', now.toISOString().split('T')[0]);
+                    document.getElementById('departureTime').innerText = '퇴근 시간: ' + formattedTime;
+                    document.getElementById('departureTime').style.display = 'block';
+                    const workTime = calculateWorkTime(localStorage.getItem('startTime'), formattedTime);
+                    document.getElementById('workTime').innerText = '근무 시간: ' + workTime;
+                    document.getElementById('workTime').style.display = 'block';
+                    document.getElementById('attendanceEndButton').style.display = 'none';
+                    console.log("퇴근 시간:", formattedTime);
+                },
+                error: function(xhr, status, error) {
+                    alert("퇴근 등록에 실패했습니다.");
+                    console.error(error);
+                }
+            });
+        };
+
+        // 자정이 되면 출퇴근 시간을 초기화
+        function resetAtMidnight() {
+            const now = new Date();
+            const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0) - now;
+            setTimeout(function() {
+                resetAttendanceTimes();
+                checkDateChange();
+                resetAtMidnight();
+            }, msUntilMidnight);
+        }
+
+     	// 출근 기록을 서버에서 가져오는 함수
+        function loadAttendanceRecord() {
+            const currentEmpNo = "${emp.empNo}";
+            $.ajax({
+                url: '${pageContext.request.contextPath}/attendance/loadAttendanceRecord', // 출근 기록
+                method: 'GET',
+                data: { empNo: currentEmpNo },
+                success: function(response) {
+                    const { startTime, endTime } = response;
+                    if (startTime) {
+                        localStorage.setItem('startTime', startTime);
+                        document.getElementById('attendanceTime').innerText = '출근 시간: ' + startTime;
+                        document.getElementById('attendanceTime').style.display = 'block';
+                        document.getElementById('attendanceStartButton').style.display = 'none';
+                    }
+                    if (endTime) {
+                        localStorage.setItem('endTime', endTime);
+                        document.getElementById('departureTime').innerText = '퇴근 시간: ' + endTime;
+                        document.getElementById('departureTime').style.display = 'block';
+                        const workTime = calculateWorkTime(startTime, endTime);
+                        document.getElementById('workTime').innerText = '근무 시간: ' + workTime;
+                        document.getElementById('workTime').style.display = 'block';
+                        document.getElementById('attendanceEndButton').style.display = 'none';
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("출근 기록을 가져오는데 실패했습니다.", error);
+                }
+            });
+        }
+
+        checkEmpNoChange(); // empNo 변경 확인
+        checkDateChange(); // 페이지 로드 시 날짜 변경 확인
+        resetAtMidnight(); // 자정 초기화 설정
+        loadAttendanceRecord(); // 출근 기록 로드
     };
-
-    function startStopwatch() {
-        elapsedTime = 0;
-        updateStopwatchDisplay();
-        stopwatchInterval = setInterval(() => {
-            elapsedTime += 1000;
-            updateStopwatchDisplay();
-        }, 1000);
-    }
-
-    function updateStopwatchDisplay() {
-        const hours = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
-        const seconds = Math.floor((elapsedTime / 1000) % 60);
-        
-        // 2자리 숫자로 포맷팅
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(seconds).padStart(2, '0');
-
-        // 스톱워치 텍스트 업데이트
-        document.getElementById('stopwatch').innerText = `경과 시간: ${formattedHours}시간 ${formattedMinutes}분 ${formattedSeconds}초`;
-        console.log(`Stopwatch Display: ${formattedHours}:${formattedMinutes}:${formattedSeconds}`); // 디버깅
-    }
     </script>
  
 </body>

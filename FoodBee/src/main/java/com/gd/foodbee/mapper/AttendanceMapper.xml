@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.AttendanceMapper">
 	
+	<!-- 최신 근태 기록 -->
+	<select id="selectAttendanceRecord" parameterType="int" resultType="com.gd.foodbee.dto.AttendanceDTO">
+		SELECT 
+			DATE_FORMAT(start_time, '%m-%d %H:%i') startTime, 
+    		DATE_FORMAT(end_time, '%m-%d %H:%i') endTime 
+        FROM 
+        	attendance
+        WHERE 
+        	emp_no = #{empNo}
+        ORDER BY 
+        	date DESC
+        LIMIT 
+        	1
+	</select>
+	
 	<!-- 근태 출근 -->
 	<insert id="insertStartTime" parameterType="int">
 		INSERT INTO 
