@@ -216,7 +216,7 @@
 		        </div>	
 		        <!-- 양식 영역 끝 -->
 		        <div class="form-actions">
-		            <button type="reset" class="cancel-btn">취소</button>
+		            <button type="button" id="returnBox" class="cancel-btn">취소</button>
 		            <button type="button" id="submitBtn" class="submit-btn">제출</button>
 		        </div>
 			</form>	

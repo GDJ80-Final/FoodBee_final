@@ -127,11 +127,9 @@
                 }
 
             });
-
-            // 취소 버튼 클릭 시 폼 초기화 및 에러 메시지 초기화
-            $('.cancel-btn').click(function() {
-                $('#form')[0].reset();
-                $('.error').text('');
+            
+            $('#returnBox').click(function() {
+            	window.location.href = "${pageContext.request.contextPath}/approval/draftBox";
             });
 			
             // 초기화 버튼 클릭 시 수신자 필드 초기화

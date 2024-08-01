@@ -203,8 +203,8 @@
 	          </div>	
 		        <!-- 양식 영역 끝 -->
 		        <div class="form-actions">
-		            <button type="reset" class="cancel-btn">취소</button>
-		            <button type="button" id="submitBtn" class="submit-btn">제출</button>
+		            <button type="button" id="cancle" class="cancle">취소</button>
+		            <button type="button" id="submitBtn" class="submit-btn">수정</button>
 		        </div>
 			</form>	
 			<!-- 폼 종료 -->
@@ -270,6 +270,11 @@
 	    } else {
 	        $("#finalApproverSign").text("최종결재 서명전");
 	    }
+	    
+	 	// 취소 버튼 클릭시 상세보기로 이동
+        $('#cancle').click(function() {
+        	window.location.href = "${pageContext.request.contextPath}/approval/modifyBusinessTripForm?draftDoc=${businessTripOne.draftDocNo}";
+        })
 	    
 		$('#submitBtn').click(function(e) {
 	        let drafterNo = $('#drafterEmpNo').val();

@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>매출보고 기안서</h1>
-<a href="${pageContext.request.contextPath}/approval/draftBox">돌아가기</a>
+<a href="" id="return">돌아가기</a>
 <jsp:include page="./forms/commonForm.jsp"></jsp:include>
 <div class="form-section">
 		<div class="form-group">
@@ -93,6 +93,14 @@
 		    }
 		    let name = '${revenueOne.drafterEmpName}';  
 		    let dptNo = '${revenueOne.dptNo}';  
+		    
+		    if(${empNo} == drafter){
+				$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
+			} else if(${empNo} == midApprover || ${empNo} == finalApprover){
+				$('#return').attr('href', '${pageContext.request.contextPath}/approval/approvalBox');
+			} else {
+				$('#return').attr('href', '${pageContext.request.contextPath}/approval/inBox');
+			}
 		
 		    $("#drafterEmpNo").val(drafter);
 		    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");

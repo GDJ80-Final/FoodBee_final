@@ -192,8 +192,8 @@
 		        </div>	
 		        <!-- 양식 영역 끝 -->
 		        <div class="form-actions">
-		            <button type="reset" class="cancel-btn">취소</button>
-		            <button type="button" id="submitBtn" class="submit-btn">제출</button>
+		            <button type="button" id="cancle" class="cancle-btn">취소</button>
+		            <button type="button" id="submitBtn" class="submit-btn">수정</button>
 		        </div>
 			</form>	
 			<!-- 폼 종료 -->
@@ -278,6 +278,12 @@
             $('#' + fileGroupId).remove();
         });
   
+        
+        // 취소 버튼 클릭시 상세보기로 이동
+        $('#cancle').click(function() {
+        	window.location.href = "${pageContext.request.contextPath}/approval/modifyBasicForm?draftDocNo=${basicFormOne.draftDocNo}";
+        })
+        
         // 제출 버튼 클릭 시 전체 유효성 검사
         $('#submitBtn').click(function(e) {
             

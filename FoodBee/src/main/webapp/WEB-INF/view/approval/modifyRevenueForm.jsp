@@ -368,6 +368,11 @@
 	        $('#description').val(description);
 	    });
 	 	
+	 // 취소 버튼 클릭시 상세보기로 이동
+        $('#cancle').click(function() {
+        	window.location.href = "${pageContext.request.contextPath}/approval/modifyRevenueForm?draftDocNo=${revenueOne.draftDocNo}";
+        })
+	 	
 		$('#submitBtn').click(function(e) {
 	        let drafterNo = $('#drafterEmpNo').val();
 	        console.log(drafterNo)
