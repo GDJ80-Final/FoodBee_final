@@ -37,14 +37,22 @@
                             <div class="card-body">
                                 <div class="email-left-box">
                                 <a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
-                                    <div class="mail-list mt-4"><a href="email-inbox.html" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>Inbox</b> </a>
-                                        
+                                    <div class="mail-list mt-4"><a href="email-inbox.html" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i><b>받은 쪽지함</b> 
+                                    <span class="badge badge-primary badge-sm float-right m-t-5" id="msgCnt">${msgCntAll}</span>
+                                    </a>
+                                       
                                     </div>
                                     <h5 class="mt-5 m-b-10">Filter</h5>
                                     <div class="list-group mail-list">
-                                    	<button type="button" name="readYN" id="all" value="all" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>ALL</button>  
-                                    	<button type="button" name="readYN" id="Y" value="Y" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>read</button>  
-                                    	<button type="button" name="readYN" id="N" value="N"class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>unread</button>  
+                                    	<button type="button" name="readYN" id="all" value="all" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>ALL
+                                    	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
+                                    	</button>  
+                                    	<button type="button" name="readYN" id="Y" value="Y" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>READ
+                                    	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntRead">${msgCntRead}</span>
+                                    	</button>  
+                                    	<button type="button" name="readYN" id="N" value="N"class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>UNREAD
+                                    	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntUnread">${msgCntUnread}</span>
+                                    	</button>  
                                     </div>
                                     <h5 class="mt-5 m-b-10"></h5>
                                     <div class="list-group mail-list">
@@ -101,39 +109,10 @@
                 </div>
             </div>
         </div>
-		<%-- 	<button type="button" name="readYN" id="all" value="all">전체</button>
-			<button type="button" name="readYN" id="Y" value="Y">읽음</button>
-			<button type="button" name="readYN" id="N" value="N">안 읽음</button>
-			
-			<button type="button" name="toTrash" id="toTrash">휴지통</button>
-			<a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통으로 이동</a>
-			<table border="1">
-				<thead>
-					<tr>
-						<td><input type="checkbox" id="selectAll"></td>
-						<td>쪽지번호</td>
-						<td>보낸이</td>
-						<td>제목</td>
-						<td>보낸일시</td>
-						<td>읽음여부</td>
-					</tr>
-				</thead>
-				<tbody id="msgTableBody">
-				
-				</tbody>
-			</table>
-			<div>
-			<div id="page">
-		        <button type="button" id="first">First</button>
-		        <button type="button" id="pre">◁</button>
-		        <button type="button" id="next">▶</button>
-		        <button type="button" id="last">Last</button>
-			</div>
-			</div> --%>
-	 	</div>
-	 	<!--**********************************
-	            Content body end
-	    ***********************************-->
+
+	 </div>
+	 	
+
  	
  	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
  	<!-- end -->
@@ -168,23 +147,31 @@
                     console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
 					$('#currentPage').text(currentPage);
                     $('#messageList').empty();
-                    json.msgList.forEach(function(item){
-                        console.log(item);
+                    if (json.msgList.length === 0) {
                         $('#messageList').append(
-                            '<tr><td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
-                            '<td>'+ item.empName + '</td>'+
-                            '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
-                                    item.msgNo +'">'+ item.title + '</a></td>'+
-                            '<td id="readYN">'+ item.readYN  + '</td>'+
-                            '<td>'+ item.createDatetime+ '</td>'+
-                            '</tr>');
-                          
-                        
-                    });
+                            '<tr>'+
+                            '<td colspan="6" style="text-align:center;">쪽지가 없습니다</td>'+
+                            '</tr>')
+                       
+                    }else{
+                    	json.msgList.forEach(function(item){
+	                        console.log(item);
+	                        $('#messageList').append(
+	                            '<tr><td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
+	                            '<td>'+ item.empName + '</td>'+
+	                            '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+	                                    item.msgNo +'">'+ item.title + '</a></td>'+
+	                            '<td id="readYN">'+ item.readYN  + '</td>'+
+	                            '<td>'+ item.createDatetime+ '</td>'+
+	                            '</tr>'
+	                          );
+                    	});	
+                    }
+                 
                 	// 페이지 변경 시 전체선택 체크박스는 초기화 
                     $('#selectAll').prop('checked', false);
-                	
                     updateBtnState();
+
                 }
             });
         }
@@ -245,6 +232,9 @@
 
         // 페이지 첫 로드 시 전체 목록 불러오기
         loadMsg(readYN, currentPage);
+        
+      
+        
 		
 		// 쪽지 전체 선택 
 		$('#selectAll').click(function(){

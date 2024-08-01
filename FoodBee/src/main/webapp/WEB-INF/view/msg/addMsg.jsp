@@ -3,6 +3,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
 	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
@@ -122,124 +124,103 @@
 	        <!--**********************************
 	            Content body start
 	        ***********************************-->
-	  <div class="content-body">
-		 <div class="form-container">
-		 	<form method="post" action="${pageContext.request.contextPath}/msg/addMsg" id="addMsgForm" enctype="multipart/form-data">
-		        <table>
-		            <tr>
-		                <td><label for="recipient">받는사람:</label></td>
-		                <td>
-		                    <input type="text" name="recipientField" id="recipientField" readonly>
-		                    <input type="hidden" name="recipientEmpNos" id="recipient" readonly>
-		                    <div id="recipientError" class="error"></div>
-		                    <button type="button" class="btn btn-primary" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-	  							검색 
-							</button>
-		                </td>
-		            </tr>
-		            <tr>
-		                <td><label for="title">제목:</label></td>
-		                <td><input type="text" name="title" id="title">
-		                 <div id="titleError" class="error"></div>
-		                </td>
-		            </tr>
-		            <tr>
-		                <td><label for="msgFile">첨부파일:</label>
-		             
-		                <td id="fileInputsContainer">         
-					        <div class="file-input-group" id="fileGroup1">
-					            <input type="file" id="attachment-1" name="msgFiles">
-					        </div>
-        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>	
-		                </td>
-		            </tr>
-		            <tr>
-		                <td colspan="2">
-		                    <label for="message">쪽지쓰기:</label>
-		                    <textarea id="message" name="content" placeholder="쪽지쓰기 textarea"></textarea>
-		                    <div id="messageError" class="error"></div>
-		                </td>
-		            </tr>
-		            <tr>
-		                <td colspan="2" class="form-buttons">
-		                    <button class="cancel-btn" id="cancelBtn">취소</button>
-		                    <button class="send-btn" id="submitBtn">보내기</button>
-		                </td>
-		            </tr>
-		        </table>
-	        </form>
-	    </div>
-	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+	  
+	  
+	  
+	  
+	  
+	  <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">쪽지함</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">새 쪽지 쓰기</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="email-left-box"><div class="btn btn-primary btn-block">새 쪽지 쓰기</div>
+                                    <!-- <div class="mail-list mt-4"><a href="email-inbox.html" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>Inbox</b> <span class="badge badge-primary badge-sm float-right m-t-5">198</span> </a>
+                                        <a href="#" class="list-group-item border-0 p-r-0"><i class="fa fa-paper-plane font-18 align-middle mr-2"></i>Sent</a>  <a href="#" class="list-group-item border-0 p-r-0"><i class="fa fa-star-o font-18 align-middle mr-2"></i>Important <span class="badge badge-danger badge-sm float-right m-t-5">47</span> </a>
+                                        <a href="#" class="list-group-item border-0 p-r-0"><i class="mdi mdi-file-document-box font-18 align-middle mr-2"></i>Draft</a><a href="#" class="list-group-item border-0 p-r-0"><i class="fa fa-trash font-18 align-middle mr-2"></i>Trash</a>
+                                    </div>
+                                    -->
+                                </div>
+                                <div class="email-right-box">
+                                    <div class="toolbar" role="toolbar">
+                                        
+                                    </div>
+	                                    <form method="post" action="${pageContext.request.contextPath}/msg/addMsg" id="addMsgForm" enctype="multipart/form-data">
+	                                    <div class="compose-content mt-5">
+	                                       
+	                                            <div class="form-group">
+	                                            	
+				                                    <div class="d-flex">
+												        <input type="text" class="form-control bg-transparent flex-grow-1 me-2" name="recipientField" id="recipientField" placeholder="받는 이" readonly>
+												        <button type="button" class="btn btn-info" id="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button>
+												    </div>
+	                                                <input type="hidden" name="recipientEmpNos" id="recipient" readonly>
+	             
+	                                                <div id="recipientError" class="error"></div>
+	                                                
+	                                            </div>
+	                                            <div class="form-group">
+	                                            	
+	                                                <input type="text" name="title" id="title" class="form-control bg-transparent" placeholder=" 제목">
+	                                                <div id="titleError" class="error"></div>
+	                                            </div>
+	                                            <div class="form-group">
+	                                                <textarea class="textarea_editor form-control bg-light" id="message" name="content" rows="15" placeholder=" 쪽지 내용을 입력하세요 ..."></textarea>
+	                                                 <div id="messageError" class="error"></div>
+	                                            </div>
+	                                       
+	                                        <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5><button type="button" class="add-file-button mb-3" id="addFileButton">+ 파일 추가</button>	
+	                                        
+	                                            <div class="form-group" id="fileInputsContainer">
+												     <div class="file-input-group" id="fileGroup1">
+												          <input type="file" id="attachment-1" name="msgFiles">
+												     </div>   
+	                                            </div>
+	                                        
+	                                    </div>
+	                                    <div class="text-right m-t-15">
+	                                        <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 보내기</button>
+	                                        <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 cancel-btn" type="button" id="cancelBtn"><i class="ti-close m-r-5 f-s-12"></i>취소</button>
+	                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+       </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+	  
+	  <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+	  
+	  
+
+ 		
     <!-- 모달 -->
-	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="staticBackdropLabel">사원검색</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-			  <form>
-				<div>
-					본사/지사
-					<select id="office">
-						<option value="">---본사/지사 선택---</option>
-					</select>
-					부서
-					<select id="dept">
-						<option value="">---부서 선택---</option>
-					</select>
-					팀
-					<select id="team">
-						<option value="">---팀 선택---</option>
-					</select>
-					직급 
-					<select id="rankName" name="rankName">
-						<option value="">---직급 선택---
-						<option value="사원">사원
-						<option value="대리">대리
-						<option value="팀장">팀장
-						<option value="부서장">부서장
-						<option value="지서장">지사장
-						<option value="CEO">CEO
-					</select>
-				</div>
-				<div>
-					사원 번호
-					<input type="number" id="empNo" name="empNo">
-					
-					<button id="searchBtn" type="button">검색</button>
-				</div>
-			</form>
-		    <table class="table" id="empList">
-		        
-		            <tr>
-		                <th>본사/지사</th>
-						<th>부서</th>
-						<th>팀</th>
-						<th>직급</th>
-						<th>사원번호</th>
-						<th>사원명</th>
-		                <th>선택</th>
-		            </tr>
-		        
-		   </table>
-		   <div id="page">
-		        <button type="button" id="first">First</button>
-		        <button type="button" id="pre">◁</button>
-		        <button type="button" id="next">▶</button>
-		        <button type="button" id="last">Last</button>
-		   </div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-	        <button type="button" class="btn btn-primary">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<jsp:include page="/WEB-INF/view/approval/forms/empModal.jsp"></jsp:include>
+	
+	<!-- 모달 종료 -->
+	
 	<script>
 		let currentPage = 1;
 		let lastPage = 1;
@@ -439,9 +420,9 @@
 	        $('#addFileButton').click(function() {
 	            fileOrder++;
 	            let newFileInput = 
-	                '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+	                '<div class="file-input-group d-flex align-items-center mt-3" id="fileGroup${fileOrder}">'+
 	                '<input type="file" id="attachment-${fileOrder}" name="msgFiles">'+
-	                 '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+	                 '<button type="button" class="btn btn-danger remove-file-button mt-2 ms-3" data-file-id="fileGroup${fileOrder}">삭제</button>'+
 	                '</div>';
 	            $('#fileInputsContainer').append(newFileInput);
 	        });
@@ -506,6 +487,7 @@
 		    $('#cancelBtn').click(function() {
 		        $('#addMsgForm')[0].reset();
 		        $('.error').text(''); 
+		        window.location.href = '${pageContext.request.contextPath}/msg/receivedMsgBox';
 		        // 모든 에러 메시지 초기화
 		    });
 		});

@@ -335,4 +335,31 @@ public class MsgServiceImpl implements MsgService{
 		
 		return lastPage;
 	}
+	// 받은 쪽지함 카운트 
+	// 파라미터 : int empNo,String readYN
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.receivedMsgBox;
+	@Override
+	public int getMsgCntReceivedBox(int empNo, String readYN) {
+		
+		return msgMapper.selectMsgCntReceivedBox(readYN, empNo);
+	}
+	// 보낸 쪽지함 카운트 
+	// 파라미터 : int empNo,String readYN
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.sentMsgBox;
+	@Override
+	public int getMsgCntSentBox(int empNo, String readYN) {
+		
+		return msgMapper.selectMsgCntSentBox(readYN, empNo);
+	}
+	// 받은 쪽지함 카운트 
+	// 파라미터 : int empNo
+	// 반환 값 : int
+	// 사용 클래스 : MsgController.trashMsgBox;
+	@Override
+	public int getMsgCntTrashBox(int empNo) {
+		
+		return msgMapper.selectMsgcntTrashBox(empNo);
+	}
 }

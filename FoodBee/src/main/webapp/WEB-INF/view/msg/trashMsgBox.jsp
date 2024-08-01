@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+
 	<div id="main-wrapper">
 		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 		
@@ -18,35 +19,100 @@
 	            Content body start
 	        ***********************************-->
 	  	<div class="content-body">
-			<button type="button" name="deleteMsg" id="deleteMsg">삭제</button>
-			<button type="button" name="toMsgBox" id="toMsgBox">쪽지함으로 복구</button>
-			<table border="1">
-				<thead>
-					<tr>
-						<td><input type="checkbox" id="selectAll"></td>
-						<td>쪽지번호</td>
-						<td>보낸이</td>
-						<td>받은이</td>
-						<td>제목</td>
-						<td>휴지통 이동 일시</td>
-					</tr>
-				</thead>
-				<tbody id="msgTableBody">
-				<!-- 동적으로 리스트 추가 -->
-				</tbody>
-			</table>
-			<div id="page">
-		        <button type="button" id="first">First</button>
-		        <button type="button" id="pre">◁</button>
-		        <button type="button" id="next">▶</button>
-		        <button type="button" id="last">Last</button>
-			</div>
-			 	</div>
-	 	<!--**********************************
-	            Content body end
-	    ***********************************-->
- 	</div>
+	  		
+	  		<div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">쪽지함</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">휴지통</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+            
+            <div class="container-fluid">
+               <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="email-left-box">
+                                <a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
+                                    <div class="mail-list mt-4">
+                                    <a href="#" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>휴지통</b> 
+                                    <span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
+                                    </a> 
+                                    </div>
+                                    
+                                    <h5 class="mt-5 m-b-10"></h5>
+                                    <div class="list-group mail-list">
+                                    	 <button class="btn btn-info btn-block" id="toMsgBox">쪽지함으로 복구</button> 
+                                    </div>
+                                </div>
+                                <div class="email-right-box">
+                                    
+                                    <div class="email-list m-t-15">
+													<!-- Table Headers -->
+			                            <div class="table-responsive">
+			                                <table class="table">
+			                                    <thead>
+			                                        <tr>
+			                                            <th scope="col"><input type="checkbox" id="selectAll"></th>
+			                                            <th scope="col">보낸이</th>
+			                                            <th scope="col">받는이</th>
+			                                            <th scope="col">제목</th>
+			                                            <th scope="col">휴지통 이동 일시</th>
+			                                        </tr>
+			                                    </thead>
+			                                    <tbody id="messageList">
+			                                        <!-- Example Row -->
+			                                        
+			                                        <!-- Additional rows will be added here -->
+			                                    </tbody>
+			                                </table>
+			                            </div>
+                                     
+                             
+                                
+                                    </div>
+                                    <!-- panel & page -->
+                                  	<div class="bootstrap-pagination">
+                                    <nav>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                                            </li>
+                                            <li class="page-item active"><div class="page-link" id="currentPage"></div>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			<div class="text-right m-t-15">
+		       <button class="btn btn-danger m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="deleteMsg"><i class="ti-close m-r-5 f-s-12"></i> 쪽지 삭제</button>
+		    </div>
+          </div>
+       </div>
+
+   </div>
+	 	 	
  	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 	<!-- end -->
+ 	
+         
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+
 
 <script>
 	let currentPage = 1;
@@ -66,21 +132,28 @@
 
                     lastPage = json.lastPage;
                     console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
-
-                    $('#msgTableBody').empty();
-                    json.msgList.forEach(function(item){
-                        console.log(item);
-                        $('#msgTableBody').append('<tr>' +
-                            '<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
-                            '<td>'+ item.msgOrder + '</td>'+
-                            '<td id="senderName">'+ item.senderName + '</td>'+
-                            '<td>'+ item.receiverName + '</td>'+
-                            '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
-                                    item.msgNo +'">'+ item.title + '</a></td>'+
-                            '<td>'+ item.updateDatetime + '</td>'+
-                            '</tr>'
-                        );
-                    });
+                    $('#currentPage').text(currentPage);
+                    $('#messageList').empty();
+                    if (json.msgList.length === 0) {
+                        $('#messageList').append(
+                            '<tr>'+
+                            '<td colspan="6" style="text-align:center;">쪽지가 없습니다</td>'+
+                            '</tr>')
+                       
+                    } else {
+                        json.msgList.forEach(function(item) {
+                            console.log(item);
+                            $('#messageList').append('<tr>' +
+                                    '<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
+                                    '<td id="senderName">'+ item.senderName + '</td>'+
+                                    '<td>'+ item.receiverName + '</td>'+
+                                    '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+                                            item.msgNo +'">'+ item.title + '</a></td>'+
+                                    '<td>'+ item.updateDatetime + '</td>'+
+                                    '</tr>'
+                                );
+                        });
+                    }
 					// 페이지 변경 시 전체선택 체크박스는 초기화 
                     $('#selectAll').prop('checked', false);
 					
@@ -96,10 +169,10 @@
 		// 페이징 버튼 활성화
         function updateBtnState() {
             console.log("update");
-            $('#pre').prop('disabled', currentPage === 1);
-            $('#next').prop('disabled', currentPage === lastPage);
-            $('#first').prop('disabled', currentPage === 1);
-            $('#last').prop('disabled', currentPage === lastPage);
+            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0);
+            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0);
         }
 		// 이전 
 		$('#pre').click(function() {
@@ -167,7 +240,7 @@
 			let empName = '${empName}';
 			let selectedMsgNos = [];
 			let selectedResult = [];
-			$('#msgTableBody input[name="msgNo"]:checked').each(function() {
+			$('#messageList input[name="msgNo"]:checked').each(function() {
 				selectedMsgNos.push($(this).val());
 				console.log(selectedMsgNos[0]);
 	            
@@ -207,14 +280,15 @@
 			let empName = '${empName}';
 			let selectedMsgNos = [];
 			let selectedResult = [];
-			$('#msgTableBody input[name="msgNo"]:checked').each(function() {
+			$('#messageList input[name="msgNo"]:checked').each(function() {
 				selectedMsgNos.push($(this).val());
 				console.log(selectedMsgNos[0]);
 	            // 현재 체크된 체크박스의 행을 찾기 >> .closest () -> 첫번째 부모 엘리먼트 찾기
 	            let row = $(this).closest('tr');
 	            // 해당 행의 senderName 값을 가져오기
 	            let senderName = row.find('#senderName').text();
-	            
+	            console.log(empName);
+	            console.log(senderName);
 	            if (empName === senderName) {
 	            	selectedResult.push('true');
 	            } else {
@@ -242,7 +316,7 @@
 		})
 		
 		
-	})
+	});
 
 </script>
 </body>

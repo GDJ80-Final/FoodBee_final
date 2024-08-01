@@ -14,7 +14,7 @@
                         <ul aria-expanded="false">
                             <li><a href="${pageContext.request.contextPath}/msg/receivedMsgBox">받은 쪽지함</a></li>
                             <li><a href="${pageContext.request.contextPath}/msg/sentMsgBox">보낸 쪽지함</a></li>
-                            <li><a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통 쪽지함</a></li>
+                            <li><a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통</a></li>
                             
                         </ul>
                     </li>

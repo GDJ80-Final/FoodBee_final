@@ -18,40 +18,107 @@
 	            Content body start
 	        ***********************************-->
 	  	<div class="content-body">
-			<button type="button" name="readYN" id="all" value="all">전체</button>
-			<button type="button" name="readYN" id="Y" value="Y">읽음</button>
-			<button type="button" name="readYN" id="N" value="N">안 읽음</button>
-			
-			<button type="button" name="toTrash" id="toTrash">휴지통</button>
-			<a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통으로 이동</a>
-			<table border="1">
-				<thead>
-					<tr>
-						<td><input type="checkbox" id="selectAll"></td>
-						<td>쪽지번호</td>
-						<td>받는이</td>
-						<td>제목</td>
-						<td>보낸일시</td>
-						<td>읽음여부</td>
-					</tr>
-				</thead>
-				<tbody id="msgTableBody">
-				
-				</tbody>
-			</table>
-			
-			<div id="page">
-		        <button type="button" id="first">First</button>
-		        <button type="button" id="pre">◁</button>
-		        <button type="button" id="next">▶</button>
-		        <button type="button" id="last">Last</button>
-			</div>
-		</div>
-	 	<!--**********************************
-	            Content body end
-	    ***********************************-->
- 	</div>
+	  		
+	  		<div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">쪽지함</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">받은 쪽지함</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+            
+            <div class="container-fluid">
+               <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="email-left-box">
+                                <a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
+                                    <div class="mail-list mt-4"><a href="email-inbox.html" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>보낸 쪽지함</b> 
+                                    <span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
+                                    </a>
+                                        
+                                    </div>
+                                    <h5 class="mt-5 m-b-10">Filter</h5>
+                                    <div class="list-group mail-list">
+                                    	<button type="button" name="readYN" id="all" value="all" class="list-group-item border-0"><span class="fa fa-briefcase f-s-14 mr-2"></span>ALL
+                                    	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
+                                    	</button>  
+                                    	<button type="button" name="readYN" id="Y" value="Y" class="list-group-item border-0"><span class="fa fa-sellsy f-s-14 mr-2"></span>READ
+                                    	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntRead">${msgCntRead}</span>
+                                    	</button>  
+                                    	<button type="button" name="readYN" id="N" value="N"class="list-group-item border-0"><span class="fa fa-ticket f-s-14 mr-2"></span>UNREAD
+                                    	<span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntUnread">${msgCntUnread}</span>
+                                    	</button>  
+                                    </div>
+                                    <h5 class="mt-5 m-b-10"></h5>
+                                    <div class="list-group mail-list">
+                                    	 <button class="btn btn-danger btn-block" id="toTrash">휴지통으로 이동</button> 
+                                    </div>
+                                </div>
+                                <div class="email-right-box">
+                                    
+                                    <div class="email-list m-t-15">
+													<!-- Table Headers -->
+			                            <div class="table-responsive">
+			                                <table class="table">
+			                                    <thead>
+			                                        <tr>
+			                                            <th scope="col"><input type="checkbox" id="selectAll"></th>
+			                                            <th scope="col">받는이</th>
+			                                            <th scope="col">제목</th>
+			                                            <th scope="col">보낸 일시</th>
+			                                            <th scope="col">읽음 여부</th>
+			                                        </tr>
+			                                    </thead>
+			                                    <tbody id="messageList">
+			                                        <!-- Example Row -->
+			                                        
+			                                        <!-- Additional rows will be added here -->
+			                                    </tbody>
+			                                </table>
+			                            </div>
+                                     
+                             
+                                
+                                    </div>
+                                    <!-- panel & page -->
+                                  	<div class="bootstrap-pagination">
+                                    <nav>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                                            </li>
+                                            <li class="page-item active"><div class="page-link" id="currentPage"></div>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	 </div>
+	 	 	
  	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 	<!-- end -->
+ 	
+         
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
  	
 
 
@@ -78,21 +145,30 @@
 	
 	                   lastPage = json.lastPage;
 	                   console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
-	
-	                   $('#msgTableBody').empty();
-	                   json.msgList.forEach(function(item){
+	                   $('#currentPage').text(currentPage);
+	                   $('#messageList').empty();
+	                   if (json.msgList.length === 0) {
+	                        $('#messageList').append(
+	                            '<tr>'+
+	                            '<td colspan="6" style="text-align:center;">쪽지가 없습니다</td>'+
+	                            '</tr>')
+	                       
+	                    }else{
+	                       json.msgList.forEach(function(item){
 	                       console.log(item);
-	                       $('#msgTableBody').append('<tr>' +
-	                           '<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
-	                           '<td>'+ item.msgOrder + '</td>'+
-	                           '<td>'+ item.empName + '</td>'+
-	                           '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
-	                                   item.msgNo +'">'+ item.title + '</a></td>'+
-	                           '<td>'+ item.createDatetime + '</td>'+
-	                           '<td id="readYN">'+ item.readYN + '</td>'+
-	                           '</tr>'
-	                       );
-	                   });
+		                       $('#messageList').append('<tr>' +
+		                           '<td><input type="checkbox" name="msgNo" value="'+ item.msgNo +'"></td>'+
+		                           '<td>'+ item.empName + '</td>'+
+		                           '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+		                                   item.msgNo +'">'+ item.title + '</a></td>'+
+		                           '<td id="readYN">'+ item.readYN + '</td>'+
+		                           '<td>'+ item.createDatetime + '</td>'+
+		                           '</tr>'
+		                       );
+		                   });
+	                    	
+	                    }
+	                
 					
 	               		// 페이지 변경 시 전체선택 체크박스는 초기화 
 	                   $('#selectAll').prop('checked', false);
@@ -102,13 +178,13 @@
 	           });
 	       }
 			//페이징 버튼 활성화
-	       function updateBtnState() {
-	           console.log("update");
-	           $('#pre').prop('disabled', currentPage === 1);
-	           $('#next').prop('disabled', currentPage === lastPage);
-	           $('#first').prop('disabled', currentPage === 1);
-	           $('#last').prop('disabled', currentPage === lastPage);
-	       }
+	        function updateBtnState() {
+	            console.log("update");
+	            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        }
 			//이전 
 	       $('#pre').click(function() {
 	           if (currentPage > 1) {

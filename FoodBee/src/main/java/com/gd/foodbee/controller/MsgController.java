@@ -72,7 +72,17 @@ public class MsgController {
 	// 반환 값 : String(view)
 	// 사용 페이지 : /msg/receivedMsgBox
 	@GetMapping("/msg/receivedMsgBox")
-	public String receivedMsgBox() {
+	public String receivedMsgBox(HttpSession session,
+				Model model) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		int msgCntAll = msgService.getMsgCntReceivedBox(empNo, "all");
+		int msgCntRead = msgService.getMsgCntReceivedBox(empNo, "Y");
+		int msgCntUnread = msgService.getMsgCntReceivedBox(empNo, "N");
+		model.addAttribute("msgCntAll", msgCntAll);
+		model.addAttribute("msgCntRead", msgCntRead);
+		model.addAttribute("msgCntUnread", msgCntUnread);
 		
 		return "/msg/receivedMsgBox";
 	}
@@ -107,8 +117,18 @@ public class MsgController {
 	// 반환 값 : String(view)
 	// 사용 페이지 : /msg/sentMsgBox
 	@GetMapping("/msg/sentMsgBox")
-	public String sentMsgBox() {
-			
+	public String sentMsgBox(HttpSession session,
+			Model model) {
+		
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		int msgCntAll = msgService.getMsgCntSentBox(empNo, "all");
+		int msgCntRead = msgService.getMsgCntSentBox(empNo, "Y");
+		int msgCntUnread = msgService.getMsgCntSentBox(empNo, "N");
+		model.addAttribute("msgCntAll", msgCntAll);
+		model.addAttribute("msgCntRead", msgCntRead);
+		model.addAttribute("msgCntUnread", msgCntUnread);
+		
 		return "/msg/sentMsgBox";
 	}
 	
@@ -166,7 +186,17 @@ public class MsgController {
 	// 반환 값 : String(view)
 	// 사용 페이지 : /msg/trashMsgBox
 	@GetMapping("/msg/trashMsgBox")
-	public String trashMsgBox() {
+	public String trashMsgBox(HttpSession session,
+				Model model) {
+		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
+		int empNo = emp.getEmpNo();
+		int msgCntAll = msgService.getMsgCntTrashBox(empNo);
+		String empName = emp.getEmpName();
+		model.addAttribute("empName", empName);
+		model.addAttribute("msgCntAll", msgCntAll);
+		
+
+		
 		
 		return "/msg/trashMsgBox";
 	}
@@ -180,9 +210,8 @@ public class MsgController {
 				HttpSession session) {
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		int empNo = emp.getEmpNo();
-		String empName = emp.getEmpName();
 		
-		log.debug(TeamColor.YELLOW + "empName =>" +empName);
+		
 		log.debug(TeamColor.YELLOW + "empNo =>" + empNo);
 	
 		
