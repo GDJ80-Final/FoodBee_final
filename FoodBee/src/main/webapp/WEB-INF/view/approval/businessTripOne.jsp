@@ -79,6 +79,9 @@
 	<script>
 		$(document).ready(function() {
 		    
+			$("#referrer").hide();
+			$("#reset").hide();
+			
 		    let drafter = '${businessTripOne.drafterEmpNo}';  
 		    let drafterName = '${businessTripOne.drafterEmpName}';  
 		    let midApprover = '${businessTripOne.midApproverNo}';

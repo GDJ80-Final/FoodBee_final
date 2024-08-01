@@ -80,6 +80,10 @@
 	</div>
 	<script>
 		$(document).ready(function() {
+			
+			$("#referrer").hide();
+			$("#reset").hide();
+			
 		    let drafter = '${chargeOne.drafterEmpNo}';  
 		    let drafterName = '${chargeOne.drafterEmpName}';  
 		    let midApprover = '${chargeOne.midApproverNo}';

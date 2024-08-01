@@ -79,107 +79,111 @@
 </div>
 	<script>
 		$(document).ready(function() {
-				let typeName = '${dayOffDetailOne.typeName}';
-			    
-			    // Radio button check logic
-			    if (typeName === '연차') {
-			        $('#categoryYear').prop('checked', true);
-			    } else if (typeName === '반차') {
-			        $('#categoryHalf').prop('checked', true);
-			    }
-			    
-			    let drafter = '${dayOffOne.drafterEmpNo}';  
-			    let drafterName = '${dayOffOne.drafterEmpName}';  
-			    let midApprover = '${dayOffOne.midApproverNo}';
-			    let midApproverName = '${dayOffOne.midApproverName}';
-			    let finalApproverName = '${dayOffOne.finalApproverName}';
-			    let finalApprover = '${dayOffOne.finalApproverNo}';
-			    let referrerField = '${dayOffReferrer.referrerName}';
-			    //수신자가 없는경우
-			    if(referrerField === null || referrerField === '') {
-			    	referrerField = "수신자 없음";
-			    }
-			    let name = '${dayOffOne.drafterEmpName}';  
-			    let dptNo = '${dayOffOne.dptNo}';  
+				
+			$("#referrer").hide();
+			$("#reset").hide();	
 			
-			    $("#drafterEmpNo").val(drafter);
-			    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
-			    $("#midApproverNo").val(midApprover);
-			    $("#midApproverNoField").val(midApproverName+"("+midApprover+")");
-			    $("#finalApproverNo").val(finalApprover);
-			    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
-			    $("#referrerField").val(referrerField);
-			    $("#name").val(drafterName);
-			    $("#department").val(dptNo);
-			    $("#midApproverBtn").hide();
-			    $("#finalApproverBtn").hide();
-			    
-		    	//사원 결재사인
-			    let drafterSign = '${dayOffOne.drafterSign}';
-			    let midApproverSign = '${dayOffOne.midApproverSign}';
-			    let finalApproverSign = '${dayOffOne.finalApproverSign}';
-			    let midApprovalState = '${dayOffOne.midApprovalState}';
-			    let finalApprovalState = '${dayOffOne.finalApprovalState}';
-			    
-			    if (drafterSign) {
-			        $("#drafterSign").html(`<img src="${dayOffOne.drafterSign}">`);
-			    } else {
-			        $("#drafterSign").text("기안자 서명 없음");
-			    }
-			
-			    if (midApproverSign && midApprovalState == 1) {
-			        $("#midApproverSign").html(`<img src="${dayOffOne.midApproverSign}">`);
-			    } else {
-			        $("#midApproverSign").text("중간 결재자 서명전");
-			    }
-			
-			    if (finalApproverSign && finalApprovalState == 1) {
-			        $("#finalApproverSign").html(`<img src="${dayOffOne.finalApproverSign}">`);
-			    } else {
-			        $("#finalApproverSign").text("최종 결재자 서명전");
-			    }
-			    
-			    $('#midApproval').click(function(e) {
-			        e.preventDefault();
-			       
-			        
-			        let link = $(this);
-			        $.ajax({
-			            url: '${pageContext.request.contextPath}/approval/getSign',
-			            method: 'GET',
-			            data: {
-			            	approverNo : midApprover
-			            },
-			            success: function(json) {
-			                window.location.href = link.attr('href');
-			            },
-			            error: function(xhr, status, error) {
-			                alert("결재사인을 등록을 해주세요");
-			                window.location.href = '${pageContext.request.contextPath}/myPage';
-			            }
-			        });
-			    });
-			    
-			    $('#finalApproval').click(function(e) {
-			        e.preventDefault();
-			       
-			        
-			        let link = $(this);
-			        $.ajax({
-			            url: '${pageContext.request.contextPath}/approval/getSign',
-			            method: 'GET',
-			            data: {
-			            	approverNo : finalApprover
-			            },
-			            success: function(json) {
-			                window.location.href = link.attr('href');
-			            },
-			            error: function(xhr, status, error) {
-			                alert("결재사인을 등록을 해주세요");
-			                window.location.href = '${pageContext.request.contextPath}/myPage';
-			            }
-			        });
-			    });
+			let typeName = '${dayOffDetailOne.typeName}';
+		    
+		    // Radio button check logic
+		    if (typeName === '연차') {
+		        $('#categoryYear').prop('checked', true);
+		    } else if (typeName === '반차') {
+		        $('#categoryHalf').prop('checked', true);
+		    }
+		    
+		    let drafter = '${dayOffOne.drafterEmpNo}';  
+		    let drafterName = '${dayOffOne.drafterEmpName}';  
+		    let midApprover = '${dayOffOne.midApproverNo}';
+		    let midApproverName = '${dayOffOne.midApproverName}';
+		    let finalApproverName = '${dayOffOne.finalApproverName}';
+		    let finalApprover = '${dayOffOne.finalApproverNo}';
+		    let referrerField = '${dayOffReferrer.referrerName}';
+		    //수신자가 없는경우
+		    if(referrerField === null || referrerField === '') {
+		    	referrerField = "수신자 없음";
+		    }
+		    let name = '${dayOffOne.drafterEmpName}';  
+		    let dptNo = '${dayOffOne.dptNo}';  
+		
+		    $("#drafterEmpNo").val(drafter);
+		    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
+		    $("#midApproverNo").val(midApprover);
+		    $("#midApproverNoField").val(midApproverName+"("+midApprover+")");
+		    $("#finalApproverNo").val(finalApprover);
+		    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
+		    $("#referrerField").val(referrerField);
+		    $("#name").val(drafterName);
+		    $("#department").val(dptNo);
+		    $("#midApproverBtn").hide();
+		    $("#finalApproverBtn").hide();
+		    
+	    	//사원 결재사인
+		    let drafterSign = '${dayOffOne.drafterSign}';
+		    let midApproverSign = '${dayOffOne.midApproverSign}';
+		    let finalApproverSign = '${dayOffOne.finalApproverSign}';
+		    let midApprovalState = '${dayOffOne.midApprovalState}';
+		    let finalApprovalState = '${dayOffOne.finalApprovalState}';
+		    
+		    if (drafterSign) {
+		        $("#drafterSign").html(`<img src="${dayOffOne.drafterSign}">`);
+		    } else {
+		        $("#drafterSign").text("기안자 서명 없음");
+		    }
+		
+		    if (midApproverSign && midApprovalState == 1) {
+		        $("#midApproverSign").html(`<img src="${dayOffOne.midApproverSign}">`);
+		    } else {
+		        $("#midApproverSign").text("중간 결재자 서명전");
+		    }
+		
+		    if (finalApproverSign && finalApprovalState == 1) {
+		        $("#finalApproverSign").html(`<img src="${dayOffOne.finalApproverSign}">`);
+		    } else {
+		        $("#finalApproverSign").text("최종 결재자 서명전");
+		    }
+		    
+		    $('#midApproval').click(function(e) {
+		        e.preventDefault();
+		       
+		        
+		        let link = $(this);
+		        $.ajax({
+		            url: '${pageContext.request.contextPath}/approval/getSign',
+		            method: 'GET',
+		            data: {
+		            	approverNo : midApprover
+		            },
+		            success: function(json) {
+		                window.location.href = link.attr('href');
+		            },
+		            error: function(xhr, status, error) {
+		                alert("결재사인을 등록을 해주세요");
+		                window.location.href = '${pageContext.request.contextPath}/myPage';
+		            }
+		        });
+		    });
+		    
+		    $('#finalApproval').click(function(e) {
+		        e.preventDefault();
+		       
+		        
+		        let link = $(this);
+		        $.ajax({
+		            url: '${pageContext.request.contextPath}/approval/getSign',
+		            method: 'GET',
+		            data: {
+		            	approverNo : finalApprover
+		            },
+		            success: function(json) {
+		                window.location.href = link.attr('href');
+		            },
+		            error: function(xhr, status, error) {
+		                alert("결재사인을 등록을 해주세요");
+		                window.location.href = '${pageContext.request.contextPath}/myPage';
+		            }
+		        });
+		    });
 		});
 	</script>
 </body>

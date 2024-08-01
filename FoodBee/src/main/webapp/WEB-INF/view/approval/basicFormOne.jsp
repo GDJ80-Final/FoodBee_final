@@ -65,6 +65,10 @@
 	<script>
 		console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
 			$(document).ready(function() {
+				
+				$("#referrer").hide();
+				$("#reset").hide();
+				
 			    let drafter = '${basicFormOne.drafterEmpNo}';  
 			    let drafterName = '${basicFormOne.drafterEmpName}';  
 			    let midApprover = '${basicFormOne.midApproverNo}';
