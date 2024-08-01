@@ -38,12 +38,12 @@
 	}
 	
 	#addEvent {
-	  background-color: #007bff; /* 버튼 색상 */
+	  background-color: black; /* 버튼 색상 */
 	  color: white;
 	}
 	
 	#allList {
-	  background-color: #28a745; /* 버튼 색상 */
+	  background-color: black; /* 버튼 색상 */
 	  color: white;
 	}
 	
@@ -66,7 +66,22 @@
     }
     .fc-event {
       color: ivory !important;
+      cursor: pointer !important;
   	}
+  	.fc-day-header.fc-sun {
+    color: #FF0000; /* 일요일 색상 */
+	}
+	
+	.fc-day-header.fc-sat {
+	    color: #0000FF; /* 토요일 색상 */
+	}
+	.fc-day-number.fc-sun {
+    color: #FF0000 !important; /* 빨강색 */
+	}
+	
+	.fc-day-number.fc-sat {
+	    color: #0000FF !important; /* 파랑색 */
+	} 
 
    </style>
  </head>
