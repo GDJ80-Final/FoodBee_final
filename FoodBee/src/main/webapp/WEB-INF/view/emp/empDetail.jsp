@@ -236,9 +236,15 @@
 					        '</div>');
 							
 						
-						json.list.forEach(function(item){
-							dayOffHistory(item);
-		                });
+						if(json.list.length != 0){
+							json.list.forEach(function(item){
+								dayOffHistory(item);
+			                });
+						} else {
+							$('#dayOffList').append('<tr>'+
+                            '<td colspan="4" style="text-align:center;">사용한 휴가가 없습니다.</td>'+
+                            '</tr>')
+						}
 					}
 				
 				});
