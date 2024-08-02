@@ -240,6 +240,7 @@ public class NoticeController {
     @PostMapping("/community/notice/modifyNoticeAction")
     public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
                                      NoticeRequestDTO noticeRequest) {
+
         log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
         log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
 
