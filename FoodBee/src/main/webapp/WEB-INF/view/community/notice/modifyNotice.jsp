@@ -112,9 +112,10 @@
 				                        <c:forEach items="${one}" var="file">
 				                            <input type="hidden" value="${one[0].noticeNo}"> 
 				                           	<span>
-				                           		${file.originalFile}
+				                           		${file.saveFile}
 				                           	</span>
 				                            <c:if test="${file.originalFile != null}">
+				                            	 <input type="hidden" name="originalFile" value="${file.originalFile}" readonly>
 				                            	<button class="deleteFile" data-file="${file.saveFile}">X</button>
 				                            </c:if>
 				                             <c:if test="${file.originalFile == null}">
@@ -130,6 +131,7 @@
 				                    <div class="form-group" id="fileInputsContainer">
 									     <div class="file-input-group" id="fileGroup1">
 									          <input type="file" name="files" multiple="multiple">
+									         
 									     </div>   
 				                   </div>
 				                </td>
@@ -159,8 +161,8 @@
              e.preventDefault();
              let filename = $(this).data("file");
              deleteFiles.push(filename);
-             $(this).parent().remove(); // 해당 파일만 제거
              $("#deleteFiles").val(deleteFiles.join(",")); // 삭제된 파일 정보 업데이트
+             $(this).parent().remove(); // 해당 파일만 제거
          });
      });
      
