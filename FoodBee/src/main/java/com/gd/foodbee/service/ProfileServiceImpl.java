@@ -70,6 +70,11 @@ public class ProfileServiceImpl implements ProfileService{
 		return originalFile;
 		
 	}
+
+	@Override
+	public String getProfileImg(int empNo) {
+		return profileMapper.selectProfileImg(empNo);
+	}
 	
 	
 }

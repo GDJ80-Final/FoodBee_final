@@ -91,8 +91,8 @@
                         <!-- 프로필 -->
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
-                                <span class="activity active"></span>
-                                <img src="images/user/1.png" height="40" width="40" alt="">
+                               
+                                <img src="" id="profileImg" height="40" width="40" alt="">
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
@@ -117,4 +117,18 @@
         <!--**********************************
             Header end ti-comment-alt
         ***********************************-->
+        
+        <script>
+	        $.ajax({
+				url:'${pageContext.request.contextPath}/getProfileImg',
+				method:'get',
+				success:function(json){
+					console.log(json);
+					
+					$("#profileImg").attr('src', '${pageContext.request.contextPath}/upload/profile_img/' + json);
+				}
+			});
+	        
+	        
+        </script>
    

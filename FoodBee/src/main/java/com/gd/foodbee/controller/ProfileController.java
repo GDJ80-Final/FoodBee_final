@@ -2,14 +2,17 @@ package com.gd.foodbee.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.ProfileService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProfileController {
@@ -27,5 +30,18 @@ public class ProfileController {
 				@RequestParam MultipartFile file) {
 		
 		return profileService.modifyProfileImg(empNo, file);
+	}
+	
+	// 프로필 사진 검색
+	// 파라미터 : 
+	// 반환 값 : 
+	@GetMapping("/getProfileImg")
+	@ResponseBody
+	public String getProfileImg(HttpSession session) {
+		
+		EmpDTO empDTO = (EmpDTO) session.getAttribute("emp");
+		
+		return profileService.getProfileImg(empDTO.getEmpNo());
+		
 	}
 }
