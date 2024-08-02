@@ -297,6 +297,23 @@ $(document).ready(function() {
         }
     });
 	
+	let drafterNo = $('#drafterEmpNo').val();
+	
+	$.ajax({
+        url: '${pageContext.request.contextPath}/approval/getSign',
+        method: 'get',
+        data: {
+            approverNo: drafterNo
+        },
+        success: function(json) {
+            console.log('sign 있음');
+        },
+        error: function(xhr, status, error) {
+            alert("결재사인을 등록을 해주세요");
+            window.location.href = '${pageContext.request.contextPath}/myPage';
+        }
+    });
+	
     // 현재 날짜를 가져와 셀렉트 박스에 년도와 월 추가
 	const currentDate = new Date();
     const currentYear = currentDate.getFullYear(); // 현재 년도
@@ -415,21 +432,7 @@ $(document).ready(function() {
             return false; // 유효성 검사를 통과하지 못한 경우 제출하지 않음
         }
         
-        $.ajax({
-            url: '${pageContext.request.contextPath}/approval/getSign',
-            method: 'get',
-            data: {
-            	approverNo : drafterNo
-            },
-            success: function(json) {
-            	console.log('sign 있음');
-            	$('#form').submit();
-            },
-            error: function(xhr, status, error) {
-            	e.preventDefault();
-                alert("결재사인을 등록을 해주세요");
-                window.location.href = '${pageContext.request.contextPath}/myPage';
-            }
+        $('#form').submit();
         });
     });
 	

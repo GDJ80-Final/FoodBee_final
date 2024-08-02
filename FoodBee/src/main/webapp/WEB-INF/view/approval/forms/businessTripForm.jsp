@@ -252,6 +252,23 @@
                 alert('기본정보 불러오는데 실패했습니다 .');
             }
         });
+		
+		let drafterNo = $('#drafterEmpNo').val();
+		
+		$.ajax({
+            url: '${pageContext.request.contextPath}/approval/getSign',
+            method: 'get',
+            data: {
+                approverNo: drafterNo
+            },
+            success: function(json) {
+                console.log('sign 있음');
+            },
+            error: function(xhr, status, error) {
+                alert("결재사인을 등록을 해주세요");
+                window.location.href = '${pageContext.request.contextPath}/myPage';
+            }
+        });
 		// 오늘 이전의 날짜는 선택하지 못하게 막아주기
 		let date = new Date();
 		let year = date.getFullYear();
@@ -369,24 +386,7 @@
                 $('#contentError').text('');
             }
             if (!hasError) {
-	        let drafterNo = $('#drafterEmpNo').val();
-	        console.log(drafterNo)
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/approval/getSign',
-	            method: 'get',
-	            data: {
-	            	approverNo : drafterNo
-	            },
-	            success: function(json) {
-	            	console.log('sign 있음');
-	            	$('#form').submit();
-	            },
-	            error: function(xhr, status, error) {
-	            	e.preventDefault();
-	                alert("결재사인을 등록을 해주세요");
-	                window.location.href = '${pageContext.request.contextPath}/myPage';
-	            }
-	        });
+	        $('#form').submit();
 	      }
 	   });
 		
