@@ -193,8 +193,8 @@
 							        <label for="remaining">잔여 휴가:</label>
 							        
 							        <label for="period" style="margin-left: 400px;">기간:</label>
-							        <input type="date" id="period" name="startDate" value="${dayOffDetailOne.startDate}"> ~
-							        <input type="date" id="period" name="endDate" value="${dayOffDetailOne.endDate}">
+							        <input type="date" id="startDate" name="startDate" value="${dayOffDetailOne.startDate}"> ~
+							        <input type="date" id="endDate" name="endDate" value="${dayOffDetailOne.endDate}">
 							    </div>
 							    <div class="form-group">
 							        <label for=emergency>비상연락:</label>
