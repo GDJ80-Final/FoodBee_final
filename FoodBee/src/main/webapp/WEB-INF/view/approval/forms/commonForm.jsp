@@ -17,14 +17,14 @@
                 <td id="midApprover">
                 <input type="hidden" name="midApproverNo" id="midApproverNo" value="" >
                 <input type="text" name="midApproverNoField" id="midApproverNoField" value="" readonly>
-                <button type="button" id="midApproverBtn" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
+                <button type="button" id="midApproverBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button>
                 <div class="error" id="midApproverError"></div>
                 </td>
                 <td id="finalApprover">
                  <input type="hidden" name="finalApproverNo" id="finalApproverNo" value="">
                  <input type="text" name="finalApproverNoField" id="finalApproverNoField" value="" readonly>
-                <button type="button"  id="finalApproverBtn" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
+                <button type="button"  id="finalApproverBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색
                 </button>
                 <div class="error" id="finalApproverError"></div>
                 </td>
@@ -32,9 +32,9 @@
             <tr class="sign">
                 <td colspan="2">결재</td>
                                   
-                <td id="drafterSign">기안자 sign </td>
-                <td id="midApproverSign">mid approver sign</td>
-                <td id="finalApproverSign">final approver sign</td>
+                <td id="drafterSign"></td>
+                <td id="midApproverSign"></td>
+                <td id="finalApproverSign"></td>
             </tr>
             <tr>
                 <td>수신참조자</td>
@@ -42,8 +42,8 @@
                 
                 <input type="text" id="referrerField" style="width:80%;" name="referrerEmpName" readonly>
                 <input type="hidden" name="referrerEmpNo" id="referrerEmpNo" readonly>
-                <button type="button"  id="referrer" class="search-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button>
-                <button type="button"  id="reset" class="search-btn">초기화</button>
+                <button type="button"  id="referrer" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">검색</button>
+                <button type="button"  id="reset" class="btn btn-secondary">초기화</button>
                 </td>
             </tr>
         </table>
