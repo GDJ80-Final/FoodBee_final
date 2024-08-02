@@ -318,7 +318,7 @@
                 }
                 
    				
-                let modifyButton = approvalStateNo === 0 ? `<a href=""><button>수정가능</button></a>` : '';
+                let modifyButton = approvalStateNo === 0 ? `<a href=""><button class='badge badge-danger px-2'>수정가능</button></a>` : '';
                 
              	// 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);

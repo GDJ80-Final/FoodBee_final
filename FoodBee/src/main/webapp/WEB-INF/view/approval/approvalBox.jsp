@@ -57,9 +57,9 @@
 					    <ul class="nav nav-tabs mb-3">
                             <li class="nav-item"><a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false" id="allBtn">전체</a>
                             </li>
-                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="zeroTypeBtn">결재대기</a>
+                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="zeroTypeBtn">미결</a>
                             </li>
-                            <li class="nav-item"><a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true" id="oneTypeBtn">승인중</a>
+                            <li class="nav-item"><a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true" id="oneTypeBtn">기결</a>
                             </li>
                         </ul>
 						    
@@ -281,7 +281,7 @@
                     "<td>" + item.empName + "</td>" +
                     "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                     "<td>" + approvalStateText + "</td>" +
-                    "<td>" + state +"<br>"+ button + "</td>" +
+                    "<td>" + state + "&nbsp" +button + "</td>" +
                     "<td>" + item.createDatetime + "</td>" +
                     "</tr>");
                 tableBody.append(newRow);
@@ -365,7 +365,7 @@
                     "<td>" + item.empName + "</td>" +
                     "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                     "<td>" + approvalStateText + "</td>" +
-                    "<td>" + state + button + "</td>" +
+                    "<td>" + state + "&nbsp" + button + "</td>" +
                     "<td>" + item.createDatetime + "</td>" +
                     "</tr>");
                 tableBody.append(newRow);
