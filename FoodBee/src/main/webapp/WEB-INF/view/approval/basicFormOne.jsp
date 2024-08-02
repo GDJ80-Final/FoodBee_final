@@ -224,7 +224,6 @@
 </div><!-- 메인마지막 -->
 <!-- 템플릿 footer -->
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
-
 	<script>
 		console.log("drafterNo =>"+${basicFormOne.drafterEmpNo});
 			$(document).ready(function() {

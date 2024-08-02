@@ -152,76 +152,90 @@
     </style>
 </head>
 <body>
+<!-- 메인템플릿 -->
 <div id="main-wrapper">
-		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-	        <!--**********************************
-	            Content body start
-	        ***********************************-->
-	<div class="content-body">
-	<div class="container">
-		    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/modifyDraft" enctype="multipart/form-data">
-		    	<input type="hidden" name="draftDocNo" value="${basicFormOne.draftDocNo}">
-		        <!-- 공통 영역 -->
-				<jsp:include page="./forms/commonForm.jsp"></jsp:include>
-		       
-		        <!-- 공통 영역 끝 -->
-		        
-		        <!-- 양식 영역 시작 -->
-				 <div class="form-section">
-		            <div class="form-group">
-		            	<input type="hidden" name="tmpNo" value="4">
-		                <label for="title">제목:</label>
-		                <input type="text" id="title" name="title" value="${basicFormOne.title}">
-		            </div>
-		            <div class="form-group">
-		                <label for="content">내용:</label>
-		                <textarea id="content" name="content">${basicFormOne.content}</textarea>
-		            </div>
-		            <div class="file-upload">
-		                <label for="attachment">첨부파일:</label>              	
-	                        <c:forEach items="${basicFormFileOne}" var="file">	
-	                        	<div>                         	
-		                            <c:if test="${file.originalFile != null}">
-		                            	<input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
-		                            	<input type="text" value="${file.saveFile}" readonly>
-		                            	<button type="button" class="deleteFile">X</button>
-		                            </c:if>
-                             	</div>
-                             	<c:if test="${file.originalFile == null}">
-	                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
-	                            </c:if>
-	                            <br>
-	                        </c:forEach>
-		                <div id="fileInputsContainer">
-					        <div class="file-input-group" id="fileGroup1">
-					                <input type="file" id="attachment-1" name="docFiles">
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기본기안서</a></li>
+             </ol>
+         </div>
+   	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">
+			 		<div class="card-body">	
+			 		<!-- 여기서부터 내용시작 -->
+					    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/modifyDraft" enctype="multipart/form-data">
+					    	<input type="hidden" name="draftDocNo" value="${basicFormOne.draftDocNo}">
+					        <!-- 공통 영역 -->
+							<jsp:include page="./forms/commonForm.jsp"></jsp:include>
+					       
+					        <!-- 공통 영역 끝 -->
+					        
+					        <!-- 양식 영역 시작 -->
+							 <div class="form-section">
+					            <div class="form-group">
+					            	<input type="hidden" name="tmpNo" value="4">
+					                <label for="title">제목:</label>
+					                <input type="text" id="title" name="title" value="${basicFormOne.title}">
+					            </div>
+					            <div class="form-group">
+					                <label for="content">내용:</label>
+					                <textarea id="content" name="content">${basicFormOne.content}</textarea>
+					            </div>
+					            <div class="file-upload">
+					                <label for="attachment">첨부파일:</label>              	
+				                        <c:forEach items="${basicFormFileOne}" var="file">	
+				                        	<div>                         	
+					                            <c:if test="${file.originalFile != null}">
+					                            	<input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
+					                            	<input type="text" value="${file.saveFile}" readonly>
+					                            	<button type="button" class="deleteFile">X</button>
+					                            </c:if>
+			                             	</div>
+			                             	<c:if test="${file.originalFile == null}">
+				                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
+				                            </c:if>
+				                            <br>
+				                        </c:forEach>
+					                <div id="fileInputsContainer">
+								        <div class="file-input-group" id="fileGroup1">
+								                <input type="file" id="attachment-1" name="docFiles">
+								        </div>
+								   </div>
+			        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
+					                
+					               
+					            </div>
+					        </div>	
+					        <!-- 양식 영역 끝 -->
+					        <div class="form-actions">
+					            <button type="button" id="cancle" class="cancle-btn">취소</button>
+					            <button type="button" id="submitBtn" class="submit-btn">수정</button>
 					        </div>
-					   </div>
-        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
-		                
-		               
-		            </div>
-		        </div>	
-		        <!-- 양식 영역 끝 -->
-		        <div class="form-actions">
-		            <button type="button" id="cancle" class="cancle-btn">취소</button>
-		            <button type="button" id="submitBtn" class="submit-btn">수정</button>
-		        </div>
-			</form>	
-			<!-- 폼 종료 -->
-	    </div>
+						</form>	
+						<!-- 여기가 내용끝! --> 		
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
-	    
-	    
-	    
-		<!-- 모달 -->
-		<jsp:include page="./forms/empModal.jsp"></jsp:include>
-		
-		
+</div><!-- content-body마지막 -->
+</div><!-- 메인마지막 -->
+<!-- 템플릿 footer -->
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+<!-- 모달 -->
+<jsp:include page="./forms/empModal.jsp"></jsp:include>
 <script>
 	$(document).ready(function(){
 		let drafter = '${basicFormOne.drafterEmpNo}';  

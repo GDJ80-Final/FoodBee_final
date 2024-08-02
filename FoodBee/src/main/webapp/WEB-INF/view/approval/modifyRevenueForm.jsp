@@ -152,106 +152,120 @@
     </style>
 </head>
 <body>
+<!-- 메인템플릿 -->
 <div id="main-wrapper">
-		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-	        <!--**********************************
-	            Content body start
-	        ***********************************-->
-	<div class="content-body">
-	<div class="container">
-		    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/modifyDraft" enctype="multipart/form-data">
-		    	<input type="hidden" name="draftDocNo" value="${revenueOne.draftDocNo}">
-		        <!-- 공통 영역 -->
-				<jsp:include page="./forms/commonForm.jsp"></jsp:include>
-		       
-		        <!-- 공통 영역 끝 -->
-		        
-		        <!-- 양식 영역 시작 -->
-		        <div class="form-section">
-		            <div class="form-group">
-		                <label for="yearSelect">발생 년월:</label>
-						<select id="yearSelect"></select>
-						<label for="monthSelect"></label>
-						<select id="monthSelect"></select>
-						<input type="hidden" id="description" name="description">
-		            </div>
-		            <div class="form-group">
-		            	<input type="hidden" name="tmpNo" value="1">
-		                <label for="title">제목:</label>
-		                <input type="text" id="title" name="title" value="${revenueOne.title}">
-		            </div>
-		            
-		            <div class="form-group">
-					    <label for="categoryContainer">내역:</label>
-					    <div id="categoryContainer"><hr>
-					    	<c:forEach items="${revenueDetailOne}" var="detail">
-						        <div class="category-row" style="display: flex; align-items: center;">
-						            <label for="categorySelect">카테고리:</label>
-						            <select class="categorySelect" id="categorySelect" name="typeName">
-						                <option value="category0">==선택==</option>
-						                <option value="간편식">간편식</option>
-						                <option value="쌀/곡물">쌀/곡물</option>
-						                <option value="육/수산">육/수산</option>
-						                <option value="음료/주류">음료/주류</option>
-						                <option value="청과">청과</option>
-						            </select>
-						            
-						            <script>
-						            	$("#categorySelect").val("${detail.typeName}")
-						            </script>
-						            
-						            <label for="revenue">매출액:</label>
-						            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" value="${detail.amount}">원
-						            <span class="add-category">+</span>
-						            <span class="remove-category">-</span>
-						        </div><hr>
-					        </c:forEach>
-					    </div>
-					</div>
-			        <div class="file-upload">
-		                <label for="attachment">첨부파일:</label>
-		                	<c:forEach items="${revenueFileOne}" var="file">	
-	                        	<div>                         	
-		                            <c:if test="${file.originalFile != null}">
-		                            	<input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
-		                            	<input type="text" value="${file.saveFile}" readonly>
-		                            	<button type="button" class="deleteFile">X</button>
-		                            </c:if>
-                             	</div>
-                             	<c:if test="${file.originalFile == null}">
-	                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
-	                            </c:if>
-	                            <br>
-	                        </c:forEach>
-		                <div id="fileInputsContainer">
-					        <div class="file-input-group" id="fileGroup1">
-					                <input type="file" id="attachment-1" name="docFiles">
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기본기안서</a></li>
+             </ol>
+         </div>
+   	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">
+			 		<div class="card-body">	
+			 		<!-- 여기서부터 내용시작 -->
+					    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/modifyDraft" enctype="multipart/form-data">
+					    	<input type="hidden" name="draftDocNo" value="${revenueOne.draftDocNo}">
+					        <!-- 공통 영역 -->
+							<jsp:include page="./forms/commonForm.jsp"></jsp:include>
+					       
+					        <!-- 공통 영역 끝 -->
+					        
+					        <!-- 양식 영역 시작 -->
+					        <div class="form-section">
+					            <div class="form-group">
+					                <label for="yearSelect">발생 년월:</label>
+									<select id="yearSelect"></select>
+									<label for="monthSelect"></label>
+									<select id="monthSelect"></select>
+									<input type="hidden" id="description" name="description">
+					            </div>
+					            <div class="form-group">
+					            	<input type="hidden" name="tmpNo" value="1">
+					                <label for="title">제목:</label>
+					                <input type="text" id="title" name="title" value="${revenueOne.title}">
+					            </div>
+					            
+					            <div class="form-group">
+								    <label for="categoryContainer">내역:</label>
+								    <div id="categoryContainer"><hr>
+								    	<c:forEach items="${revenueDetailOne}" var="detail">
+									        <div class="category-row" style="display: flex; align-items: center;">
+									            <label for="categorySelect">카테고리:</label>
+									            <select class="categorySelect" id="categorySelect" name="typeName">
+									                <option value="category0">==선택==</option>
+									                <option value="간편식">간편식</option>
+									                <option value="쌀/곡물">쌀/곡물</option>
+									                <option value="육/수산">육/수산</option>
+									                <option value="음료/주류">음료/주류</option>
+									                <option value="청과">청과</option>
+									            </select>
+									            
+									            <script>
+									            	$("#categorySelect").val("${detail.typeName}")
+									            </script>
+									            
+									            <label for="revenue">매출액:</label>
+									            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" value="${detail.amount}">원
+									            <span class="add-category">+</span>
+									            <span class="remove-category">-</span>
+									        </div><hr>
+								        </c:forEach>
+								    </div>
+								</div>
+						        <div class="file-upload">
+					                <label for="attachment">첨부파일:</label>
+					                	<c:forEach items="${revenueFileOne}" var="file">	
+				                        	<div>                         	
+					                            <c:if test="${file.originalFile != null}">
+					                            	<input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
+					                            	<input type="text" value="${file.saveFile}" readonly>
+					                            	<button type="button" class="deleteFile">X</button>
+					                            </c:if>
+			                             	</div>
+			                             	<c:if test="${file.originalFile == null}">
+				                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
+				                            </c:if>
+				                            <br>
+				                        </c:forEach>
+					                <div id="fileInputsContainer">
+								        <div class="file-input-group" id="fileGroup1">
+								                <input type="file" id="attachment-1" name="docFiles">
+								        </div>
+								   </div>
+			        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
+					                
+					            </div>
+							</div>	
+							<!-- 양식 영역 끝 -->
+					        <div class="form-actions">
+					            <button type="reset" class="cancel-btn">취소</button>
+					            <button type="button" id="submitBtn" class="submit-btn">제출</button>
 					        </div>
-					   </div>
-        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
-		                
-		            </div>
-				</div>	
-				<!-- 양식 영역 끝 -->
-		        <div class="form-actions">
-		            <button type="reset" class="cancel-btn">취소</button>
-		            <button type="button" id="submitBtn" class="submit-btn">제출</button>
-		        </div>
-			</form>	
-			<!-- 폼 종료 -->
-	    </div>
+						</form>	
+					<!-- 여기가 내용끝! --> 		
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
-	    
-	    
-	    
-		<!-- 모달 -->
-		<jsp:include page="./forms/empModal.jsp"></jsp:include>
-		
-		
+</div><!-- content-body마지막 -->
+</div><!-- 메인마지막 -->
+<!-- 템플릿 footer -->
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+<!-- 모달 -->
+<jsp:include page="./forms/empModal.jsp"></jsp:include>
 <script>
 	$(document).ready(function(){
 		

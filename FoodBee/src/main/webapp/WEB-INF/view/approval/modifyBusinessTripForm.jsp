@@ -5,15 +5,15 @@
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
-	rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
-	crossorigin="anonymous">
+   rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" 
+   crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
-	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
-	crossorigin="anonymous"></script>
+   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
+   crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <title>Insert title here</title>
     <style>
-    	 body {
+        body {
             font-family: Arial, sans-serif;
         }
 
@@ -100,7 +100,7 @@
             color: #fff;
         }
         a {
-        	text-decoration-line: none;
+           text-decoration-line: none;
         
         }
         .common-section table {
@@ -146,157 +146,170 @@
             resize: none;
         }
         .sign td {
-       		height : 130px;
+             height : 130px;
         
         }
     </style>
 </head>
 <body>
+<!-- 메인템플릿 -->
 <div id="main-wrapper">
-		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-	        <!--**********************************
-	            Content body start
-	        ***********************************-->
-	<div class="content-body">
-	<div class="container">
-		    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/modifyDraft" enctype="multipart/form-data">
-		    	<input type="hidden" name="draftDocNo" value="${businessTripOne.draftDocNo}">
-		        <!-- 공통 영역 -->
-				<jsp:include page="./forms/commonForm.jsp"></jsp:include>
-		       
-		        <!-- 공통 영역 끝 -->
-		        
-		        <!-- 양식 영역 시작 -->
-				<div class="form-section">        
-		        	<div class="form-group">
-		        		<input type="hidden" name="tmpNo" value="3">
-		                <label for=place>출장지:</label>
-		                <input type="text" id="place" name="typeName" value="${businessTripDetailOne.typeName}">
-		                
-		                <label for="period" style="margin-left: 200px;">기간:</label>
-		                <input type="date" id="period" name="startDate" value="${businessTripDetailOne.startDate}"> ~
-		                <input type="date" id="period" name="endDate" value="${businessTripDetailOne.endDate}">
-		            </div>
-		            <div class="form-group">
-		                <label for=emergency>비상연락:</label>
-		                <input type="text" id="emergency" name="text" value="${businessTripDetailOne.text}">
-		            </div>
-		            <div class="form-group">
-		                <label for="title">제목:</label>
-		                <input type="text" id="title" name="title" value="${businessTripOne.title}">
-		            </div>
-		            <div class="form-group">
-		                <label for="content">내용:</label>
-		                <textarea id="content" name="content" placeholder="출장 목적을 작성하세요.">${businessTripOne.content}</textarea>
-		            </div>            
-		            <div class="file-upload">
-		                <label for="attachment">첨부파일:</label>
-		                	<c:forEach items="${businessTripFileOne}" var="file">	
-	                        	<div>                         	
-		                            <c:if test="${file.originalFile != null}">
-		                            	<input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
-		                            	<input type="text" value="${file.saveFile}" readonly>
-		                            	<button type="button" class="deleteFile">X</button>
-		                            </c:if>
-                             	</div>
-                             	<c:if test="${file.originalFile == null}">
-	                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
-	                            </c:if>
-	                            <br>
-	                        </c:forEach>
-		                <div id="fileInputsContainer">
-					        <div class="file-input-group" id="fileGroup1">
-					                <input type="file" id="attachment-1" name="docFiles">
-					        </div>
-					   </div>
-        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
-		                    
-		            </div>
-	          </div>	
-		        <!-- 양식 영역 끝 -->
-		        <div class="form-actions">
-		            <button type="button" id="cancle" class="cancle">취소</button>
-		            <button type="button" id="submitBtn" class="submit-btn">수정</button>
-		        </div>
-			</form>	
-			<!-- 폼 종료 -->
-	    </div>
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기본기안서</a></li>
+             </ol>
+         </div>
+   	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">
+			 		<div class="card-body">	
+			 		<!-- 여기서부터 내용시작 -->
+			          <form id="form" method="post" action="${pageContext.request.contextPath}/approval/modifyDraft" enctype="multipart/form-data">
+			             <input type="hidden" name="draftDocNo" value="${businessTripOne.draftDocNo}">
+			              <!-- 공통 영역 -->
+			            <jsp:include page="./forms/commonForm.jsp"></jsp:include>
+			             
+			              <!-- 공통 영역 끝 -->
+			              
+			              <!-- 양식 영역 시작 -->
+			            <div class="form-section">        
+			                 <div class="form-group">
+			                    <input type="hidden" name="tmpNo" value="3">
+			                      <label for=place>출장지:</label>
+			                      <input type="text" id="place" name="typeName" value="${businessTripDetailOne.typeName}">
+			                      
+			                      <label for="period" style="margin-left: 200px;">기간:</label>
+			                      <input type="date" id="period" name="startDate" value="${businessTripDetailOne.startDate}"> ~
+			                      <input type="date" id="period" name="endDate" value="${businessTripDetailOne.endDate}">
+			                  </div>
+			                  <div class="form-group">
+			                      <label for=emergency>비상연락:</label>
+			                      <input type="text" id="emergency" name="text" value="${businessTripDetailOne.text}">
+			                  </div>
+			                  <div class="form-group">
+			                      <label for="title">제목:</label>
+			                      <input type="text" id="title" name="title" value="${businessTripOne.title}">
+			                  </div>
+			                  <div class="form-group">
+			                      <label for="content">내용:</label>
+			                      <textarea id="content" name="content" placeholder="출장 목적을 작성하세요.">${businessTripOne.content}</textarea>
+			                  </div>            
+			                  <div class="file-upload">
+			                      <label for="attachment">첨부파일:</label>
+			                         <c:forEach items="${businessTripFileOne}" var="file">   
+			                              <div>                            
+			                                  <c:if test="${file.originalFile != null}">
+			                                     <input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
+			                                     <input type="text" value="${file.saveFile}" readonly>
+			                                     <button type="button" class="deleteFile">X</button>
+			                                  </c:if>
+			                                </div>
+			                                <c:if test="${file.originalFile == null}">
+			                                  <input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
+			                               </c:if>
+			                               <br>
+			                           </c:forEach>
+			                      <div id="fileInputsContainer">
+			                       <div class="file-input-group" id="fileGroup1">
+			                               <input type="file" id="attachment-1" name="docFiles">
+			                       </div>
+			                  </div>
+			                    <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
+			                          
+			                  </div>
+			             </div>   
+			              <!-- 양식 영역 끝 -->
+			              <div class="form-actions">
+			                  <button type="button" id="cancle" class="cancle">취소</button>
+			                  <button type="button" id="submitBtn" class="submit-btn">수정</button>
+			              </div>
+			         </form>   
+			         <!-- 여기가 내용끝! --> 		
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
-	    
-	    
-	    
-		<!-- 모달 -->
-		<jsp:include page="./forms/empModal.jsp"></jsp:include>
-		
-		
+</div><!-- content-body마지막 -->
+</div><!-- 메인마지막 -->
+<!-- 템플릿 footer -->
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+<jsp:include page="./forms/empModal.jsp"></jsp:include>
 <script>
-	$(document).ready(function(){
-		let drafter = '${businessTripOne.drafterEmpNo}';  
-	    let drafterName = '${businessTripOne.drafterEmpName}';  
-	    let midApprover = '${businessTripOne.midApproverNo}';
-	    let midApproverName = '${businessTripOne.midApproverName}';
-	    let finalApproverName = '${businessTripOne.finalApproverName}';
-	    let finalApprover = '${businessTripOne.finalApproverNo}';
-	    let referrerField = '${businessTripReferrer.referrerName}';
-	    let referrerVal = referrerField.split('(').slice(1).map(x => parseInt(x));
-	    $('#referrerEmpNo').val(referrerVal);
-	    
-	    let name = '${businessTripOne.drafterEmpName}';  
-	    let dptName = '${businessTripOne.dptName}';  
-	
-	    $("#drafterEmpNo").val(drafter);
-	    $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
-	    $("#midApproverNo").val(midApprover);
-	    $("#midApproverNoField").val(midApproverName+"("+midApprover+")");
-	    $("#finalApproverNo").val(finalApprover);
-	    $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
-	    $("#referrerField").val(referrerField);
-	    $("#name").val(drafterName);
-	    $("#department").val(dptName);
-	    $("#midApproverBtn").hide();
-	    $("#finalApproverBtn").hide();
-	    
-    	//사원 결재사인
-	    let drafterSign = '${businessTripOne.drafterSign}';
-	    let midApproverSign = '${businessTripOne.midApproverSign}';
-	    let finalApproverSign = '${businessTripOne.finalApproverSign}';
-	    let midApprovalState = '${businessTripOne.midApprovalState}';
-	    let finalApprovalState = '${businessTripOne.finalApprovalState}';
-	    
-	    if (drafterSign) {
-	        $("#drafterSign").html(`<img src="${businessTripOne.drafterSign}">`);
-	    } else {
-	        $("#drafterSign").text("기안자 서명 없음");
-	    }
-	
-	    if (midApproverSign && midApprovalState == 1) {
-	        $("#midApproverSign").html(`<img src="${businessTripOne.midApproverSign}">`);
-	    } else {
-	        $("#midApproverSign").text("중간결재 서명전");
-	    }
-	
-	    if (finalApproverSign && finalApprovalState == 1) {
-	        $("#finalApproverSign").html(`<img src="${businessTripOne.finalApproverSign}">`);
-	    } else {
-	        $("#finalApproverSign").text("최종결재 서명전");
-	    }
-	    
-	 	// 파일 삭제 버튼 클릭 시
+   $(document).ready(function(){
+      let drafter = '${businessTripOne.drafterEmpNo}';  
+       let drafterName = '${businessTripOne.drafterEmpName}';  
+       let midApprover = '${businessTripOne.midApproverNo}';
+       let midApproverName = '${businessTripOne.midApproverName}';
+       let finalApproverName = '${businessTripOne.finalApproverName}';
+       let finalApprover = '${businessTripOne.finalApproverNo}';
+       let referrerField = '${businessTripReferrer.referrerName}';
+       let referrerVal = referrerField.split('(').slice(1).map(x => parseInt(x));
+       $('#referrerEmpNo').val(referrerVal);
+       
+       let name = '${businessTripOne.drafterEmpName}';  
+       let dptName = '${businessTripOne.dptName}';  
+   
+       $("#drafterEmpNo").val(drafter);
+       $("#drafterEmpNoField").val(drafterName+"("+drafter+")");
+       $("#midApproverNo").val(midApprover);
+       $("#midApproverNoField").val(midApproverName+"("+midApprover+")");
+       $("#finalApproverNo").val(finalApprover);
+       $("#finalApproverNoField").val(finalApproverName+"("+finalApprover+")");
+       $("#referrerField").val(referrerField);
+       $("#name").val(drafterName);
+       $("#department").val(dptName);
+       $("#midApproverBtn").hide();
+       $("#finalApproverBtn").hide();
+       
+       //사원 결재사인
+       let drafterSign = '${businessTripOne.drafterSign}';
+       let midApproverSign = '${businessTripOne.midApproverSign}';
+       let finalApproverSign = '${businessTripOne.finalApproverSign}';
+       let midApprovalState = '${businessTripOne.midApprovalState}';
+       let finalApprovalState = '${businessTripOne.finalApprovalState}';
+       
+       if (drafterSign) {
+           $("#drafterSign").html(`<img src="${businessTripOne.drafterSign}">`);
+       } else {
+           $("#drafterSign").text("기안자 서명 없음");
+       }
+   
+       if (midApproverSign && midApprovalState == 1) {
+           $("#midApproverSign").html(`<img src="${businessTripOne.midApproverSign}">`);
+       } else {
+           $("#midApproverSign").text("중간결재 서명전");
+       }
+   
+       if (finalApproverSign && finalApprovalState == 1) {
+           $("#finalApproverSign").html(`<img src="${businessTripOne.finalApproverSign}">`);
+       } else {
+           $("#finalApproverSign").text("최종결재 서명전");
+       }
+       
+       // 파일 삭제 버튼 클릭 시
         $(".deleteFile").click(function(e) {
             $(this).parent().remove(); // 해당 파일만 제거
         });
-	    
-	 	// 취소 버튼 클릭시 상세보기로 이동
+       
+       // 취소 버튼 클릭시 상세보기로 이동
         $('#cancle').click(function() {
-        	window.location.href = "${pageContext.request.contextPath}/approval/modifyBusinessTripForm?draftDoc=${businessTripOne.draftDocNo}";
+           window.location.href = "${pageContext.request.contextPath}/approval/modifyBusinessTripForm?draftDoc=${businessTripOne.draftDocNo}";
         })
         
         // 공백/유효성 검사
-		$('#place').blur(function() {
+      $('#place').blur(function() {
             let value = $(this).val().trim();
             if (value === '') {
                 $('#placeError').text('출장지를 입력해 주세요.');
@@ -304,25 +317,25 @@
                 $('#placeError').text('');
             }
         });
-		
-		$('#startDate, #endDate').blur(function() {
-	        let startDate = $('#startDate').val();
-	        let endDate = $('#endDate').val();
-	        
-	        
-	        
-	        // 날짜 필드가 비어 있는지 확인
-	        if (startDate === '' || endDate === '') {
-	            $('#periodError').text('기간을 입력해 주세요.');
-	        } else {
-	            // 날짜 비교 및 오류 메시지 설정
-	            if (new Date(startDate) > new Date(endDate)) {
-	                $('#periodError').text('종료 날짜는 시작 날짜 이후여야 합니다.');
-	            } else {
-	                $('#periodError').text('');
-	            }
-	        }
-	    });
+      
+      $('#startDate, #endDate').blur(function() {
+           let startDate = $('#startDate').val();
+           let endDate = $('#endDate').val();
+           
+           
+           
+           // 날짜 필드가 비어 있는지 확인
+           if (startDate === '' || endDate === '') {
+               $('#periodError').text('기간을 입력해 주세요.');
+           } else {
+               // 날짜 비교 및 오류 메시지 설정
+               if (new Date(startDate) > new Date(endDate)) {
+                   $('#periodError').text('종료 날짜는 시작 날짜 이후여야 합니다.');
+               } else {
+                   $('#periodError').text('');
+               }
+           }
+       });
 
         $('#emergency').blur(function() {
             let value = $(this).val().trim();
@@ -350,30 +363,30 @@
                 $('#contentError').text('');
             }
         });
-	    
-		$('#submitBtn').click(function(e) {
-	        let drafterNo = $('#drafterEmpNo').val();
-	        console.log(drafterNo)
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/approval/getSign',
-	            method: 'get',
-	            data: {
-	            	approverNo : drafterNo
-	            },
-	            success: function(json) {
-	            	console.log('sign 있음');
-	            	$('#form').submit();
-	            },
-	            error: function(xhr, status, error) {
-	            	e.preventDefault();
-	                alert("결재사인을 등록을 해주세요");
-	                window.location.href = '${pageContext.request.contextPath}/myPage';
-	            }
-	        });
-	    });
-		
-		/* 파일 여러 개 추가  */
-		let fileOrder = 1;
+       
+      $('#submitBtn').click(function(e) {
+           let drafterNo = $('#drafterEmpNo').val();
+           console.log(drafterNo)
+           $.ajax({
+               url: '${pageContext.request.contextPath}/approval/getSign',
+               method: 'get',
+               data: {
+                  approverNo : drafterNo
+               },
+               success: function(json) {
+                  console.log('sign 있음');
+                  $('#form').submit();
+               },
+               error: function(xhr, status, error) {
+                  e.preventDefault();
+                   alert("결재사인을 등록을 해주세요");
+                   window.location.href = '${pageContext.request.contextPath}/myPage';
+               }
+           });
+       });
+      
+      /* 파일 여러 개 추가  */
+      let fileOrder = 1;
         // 파일 추가 버튼 클릭 시
         $('#addFileButton').click(function() {
             fileOrder++;
@@ -387,12 +400,12 @@
 
         // 파일 입력 필드 삭제 버튼 클릭 시
         $(document).on('click', '.remove-file-button', function() {
-        	console.log('test');
-        	let fileGroupId = $(this).data('file-id');
+           console.log('test');
+           let fileGroupId = $(this).data('file-id');
             $('#' + fileGroupId).remove();
         });
 
-	});
+   });
 </script>
 </body>
 
