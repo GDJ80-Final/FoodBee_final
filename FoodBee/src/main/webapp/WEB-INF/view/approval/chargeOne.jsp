@@ -52,6 +52,7 @@
 	        </c:choose>
 	        <br>
 	        <c:if test="${chargeOne != null && chargeOne.docApproverState == 0 && chargeOne.drafterEmpNo eq empNo}">
+	        	<a href="${pageContext.request.contextPath}/approval/deleteDraft?draftDocNo=${chargeOne.draftDocNo}">삭제</a>
 	            <a href="${pageContext.request.contextPath}/approval/modifyChargeForm?draftDocNo=${chargeOne.draftDocNo}">수정하기</a>
 	        </c:if>
 	    </div>

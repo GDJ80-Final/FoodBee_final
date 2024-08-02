@@ -35,7 +35,21 @@ public class ProfileServiceImpl implements ProfileService{
 	@Override
 	public String modifyProfileImg(int empNo, 
 			MultipartFile file) {
-		String originalFile = fileFormatter.fileFormatter(file);
+		
+		String path = filePath.getFilePath() + "profile_img/";
+		log.debug(TeamColor.RED +"path =>"+ path);
+		
+		// 원래 파일 삭제
+		String originalFile = profileMapper.selectProfileImg(empNo);
+		log.debug(TeamColor.RED + "originalName =>" + originalFile);
+		if(originalFile != null) {
+			String result = filePath.deleteFile(path, originalFile);
+			if(result.equals("fail")) {
+				throw new RuntimeException();
+			}
+		}
+		
+		originalFile = fileFormatter.fileFormatter(file);
 		
 		ProfileDTO profileDTO = ProfileDTO.builder()
 					.empNo(empNo)
@@ -50,8 +64,6 @@ public class ProfileServiceImpl implements ProfileService{
 			throw new RuntimeException();
 		}
 		
-		String path = filePath.getFilePath() + "profile_img/";
-		log.debug(TeamColor.RED +"path =>"+ path);
 		
 		filePath.saveFile(path, originalFile, file);
 		

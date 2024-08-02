@@ -20,4 +20,9 @@ public interface ProfileMapper {
 	// 사용 클래스 : ProfileService.updateEmpSignup
 	int updateProfileImg(ProfileDTO profileDTO);
 
+	// 프로필 사진 검색
+	// 파라미터 : int empNo
+	// 반환 값 : String
+	// 사용 클래스 : ProfileService.modifyProfileImg
+	String selectProfileImg(int empNo);
 }

@@ -30,5 +30,13 @@
 		WHERE
 			emp_no = #{empNo}
 	</update>
+	<select id="selectProfileImg" parameterType="int" resultType="String">
+		SELECT
+			original_file
+		FROM
+			profile_img
+		WHERE
+			emp_no = #{empNo}
+	</select>
 
 </mapper>

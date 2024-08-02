@@ -9,5 +9,9 @@ public interface DraftDocService {
 	void addDraftDoc(DraftDocRequestDTO draftDocRequestDTO);
 	
 	// 기안서 수정
-	void modifyDraftDoc(DraftDocRequestDTO draftDocRequestDTO, int draftDocNo);
+	void modifyDraftDoc(DraftDocRequestDTO draftDocRequestDTO, int draftDocNo, String[] existingFileList);
+	
+	// 기안서 삭제
+	void deleteDraftDoc(int draftDocNo);
+
 }

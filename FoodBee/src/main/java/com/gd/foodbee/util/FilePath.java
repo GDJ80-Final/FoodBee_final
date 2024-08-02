@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 public class FilePath {
+	
+	// 파일 경로
 	public String getFilePath() {
 		String path = null;
 		try {
@@ -17,6 +19,8 @@ public class FilePath {
 		
 		return path;
 	}
+	
+	// 파일 저장
 	public String saveFile(String path, String originalFile,MultipartFile mf) {
 		File emptyFile = new File(path+originalFile);
 
@@ -28,6 +32,19 @@ public class FilePath {
 		} 
 		
 		return "success";
+	}
+	
+	// 파일 삭제
+	public String deleteFile(String path, String originalFile) {
+		if(originalFile != null) {
+			File f = new File(path+originalFile);
+			if(f.exists()) {
+				f.delete();
+				return "success";
+			}
+		}
+		
+		return "fail";
 	}
 	
 }

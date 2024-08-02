@@ -17,10 +17,25 @@
 			NOW(),
 			#{draftDocNo}
 		)
-	
-	
 	</insert>
-
+	<delete id="deleteDraftDocFile" parameterType="int">
+		DELETE
+		FROM
+			draft_doc_file
+		WHERE
+			draft_doc_no = #{draftDocNo}
+	</delete>
+	<select id="selectDraftDocFileList" parameterType="int" resultType="com.gd.foodbee.dto.DraftDocFileDTO">
+		SELECT
+			original_file originalFile,
+			save_file saveFile,
+			type,
+			draft_doc_no draftDocNo
+		FROM
+			draft_doc_file
+		WHERE
+			draft_doc_no = #{draftDocNo}
+	</select>
 
 
 

@@ -368,7 +368,7 @@ public class ApprovalBoxController {
 	// 매출보고 수정 페이지
 	// 파라미터 : int draftDocNo
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/modifyRevenueForm
 	@GetMapping("/approval/modifyRevenueForm")
 	public String modifyRevenue(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -397,7 +397,7 @@ public class ApprovalBoxController {
 	// 휴가신청 수정 페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/modifyDayOffForm
 	@GetMapping("/approval/modifyDayOffForm")
 	public String modifyDayOff(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -427,7 +427,7 @@ public class ApprovalBoxController {
 	// 출장신청 수정 페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/modifyBusinessTripForm
 	@GetMapping("/approval/modifyBusinessTripForm")
 	public String modifyBusinessTrip(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -457,7 +457,7 @@ public class ApprovalBoxController {
 	// 기본기안서 수정 페이지
 	// 파라미터 : int draftDocNo Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지 
+	// 사용페이지 : /approval/modifyBasicForm
 	@GetMapping("/approval/modifyBasicForm")
 	public String modifyBasicForm(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {
@@ -487,7 +487,7 @@ public class ApprovalBoxController {
 	// 지출결의 수정 페이지
 	// 파라미터 : int draftDocNo, Model model, HttpSession session
 	// 반환값 : String(view)
-	// 사용페이지
+	// 사용페이지 : /approval/modifyChargeForm
 	@GetMapping("/approval/modifyChargeForm")
 	public String modifyCharge(@RequestParam("draftDocNo") int draftDocNo,
 			Model model, HttpSession session) {

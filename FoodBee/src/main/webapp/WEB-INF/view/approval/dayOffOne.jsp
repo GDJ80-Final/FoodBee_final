@@ -52,6 +52,7 @@
      	 </c:choose>               
         </div>
     <c:if test="${dayOffOne != null && dayOffOne.docApproverState == 0 && dayOffOne.drafterEmpNo eq empNo}">
+    	<a href="${pageContext.request.contextPath}/approval/deleteDraft?draftDocNo=${dayOffOne.draftDocNo}">삭제</a>
     	<a href="${pageContext.request.contextPath}/approval/modifyDayOffForm?draftDocNo=${dayOffOne.draftDocNo}">수정하기</a>
 	</c:if>
 	 <div id="updateAppral">

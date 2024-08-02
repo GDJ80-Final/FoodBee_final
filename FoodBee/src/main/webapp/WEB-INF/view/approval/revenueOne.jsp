@@ -51,6 +51,7 @@
      	 	</c:choose>      
      	 	<br>
    	 	<c:if test="${revenueOne != null && revenueOne.docApproverState == 0 && revenueOne.drafterEmpNo eq empNo}">
+   	 		<a href="${pageContext.request.contextPath}/approval/deleteDraft?draftDocNo=${revenueOne.draftDocNo}">삭제</a>
     		<a href="${pageContext.request.contextPath}/approval/modifyRevenueForm?draftDocNo=${revenueOne.draftDocNo}">수정하기</a>
 		</c:if> 
         </div>

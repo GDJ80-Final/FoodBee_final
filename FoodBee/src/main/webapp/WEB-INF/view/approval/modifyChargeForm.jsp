@@ -207,6 +207,19 @@
 			        </div>
 			        <div class="file-upload">
 		                <label for="attachment">첨부파일:</label>
+		                	<c:forEach items="${chargeFileOne}" var="file">	
+	                        	<div>                         	
+		                            <c:if test="${file.originalFile != null}">
+		                            	<input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
+		                            	<input type="text" value="${file.saveFile}" readonly>
+		                            	<button type="button" class="deleteFile">X</button>
+		                            </c:if>
+                             	</div>
+                             	<c:if test="${file.originalFile == null}">
+	                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
+	                            </c:if>
+	                            <br>
+	                        </c:forEach>
 		                <div id="fileInputsContainer">
 					        <div class="file-input-group" id="fileGroup1">
 					                <input type="file" id="attachment-1" name="docFiles">
@@ -367,6 +380,11 @@
 		    const description = year + '-' + month;
 		    $('#description').val(description);
 		});
+		
+		// 파일 삭제 버튼 클릭 시
+        $(".deleteFile").click(function(e) {
+            $(this).parent().remove(); // 해당 파일만 제거
+        });
 		
 		// 취소 버튼 클릭시 상세보기로 이동
         $('#cancle').click(function() {

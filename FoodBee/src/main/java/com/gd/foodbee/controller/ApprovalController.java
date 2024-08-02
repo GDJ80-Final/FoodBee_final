@@ -106,17 +106,33 @@ public class ApprovalController {
 	}
 	
 	// 기안서 수정
-	// 파라미터 :
+	// 파라미터 :DraftDocRequestDTO draftDocRequestDTO, int draftDocNo, String[] existingFileList
+	// 반환 값 : String(view)
+	// 사용 페이지 : /approval/modifyDraft
 	@PostMapping("/approval/modifyDraft")
 	public String modifyDraft(DraftDocRequestDTO draftDocRequestDTO,
-				@RequestParam(name = "draftDocNo") int draftDocNo) {
+				@RequestParam(name = "draftDocNo") int draftDocNo,
+				@RequestParam(name = "existingFile", required = false) String[] existingFileList) {
 		
 		log.debug(TeamColor.RED + "draftDocRequestDTO =>" + draftDocRequestDTO.toString());
 		log.debug(TeamColor.RED + "draftDocNo =>" + draftDocNo);
+		log.debug(TeamColor.RED + "existingFileList =>" + existingFileList);
 		
-		draftDocService.modifyDraftDoc(draftDocRequestDTO, draftDocNo);
+		draftDocService.modifyDraftDoc(draftDocRequestDTO, draftDocNo, existingFileList);
 		
 		return "redirect:/approval/draftBox";
+	}
 	
+	// 기안서 삭제
+	// 파라미터 : int draftDocNo
+	// 반환 값 : String(view)
+	// 사용 페이지 : /approval/deleteDraft
+	@GetMapping("/approval/deleteDraft")
+	public String deleteDraft(@RequestParam(name = "draftDocNo") int draftDocNo) {
+		log.debug(TeamColor.RED + "draftDocNo =>" + draftDocNo);
+		
+		draftDocService.deleteDraftDoc(draftDocNo);
+		
+		return "redirect:/approval/draftBox";
 	}
 }	

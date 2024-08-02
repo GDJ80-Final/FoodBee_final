@@ -1,5 +1,6 @@
 package com.gd.foodbee.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +170,7 @@ public class DraftDocServiceImpl implements DraftDocService{
 	}
 	
 	@Override
-	public void modifyDraftDoc(DraftDocRequestDTO draftDocRequestDTO, int draftDocNo) {
+	public void modifyDraftDoc(DraftDocRequestDTO draftDocRequestDTO, int draftDocNo, String[] existingFileList) {
 		log.debug(TeamColor.RED + "draftDocRequestDTO =>" + draftDocRequestDTO.toString());
 		// draft_doc update
 		DraftDocDTO draftDocDTO = DraftDocDTO.builder()
@@ -199,7 +200,7 @@ public class DraftDocServiceImpl implements DraftDocService{
 			typeNames = draftDocRequestDTO.getTypeName();
 		}
 		if(Objects.isNull(draftDocRequestDTO.getAmount()) || draftDocRequestDTO.getAmount().length == 0) {
-			log.debug(TeamColor.YELLOW + "amounts => null");
+			log.debug(TeamColor.RED + "amounts => null");
 		}else {
 			amounts = draftDocRequestDTO.getAmount();
 		}
@@ -238,33 +239,83 @@ public class DraftDocServiceImpl implements DraftDocService{
 		}
 		
 		// update draft_doc_file 
-//		String path = filePath.getFilePath() + "draft_file/";
-//		log.debug(TeamColor.RED + "path => " + path);
-//		MultipartFile[] mfs = null;
-//		if(Objects.isNull(draftDocRequestDTO.getDocFiles())) {
-//			log.debug(TeamColor.RED + "첨부파일 존재하지 않음");
-//		}else {
-//			mfs = draftDocRequestDTO.getDocFiles();
-//			if(!mfs[0].isEmpty()) {
-//				for(MultipartFile mf:mfs) {
-//					String originalFile = fileFormatter.fileFormatter(mf);
-//					DraftDocFileDTO draftDocFileDTO = DraftDocFileDTO.builder()
-//								.draftDocNo(draftDocDTO.getDraftDocNo())
-//								.originalFile(originalFile)
-//								.saveFile(mf.getOriginalFilename())
-//								.type(mf.getContentType())
-//								.build();
-//					log.debug(TeamColor.RED + "DocFileDTO =>" + draftDocFileDTO.toString());
-//					int fileRow = draftDocFileMapper.insertDraftDocFile(draftDocFileDTO);
-//					if(fileRow != 1) {
-//						throw new RuntimeException();
-//					}
+		String path = filePath.getFilePath() + "draft_file/";
+		log.debug(TeamColor.RED + "path => " + path);
+		List<DraftDocFileDTO> fileList = draftDocFileMapper.selectDraftDocFileList(draftDocNo);
+		log.debug(TeamColor.RED + "fileList => " + fileList);
+		
+		int existingFileListLength;
+		if(existingFileList == null) {
+			existingFileListLength = 0;
+			existingFileList = new String[0];
+		} else {
+			existingFileListLength = existingFileList.length;
+		}
+		
+		// 둘이 같을 경우 기존 파일 변화 x
+		if(fileList.size() != existingFileListLength) {
+			if(fileList != null) {
+				int fileListRow = draftDocFileMapper.deleteDraftDocFile(draftDocNo);
+				if(fileList.size() != fileListRow) {
+					log.debug("데이터베이스 파일 삭제 개수 잘못됨");
+					throw new RuntimeException();
+				}
+				for(DraftDocFileDTO file : fileList) {
+					boolean delete = true;
+					for(String existingFile : existingFileList) {
+						if(existingFile.equals(file.getOriginalFile())) {
+							delete = false;
+						}
+					}
+					if(delete == true) {
+						String result = filePath.deleteFile(path, file.getOriginalFile());
+						log.debug(TeamColor.RED + "file.getOriginalFile() => " + file.getOriginalFile().toString());
+						if(result.equals("fail")) {
+							log.debug("파일 삭제 실패");
+							throw new RuntimeException();
+						}
+					} else {
+						DraftDocFileDTO draftDocFileDTO = DraftDocFileDTO.builder()
+								.draftDocNo(draftDocDTO.getDraftDocNo())
+								.originalFile(file.getOriginalFile())
+								.saveFile(file.getSaveFile())
+								.type(file.getType())
+								.build();
+						log.debug(TeamColor.RED + "DocFileDTO =>" + draftDocFileDTO.toString());
+						int fileRow = draftDocFileMapper.insertDraftDocFile(draftDocFileDTO);
+						if(fileRow != 1) {
+							throw new RuntimeException();
+						}
+					}
+				}
+			}
+		}
+		
+		MultipartFile[] mfs = null;
+		if(Objects.isNull(draftDocRequestDTO.getDocFiles())) {
+			log.debug(TeamColor.RED + "추가 첨부파일 존재하지 않음");
+		}else {
+			mfs = draftDocRequestDTO.getDocFiles();
+			if(!mfs[0].isEmpty()) {
+				for(MultipartFile mf:mfs) {
+					String originalFile = fileFormatter.fileFormatter(mf);
+					DraftDocFileDTO draftDocFileDTO = DraftDocFileDTO.builder()
+								.draftDocNo(draftDocDTO.getDraftDocNo())
+								.originalFile(originalFile)
+								.saveFile(mf.getOriginalFilename())
+								.type(mf.getContentType())
+								.build();
+					log.debug(TeamColor.RED + "DocFileDTO =>" + draftDocFileDTO.toString());
+					int fileRow = draftDocFileMapper.insertDraftDocFile(draftDocFileDTO);
+					if(fileRow != 1) {
+						throw new RuntimeException();
+					}
 					//파일 경로에 저장
-//					filePath.saveFile(path, originalFile, mf);
-//				}
-//			}
-//		}
-//			
+					filePath.saveFile(path, originalFile, mf);
+				}
+			}
+		}
+			
 			
 		// update draft_referrer
 		int [] referrers = null;
@@ -286,5 +337,39 @@ public class DraftDocServiceImpl implements DraftDocService{
 				}
 			}
 		}
+	}
+
+	@Override
+	public void deleteDraftDoc(int draftDocNo) {
+		log.debug(TeamColor.RED + "draftDocNo =>" + draftDocNo);
+		
+		String path = filePath.getFilePath() + "draft_file/";
+		log.debug(TeamColor.RED + "path => " + path);
+		
+		List<DraftDocFileDTO> fileList = draftDocFileMapper.selectDraftDocFileList(draftDocNo);
+		log.debug(TeamColor.RED + "fileList => " + fileList);
+
+		
+		if(fileList != null) {
+			int fileListRow = draftDocFileMapper.deleteDraftDocFile(draftDocNo);
+			if(fileList.size() != fileListRow) {
+				log.debug("데이터베이스 파일 삭제 개수 잘못됨");
+				throw new RuntimeException();
+			}
+			for(DraftDocFileDTO file : fileList) {
+				String result = filePath.deleteFile(path, file.getOriginalFile());
+				if(result.equals("fail")) {
+					log.debug("파일 삭제 실패");
+					throw new RuntimeException();
+				}
+			}
+		}
+		
+		int row = draftDocMapper.deleteDraftDoc(draftDocNo);
+		if(row != 1) {
+			throw new RuntimeException();
+		}
+		
+		
 	}
 }

@@ -43,5 +43,12 @@
 		WHERE
 			draft_doc_no = #{draftDocNo}
 	</update>
+	<delete id="deleteDraftDoc" parameterType="int">
+		DELETE
+		FROM
+			draft_doc
+		WHERE
+			draft_doc_no = #{draftDocNo}
+	</delete>
 
 </mapper>
