@@ -6,58 +6,111 @@
 <title>익명게시판 새 글 작성</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            width: 50%;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        td {
-            padding: 10px;
-        }
-        .input-full {
-            width: 80%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        textarea {
-            width: 100%;
-            height: 300px;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .button-row {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .button-row button {
-            padding: 10px 20px;
-            margin: 0 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #333;
-            color: #fff;
-            cursor: pointer;
-        }
-        .button-row button:hover {
-            background-color: #555;
-        }
-        
         .error{
+        	margin-top:5px;
         	color:red;
         }
 </style>
 </head>
 <body>
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  	<div class="content-body">
+	  		
+	  		<div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">커뮤니티</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">익명게시판</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">글 작성</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+            
+            <div class="container-fluid">
+               <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- 내용 시작 -->
+                                <div class="basic-form">
+						            <h3>게시판 글 작성</h3>
+						           	<hr>
+							        <form method="post" action="${pageContext.request.contextPath}/community/board/addBoard">
+							            <div class="form-group">
+		                                    <div class="form-row align-items-left">
+		                                      
+		                                      <div class="col-auto my-1">
+							               		  <select name="boardCategory" id="boardCategory" class="custom-select mr-sm-2">
+								                       <option value="잡담">잡담</option>
+								                       <option value="회사이야기">회사이야기</option>
+								                       <option value="질문">질문</option>
+								                  </select>
+							                  </div>
+							                  <div id="categoryError" class="error"></div>
+							                </div>
+		                                  </div>
+							              <div class="form-group">
+							              	
+		                                      <input type="text" name="title" id="title" placeholder="제목 입력" class="form-control">
+		                                      <div id="titleError" class="error"></div>
+		                                    
+		                                  </div>
+		                               
+		                                 <div class="form-group">
+		                                      
+		                                      <input type="password" id="boardPw" name="boardPw" placeholder="비밀번호 입력" class="form-control" required>
+		                                      <div id="passwordError" class="error"></div>
+		                                 </div>
+		                                 <div class="form-group">
+		                                      
+		                                      <textarea class="form-control h-150px" rows="6" id="content" name="content" placeholder="내용을 입력하세요..."></textarea>
+		                                      <div id="contentError" class="error"></div>
+		                                 </div>
+		                                 <div class="text-right m-t-15">
+	                                        <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성</button>
+	                                        <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 cancel-btn" type="button" id="cancelBtn"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
+	                                     </div>
+		                                  
+							           
+							        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	 	 	
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 	<!-- end -->
+ 	
+         
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+ 	
+
+
+
+
+
+
+<%-- 
+
+
+
+
+
+<!-- 템플릿 적용 전 -->
 <div id="main-wrapper">
 		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 		
@@ -110,10 +163,10 @@
 	    </div>
 	</div>
 </div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include> --%>
 <script>
 	$(document).ready(function(){
-	    $('#resetButton').click(function(){
+	    $('#cancelBtn').click(function(){
 	    	$('.error').text('');
 	        window.location.href = '${pageContext.request.contextPath}/community/board/boardList';
 	    });
@@ -124,17 +177,16 @@
 	        return passwordRegex.test(password);
 	    }
 	    
+	    
+	   
+	    // 제목 공백검사 
 	    $('#title').blur(function() {
-	        let title = $(this).val();
+	        let title = $(this).val().trim();
 	        if (title.length > 300) {
 	            $('#error').text('제목은 300자를 초과할 수 없습니다.');
 	        } else {
 	        	$('#error').text('');
 	        }
-	    });
-	    // 제목 공백검사 
-	    $('#title').blur(function() {
-	        let title = $(this).val().trim();
 	        if (title === '') {
 	            $('#titleError').text('제목을 입력해 주세요.');
 	        } else {

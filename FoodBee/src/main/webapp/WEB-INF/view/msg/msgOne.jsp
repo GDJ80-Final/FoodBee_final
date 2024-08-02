@@ -46,17 +46,19 @@
                                         <div class="media pt-5">
                                             
                                             <div class="media-body">
-                                                <h5 class="m-b-3">${m.sender}</h5>
-                                                <p class="m-b-2">${m.createDatetime}</p>
+                                                <h5 class="m-b-3">FROM. ${m.sender}</h5>
+                                                <h5 class="m-b-3">TO. ${m.receivers}</h5>
+                                                <p class="m-b-2">보낸 일시 : ${m.createDatetime}</p>
                                             </div>
                                             
                                         </div>
                                         <hr>
-                                        <div class="media mb-4 mt-1">
+                                        <div class="media mb-2">
                                             <div class="media-body"><span class="float-right"></span>
-                                                <h4 class="m-0 text-primary">${m.title}</h4><small class="text-muted">To: ${m.receivers}</small>
+                                                <h4 class="m-0 text-primary">${m.title}</h4>
                                             </div>
                                         </div>
+                                        
                                         <h5 class="m-b-15"></h5>
                                         <p>${m.content}</p>
                                         
