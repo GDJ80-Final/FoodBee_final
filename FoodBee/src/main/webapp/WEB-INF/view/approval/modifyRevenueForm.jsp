@@ -392,8 +392,55 @@
         })
 	 	
 		$('#submitBtn').click(function(e) {
-	        let drafterNo = $('#drafterEmpNo').val();
+			let drafterNo = $('#drafterEmpNo').val();
 	        console.log(drafterNo)
+	        
+	        // 폼 필드 유효성 검사
+	        let year = $('#yearSelect').val();
+	        let month = $('#monthSelect').val();
+	        let title = $('#title').val();
+	        let categories = $('.categorySelect');
+	        let amounts = $('.revenueInput');
+	        let valid = true;
+
+	        if (!year || !month) {
+	            alert("발생 년월을 선택해주세요.");
+	            valid = false;
+	        }
+	        if (!title) {
+	            alert("제목을 입력해주세요.");
+	            valid = false;
+	        }
+
+	        let categoryFilled = false; // 카테고리 유효성 검사 플래그
+	        let amountFilled = false; // 매출액 유효성 검사 플래그
+
+	        categories.each(function(index) {
+	            if ($(this).val() !== "category0") {
+	                categoryFilled = true;
+	            }
+	        });
+
+	        amounts.each(function(index) {
+	            if ($(this).val().trim() !== "") {
+	                amountFilled = true;
+	            }
+	        });
+
+	        if (!categoryFilled) {
+	            alert("최소 하나의 카테고리를 선택해주세요.");
+	            valid = false;
+	        }
+
+	        if (!amountFilled) {
+	            alert("최소 하나의 매출액을 입력해주세요.");
+	            valid = false;
+	        }
+
+	        if (!valid) {
+	            return false; // 유효성 검사를 통과하지 못한 경우 제출하지 않음
+	        }
+	        
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/approval/getSign',
 	            method: 'get',

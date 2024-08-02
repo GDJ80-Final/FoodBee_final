@@ -435,7 +435,6 @@ $(document).ready(function() {
         }
         
         $('#form').submit();
-        });
     });
 	
 	/* 파일 여러 개 추가  */

@@ -392,8 +392,32 @@
         })
 		
 		$('#submitBtn').click(function(e) {
-	        let drafterNo = $('#drafterEmpNo').val();
+			let drafterNo = $('#drafterEmpNo').val();
 	        console.log(drafterNo)
+	        
+	        // 폼 필드 유효성 검사
+	        let title = $('#title').val();
+	        let typeName = $('#typeName').val();
+	        let amount = $('#amount').val();
+	        let text = $('#text').val();
+	        
+	        if (!title) {
+	            alert("제목을 입력 해주세요.");
+	            return false;
+	        }
+	        if (!typeName) {
+	            alert("적요를 입력해주세요.");
+	            return false;
+	        }
+	        if (!amount) {
+	            alert("금액을 입력해주세요.");
+	            return false;
+	        }
+	        if (!text) {
+	            alert("비고를 입력해주세요.");
+	            return false;
+	        }
+	        
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/approval/getSign',
 	            method: 'get',

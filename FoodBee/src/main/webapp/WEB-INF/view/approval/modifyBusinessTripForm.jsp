@@ -294,6 +294,62 @@
         $('#cancle').click(function() {
         	window.location.href = "${pageContext.request.contextPath}/approval/modifyBusinessTripForm?draftDoc=${businessTripOne.draftDocNo}";
         })
+        
+        // 공백/유효성 검사
+		$('#place').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#placeError').text('출장지를 입력해 주세요.');
+            } else {
+                $('#placeError').text('');
+            }
+        });
+		
+		$('#startDate, #endDate').blur(function() {
+	        let startDate = $('#startDate').val();
+	        let endDate = $('#endDate').val();
+	        
+	        
+	        
+	        // 날짜 필드가 비어 있는지 확인
+	        if (startDate === '' || endDate === '') {
+	            $('#periodError').text('기간을 입력해 주세요.');
+	        } else {
+	            // 날짜 비교 및 오류 메시지 설정
+	            if (new Date(startDate) > new Date(endDate)) {
+	                $('#periodError').text('종료 날짜는 시작 날짜 이후여야 합니다.');
+	            } else {
+	                $('#periodError').text('');
+	            }
+	        }
+	    });
+
+        $('#emergency').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#emergencyError').text('비상연락을 입력해 주세요.');
+            } else {
+                $('#emergencyError').text('');
+            }
+        });
+
+        $('#title').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#titleError').text('제목을 입력해 주세요.');
+            } else {
+                $('#titleError').text('');
+            }
+        });
+
+        $('#content').blur(function() {
+            let value = $(this).val().trim();
+            if (value === '') {
+                $('#contentError').text('내용을 입력해 주세요.');
+            } else {
+                $('#contentError').text('');
+            }
+        });
 	    
 		$('#submitBtn').click(function(e) {
 	        let drafterNo = $('#drafterEmpNo').val();
