@@ -247,28 +247,30 @@
 				console.log($('#drafterEmpNoField').val());
                 $('#name').val(json.empName);
                 $('#department').val(json.dptName)
+                
+                let drafterNo = $('#drafterEmpNo').val();
+        		
+        		$.ajax({
+                    url: '${pageContext.request.contextPath}/approval/getSign',
+                    method: 'get',
+                    data: {
+                        approverNo: drafterNo
+                    },
+                    success: function(json) {
+                        console.log('sign 있음');
+                    },
+                    error: function(xhr, status, error) {
+                        alert("결재사인을 등록을 해주세요");
+                        window.location.href = '${pageContext.request.contextPath}/myPage';
+                    }
+                });
             },
             error: function() {
                 alert('기본정보 불러오는데 실패했습니다 .');
             }
         });
 		
-		let drafterNo = $('#drafterEmpNo').val();
 		
-		$.ajax({
-            url: '${pageContext.request.contextPath}/approval/getSign',
-            method: 'get',
-            data: {
-                approverNo: drafterNo
-            },
-            success: function(json) {
-                console.log('sign 있음');
-            },
-            error: function(xhr, status, error) {
-                alert("결재사인을 등록을 해주세요");
-                window.location.href = '${pageContext.request.contextPath}/myPage';
-            }
-        });
 		
 		let fileOrder = 1;
 

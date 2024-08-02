@@ -284,6 +284,23 @@ $(document).ready(function() {
             console.log($('#drafterEmpNoField').val());
             $('#name').val(json.empName);
             $('#department').val(json.dptName);
+            
+            let drafterNo = $('#drafterEmpNo').val();
+        	
+        	$.ajax({
+                url: '${pageContext.request.contextPath}/approval/getSign',
+                method: 'get',
+                data: {
+                    approverNo: drafterNo
+                },
+                success: function(json) {
+                    console.log('sign 있음');
+                },
+                error: function(xhr, status, error) {
+                    alert("결재사인을 등록을 해주세요");
+                    window.location.href = '${pageContext.request.contextPath}/myPage';
+                }
+            });
 
             // 잔여휴가 불러오기 호출
             getRemainingDayOff(empNo); // empNo를 인자로 전달
@@ -293,22 +310,6 @@ $(document).ready(function() {
         }
     });
 	
-    let drafterNo = $('#drafterEmpNo').val();
-	
-	$.ajax({
-        url: '${pageContext.request.contextPath}/approval/getSign',
-        method: 'get',
-        data: {
-            approverNo: drafterNo
-        },
-        success: function(json) {
-            console.log('sign 있음');
-        },
-        error: function(xhr, status, error) {
-            alert("결재사인을 등록을 해주세요");
-            window.location.href = '${pageContext.request.contextPath}/myPage';
-        }
-    });
 
     // 잔여 휴가 불러오기 함수
     function getRemainingDayOff(empNo) {
@@ -386,7 +387,6 @@ $(document).ready(function() {
         }
         
         $('#form').submit();
-        });
     });
 	
 	/* 파일 여러 개 추가  */
