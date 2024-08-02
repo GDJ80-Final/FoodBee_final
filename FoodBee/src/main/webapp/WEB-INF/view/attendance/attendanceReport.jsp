@@ -53,9 +53,9 @@
 			    </c:otherwise>
 			</c:choose>
 			</table>
-			<c:if test="${attendanceDTO.date ne null}">
+			<c:if test="${attendanceDTO.date ne null and attendanceDTO.approvalState == 0}">
 				<button type="button" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceModify?date=${attendanceDTO.date}'">수정</button>
-				<button type="submit">확정</button>
+				<button type="submit" onclick="showAlert();">확정</button>
 			</c:if>	
 		</form>
 	</div>
@@ -63,5 +63,11 @@
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 
+<script>
+	// 알림을 띄우는 함수
+	function showAlert() {
+	    alert("확정되었습니다.");
+	}
+</script>
 </body>
 </html>

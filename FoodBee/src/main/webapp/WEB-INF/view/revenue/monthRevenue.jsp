@@ -20,6 +20,12 @@ body {
     }
     .content-body {
         display: flex;
+        padding: 0 50px; /* 좌우 여백 추가 (원하는 크기로 변경) */
+    }
+    .up-section {
+        padding: 50px; /* 위쪽 섹션의 여백 설정 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        width: 100%;
     }
     .left-section, .right-section {
         padding: 20px;
@@ -30,31 +36,37 @@ body {
     .right-section {
         width: 60%;
     }
+    select {
+    width: 80px; /* 너비 조정 (원하는 크기로 변경) */
+    font-size: 50px; /* 폰트 크기 조정 (선택 사항) */
+    padding: 5px; /* 패딩 추가 (선택 사항) */
+}
 </style>
 </head>
 <body>
 <div id="main-wrapper">
-<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+	<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 	
-<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-<div class="content-body">
-    <section class="left-section">
-        <h1>매출 통계</h1>
-        <hr>
-        <canvas id="donutChart" style="max-width: 500px;"></canvas><br><br><br>
-        <div id="monthlyTotal"></div>
-        <div id="previousMonthTotal"></div>
-    </section>
-    <section class="right-section">
+	<div class="up-section">
         <div>
-            <label for="yearSelect">년도 선택:</label>
-            <select id="yearSelect"></select>
-            <label for="monthSelect">월 선택:</label>
-            <select id="monthSelect"></select>
-        </div><br>
-        <canvas id="totalChart" style="width:100%;max-width:800px; height:100%;max-height:600px;"></canvas>
-    </section>
-</div>
+	        <select id="yearSelect"></select>
+	        <select id="monthSelect"></select> 매출
+    	</div>
+    </div>
+	    
+	<div class="content-body">	
+	    <section class="left-section">
+	        <canvas id="donutChart" style="max-width: 500px;"></canvas><br><br><br>
+	        <div id="monthlyTotal"></div>
+	        <div id="previousMonthTotal"></div>
+	    </section>
+	    <section class="right-section">
+	        <canvas id="totalChart" style="width:100%;max-width:800px; height:100%;max-height:600px;"></canvas>
+	    </section>
+	</div>
+	
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 
@@ -105,42 +117,53 @@ $(document).ready(function() {
     }
 
     // 차트 생성(막대형 바 차트)
-    function createBarChart(year, month) {
-        new Chart("totalChart", {
-            type: "bar",
-            data: {
-                labels: categoryName,
-                datasets: [{
-                    backgroundColor: barColors,
-                    data: revenue,
-                    barThickness: 40, // 막대 두께 설정
-                    maxBarThickness: 40 // 최대 막대 두께 설정
-                }]
-            },
-            options: {
-                animation: false, // 애니메이션 비활성화
-                legend: {
-                    display: false, // 범례 숨기기
-                },
-                title: {
-                    display: true,
-                    text: year + '년 ' + month + '월 매출'
-                },
-                plugins: {
-                    datalabels: {
-                        display: false // 데이터 레이블 비활성화
-                    }
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-    }
+	function createBarChart(year, month) {
+	    const maxDataValue = Math.max(...revenue) || 0; // 최대값 계산, revenue가 비어있으면 0으로 설정
+	    const maxYValue = maxDataValue + (maxDataValue * 0.5); // 최대값의 50% 추가
+	
+	    new Chart("totalChart", {
+	        type: "bar",
+	        data: {
+	            labels: categoryName,
+	            datasets: [{
+	                backgroundColor: barColors,
+	                data: revenue,
+	                barThickness: 40, // 막대 두께 설정
+	                maxBarThickness: 40 // 최대 막대 두께 설정
+	            }]
+	        },
+	        options: {
+	            animation: false, // 애니메이션 비활성화
+	            legend: {
+	                display: false, // 범례 숨기기
+	            },
+	            title: {
+	                display: true,
+	                text: year + '년 ' + month + '월 매출'
+	            },
+	            plugins: {
+	                datalabels: {
+	                    display: false // 데이터 레이블 비활성화
+	                }
+	            },
+	            scales: {
+	                yAxes: [{
+	                    ticks: {
+	                        beginAtZero: true,
+	                        max: maxYValue, // 최대 Y축 값을 추가한 값으로 설정
+	                        callback: function(value, index, values) {
+	                            // 최대값일 경우 빈 문자열 반환하여 표시하지 않음
+	                            return value === maxYValue ? '' : value;
+	                        }
+	                    },
+	                    scaleLabel: {
+	                        display: true // Y축 레이블 표시
+	                    }
+	                }]
+	            }
+	        }
+	    });
+	}
 
     // 차트 생성(도넛 차트)
     function createDonutChart() {
@@ -173,7 +196,7 @@ $(document).ready(function() {
                 animation: false, // 애니메이션 비활성화
                 title: {
                     display: true,
-                    text: '카테고리별 매출 비율(%)'
+                    text: '[ 품목 별 매출 백분율(%) ]'
                 },
                 legend: {
                     display: true,
@@ -285,12 +308,12 @@ $(document).ready(function() {
         let changeAmountText = (changeAmount || changeAmount === 0) ? formatNumber(changeAmount) + '원' : '-';
 
         // 월별 매출 합계를 div에 표시
-        let totalHtml = '<hr>이번달 총 매출: ' + formatNumber(currentMonthTotal) + '원<hr>' +
-                        '저번달 총 매출: ' + formatNumber(previousMonthTotal) + '원<hr>' +
-                        '저번달 대비 증감액: <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><hr>';
+        let totalHtml = '<hr><b>이번 달 총 매출:</b> ' + formatNumber(currentMonthTotal) + '원<hr>' +
+                        '<b>저번 달 총 매출:</b> ' + formatNumber(previousMonthTotal) + '원<hr>' +
+                        '<b>저번 달 대비 증감액:</b> <span style="' + changeAmountStyle + '">' + changeAmountText + '</span><hr>';
 
-        totalHtml += '실적 우수 품목: ' + highestCategory + ' (' + formatNumber(highestRevenue) + '원)<hr>';
-        totalHtml += '실적 저조 품목: ' + lowestCategory + ' (' + formatNumber(lowestRevenue) + '원)<hr>';
+        totalHtml += '<b>이번 달 우수 품목:</b> ' + highestCategory + ' (' + formatNumber(highestRevenue) + '원)<hr>';        
+        totalHtml += '<b>이번 달 저조 품목:</b> ' + lowestCategory + ' (' + formatNumber(lowestRevenue) + '원)<hr>';
 
         $('#monthlyTotal').html(totalHtml);
     }

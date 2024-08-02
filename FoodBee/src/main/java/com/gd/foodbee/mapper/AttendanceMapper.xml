@@ -43,6 +43,9 @@
 			update_end_time = NOW()
 		WHERE 
 			emp_no = #{empNo}
+			AND date = CURDATE()
+			AND end_time IS NULL
+    		AND update_end_time IS NULL
 	</update>
 	
 	<!-- 근태보고 출력 -->
@@ -53,7 +56,8 @@
             DATE_FORMAT(start_time, '%H:%i') startTime, 
             DATE_FORMAT(end_time, '%H:%i') endTime,
             DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
-            DATE_FORMAT(update_end_time, '%H:%i') updateEndTime
+            DATE_FORMAT(update_end_time, '%H:%i') updateEndTime,
+            approval_state approvalState
         FROM 
             attendance 
         WHERE 

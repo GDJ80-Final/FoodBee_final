@@ -54,6 +54,17 @@
         #image-container img {
             max-height: 300px; /* 이미지 최대 높이 설정 */
         }
+        .rsv-button {
+		    display: block;
+		    width: 100px;
+		    padding: 10px;
+		    margin: 0 auto;
+		    border: none;
+		    background-color: #38d642;
+		    color: #fff;
+		    cursor: pointer;
+		    text-align: center;
+		}
     </style>
 </head>
 <body>
@@ -62,90 +73,114 @@
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 	<div class="content-body">
-	<div class="container">
-	    <div id="reserved-times"></div>
-	    <h1>회의실 예약</h1>
-	    <form id="reservationForm" method="post" action="${pageContext.request.contextPath}/room/roomRsv">		
-	        <input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
-	        <input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
 	
-	        <div>예약된 시간 </div>
-	        <c:forEach var="m" items="${reservedTimes}">
-	            <input type="hidden" value="${m.startDateTime}" id="startDateTime_${m.index}">
-	            <input type="hidden" value="${m.endDateTime}" id="endDateTime_${m.index}">	   
-	        </c:forEach>
-	        <!-- 타임라인 -->
-	        <div id="timeline"></div>
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">예약</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">회의실 조회</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">회의실 예약</a></li>
+             </ol>
+         </div>
+   	</div>
 	
-	        <label for="start-time">시작 시간:</label>
-	        <select id="start-time" name="startTime">
-	            <option selected="selected">:::선택:::</option>        
-	        </select>
-	
-	        <label for="end-time">종료 시간:</label>
-	        <select id="end-time" name="endTime">
-	            <option selected="selected">:::선택:::</option>       
-	        </select>
-	
-	        <br>		
-	        <label for="type">유형 :</label>
-	        <input type="radio" name="type" value="team"> 팀
-	        <input type="radio" name="type" value="personal"> 개인용무
-	
-	        <table border="1">
-	            <tr>
-	                <td style="width:300px; height:50px;">회의실 명</td>
-	                <td>${roomDTO.roomName}</td>
-	            </tr>		
-	            <tr>
-	                <td style="width:25%; height:50px;">이미지</td>			
-	                <td>
-	                    <div id="image-slider" style="position: relative; width: 400px; overflow: hidden;">
-	                        <button id="prev" class="arrow-button" type="button">◀</button>
-	                        <div id="image-container" style="display: flex; transition: transform 0.5s ease;">
-	                            <c:forEach var="m" items="${roomImg}">
-	                                <img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="100%" style="flex: 0 0 auto;">
-	                            </c:forEach>
-	                        </div>
-	                        <button id="next" class="arrow-button" type="button">▶</button>
-	                    </div>	
-	                </td>			
-	            </tr>
-	
-	            <tr>
-	                <td style="width:25%; height:50px;">위치</td>
-	                <td>${roomDTO.roomPlace}</td>
-	            </tr>
-	            <tr>
-	                <td style="width:25%; height:50px;">수용인원</td>
-	                <td>최대 ${roomDTO.roomMax}명</td>
-	            </tr>			
-	            <tr>						
-	                <td style="width:25%; height:50px;">비품</td>
-	                <td>${roomDTO.info}</td>
-	            </tr>
-	            <tr>						
-	                <td style="width:25%; height:50px;">제목</td>
-	                <td>
-	                    <input type="text" name="meetingTitle" placeholder="공식적인 제목을 적어주세요." style="width: 500px;">
-	                </td>		
-	            </tr>
-	            <tr>
-	                <td>목적</td>
-	                <td colspan="4">
-	                    <textarea style="width: 60%; height: 200px;" placeholder="회의실을 사용하는 목적을 작성해주세요." name="meetingReason"></textarea>
-	                </td>
-	            </tr>
-	            <tr>						
-	                <td style="height:50px;">참석 인원</td>
-	                <td>
-	                    <input type="number" name="users" style="width: 40px;" min="1" max="${roomDTO.roomMax}">명
-	                </td>		
-	            </tr>
-	        </table>
-	        <button type="submit">예약</button>
-	        <button type="button" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>		
-	    </form>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">										
+					<div id="table-body"class="table-responsive">
+					    <div id="reserved-times"></div>
+					    
+					    <form id="reservationForm" method="post" action="${pageContext.request.contextPath}/room/roomRsv">		
+					        <input type="hidden" value="${roomNo}" id="roomNo" name="roomNo">
+					        <input type="date" value="${rsvDate}" id="rsvDate" name="rsvDate" readonly="readonly">
+					        <div>
+					        	<b>예약된 시간</b>
+					        </div>
+					        <div>
+						        <c:forEach var="m" items="${reservedTimes}">
+						            <input type="hidden" value="${m.startDateTime}" id="startDateTime_${m.index}">
+						            <input type="hidden" value="${m.endDateTime}" id="endDateTime_${m.index}">	   
+						        </c:forEach>
+					        </div>
+					        <!-- 타임라인 -->
+					        <div id="timeline"></div>
+					        <br>
+							<div>
+						        <label for="start-time"><b>시작 시간:</b></label>
+						        <select id="start-time" name="startTime">
+						            <option selected="selected">:::선택:::</option>        
+						        </select>
+						        <label for="end-time"><b>종료 시간:</b></label>
+						        <select id="end-time" name="endTime">
+						            <option selected="selected">:::선택:::</option>       
+						        </select>
+					        </div>
+					        <div>	
+						        <label for="type"><b>유형 :</b></label>
+						        <input type="radio" name="type" value="team"> 팀
+						        <input type="radio" name="type" value="personal"> 개인용무
+							</div>	
+					        <table class="table header-border">
+					            <tr>
+					                <th style="width:300px; height:50px;">회의실 명</th>
+					                <td>${roomDTO.roomName}</td>
+					            </tr>		
+					            <tr>
+					                <th style="width:25%; height:100px;">이미지</th>			
+					                <td style="width:75%; height:100px;">
+					                    <div id="image-slider" style="position: relative; width: 400px; overflow: hidden;">
+					                        <button id="prev" class="arrow-button" type="button">◀</button>
+					                        <div id="image-container" style="display: flex; transition: transform 0.5s ease;">
+					                            <c:forEach var="m" items="${roomImg}">
+					                                <img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="100%" style="flex: 0 0 auto;">
+					                            </c:forEach>
+					                        </div>
+					                        <button id="next" class="arrow-button" type="button">▶</button>
+					                    </div>	
+					                </td>			
+					            </tr>
+					
+					            <tr>
+					                <th style="width:25%; height:50px;">위치</th>
+					                <td>${roomDTO.roomPlace}</td>
+					            </tr>
+					            <tr>
+					                <th style="width:25%; height:50px;">수용인원</th>
+					                <td>최대 ${roomDTO.roomMax}명</td>
+					            </tr>			
+					            <tr>						
+					                <th style="width:25%; height:50px;">비품</th>
+					                <td>${roomDTO.info}</td>
+					            </tr>
+					            <tr>						
+					                <th style="width:25%; height:50px;">제목</th>
+					                <td>
+					                    <input type="text" name="meetingTitle" placeholder="공식적인 제목을 적어주세요." style="width: 65%;">
+					                </td>		
+					            </tr>
+					            <tr>
+					                <th>목적</th>
+					                <td colspan="4">
+					                    <textarea style="width: 65%; height: 200px;" placeholder="회의실을 사용하는 목적을 작성해주세요." name="meetingReason"></textarea>
+					                </td>
+					            </tr>
+					            <tr>						
+					                <th style="height:50px;">참석 인원</th>
+					                <td>
+					                    <input type="number" name="users" style="width: 40px;" min="1" max="${roomDTO.roomMax}">명
+					                </td>		
+					            </tr>
+					        </table>
+					        <div class="text-center" style="margin-bottom: 30px;">
+                            	<button type="submit" class="btn btn-info">예약</button>&nbsp;&nbsp;
+                            	<button type="button" class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>
+                            </div>
+					    </form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	</div>
 </div>
@@ -274,12 +309,12 @@
 
             // 빈값 확인
             $('#reservationForm').submit(function(event) {
-                if (!$('input[name="type"]:checked').val()) {
-                    alert('유형을 선택하세요.');
-                    event.preventDefault(); // 폼 제출 막기
-                } else if ($('#start-time').val() === ':::선택:::') {
+                if ($('#start-time').val() === ':::선택:::') {
                     alert('시작 시간을 선택하세요.');
                     event.preventDefault();
+                } else if (!$('input[name="type"]:checked').val()) {
+                    alert('유형을 선택하세요.');
+                    event.preventDefault(); // 폼 제출 막기
                 } else if (!$('input[name="meetingTitle"]').val()) {
                     alert('제목을 입력하세요.');
                     event.preventDefault();

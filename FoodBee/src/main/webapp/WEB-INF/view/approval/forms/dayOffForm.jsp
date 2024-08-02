@@ -332,20 +332,38 @@ $(document).ready(function() {
             }
         });
     }
-	
- 	// 기간 설정 기능 추가
+    // 반차 선택시
+    $("input[name='typeName']").change(function() {
+        if ($(this).val() === "반차") {
+            $('#endDate').prop('readonly', true); // 엔드데이트를 readonly로 설정
+            $('#endDate').val(''); // 엔드데이트 초기화
+        } else {
+            $('#endDate').prop('readonly', false); // 다른 유형 선택 시 readonly 해제
+        }
+    });
+
+ 	// 시작 날짜가 선택되면 endDate 값을 startDate 값으로 설정 및 최대값 설정
     $('#startDate').on('change', function() {
-        const startDate = $(this).val(); // startDate 값
-        const remainingDays = parseFloat($('#dayOff').val()); // 잔여휴가 값
+        const startDate = $(this).val(); // 시작 날짜 값
+        const remainingDays = parseFloat($('#dayOff').val()); // 잔여 휴가 값
         const start = new Date(startDate);
 
         // 엔드데이트의 최대값 설정
         if (startDate) {
             const maxEndDate = new Date(start);
-            maxEndDate.setDate(start.getDate() + remainingDays - 1); 
+            maxEndDate.setDate(start.getDate() + remainingDays - 1);
             $('#endDate').attr('max', maxEndDate.toISOString().split('T')[0]); // max 속성 설정
+            
+            // 유형이 반차인 경우 종료 날짜를 시작 날짜로 설정
+            if ($("input[name='typeName']:checked").val() === "반차") {
+                $('#endDate').prop('readonly', true); // 엔드데이트를 readonly로 설정
+                $('#endDate').val(startDate); // 엔드데이트 값을 스타트데이트로 설정
+            } else {
+                $('#endDate').prop('readonly', false); // 다른 유형 선택 시 readonly 해제
+            }
         } else {
-            $('#endDate').attr('max', ''); // startDate 비어있으면 max 속성 제거
+            $('#endDate').attr('max', ''); // 시작 날짜가 비어있으면 max 속성 제거
+            $('#endDate').val(''); // 엔드데이트 초기화
         }
     });
     
@@ -407,10 +425,9 @@ $(document).ready(function() {
     	console.log('test');
     	let fileGroupId = $(this).data('file-id');
         $('#' + fileGroupId).remove();
-    });
+    });        
    
 });
-
 </script>
 </body>
 </html>

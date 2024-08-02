@@ -5,6 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>회의실 목록</title>
+<style>
+    /* 테이블 헤더 중앙 정렬 스타일 추가 */
+    table th, td {
+        text-align: center; /* 텍스트 중앙 정렬 */
+    }
+	/* 이미지 스타일 */
+    .room-image {
+        width: 350px;      /* 이미지 너비 */
+        height: 200px;     /* 이미지 높이 */
+        object-fit: cover; /* 비율에 맞게 자르기 */
+    }
+</style>
 </head>
 <body>
 <div id="main-wrapper">
@@ -12,38 +24,53 @@
 	
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 	<div class="content-body">
-	<div class="container">
-		<h1>회의실 목록</h1>
-		<input type="date" id="dateInput">
-		<a href="${pageContext.request.contextPath}/room/roomRsvList">예약 리스트</a>
-		
-		<table border="1">
-			<tr>
-				<td style="width:300px; height:50px;">회의실 명</td>
-				<td style="width:25%; height:50px;">이미지</td>
-				<td style="width:25%; height:50px;">위치</td>
-				<td style="width:25%; height:50px;">수용인원</td>
-			</tr>
-			<c:forEach var="m" items="${list}">	
-				<tr>
-					<td style="height:100%;">
-						<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
-							<input type="hidden" name="roomNo" value="${m.roomNo}">
-							<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
-							
-							<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
-								${m.roomName}
-							</a>
-						</form>	
-					</td>
-					<td style="height:100%;">
-						<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" width="300px">				
-					</td>
-					<td style="height:200px;">${m.roomPlace}</td>
-					<td style="height:200px;">최대 ${m.roomMax}명</td>
-				</tr>
-			</c:forEach>	
-		</table>
+	
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">예약</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">회의실 조회</a></li>
+             </ol>
+         </div>
+   	</div>
+	<div style="margin-left: 30px;">예약 일자 <input type="date" id="dateInput"></div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">										
+					<div id="table-body"class="table-responsive">
+						
+					<table class="table header-border">						
+						<tr>
+							<th style="width:20%; height:50px;">회의실 명</th>
+							<th style="width:35%; height:50px;">이미지</th>
+							<th style="width:20%; height:50px;">위치</th>
+							<th style="width:15%; height:50px;">수용인원</th>
+						</tr>
+						<c:forEach var="m" items="${list}">	
+							<tr>
+								<td style="height:100%;text-align: center;">
+									<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
+										<input type="hidden" name="roomNo" value="${m.roomNo}">
+										<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
+										
+										<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
+											<h3>${m.roomName}</h3>
+										</a>
+									</form>	
+								</td>
+								<td style="height:100%;">
+									<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" class="room-image">					
+								</td>
+								<td style="height:200px;">${m.roomPlace}</td>
+								<td style="height:200px;">최대 ${m.roomMax}명</td>
+							</tr>
+						</c:forEach>	
+					</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	</div>
 </div>

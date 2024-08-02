@@ -184,101 +184,108 @@ function performSearch() {
     }
 }
 
-// 테이블을 업데이트하는 함수
+//테이블을 업데이트하는 함수
 function updateTable(data) {
     let tableBody = $('#attendanceTable tbody');
     tableBody.empty();
-    data.forEach(function(item) {
+    if (data.length === 0) {
         let row = $('<tr>');
-        row.append($('<td>').text(item.empNo));
-        row.append($('<td>').text(item.empName));
-        row.append($('<td>').text(item.date));
-        row.append($('<td>').text(item.updateStartTime));
-        row.append($('<td>').text(item.updateEndTime));
-        row.append($('<td>').text(item.approvalState));
-        
-        // 수정 여부 열 처리
-        if (item.updateStatus === 'x') {
-            row.append($('<td>').text('x')); // 수정 여부가 'x'일 경우
-        } else {
-            let updateStatusButton = $('<button>')
-                .text('사유 확인')
-                .addClass('btn btn-info btn-sm')
-                .click(function() {
-                    $('#updateReasonText').text(item.updateReason); // 수정 사유를 모달에 표시
-                    $('#updateStartTime').text('수정 전 출근: ' + item.startTime); // 출근 시간 추가
-                    $('#updateEndTime').text('수정 전 퇴근: ' + item.endTime); // 퇴근 시간 추가
-                    $('#updateReasonModal').modal('show'); // 모달 열기
-                });
-            row.append($('<td>').append(updateStatusButton)); // 사유 확인 버튼 추가
-        }
+        let cell = $('<td>').attr('colspan', '9').text('조회된 이력이 없습니다.');
+        row.append(cell);
+        tableBody.append(row);
+    } else {
+        data.forEach(function(item) {
+            let row = $('<tr>');
+            row.append($('<td>').text(item.empNo));
+            row.append($('<td>').text(item.empName));
+            row.append($('<td>').text(item.date));
+            row.append($('<td>').text(item.updateStartTime));
+            row.append($('<td>').text(item.updateEndTime));
+            row.append($('<td>').text(item.approvalState));
+            
+            // 수정 여부 열 처리
+            if (item.updateStatus === 'x') {
+                row.append($('<td>').text('x')); // 수정 여부가 'x'일 경우
+            } else {
+                let updateStatusButton = $('<button>')
+                    .text('사유 확인')
+                    .addClass('btn btn-info btn-sm')
+                    .click(function() {
+                        $('#updateReasonText').text(item.updateReason); // 수정 사유를 모달에 표시
+                        $('#updateStartTime').text('수정 전 출근: ' + item.startTime); // 출근 시간 추가
+                        $('#updateEndTime').text('수정 전 퇴근: ' + item.endTime); // 퇴근 시간 추가
+                        $('#updateReasonModal').modal('show'); // 모달 열기
+                    });
+                row.append($('<td>').append(updateStatusButton)); // 사유 확인 버튼 추가
+            }
 
-        // 반려 버튼 추가
-        let rejectButton = $('<button>')
-            .text('반려')
-            .addClass('btn btn-danger btn-sm')
-            .click(function() {
-                // 반려 사유 입력 모달 열기
-                $('#rejectionReasonModal').modal('show'); // 모달 열기
-                // 모달 확인 버튼 클릭 시 AJAX 호출
-                $('#submitRejection').off('click').on('click', function() {
-                    let reason = $('#rejectionReason').val(); // 반려 사유 입력 값
+            // 반려 버튼 추가
+            let rejectButton = $('<button>')
+                .text('반려')
+                .addClass('btn btn-danger btn-sm')
+                .click(function() {
+                    // 반려 사유 입력 모달 열기
+                    $('#rejectionReasonModal').modal('show'); // 모달 열기
+                    // 모달 확인 버튼 클릭 시 AJAX 호출
+                    $('#submitRejection').off('click').on('click', function() {
+                        let reason = $('#rejectionReason').val(); // 반려 사유 입력 값
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/attendance/attendanceRejection',
+                            type: 'POST',
+                            data: { 
+                                date: item.date, 
+                                empNo: item.empNo, 
+                                approvalReason: reason 
+                            },
+                            success: function(response) {
+                                alert('반려되었습니다.'); // 성공 메시지
+                                loadAllAttendanceData(currentPage); // 데이터 새로 고침
+                                $('#rejectionReasonModal').modal('hide'); // 모달 닫기
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                if(jqXHR.status === 403) {
+                                    alert('권한이 없습니다.');
+                                }else {
+                                     console.error("오류:", textStatus, errorThrown);
+                                     alert('반려 중 오류가 발생했습니다.');
+                                }
+                            }
+                        });
+                    });
+                });
+                
+            // 승인 버튼 추가
+            let acceptButton = $('<button>')
+                .text('승인')
+                .addClass('btn btn-success btn-sm')
+                .click(function() {        
                     $.ajax({
-                        url: '${pageContext.request.contextPath}/attendance/attendanceRejection',
+                        url: '${pageContext.request.contextPath}/attendance/attendanceAccept',
                         type: 'POST',
                         data: { 
                             date: item.date, 
-                            empNo: item.empNo, 
-                            approvalReason: reason 
+                            empNo: item.empNo 
                         },
                         success: function(response) {
-                            alert('반려되었습니다.'); // 성공 메시지
+                            alert('승인되었습니다.'); 
                             loadAllAttendanceData(currentPage); // 데이터 새로 고침
-                            $('#rejectionReasonModal').modal('hide'); // 모달 닫기
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
-                        	if(jqXHR.status === 403) {
+                            if(jqXHR.status === 403) {
                                 alert('권한이 없습니다.');
                             }else {
-                            	 console.error("오류:", textStatus, errorThrown);
-                                 alert('반려 중 오류가 발생했습니다.');
+                                 console.error("오류:", textStatus, errorThrown);
+                                 alert('승인 중 오류가 발생했습니다.'); 
                             }
                         }
                     });
                 });
-            });
             
-        // 승인 버튼 추가
-        let acceptButton = $('<button>')
-            .text('승인')
-            .addClass('btn btn-success btn-sm')
-            .click(function() {        
-                $.ajax({
-                    url: '${pageContext.request.contextPath}/attendance/attendanceAccept',
-                    type: 'POST',
-                    data: { 
-                        date: item.date, 
-                        empNo: item.empNo 
-                    },
-                    success: function(response) {
-                        alert('승인되었습니다.'); 
-                        loadAllAttendanceData(currentPage); // 데이터 새로 고침
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                    	if(jqXHR.status === 403) {
-                            alert('권한이 없습니다.');
-                        }else {
-                        	 console.error("오류:", textStatus, errorThrown);
-                        	 alert('승인 중 오류가 발생했습니다.'); 
-                        }
-                    }
-                });
-            });
-        
-        row.append($('<td>').text(item.finalTime));
-        row.append($('<td>').append(rejectButton).append(acceptButton)); // 버튼 추가
-        tableBody.append(row);
-    });
+            row.append($('<td>').text(item.finalTime));
+            row.append($('<td>').append(rejectButton).append(acceptButton)); // 버튼 추가
+            tableBody.append(row);
+        });
+    }
 }
 
 // 모달에 수정 사유 내용을 표시하는 함수
