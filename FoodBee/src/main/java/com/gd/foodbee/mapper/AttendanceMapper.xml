@@ -102,6 +102,7 @@
 		SELECT 
 			emp_no empNo, 
 			date, 
+			approval_reason approvalReason,
 			DATE_FORMAT(start_time, '%H:%i') startTime, 		 
 			DATE_FORMAT(end_time, '%H:%i') endTime,
 			DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,

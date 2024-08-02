@@ -226,6 +226,7 @@
 			    </div>
 			    <div class="form-group">
 			        <label for="remaining">잔여 휴가:</label>
+			        <input type="text" id="dayOff" name="dayoff" readonly="readonly">
 			        
 			        <label style="margin-left: 400px;">기간:</label>
 			        <input type="date" id="startDate" name="startDate"> ~
@@ -269,23 +270,67 @@
 <jsp:include page="./empModal.jsp"></jsp:include>     
 <script>
 $(document).ready(function() {
-	// 호출되면 페이지에 담을 emp 정보 불러오기 
-	$.ajax({
+	let empNo; // 직원 번호를 저장할 변수 선언
+
+    // 호출되면 페이지에 담을 emp 정보 불러오기 
+    $.ajax({
         url: '${pageContext.request.contextPath}/approval/forms/commonForm',
         method: 'get',
         success: function(json) {
-            $('#drafterEmpNo').val(json.empNo);
-            console.log($('#drafterEmpNo').val());
-            $('#drafterEmpNoField').val(json.empName + '('+json.empNo+')');
-			console.log($('#drafterEmpNoField').val());
+            empNo = json.empNo; // 직원 번호를 변수에 저장
+            $('#drafterEmpNo').val(empNo);
+            console.log(empNo); // 직원 번호 확인
+            $('#drafterEmpNoField').val(json.empName + '(' + empNo + ')');
+            console.log($('#drafterEmpNoField').val());
             $('#name').val(json.empName);
-            $('#department').val(json.dptName)
+            $('#department').val(json.dptName);
+
+            // 잔여휴가 불러오기 호출
+            getRemainingDayOff(empNo); // empNo를 인자로 전달
         },
         error: function() {
-            alert('기본정보 불러오는데 실패했습니다 .');
+            alert('기본정보 불러오는데 실패했습니다.');
         }
     });
+
+    // 잔여 휴가 불러오기 함수
+    function getRemainingDayOff(empNo) {
+        const year = new Date().getFullYear(); // 현재 연도
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/emp/getRemainingDayOff',
+            method: 'POST',
+            data: {
+                empNo: empNo,
+                year: year
+            },
+            success: function(json) {
+                console.log('휴가 있음:', json);
+                $('#dayOff').val(json); // 응답으로 받은 값을 #dayOff input 요소에 설정
+            },
+            error: function(xhr, status, error) {
+                console.error('오류 발생:', error);
+                alert('휴가 정보를 불러오는 데 실패했습니다.');
+            }
+        });
+    }
 	
+ 	// 기간 설정 기능 추가
+    $('#startDate').on('change', function() {
+        const startDate = $(this).val(); // startDate 값
+        const remainingDays = parseFloat($('#dayOff').val()); // 잔여휴가 값
+        const start = new Date(startDate);
+
+        // 엔드데이트의 최대값 설정
+        if (startDate) {
+            const maxEndDate = new Date(start);
+            maxEndDate.setDate(start.getDate() + remainingDays - 1); 
+            $('#endDate').attr('max', maxEndDate.toISOString().split('T')[0]); // max 속성 설정
+        } else {
+            $('#endDate').attr('max', ''); // startDate 비어있으면 max 속성 제거
+        }
+    });
+    
 	$('#submitBtn').click(function(e) {
         let drafterNo = $('#drafterEmpNo').val();
         console.log(drafterNo)
@@ -339,6 +384,26 @@ $(document).ready(function() {
                 window.location.href = '${pageContext.request.contextPath}/myPage';
             }
         });
+    });
+	
+	/* 파일 여러 개 추가  */
+	let fileOrder = 1;
+    // 파일 추가 버튼 클릭 시
+    $('#addFileButton').click(function() {
+        fileOrder++;
+        let newFileInput = 
+            '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+            '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
+             '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+            '</div>';
+        $('#fileInputsContainer').append(newFileInput);
+    });
+
+    // 파일 입력 필드 삭제 버튼 클릭 시
+    $(document).on('click', '.remove-file-button', function() {
+    	console.log('test');
+    	let fileGroupId = $(this).data('file-id');
+        $('#' + fileGroupId).remove();
     });
    
 });

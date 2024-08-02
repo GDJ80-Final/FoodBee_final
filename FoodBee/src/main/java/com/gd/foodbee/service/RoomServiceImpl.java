@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomServiceImpl implements RoomService{
 	@Autowired RoomMapper roomMapper;
 	
-	private static final int ROW_PER_PAGE = 2;
+	private static final int ROW_PER_PAGE = 10;
 	
 	// 회의실 목록
 	// 파라미터 : X

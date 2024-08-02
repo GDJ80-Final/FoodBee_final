@@ -153,13 +153,14 @@
         }
         .add-category, .remove-category {
         cursor: pointer;
-        color: blue;
+        background-color: blue;
+        color: white;
         text-decoration: underline;
         margin-left: 10px;
         text-decoration: none;
 	    }
 	    .remove-category {
-	        color: red;
+	        background-color: red;
 	    }
 	    .category-row {
         margin-bottom: 10px;
@@ -249,8 +250,7 @@
 				            
 				            <label for="revenue">매출액:</label>
 				            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원
-				            <span class="add-category">+</span>
-				            <span class="remove-category">-</span>
+				            <button type="button" class="add-category">+ 추가</button>
 				        </div><hr>
 				    </div>
 				</div>
@@ -341,9 +341,8 @@ $(document).ready(function() {
 	            </select>
 	            
 	            <label for="revenue">매출액:</label>
-	            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원
-	            <span class="add-category">+</span>
-	            <span class="remove-category">-</span>
+	            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원	            
+	            <button type="button" class="remove-category">삭제</button>
 	        </div><hr>`;
         $('#categoryContainer').append(newRow);
     });
@@ -432,6 +431,26 @@ $(document).ready(function() {
                 window.location.href = '${pageContext.request.contextPath}/myPage';
             }
         });
+    });
+	
+	/* 파일 여러 개 추가  */
+	let fileOrder = 1;
+    // 파일 추가 버튼 클릭 시
+    $('#addFileButton').click(function() {
+        fileOrder++;
+        let newFileInput = 
+            '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+            '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
+             '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+            '</div>';
+        $('#fileInputsContainer').append(newFileInput);
+    });
+
+    // 파일 입력 필드 삭제 버튼 클릭 시
+    $(document).on('click', '.remove-file-button', function() {
+    	console.log('test');
+    	let fileGroupId = $(this).data('file-id');
+        $('#' + fileGroupId).remove();
     });
    
 });

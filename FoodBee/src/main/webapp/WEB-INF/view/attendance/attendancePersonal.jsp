@@ -60,7 +60,11 @@
 		                        <td>${m.approvalState}</td>
 		                    </c:if>
 		                    <c:if test="${m.approvalState eq '반려'}">
-		                        <td><a href="${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}">${m.approvalState}</a></td>
+		                        <td>
+		                        	<button type="button" onclick="showApprovalReason('${m.approvalReason}', '${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}')">
+									    ${m.approvalState}
+									</button>
+		                        </td>
 		                    </c:if>
 		                    
 		                    <c:choose>
@@ -91,5 +95,12 @@
 	</div>
 </div>
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+
+<script>
+function showApprovalReason(reason, redirectUrl) {
+    alert('반려사유: ' + reason); // 반려사유를 alert 창으로 표시
+    location.href = redirectUrl; // 확인을 누르면 해당 URL로 이동
+}
+</script>
 </body>
 </html>
