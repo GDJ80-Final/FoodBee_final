@@ -42,7 +42,7 @@
                                 <div class="basic-form">
 						            <h3>게시판 글 작성</h3>
 						           	<hr>
-							        <form method="post" action="${pageContext.request.contextPath}/community/board/addBoard">
+							        <form id="addBoardForm" method="post" action="${pageContext.request.contextPath}/community/board/addBoard">
 							            <div class="form-group">
 		                                    <div class="form-row align-items-left">
 		                                      
@@ -226,8 +226,8 @@
 
 	    // 제출 버튼 클릭 시 전체 유효성 검사
 	    $('#submitBtn').click(function(e) {
-	        // 기본 폼 제출 방지
-	        e.preventDefault();
+	       
+	   
 
 	        // 모든 입력 필드 블러 이벤트 트리거
 	        $('#title').blur();
@@ -238,6 +238,8 @@
 	        // 유효성 검사 확인
 	        if ($('.error:contains("입력해 주세요"), .error:contains("선택해 주세요"), .error:contains("비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.")').length === 0) {
 	            $('#addBoardForm').submit();
+	        }else{
+	        	 e.preventDefault();
 	        }
 	    });
 

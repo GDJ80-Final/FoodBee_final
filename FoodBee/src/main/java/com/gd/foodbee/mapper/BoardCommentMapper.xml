@@ -6,7 +6,8 @@
 			ROW_NUMBER() OVER(ORDER BY createDatetime) commentOrder,
 			comment_no commentNo,
 			content,
-			DATE_FORMAT(create_datetime,'%Y-%m-%d %H:%i') createDatetime
+			DATE_FORMAT(create_datetime,'%Y-%m-%d %H:%i') createDatetime,
+			delete_YN deleteYN
 		FROM 
 			board_comment
 		WHERE 

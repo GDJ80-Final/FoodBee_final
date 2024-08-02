@@ -13,124 +13,145 @@
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        margin: 0;
-        padding: 20px;
-    }
-
-    
-
-    h1 {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 20px;
-    }
-
-    td {
-        padding: 10px;
-        border: 1px solid #ddd;
-        vertical-align: top;
-    }
-
-    .post-actions {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
-    }
-
-    .button {
-        padding: 5px 10px; /* Reduced padding */
-        margin-left: 5px; /* Reduced margin */
-        border: none;
-        cursor: pointer;
-        color: white;
-        background-color: #55eb42;
-        border-radius: 5px;
-    }
-
-    .button.delete {
-        background-color: red;
-    }
-
-    .like-section {
-        display: flex;
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .like-button {
-        background-color: #55eb42;
-        border: none;
-        padding: 5px 10px; 
-        cursor: pointer;
-        color: white;
-        border-radius: 5px;
-        font-size: 50px;
-    }
-    
-    .like-count{
-    	font-size: 15px;
-    	test-align:center;
-    }
-
-    .comments-section {
-        margin-top: 20px;
-    }
-
-    .comment-input {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-
-    .comment-box, .password-box {
-        padding: 5px; 
-        margin-right: 5px; 
-        flex: 1;
-    }
-
-    .comment-box {
-        flex: 3;
-    }
-
-    .comment {
-        width: 100%;
-        border: 1px solid #ddd;
-        background-color: #f9f9f9;
-        margin-top: 10px;
-    }
-
-    .comment-content {
-        padding: 10px;
-    }
-
-    .comment-info {
-        padding: 10px;
-        font-size: 12px;
-        color: #888;
-        display: flex;
-        justify-content: space-between;
-    }
-    .comment-date{
-    	color:black;
-    }
-    .error-message {
+   
+    .error {
         color: red;
-        display: none;
+        
         margin-top: 10px;
     }
 </style>
 </head>
 <body>
-<div id="main-wrapper">
+	<div id="main-wrapper">
+		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+		
+		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+	        <!--**********************************
+	            Content body start
+	        ***********************************-->
+	  	<div class="content-body">
+	  		
+	  		<div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">커뮤니티</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">익명게시판</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">글 상세보기</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+            
+            <div class="container-fluid">
+               <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- 내용 시작 -->
+                                  <div class="read-content">
+                                        <div class="media">                                           
+                                            <div class="media-body">
+                                                <h5 class="m-b-3 text-primary">${m.boardCategory} > </h5>  
+                                                <h3 class="m-0 mt-2 mb-2">${m.title}</h3>   
+                                                <span class="float-left">조회수 :  ${m.view}</span> 
+                                                <span class="float-right">${m.createDatetime}</span>                                       
+                                            </div>
+                                        </div>
+                                        <hr style="background:black;">
+                                        
+                                        
+                                        <h5 class="m-b-15"></h5>
+                                        <p>${m.content}</p>
+                                        <hr>
+                                        <div class="media-body">
+	                                        
+	                                        <div class="text-center mt-3">
+		                                        <button type="button" id="likeButton" class="btn mb-1 btn-danger">좋아요<span class="btn-icon-right"><i id="likeCnt" class="fa fa-heart">
+		                                         ${m.likeCnt}
+		                                        </i></span></button>
+		                                        
+	                                        </div>  
+	                                        <div id="post-actions" class="float-right">
+												 <button type="button" class="btn btn-info" id="modifyBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">수정</button>
+										         <button  type="button" class="btn btn-danger" id="deleteBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button>
+					 						</div>                               
+                                        </div>
+			           			</div>
+			           			
+			           			<div class="comments-section mt-5">
+								 	<form id="addCommentForm" method="post" action="${pageContext.request.contextPath}/community/board/addComment">
+									 	<div class="comment-input">
+									 		<input type="hidden" name="boardNo" id="boardNo" value="${m.boardNo}">
+										 	<textarea class="form-control h-150px" rows="4" name="content" id="content" placeholder="댓글을 남겨보세요"></textarea>
+										 	<div id="contentError" class="error"></div>
+										</div>
+										
+										<div class="mt-2">
+										 	<input type="password" name="commentPw" id="commentPw" class="form-inline" placeholder="비밀번호 입력">
+										 	<div id="passwordError" class="error"></div>
+										 	<div class="float-right"><button class="btn btn-primary mb-3" id="addComment">댓글 등록</button></div>
+										</div>
+
+								 	</form>
+								 	<div class="table-responsive mt-5">
+								 	<table class="table" id="comment">
+								 	<!-- 댓글 리스트 출력  -->
+								 	
+								 	</table>
+								 	</div>
+                                    <!-- panel & page -->
+                                  	<div class="bootstrap-pagination mt-4">
+                                    <nav>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                                            </li>
+                                            <li class="page-item active"><div class="page-link" id="currentPage"></div>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                                            </li>
+                                            <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                   </div>
+				 				</div>
+			           			
+			           			
+                            </div>
+                               
+                               
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	<!-- 비밀번호 확인 모달 -->
+			<jsp:include page="./checkPwModal.jsp"></jsp:include>
+			<!-- 관리자 사유 입력 모달 -->
+			<jsp:include page="./addReasonModal.jsp"></jsp:include>
+	 	 	
+ 	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 	<!-- end -->
+ 	
+         
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+ 	
+
+
+
+
+
+
+
+
+<%-- <div id="main-wrapper">
 		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 		
 		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
@@ -204,7 +225,7 @@
 			<jsp:include page="./addReasonModal.jsp"></jsp:include>
 	</div>
 </div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
+ 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include> --%>
 <script>
 
 	let currentPage = 1;
@@ -214,6 +235,8 @@
  	let empNo = '${empNo}';
  	let adminAction = '';
  	let commentNo = '';
+ 	
+ 	
  	console.log(dptNo);
 	
  	
@@ -241,7 +264,7 @@
 	 	if(teamAuthCode == 'G-3'){
 	 		// 게시글 강제 삭제 버튼 추가 
 	 		 $('#post-actions').append(
-	 				 '<button type="button" class="button delete" id="deleteBoardByAdmin" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>'
+	 				 '<button type="button" class="btn btn-secondary" id="deleteBoardByAdmin" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>'
 	 				 );
 	    	
 	 	}else{
@@ -303,19 +326,22 @@
 				success: function(json) {
 					lastPage = json.lastPage;
 					console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
+					$('#currentPage').text(currentPage);
 					$('#comment').empty();
 					json.commentList.forEach(function(item) {
 						console.log(item);
 						$('#comment').append('<tr>' +
-							'<td class="comment-content"><span>['+ item.commentOrder + ']</span>&nbsp;' + item.content + '</td>' + 
+							'<td style="border-top:1px solid;">' + item.content + 
+							'<button type="button" class="float-right btn btn-danger pt-1 pb-1" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button></td>' + 
 							'</tr>' +
-							'<tr><td class="comment-info"><span class="comment-date">' + item.createDatetime + '</span>'+
-							'<button type="button" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">X</button></td>'+
+							'<tr><td style="border-bottom:1px solid;"id="section'+ item.commentOrder +
+							'"><span>' + item.createDatetime + '</span>'+
+							'</td>'+
 							'</tr>'
 						);
 						// 관리자일 경우에만 "관리자 삭제" 버튼 추가
-		                if (teamAuthCode == 'G-3') {
-		                    $('#comment').append('<tr><td><button type="button" id="deleteCommentByAdmin" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button></td></tr>');
+		                if (teamAuthCode == 'G-3' && item.deleteYN != 'Y') {
+		                    $('#section'+item.commentOrder).append('<button type="button" class="float-right btn btn-secondary pt-1 pb-1" id="deleteCommentByAdmin" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#addReason">관리자 삭제</button>');
 		                }
 					});
 					updateBtnState();
@@ -323,7 +349,55 @@
 				
 			});
 		}
+	    // 비밀번호 유효성 검사 함수
+	    function validatePassword(password) {
+	        // 비밀번호 정규식: 대소문자, 숫자, 특수문자를 포함하여 8-16자
+	        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+	        return passwordRegex.test(password);
+	    }
+	    
+	    // 비밀번호 유효성검사
+	    $('#commentPw').blur(function() {
+	        let commentPw = $(this).val().trim();
+	        if (!validatePassword(commentPw)) {
+	            $('#passwordError').text('비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.');
+	        } else {
+	            $('#passwordError').text('');
+	        }
+	    });
+
+	    // 내용 필드 공백검사
+	    $('#content').blur(function() {
+	        let content = $(this).val().trim();
+	        if (content === '') {
+	            $('#contentError').text('내용을 입력해 주세요.');
+	        } else {
+	            $('#contentError').text('');
+	        }
+	    });
 		
+	    
+	 	// 제출 버튼 클릭 시 전체 유효성 검사
+	    $('#addComment').click(function(e) {
+
+	        $('#commentPw').blur();
+	        $('#content').blur();
+
+	        // 유효성 검사 확인
+	        if ($('.error:contains("입력해 주세요"), .error:contains("비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.")').length === 0) {
+	            $('#addCommentForm').submit();
+	        }else{
+	        	 e.preventDefault();
+	   
+	        }
+	    });
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 	    $('#comment').on('click', '#deleteCommentByAdmin', function() {
 	        adminAction = 'comment';
 	        commentNo = $(this).val();
@@ -338,11 +412,11 @@
 		// 페이징 버튼 활성화
 	    function updateBtnState() {
 	        console.log("update");
-	        $('#pre').prop('disabled', currentPage === 1);
-	        $('#next').prop('disabled', currentPage === lastPage);
-	        $('#first').prop('disabled', currentPage === 1);
-	        $('#last').prop('disabled', currentPage === lastPage);
-	    }
+	        $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+	        $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+	        $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        }
 		// 이전 
 		$('#pre').click(function() {
 			if (currentPage > 1) {

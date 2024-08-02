@@ -62,7 +62,7 @@
 	 		board_category boardCategory,
 	 		title,
 	 		content,
-	 		create_datetime createDatetime,
+	 		DATE_FORMAT(create_datetime,'%Y-%m-%d %H:%i') createDatetime,
 	 		view,
 	 		like_cnt likeCnt
 		FROM 
