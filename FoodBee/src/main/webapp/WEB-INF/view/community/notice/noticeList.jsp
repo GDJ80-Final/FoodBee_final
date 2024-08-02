@@ -48,7 +48,7 @@
 							   	<a href="addNotice" class="btn btn-info btn-block">공지사항 작성</a>
 							</c:if>
 						</div>
-						<ul class="nav nav-pills mb-3">
+						<ul class="nav nav-tabs mb-3">
                             <li class="nav-item"><a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false" id="listBtn">전체</a>
                             </li>
                             <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="empBtn">전사공지</a>
@@ -57,8 +57,8 @@
                             </li>
                         </ul>
 
-						<div id="table-body" class="table-responsive">
-							<table border="1" id="noticeTable" class="table table-striped">
+						<div id="table-body"class="table-responsive">
+							<table id="noticeTable" class="table header-border">
 							    <thead>
 							        <tr>
 							            <th>번호</th>
