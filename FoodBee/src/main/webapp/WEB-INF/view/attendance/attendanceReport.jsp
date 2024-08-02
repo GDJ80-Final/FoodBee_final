@@ -18,7 +18,7 @@
 			<input type="hidden" name="date" value="${attendanceDTO.date}">
 			<table border="1">
 			<c:choose>
-			    <c:when test="${empty attendanceDTO.date and empty attendanceDTO.updateStartTime and empty attendanceDTO.updateEndTime and empty map.rankName and empty map.empName}">
+			    <c:when test="${empty attendanceDTO.date and empty attendanceDTO.updateStartTime and empty attendanceDTO.updateEndTime}">
 			        <tr>
 			            <td colspan="2" style="text-align:center;">등록된 근무가 없습니다.</td>
 			        </tr>

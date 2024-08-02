@@ -6,11 +6,13 @@
 	<select id="selectAttendanceRecord" parameterType="int" resultType="com.gd.foodbee.dto.AttendanceDTO">
 		SELECT 
 			DATE_FORMAT(start_time, '%m-%d %H:%i') startTime, 
-    		DATE_FORMAT(end_time, '%m-%d %H:%i') endTime 
+    		DATE_FORMAT(end_time, '%m-%d %H:%i') endTime,
+    		date
         FROM 
         	attendance
         WHERE 
         	emp_no = #{empNo}
+        	AND DATE(date) = CURDATE()
         ORDER BY 
         	date DESC
         LIMIT 
