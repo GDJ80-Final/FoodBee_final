@@ -69,6 +69,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <!-- 내용 시작 -->
+                                <div class="text-right">
+                                	<button class="btn btn-info" id="writeButton">글쓰기</button>
+                                </div>
+                                
 			                    <!-- Nav tabs -->
                                 <div class="default-tab">
                                     <ul class="nav nav-tabs mb-3" role="tablist">
@@ -304,7 +308,7 @@
 									'<td>'+ item.boardOrder +'</td>'+
 									'<td>'+ item.boardCategory + '</td>'+
 									'<td><a id="title" href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
-											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ '<span class="badge badge-danger">HOT</span>&nbsp;&nbsp;' + item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
+											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ '<span class="badge badge-danger">인기</span>&nbsp;&nbsp;' + item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
 									'<td>'+ item.createDatetime + '</td>'+
 									'<td>'+ item.view + '</td>'+
 									'<td>'+ item.likeCnt + '</td>'+
