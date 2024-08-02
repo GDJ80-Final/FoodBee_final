@@ -62,6 +62,7 @@ public class DraftBoxController {
 		
 		model.addAttribute("empNo", empNo);
 		model.addAttribute("stateBox",stateBox);
+		model.addAttribute("currentPage", currentPage);
 		
 		return "/approval/draftBox";
 	}
