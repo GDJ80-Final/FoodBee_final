@@ -293,7 +293,7 @@ public class ScheduleController {
 		
 		scheduleService.deleteSchedule(scheduleNo);
 		
-		return "redirect:/calendar/schedule";
+		return "redirect:/calendar/scheduleList";
 	}
 	
 	// 일정추가

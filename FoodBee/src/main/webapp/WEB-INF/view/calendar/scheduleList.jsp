@@ -9,42 +9,25 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <style>
-	.content-title{
-		margin-top: 20px;
-		margin-bottom: 20px;
-	}
-	#main-wrapper .content-body{
-		margin-left: 270px;
-	}
-	.table-body{
-		margin-top:20px;
-	}
-	.group1{
-		margin-bottom: 10px;
-		margin-left: 55px;
-	}
-	.group2{
-		margin-left: 55px;
-	}
-	 #scheduleTable {
-        width: 90%; /* 테이블의 폭을 100%로 설정 */
-        border-collapse: collapse; /* 테이블의 경계선 중복을 방지 */
-        text-align: center;
-        margin: 0 auto; /* 테이블을 중앙 정렬 */
-        font-weight: bold;
-    }
-    #scheduleTable #tableHeader{
-    	color:black;
-    }
+	 #calendar{
+		width:20%;
+	 }
     #page{
     	align-items: center;
     	margin-top: 10px;
     }
      #searchBody {
-        margin-left: 55px;
-        margin-top:8px;
+     	display:flex;
     }
-
+    #searchBtn{
+    	margin-left: 3px;
+    }
+	#searchText{
+		width: 50%
+	}
+	th {
+	    font-weight: bold;
+	}
 </style>
 </head>
 <body>
@@ -55,56 +38,78 @@
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-	<div class="content-title">	
-		<h1>일정 리스트</h1>
-	</div>
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">일정</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">일정조회</a></li>
+             </ol>
+         </div>
+   	</div>
 	
-	<div class="group1">
-		<a href="schedule" class="btn btn-outline-secondary btn-sm">달력📅</a>
-		<!-- <button id="addEvent">일정추가</button> -->
-	</div>
-	<div class="group2">	
-		<button id="personBtn" class="btn btn-secondary btn">내 일정</button>
-		<button id="teamBtn" class="btn btn-secondary btn">팀 일정</button>
-		<button id="roomBtn" class="btn btn-secondary btn">회의 일정</button>
-	</div>
-	<div id="searchBody">
-			<span id="searchType">일정검색</span>
-			<input type="text" id="searchText" placeholder="검색어를 입력해주세요">
-			<button id="searchBtn" class="btn btn-danger btn-sm">검색</button>
-	</div>
-	<div class="table-body">
-		<table border="1" id="scheduleTable" class="table table-striped">
-			<thead id="tableHeader">
-				<!-- 버튼클릭시 변경되게 -->
-			</thead>
-			<tbody id="tableBody">
-				<!-- 여기도 버튼 클릭하면 변경되게 -->
-			</tbody>
-		</table>
-	</div>
-	<input type="hidden" id="hiddenPage" value="person">
-	<!--히든 구역을 이용해서 페이징 상태를 저장해둔다 -->
-	 <!-- panel & page -->
-	<div class="bootstrap-pagination" id="page">
-         <nav>
-             <ul class="pagination justify-content-center">
-                 <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
-                 </li>
-                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
-                 </li>
-                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
-                 </li>
-                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
-                 </li>
-                 <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
-                 </li>
-             </ul>
-         </nav>
-     </div>
-	<br>
-	</div>
-</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">
+			 		<div class="card-body">	
+			 			<!-- 여기서부터 내용시작 -->
+						<div class="group1 mb-3">
+							<a href="schedule"  class="btn btn-primary btn-block" id="calendar">달력📅</a>
+						</div>
+				
+						<ul class="nav nav-tabs mb-3">
+                            <li class="nav-item"><a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false" id="personBtn">내 일정</a>
+                            </li>
+                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="teamBtn">팀 일정</a>
+                            </li>
+                            <li class="nav-item"><a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true" id="roomBtn">회의 일정</a>
+                            </li>
+                        </ul>
+					
+						<div id="searchBody">
+							<input type="text" id="searchText" class="form-control mb-3" placeholder="내 일정 검색어를 입력해주세요" aria-label="Search Dashboard">
+							<button id="searchBtn" class="btn btn-danger btn-sm mb-3">검색</button>
+						</div>
+						
+						<div class="table-body" class="table-responsive">
+							<table id="noticeTable" class="table header-border">
+								<thead id="tableHeader">
+									<!-- 버튼클릭시 변경되게 -->
+								</thead>
+								<tbody id="tableBody">
+									<!-- 여기도 버튼 클릭하면 변경되게 -->
+								</tbody>
+							</table>
+						</div>
+						<input type="hidden" id="hiddenPage" value="person">
+						<!--히든 구역을 이용해서 페이징 상태를 저장해둔다 -->
+						 <!-- panel & page -->
+						<div class="bootstrap-pagination mt-3" id="page">
+					         <nav>
+					             <ul class="pagination justify-content-center">
+					                 <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+					                 </li>
+					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+					                 </li>
+					                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+					                 </li>
+					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+					                 </li>
+					                 <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+					                 </li>
+					             </ul>
+					         </nav>
+					     </div>
+						<br>
+						</div>
+					<!-- 여기가 내용끝! --> 		
+	                </div>
+	            </div>
+	        </div>
+		</div>
+	</div><!-- content-body마지막 -->
+</div><!-- 메인마지막 -->
+<!-- 템플릿 footer -->
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
     let currentPage = 1;
@@ -116,7 +121,6 @@
         <!--2. 페이지 맨 처음 접속 시 실행 loadPersonSchedule 라는 함수에 currentPage 값 주면서 실행-->
         <!-- currentPage 값은 현재 맨 위에 전역변수 1 -->
         loadPersonSchedule(currentPage);
-        document.getElementById('searchType').innerHTML = '내일정';
         
         <!--히든필드를 가져와서 -->
         let hiddenFieldValue = $('#hiddenPage').val();
@@ -139,22 +143,23 @@
             console.log("검색기능-=>" + search);
         });
        
-        // 개인 일정 버튼 클릭 시
+     	// 개인 일정 버튼 클릭 시
         $("#personBtn").click(function() {
-        	loadPersonSchedule(1);
-        	document.getElementById('searchType').innerHTML = '내일정';
+            loadPersonSchedule(1);
+            $("#searchText").attr("placeholder", "내 일정 검색어를 입력해주세요");
         });
 
         // 팀 일정 버튼 클릭 시
         $("#teamBtn").click(function() {
-        	loadTeamSchedule(1);
-        	document.getElementById('searchType').innerHTML = '팀일정'
+            loadTeamSchedule(1);
+            $("#searchText").attr("placeholder", "팀 일정 검색어를 입력해주세요");
         });
 
         // 회의실 일정 버튼 클릭 시
         $("#roomBtn").click(function() {
-        	loadroomSchedule(1);
-        	document.getElementById('searchType').innerHTML = '회의일정'
+            loadroomSchedule(1);
+
+            $("#searchText").attr("placeholder", "회의실 일정 검색어를 입력해주세요");
         });
         
         <!-- 3. 개인 일정 리스트 가져옴 -->

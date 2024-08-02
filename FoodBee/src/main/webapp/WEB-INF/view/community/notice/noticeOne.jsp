@@ -53,7 +53,7 @@
 			<div class="col-lg-12">
 			 	<div class="card">
 			 		<div class="card-body">	
-			 <!-- 여기부터 내용 -->
+				 <!-- 여기부터 내용 -->
 				<a href="noticeList" class="btn btn-primary btn-block" id="back">돌아가기</a>
 				<div>
 				            <table>

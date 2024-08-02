@@ -101,7 +101,6 @@
 <!-- 템플릿 footer -->
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
 
 let currentPage = 1;
