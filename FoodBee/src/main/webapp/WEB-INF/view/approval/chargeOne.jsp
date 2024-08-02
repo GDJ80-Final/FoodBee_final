@@ -6,79 +6,240 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    	
+        .form-section {
+            padding: 20px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 80px;
+            margin-right: 10px;
+        }
+
+
+        a {
+        	text-decoration-line: none;
+        
+        }
+        .common-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .common-section th, .common-section td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            height : 60px;
+        }
+
+        .form-section {
+            padding: 20px;
+        }
+         .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 80px;
+            margin-right: 10px;
+        }
+        .form-group input[type="text"], .form-group textarea {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .form-group input[type="text"]:first-child {
+            margin-right: 20px;
+        }
+        .sign td {
+       		height : 130px;
+        
+        }
+
+		.add-file-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        .add-file-button:hover {
+            background-color: #555;
+        }
+    	#fileInputsContainer {
+	        display: flex;
+	        flex-direction: column; 
+    	}
+
+    	.remove-file-button {
+        margin-left: 10px; /* Add space between file input and delete button */
+    	}
+	
+	    .error{
+        	margin-top:5px;
+        	color:red;
+        }
+        
+         #updateAppral {
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	    }
+	    
+	    #updateAppral a, #updateAppral button {
+	        width: 200px;
+	        margin: 5px 0;
+	        padding: 10px;
+	    }
+	    
+	    #updateAppral textarea {
+	        margin-top: 10px;
+	        width: 400px;
+	    }
+	    
+	    #twoBtn{
+	    	display:flex;
+	    	gap:10px;
+	    }
+	    #submitForm {
+        	display: none; 
+    	}
+    	#modifyDeleteBtn {
+		    display: flex;
+		    justify-content: center; /* 중앙 정렬 */
+		    gap: 10px; /* 버튼 간의 간격 */
+		    margin-top: 20px; /* 버튼 상단 여백 (선택적) */
+		}
+    	#modifyDeleteBtn a{
+    		width: 200px;
+	        margin: 5px 0;
+	        padding: 10px;
+    	}
+</style>
 </head>
 <body>
-	<h1>지출결의서</h1>
-	<a href="" id="return">돌아가기</a>
-	<jsp:include page="./forms/commonForm.jsp"></jsp:include>
-	<div class="form-section">
-	    <div class="form-group">
-	        <label for="monthYear">지출년월</label>
-	        <input type="text" id="monthYear" value="${chargeDetailOne[0].description}" readonly="readonly">
-	    </div>
-	    <div class="form-group">
-	        <label for="title">제목:</label>
-	        <input type="text" id="title" name="title" value="${chargeOne.title}" readonly="readonly">
-	    </div>
-	    <div class="form-group">
-	        <label for="content">내역:</label>
-	        <div id="categoryContainer">
-	        	<c:forEach items="${chargeDetailOne}" var="detail">
-		            <div class="category-row" style="display: flex; align-items: center;">
-		                <label for="expenditure">적요:</label>
-		                <input type="text" class="expenditureInput" placeholder="지출내용" style="margin-right: 20px;" value="${detail.typeName}">
-		                <label for="charge">금액:</label>
-		                <input type="text" class="chargeInput" placeholder="금액 입력" value="${detail.amount}">원
-		                <label for="note" style="margin-left: 20px;">비고:</label>
-		                <textarea style="width: 400px; margin-top: 20px;" placeholder="상세내용">${detail.text}</textarea>
-		            </div>
-	            </c:forEach>
-	        </div>
-	    </div>
-	    <div class="file-upload">
-	        <label for="attachment">첨부파일:</label>
-	        <c:choose>
-	            <c:when test="${not empty chargeFileOne}">
-	                <c:forEach items="${chargeFileOne}" var="one">
-	                    <a href="${pageContext.request.contextPath}/download?file=${one.originalFile}" download="${one.originalFile}">
-	                        ${one.saveFile}
-	                    </a>
-	                    <br>
-	                </c:forEach>
-	            </c:when>
-	            <c:otherwise>
-	                파일없음
-	            </c:otherwise>
-	        </c:choose>
-	        <br>
-	        <c:if test="${chargeOne != null && chargeOne.docApproverState == 0 && chargeOne.drafterEmpNo eq empNo}">
-	        	<a href="${pageContext.request.contextPath}/approval/deleteDraft?draftDocNo=${chargeOne.draftDocNo}">삭제</a>
-	            <a href="${pageContext.request.contextPath}/approval/modifyChargeForm?draftDocNo=${chargeOne.draftDocNo}">수정하기</a>
-	        </c:if>
-	    </div>
-	    <div id="updateAppral">
-	        <!-- 중간승인자일 경우 -->
-	        <c:if test="${chargeOne.midApprovalState == 0 && chargeOne.midApproverNo eq empNo}">
-	            <a href="updateMidState?draftDocNo=${chargeOne.draftDocNo}" id="midApproval">중간승인</a>
-	            <form method="post" action="updateMidRejection" id="rejectionForm">
-	                <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
-	                <input type="hidden" name="draftDocNo" value="${chargeOne.draftDocNo}">
-	                <br>
-	                <button type="submit">반려</button>
-	            </form>
-	        </c:if>
-	        <!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
-	        <c:if test="${chargeOne.docApproverState != 9 && chargeOne.midApprovalState == 1 && chargeOne.finalApprovalState == 0 && chargeOne.finalApproverNo eq empNo}">
-	            <a href="updateFinalState?draftDocNo=${chargeOne.draftDocNo}" id="finalApproval">최종승인</a>
-	            <form method="post" action="updateFinalRejection" id="rejectionForm">
-	                <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
-	                <input type="hidden" name="draftDocNo" value="${chargeOne.draftDocNo}">
-	                <br>
-	                <button type="submit">반려</button>
-	            </form>
-	        </c:if>
-	    </div>
+<!-- 메인템플릿 -->
+<div id="main-wrapper">
+<!-- 템플릿 헤더,사이드바 -->
+<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+<!-- 템플릿 div -->
+<div class="content-body">
+	<div class="row page-titles mx-0">
+         <div class="col p-md-0">
+             <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">지출기안서</a></li>
+             </ol>
+         </div>
+   	</div>
+	
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-12">
+			 	<div class="card">
+			 		<div class="card-body">	
+			 		<!-- 여기서부터 내용시작 -->
+			 			<!-- 공통폼 -->
+						<jsp:include page="./forms/commonForm.jsp"></jsp:include>
+						<div class="form-section">
+						    <div class="form-group">
+						        <label for="monthYear">지출년월</label>
+						        <input type="text" id="monthYear" value="${chargeDetailOne[0].description}" readonly="readonly">
+						    </div>
+						    <div class="form-group">
+						        <label for="title">제목:</label>
+						        <input type="text" id="title" name="title" value="${chargeOne.title}" readonly="readonly">
+						    </div>
+				        <label for="content">내역</label>
+						    <div class="form-group">
+						        <div id="categoryContainer">
+						        	<c:forEach items="${chargeDetailOne}" var="detail">
+							            <div class="category-row" style="display: flex; align-items: center;">
+							                <label for="expenditure">적요:</label>
+							                <input type="text" class="expenditureInput" placeholder="지출내용" style="margin-right: 20px;" value="${detail.typeName}" readonly="readonly">
+							                <label for="charge">금액:</label>
+							                <input type="text" class="chargeInput" placeholder="금액 입력" value="${detail.amount}" readonly="readonly">원
+							                <label for="note" style="margin-left: 20px;">비고:</label>
+							                <textarea style="width: 400px; margin-top: 20px;" placeholder="상세내용" readonly="readonly">${detail.text}</textarea>
+							            </div>
+						            </c:forEach>
+						        </div>
+						    </div>
+						    <div class="file-upload">
+						        <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
+						        <c:choose>
+						            <c:when test="${not empty chargeFileOne}">
+						                <c:forEach items="${chargeFileOne}" var="one">
+						                    <a href="${pageContext.request.contextPath}/download?file=${one.originalFile}" download="${one.originalFile}">
+						                        ${one.saveFile}
+						                    </a>
+						                    <br>
+						                </c:forEach>
+						            </c:when>
+						            <c:otherwise>
+						                <span class="badge badge-danger mb-3">파일없음</span>
+						            </c:otherwise>
+						        </c:choose>
+						    </div>
+						        <br>
+					        <div id="modifyDeleteBtn">
+						        <c:if test="${chargeOne != null && chargeOne.docApproverState == 0 && chargeOne.drafterEmpNo eq empNo}">
+						            <a href="${pageContext.request.contextPath}/approval/modifyChargeForm?draftDocNo=${chargeOne.draftDocNo}" class="btn btn-info btn-block">수정하기</a>
+						        	<a href="${pageContext.request.contextPath}/approval/deleteDraft?draftDocNo=${chargeOne.draftDocNo}" class="btn btn-danger btn-block">삭제</a>
+						        </c:if>
+					        </div>
+						    <div id="updateAppral">
+						        <!-- 중간승인자일 경우 -->
+						        <c:if test="${chargeOne.midApprovalState == 0 && chargeOne.midApproverNo eq empNo}">
+						        	<div id="twoBtn">
+							            <a href="updateMidState?draftDocNo=${chargeOne.draftDocNo}" id="midApproval" class="btn btn-info btn-block">중간승인</a>
+							            <button id="fakeBtn" class="btn btn-info btn-danger">반려</button>
+						        	</div>
+						        	<div id="submitForm">
+							            <form method="post" action="updateMidRejection" id="rejectionForm">
+							                <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+							                <button type="submit" class="btn btn-danger btn-block">제출</button>
+							                <input type="hidden" name="draftDocNo" value="${chargeOne.draftDocNo}">
+							            </form>
+						        	</div>
+						        </c:if>
+						        <!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
+						        <c:if test="${chargeOne.docApproverState != 9 && chargeOne.midApprovalState == 1 && chargeOne.finalApprovalState == 0 && chargeOne.finalApproverNo eq empNo}">
+						        	<div>
+							            <a href="updateFinalState?draftDocNo=${chargeOne.draftDocNo}" id="finalApproval">최종승인</a>
+							            <button id="fakeBtn" class="btn btn-info btn-danger">반려</button>
+						        	</div>
+						        	<div id="submitForm">
+							            <form method="post" action="updateFinalRejection" id="rejectionForm">
+							                <textarea rows="3" cols="50" name="rejectionReason" placeholder="반려이유를 작성해주세요"></textarea>
+							                <button type="submit" class="btn btn-danger btn-block">제출</button><br>
+							                <input type="hidden" name="draftDocNo" value="${chargeOne.draftDocNo}">
+							            </form>
+						        	</div>
+						        </c:if>
+						    </div>
+						</div>
+						<!-- 여기가 내용끝! --> 		
+                    </div>
+                </div>
+            </div>
+        </div>
 	</div>
+</div><!-- content-body마지막 -->
+</div><!-- 메인마지막 -->
+<!-- 템플릿 footer -->
+<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
 		$(document).ready(function() {
 			
@@ -191,7 +352,9 @@
 		            }
 		        });
 		    });
-		    
+		    $('#fakeBtn').click(function() {
+		        $('#submitForm').show();
+		    });
    		});
     
 	</script> 
