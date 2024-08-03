@@ -54,17 +54,6 @@
         #image-container img {
             max-height: 300px; /* 이미지 최대 높이 설정 */
         }
-        .rsv-button {
-		    display: block;
-		    width: 100px;
-		    padding: 10px;
-		    margin: 0 auto;
-		    border: none;
-		    background-color: #38d642;
-		    color: #fff;
-		    cursor: pointer;
-		    text-align: center;
-		}
     </style>
 </head>
 <body>

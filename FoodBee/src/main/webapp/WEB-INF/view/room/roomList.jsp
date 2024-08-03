@@ -38,35 +38,35 @@
 		<div class="row">
 			<div class="col-lg-12">
 			 	<div class="card">										
-					<div id="table-body"class="table-responsive">
-						
-					<table class="table header-border">						
-						<tr>
-							<th style="width:20%; height:50px;">회의실 명</th>
-							<th style="width:35%; height:50px;">이미지</th>
-							<th style="width:20%; height:50px;">위치</th>
-							<th style="width:15%; height:50px;">수용인원</th>
-						</tr>
-						<c:forEach var="m" items="${list}">	
+					<div class="card-body">	
+						<!-- 여기서부터 내용시작 -->
+						<table class="table header-border">						
 							<tr>
-								<td style="height:100%;text-align: center;">
-									<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
-										<input type="hidden" name="roomNo" value="${m.roomNo}">
-										<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
-										
-										<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
-											<h3>${m.roomName}</h3>
-										</a>
-									</form>	
-								</td>
-								<td style="height:100%;">
-									<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" class="room-image">					
-								</td>
-								<td style="height:200px;">${m.roomPlace}</td>
-								<td style="height:200px;">최대 ${m.roomMax}명</td>
+								<th style="width:20%; height:50px;">회의실 명</th>
+								<th style="width:35%; height:50px;">이미지</th>
+								<th style="width:20%; height:50px;">위치</th>
+								<th style="width:15%; height:50px;">수용인원</th>
 							</tr>
-						</c:forEach>	
-					</table>
+							<c:forEach var="m" items="${list}">	
+								<tr>
+									<td style="height:100%;text-align: center;">
+										<form action="${pageContext.request.contextPath}/room/roomOne" method="get">
+											<input type="hidden" name="roomNo" value="${m.roomNo}">
+											<input type="hidden" name="date" id="hiddenDateInput_${m.roomNo}">
+											
+											<a href="#" onclick="submitForm(this, ${m.roomNo}); return false;">
+												<h3>${m.roomName}</h3>
+											</a>
+										</form>	
+									</td>
+									<td style="height:100%;">
+										<img src="${pageContext.request.contextPath}/upload/room_img/${m.originalFile}" class="room-image">					
+									</td>
+									<td style="height:200px;">${m.roomPlace}</td>
+									<td style="height:200px;">최대 ${m.roomMax}명</td>
+								</tr>
+							</c:forEach>	
+						</table>
 					</div>
 				</div>
 			</div>

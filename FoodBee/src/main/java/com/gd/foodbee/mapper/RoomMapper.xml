@@ -119,6 +119,7 @@
 			room_rsv
 		WHERE 
 			rsv_date = #{rsvDate}
+			AND rsv_state = 1
 	</select>
 	
 	<!-- 내 예약리스트 출력 -->
@@ -159,6 +160,7 @@
 			room_rsv		
 		WHERE 
 			emp_no = #{empNo}
+			AND rsv_state = 1
 	</select>
 	
 	<!-- 예약 취소 -->
