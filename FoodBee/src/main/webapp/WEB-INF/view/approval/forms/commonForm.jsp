@@ -135,7 +135,7 @@
             // 초기화 버튼 클릭 시 수신자 필드 초기화
             $('#reset').click(function() {
                 $('#referrerField').val('');
-               
+                $('#referrerEmpNo').val('');
             });
 		
 <!-- 사원선택 -->
@@ -304,19 +304,39 @@
 				let empNo = $(this).val();
 			    let empName = $(this).data('name');
 			    let selectedEmp = empName + '(' + empNo + ')';
+			    // 중간결재자, 최종결재자,수신참조자 중복 검사 -> 같은 사원번호는 들어가면 안됨 .
+			    
+                let midApproverNo = $('#midApproverNo').val();
+                let finalApproverNo = $('#finalApproverNo').val();
+                let referrerNo = $('#referrerEmpNo').val();
+                
+                
+                console.log(midApproverNo);
 				console.log(empNo);
 				console.log(empName);
 			    // 선택한 사원의 정보를 필요한 곳에 출력
 			    console.log(action);
+			    
+			    
 			    if(action === 'mid'){
-			    	 $('#midApproverNo').val(empNo);
-			    	 $('#midApproverNoField').val(selectedEmp);
-			    	 
-			    	 console.log($('#midApproverNo').val());
+			    	if (empNo === finalApproverNo) {
+			            alert('중간결재자는 최종결재자와 동일할 수 없습니다.');
+			        } else if (referrerNo.split(',').includes(empNo)) {
+			            alert('중간결재자는 수신참조자와 동일할 수 없습니다.');
+			        } else {
+			            $('#midApproverNo').val(empNo);
+			            $('#midApproverNoField').val(selectedEmp);
+			        }
+			 
 			    }else if(action === 'final'){
-			    	
-			    	 $('#finalApproverNo').val(empNo);
-			    	 $('#finalApproverNoField').val(selectedEmp);
+			    	if (empNo === midApproverNo) {
+			            alert('최종결재자는 중간결재자와 동일할 수 없습니다.');
+			        } else if (referrerNo.split(',').includes(empNo)) {
+			            alert('최종결재자는 수신참조자와 동일할 수 없습니다.');
+			        } else {
+			            $('#finalApproverNo').val(empNo);
+			            $('#finalApproverNoField').val(selectedEmp);
+			        }
 			    }else if(action === 'referrer'){
 			 
 			       
@@ -329,6 +349,12 @@
 				    let empNosArray = [];
 
 				    console.log(empNo);
+				    
+			        // 중복 검사
+			        if (empNo === midApproverNo || empNo === finalApproverNo) {
+			            alert('수신참조자는 중간결재자나 최종결재자와 동일할 수 없습니다.');
+			            return;
+			        }
 
 				    // 현재 recipient 필드 값 가져오기 및 배열로 변환
 				    if (referrerVal) {
@@ -362,6 +388,40 @@
 			    // 모달 닫기
 			    $('#staticBackdrop').modal('hide');
 		    });
+			
+			 function checkDuplicatesEmpNo() {
+	                // 값 받아오기
+	                let drafterNo = $('#drafterEmpNo').val();
+	                let midApproverNo = $('#midApproverNo').val();
+	                let finalApproverNo = $('#finalApproverNo').val();
+	                let referrerNo = $('#referrerEmpNo').val();
+	                console.log(drafterNo);
+	                console.log(midApproverNo);
+
+	                // 이전 에러 메세지가 있다면 초기화 
+	                $('.error').text('');
+
+	                // 중복값이 있다면 검사
+	                if (midApproverNo === drafterNo) {
+	                    alert('중간결재자는 기안자와 동일할 수 없습니다.');
+	             }
+	                if (finalApproverNo === drafterNo) {
+	                	alert('최종결재자는 기안자와 동일할 수 없습니다.');
+	                }
+	                if (finalApproverNo === midApproverNo) {
+	                	alert('최종결재자는 중간결재자와 동일할 수 없습니다.');
+	                }
+	                if (referrerNo === drafterNo || referrerNo === midApproverNo || referrerNo === finalApproverNo) {
+	                    $('#referrerField').siblings('.error').text('수신참조자는 기안자, 중간결재자, 최종결재자와 동일할 수 없습니다.');
+	                }
+	            }
+
+	        // 중간결재자, 최종결재자,수신참조자 중복 값 안들어가게 분기
+	       $('#drafterEmpNo, #midApproverNo, #finalApproverNo, #referrerEmpNo').on('input', checkDuplicatesEmpNo);
+
+			
+			
+			
 			
 		});
     
