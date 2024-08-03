@@ -171,7 +171,23 @@ public class ScheduleController {
 		
 		return roomList;
 	}
-	  
+	// 개인일정 + 팀일정
+	// 파라미터 : int currentPage, int empNo, String dptNo
+	// 반환값 : List<>personalTeamListAll
+	// 사용페이지 : /home
+	@GetMapping("/calendar/personalTeamList")
+	@ResponseBody
+	public List<HashMap<String,Object>> personalTeamList(int currentPage, int empNo, String dptNo){
+		log.debug(TeamColor.PURPLE + "currentPage=>" + currentPage);
+		log.debug(TeamColor.PURPLE + "empNo=>" + empNo);
+		log.debug(TeamColor.PURPLE + "dptNo=>" + dptNo);
+		List<HashMap<String,Object>> allList = scheduleService.personalTeamList(currentPage, empNo, dptNo);
+		log.debug(TeamColor.PURPLE + "allList=>" + allList);
+		
+		return allList;
+	}
+	
+	
 	// 일정 상세보기
 	// 파라미터 : int scheduleNo, Model model
 	// 반환값 : Map<>one
@@ -339,6 +355,5 @@ public class ScheduleController {
 		
 		return "redirect:/calendar/schedule";
 	}
-	
 	
 }

@@ -46,6 +46,9 @@ public interface ScheduleService {
 	// 팀일정 전체 리스트
 	List<HashMap<String,Object>>teamListAll(int currentPage, String dptNo, String search);
 	
+	// 개인+팀일정 전체리스트
+	List<HashMap<String,Object>> personalTeamList(int currentPage, int empNo, String dptNo);
+	
 	// 회의실 일정 전체 리스트
 	List<HashMap<String,Object>> roomListAll(int currentPage, int empNo, String dptNo, String search);
 	

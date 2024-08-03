@@ -40,14 +40,72 @@
 			<div id="departureTime" style="display:none;">퇴근 시간:</div>
 			<div id="workTime" style="display:none;">근무 시간:</div>
 	 	</div>
+	 	<div class="content-body">
+	 		<table id="scheduleTable" class="table header-border" border="1">
+			    <thead>
+			        <tr>
+			            <th>유형</th>
+			            <th>제목</th>
+			            <th>시작일</th>
+			            <th>종료일</th>
+			            <th>작성자</th>
+			        </tr>
+			    </thead>
+			    <tbody id="tableBody">
+			    </tbody>
+			</table>
+	 	</div>
  	</div>
  	
  	<jsp:include page="./footer.jsp"></jsp:include>
  	
 	<script>
 	window.onload = function() {
-	    const currentEmpNo = "${emp.empNo}"; // 현재 empNo 값을 가져옵니다.
+		let currentEmpNo = "${emp.empNo}"; // 현재 empNo 값을 가져옵니다.
+	    let currentDptNo = "${emp.dptNo}";
+	    let currentPage = 1;
 
+	    loadTeamSchedule(currentPage);
+
+	    function loadTeamSchedule(currentPage) {
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/calendar/personalTeamList',
+	            type: "GET",
+	            data: {
+	                currentPage: currentPage,
+	                empNo: currentEmpNo,
+	                dptNo: currentDptNo,
+	            },
+	            success: function(json) {
+	                console.log("AJAX Data:", json); // 응답 데이터 확인 ->확인완료
+	                updateTablePersoanlTeam(json)
+
+	            },
+	            error: function() {
+                    alert("개인일정을 가져올 수 없습니다.");
+	            }
+	        });
+	    }
+	    //success함수
+	    function updateTablePersoanlTeam(json) {
+	        let tableBody = $("#tableBody");
+	        
+	        if (json.allList == "") {
+	            tableBody.append("<tr><td colspan='5'>팀일정이 없습니다.</td></tr>");
+	        } else {
+	            $.each(json.allList, function(index, item) {
+	                let newRow = $("<tr>" +
+	                    "<td>" + item.category + "</td>" +
+	                    "<td>" + item.title + "</td>" +
+	                    "<td>" + item.startDate + "</td>" +
+	                    "<td>" + item.endDate + "</td>" +
+	                    "<td>" + item.empName + "</td>" +
+	                    "</tr>");
+	                tableBody.append(newRow);
+	            });
+	        }
+	    }
+		
 	    // 출퇴근 시간을 초기화하는 함수
 	    function resetAttendanceTimes() {
 	    	console.log("resetAttendanceTimes 호출됨"); // 디버그용 로그

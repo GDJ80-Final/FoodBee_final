@@ -196,6 +196,72 @@
 	    LIMIT 
 	    	#{beginRow}, #{rowPerPage};
 	</select>
+	<!-- 팀+개인일정 전체리스트 -->
+	<select id="personalTeamList" resultType="HashMap" parameterType="HashMap">
+		SELECT 
+            '개인' category,
+            sc.title title,
+            DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') startDate,
+            DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') endDate,
+            e.emp_name empName
+        FROM 
+            schedule sc
+        JOIN 
+            emp e ON sc.emp_no = e.emp_no
+        WHERE 
+            sc.emp_no = #{empNo}
+            AND sc.type = '개인'
+        
+        UNION ALL
+
+        SELECT 
+            '휴가' category,
+            '휴가' title,
+            DATE_FORMAT(doh.start_date, '%Y-%m-%d %H:%i') startDate,
+            DATE_FORMAT(doh.end_date, '%Y-%m-%d %H:%i') endDate,
+            e.emp_name empName
+        FROM 
+            day_off_history doh
+        JOIN 
+            emp e ON doh.emp_no = e.emp_no
+        WHERE 
+            e.dpt_no = #{dptNo}
+        
+        UNION ALL
+        
+        SELECT
+            '출장' category,
+            '출장' title,
+            DATE_FORMAT(bth.start_date, '%Y-%m-%d %H:%i') startDate,
+            DATE_FORMAT(bth.end_date, '%Y-%m-%d %H:%i') endDate,
+            e.emp_name empName
+        FROM 
+            business_trip_history bth
+        JOIN 
+            emp e ON bth.emp_no = e.emp_no
+        WHERE 
+            e.dpt_no = #{dptNo}
+        
+        UNION ALL
+
+        SELECT
+            '팀' category,
+            sc.title title,
+            DATE_FORMAT(sc.start_datetime, '%Y-%m-%d %H:%i') startDate,
+            DATE_FORMAT(sc.end_datetime, '%Y-%m-%d %H:%i') endDate,
+            e.emp_name empName
+        FROM
+            schedule sc
+        JOIN 
+            emp e ON sc.emp_no = e.emp_no
+        WHERE 
+            sc.type = '팀' 
+        AND e.dpt_no = #{dptNo}
+        
+        ORDER BY
+            startDate DESC
+        LIMIT #{beginRow}, #{rowPerPage}
+	</select>
 	<!-- 회의일정 전체리스트 -->
 	<select id="roomList" resultType="HashMap" parameterType="HashMap">
 	     SELECT 

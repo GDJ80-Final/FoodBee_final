@@ -95,6 +95,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scheduleMapper.teamList(dptNo, search, beginRow, ROW_PER_PAGE);
 	}
 	
+	// 개인 + 팀 일정 전체리스트
+	// 파라미터
+	// 반환값 : List<>
+	// 사용클래스 : ScheduleController.personalTeamList
+	 @Override
+	 public List<HashMap<String,Object>> personalTeamList(int currentPage, int empNo, String dptNo){
+		 int rowPerPage = 4;
+		 int beginRow = (currentPage -1)*rowPerPage;
+		 
+		 return scheduleMapper.personalTeamList(empNo, dptNo, beginRow, rowPerPage);
+	 }
+	
 	// 팀 회의 전체 리스트
 	// 파라미터 : int currentPage, int empNo, String dptNo, String search
 	// 반환값 : List<>
