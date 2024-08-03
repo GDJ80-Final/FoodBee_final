@@ -90,10 +90,10 @@
 	    function updateTablePersoanlTeam(json) {
 	        let tableBody = $("#tableBody");
 	        
-	        if (json.allList == "") {
+	        if (json == "") {
 	            tableBody.append("<tr><td colspan='5'>팀일정이 없습니다.</td></tr>");
 	        } else {
-	            $.each(json.allList, function(index, item) {
+	            json.forEach(function(item) {
 	                let newRow = $("<tr>" +
 	                    "<td>" + item.category + "</td>" +
 	                    "<td>" + item.title + "</td>" +
@@ -320,6 +320,7 @@
 	    checkDateChangePeriodically(); // 주기적으로 날짜 변경 확인
 	    loadAttendanceRecord(); // 출근 기록 로드
 	};
+
     </script>
  
 </body>
