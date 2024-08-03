@@ -54,7 +54,7 @@ public class EmpServiceImpl implements EmpService{
 	@Autowired
 	private FileFormatter fileFormatter;
 	
-	private static final int ROW_PER_PAGE = 2;
+	private static final int ROW_PER_PAGE = 10;
 	
 	// 로그인
 	// 파라미터 : LoginDTO

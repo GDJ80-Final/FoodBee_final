@@ -6,6 +6,12 @@
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
+<style>
+
+    .form-control-sm{
+    	border:1px solid grey;
+    }
+</style>
 <body>
 	<div id="main-wrapper">
 		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
@@ -14,70 +20,103 @@
 	        <!--**********************************
 	            Content body start
 	        ***********************************-->
-	  <div class="content-body">
-		<h1>사원목록</h1>
-	
-		
-		<form>
-			<div>
-				본사/지사
-				<select id="office">
-					<option value="">---본사/지사 선택---</option>
-				</select>
-				부서
-				<select id="dept">
-					<option value="">---부서 선택---</option>
-				</select>
-				팀
-				<select id="team">
-					<option value="">---팀 선택---</option>
-				</select>
-				직급 
-				<select id="rankName" name="rankName">
-					<option value="">---직급 선택---
-					<option value="사원">사원
-					<option value="대리">대리
-					<option value="팀장">팀장
-					<option value="부서장">부서장
-					<option value="지서장">지사장
-					<option value="CEO">CEO
-				</select>
-				회원가입 
-				<select id="signupYN" name="signupYN">
-					<option value="">---회원가입 유무---
-					<option value="Y">Y
-					<option value="N">N
-				</select>
+	  	<div class="content-body">
+	  		<div class="row page-titles mx-0">
+		         <div class="col p-md-0">
+		             <ol class="breadcrumb">
+		                 <li class="breadcrumb-item"><a href="javascript:void(0)">사원</a></li>
+		                 <li class="breadcrumb-item active"><a href="javascript:void(0)">사원 조회</a></li>
+		             </ol>
+		         </div>
+		   	</div>
+		  	 <div class="container-fluid">
+	               <div class="row">
+	                    <div class="col-lg-12">
+	                        <div class="card">
+	                            <div class="card-body">
+									<form>
+										<div class="form-row align-items-center mt-3">
+								        	<div class="col-auto my-1">
+												<select id="office" class="custom-select mr-sm-2">
+													<option value="">---본사/지사 선택---</option>
+												</select>
+									        </div>
+								        	<div class="col-auto my-1">
+											<select id="dept" class="custom-select mr-sm-2">
+												<option value="">---부서 선택---</option>
+											</select>
+									        </div>
+								        	<div class="col-auto my-1">
+											<select id="team" class="custom-select mr-sm-2">
+												<option value="">---팀 선택---</option>
+											</select>
+									        </div>
+								        	<div class="col-auto my-1">
+											<select id="rankName" name="rankName" class="custom-select mr-sm-2">
+												<option value="">---직급 선택---</option>
+												<option value="사원">사원</option>
+												<option value="대리">대리</option>
+												<option value="팀장">팀장</option>
+												<option value="부서장">부서장</option>
+												<option value="지서장">지사장</option>
+												<option value="CEO">CEO</option>
+											</select>
+									        </div>
+								        	<div class="col-auto my-1">
+											<select id="signupYN" name="signupYN" class="custom-select mr-sm-2">
+												<option value="">---회원가입 유무---</option>
+												<option value="Y">Y</option>
+												<option value="N">N</option>
+											</select>
+									        </div>
+										  	<div class="col-auto my-1">
+										    	<input type="number" id="empNo" name="empNo" class="form-control-sm" placeholder="사원번호를 입력하세요 ">
+										  	</div>
+										  	<div class="col-auto my-1">
+										    	<button id="searchBtn" type="button" class="btn btn-primary">검색</button>
+										  	</div>   	
+								        </div>    
+										  
+									</form>
+									
+									<div id="table-body"class="table-responsive mt-3">
+										<table id="empList" class="table header-border">
+											<tr>
+												<th>본사/지사</th>
+												<th>부서</th>
+												<th>팀</th>
+												<th>직급</th>
+												<th>사원번호</th>
+												<th>사원명</th>
+												<th>내선번호</th>
+												<th>가입일</th>
+												<th>회원가입 유무</th>
+											</tr>
+										</table>
+									
+									<!-- panel & page -->
+									<div class="bootstrap-pagination mt-3" id="page">
+								         <nav>
+								             <ul class="pagination justify-content-center">
+								                 <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
+								                 </li>
+								                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+								                 </li>
+								                 <li class="page-item active"><div class="page-link" id="currentPage"></div>
+								                 </li>
+								                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+								                 </li>
+								                 <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
+								                 </li>
+								             </ul>
+								         </nav>
+								     </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div>
-				사원 번호
-				<input type="number" id="empNo" name="empNo">
-				
-				<button id="searchBtn" type="button">검색</button>
-			</div>
-		</form>
-		
-		<table border="1" id="empList">
-			<tr>
-				<th>본사/지사</th>
-				<th>부서</th>
-				<th>팀</th>
-				<th>직급</th>
-				<th>사원번호</th>
-				<th>사원명</th>
-				<th>내선번호</th>
-				<th>가입일</th>
-				<th>회원가입 유무</th>
-			</tr>
-		</table>
-		
-		<div id="page">
-	        <button type="button" id="first">First</button>
-	        <button type="button" id="pre">◁</button>
-	        <button type="button" id="next">▶</button>
-	        <button type="button" id="last">Last</button>
-		</div>
-		
 		</div>
 	</div>
  		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
@@ -218,14 +257,14 @@
 			    });
 			});
 			
-			// 버튼 활성화
-			function updateBtnState() {
-				console.log("update");
-		        $('#pre').prop('disabled', currentPage === 1);
-		        $('#next').prop('disabled', currentPage === lastPage);
-		        $('#first').prop('disabled', currentPage === 1);
-		        $('#last').prop('disabled', currentPage === lastPage);
-		    }
+			//페이징 버튼 활성화
+	        function updateBtnState() {
+	            console.log("update");
+	            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        }
 			
 			// 사원 목록 출력
 			function loadEmpList(page){
@@ -245,6 +284,7 @@
 						console.log(json);
 						lastPage = json.lastPage;
 						console.log('curreptPage : ' + currentPage);
+						$('#currentPage').text(currentPage);
 						$('#empList').empty();
 						$('#empList').append('<tr>' +
 								'<th>본사/지사</th>' +
@@ -298,9 +338,9 @@
 						'<td>' + item.extNo +'</td>' + 
 						'<td>' + item.startDate +'</td>' + 
 						'<td>' + item.signupYN +
-						(teamAuthCode == 'G-1' ? (item.signupYN == 'N' ? '<button type="button" class="sendEmail" value= "'+ item.empNo +'">이메일 재발송</button>' : '') : '') +
+						(teamAuthCode == 'G-1' ? (item.signupYN == 'N' ? '&nbsp&nbsp&nbsp<button type="button" class="sendEmail btn ms-3 mb-1 btn-info" value= "'+ item.empNo +'">이메일 재발송</button>' : '') : '') +
 						'</td>' + 
-						(teamAuthCode == 'G-1' ? '<td><button type="button" class="resetPw" value=\'{"empNo": "' + item.empNo + '", "empEmail": "' + item.empEmail + '"}\'>비밀번호 초기화</button></td>' : '') +
+						(teamAuthCode == 'G-1' ? '<td><button type="button" class="resetPw btn mb-1 btn-danger" value=\'{"empNo": "' + item.empNo + '", "empEmail": "' + item.empEmail + '"}\'>비밀번호 초기화</button></td>' : '') +
 						'</tr>');
 			}
 			
