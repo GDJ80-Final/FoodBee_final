@@ -20,7 +20,10 @@
             width: 80px;
             margin-right: 10px;
         }
-
+		img {
+			width:160px;
+			height:130px;
+		}
 
         a {
         	text-decoration-line: none;
