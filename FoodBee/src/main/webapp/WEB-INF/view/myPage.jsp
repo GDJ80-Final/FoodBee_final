@@ -14,8 +14,8 @@
             margin: 30px auto;
         }
         .profile-img {
-            width: 200px;
-            height: 200px;
+            width: 300px;
+            height: 300px;
             background-color: #f0f0f0;
             display: flex;
             align-items: center;
@@ -36,26 +36,39 @@
 	            Content body start
 	        ***********************************-->
 	<div class="content-body">
-	    <div class="container form-container">
-	        <form>
-	            <div class="mb-4">
-	                <h3>마이페이지</h3>
-	                <div>
-						<button type="button" id="empInfo">개인/인사 정보</button>
-						<button type="button" id="changePw">비밀번호 변경</button>
-						<button type="button" id="dayOffHistory">휴가 내역</button>
-					</div>
-	            </div>
-	            <div>
-	            	<h4 id="title">개인/인사 정보</h4>
+    	<div class="container-fluid">
+              <div class="row">
+              	<div class="col-lg-12">
+               		<div class="card">
+                    	<div class="card-body">
+                           <ul class="nav nav-tabs mb-3">
+	                            <li class="nav-item"><a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false" id="empInfo">개인/인사 정보</a>
+	                            </li>
+	                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="changePw">비밀번호 변경</a>
+	                            </li>
+	                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="dayOffHistory">휴가 내역</a>
+	                            </li>
+	                        </ul>
+                           	<div class="row mb-3">
+                           		<div class="col"></div>
+                           		
+                           		<div class="col-8">
+							        <form>
+							        	<div id="year" class="mt-5">
+							        		<select id="yearSelect" class="form-select"></select>
+							        	</div>
+										<div id="content" class="mt-5">
+								           
+							            </div>
+							        </form>
+						        </div>
+						        <div class="col"></div>
+				        	</div>
+				        	
+				        </div>
+			        </div>
 	        	</div>
-	        	<div id="year">
-	        		<select id="yearSelect" class="form-select"></select>
-	        	</div>
-				<div id="content">
-		           
-	            </div>
-	        </form>
+        	</div>
 	    </div>
 	</div>
 </div>
@@ -66,19 +79,19 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title naver-green" id="profileModalLabel">프로필 사진 업데이트</h5>
+                    <h5 class="modal-title" id="profileModalLabel">프로필 사진 업데이트</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <img id="profileImage" src="" alt="프로필 사진" class="img-fluid rounded mb-3" style="max-width: 200px; max-height: 200px;">
                     <div class="d-grid gap-2">
-                        <button id="changeImageBtn" class="btn btn-outline-naver">이미지 변경</button>
+                        <button id="changeImageBtn" class="btn btn-primary">이미지 변경</button>
                         <input type="file" id="fileInput" accept=".jpg,.png" style="display: none;">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button id="updateProfileBtn" class="btn btn-naver" style="display:none;">프로필 수정</button>
+                    <button id="updateProfileBtn" class="btn btn-primary" style="display:none;">프로필 수정</button>
                 </div>
             </div>
         </div>
@@ -298,14 +311,14 @@
 		        }
 		    });
 			
-			// 버튼 활성화
-			function updateBtnState() {
-				console.log("update");
-		        $('#pre').prop('disabled', currentPage === 1);
-		        $('#next').prop('disabled', currentPage === lastPage);
-		        $('#first').prop('disabled', currentPage === 1);
-		        $('#last').prop('disabled', currentPage === lastPage);
-		    }
+			//페이징 버튼 활성화
+	        function updateBtnState() {
+	            console.log("update");
+	            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        }
 			// 전자 서명
 			const $canvas = $('#signCanvas');
             const ctx = $canvas[0].getContext('2d');
@@ -447,6 +460,9 @@
 					success:function(json){
 						console.log(json.lastPage);
 						lastPage = json.lastPage;
+						if(lastPage == 0){
+							lastPage = 1;
+						}
 						
 						$("#content").empty();
 						
@@ -469,9 +485,8 @@
 							            '</div>' +
 							        '</div>' +
 							        '<div class="col-12">' +
-							            '<h6 class="mb-3">연차 내역 조회</h6>' +
-							            '<div class="table-responsive">' +
-							                '<table class="table table-bordered">' +
+							            '<div id="table-body" class="table-responsive">' +
+							                '<table class="table header-border">' +
 							                    '<thead>' +
 							                        '<tr>' +
 							                            '<th>사원번호</th>' +
@@ -486,12 +501,22 @@
 							                '</table>' +
 						                '</div>' +
 					                '</div>' +
-					                '<div id="page">' +
-					                	'<button type="button" id="first">First</button>' +
-						                '<button type="button" id="pre">◁</button>' +
-						                '<button type="button" id="next">▶</button>' +
-						               '<button type="button" id="last">Last</button>' +
-						        	'</div>' +
+									'<div class="bootstrap-pagination mt-3" id="page">' +
+								        '<nav>' +
+								             '<ul class="pagination justify-content-center">' +
+								                '<li class="page-item"><button type="button" id="first" class="page-link">처음</button>' +
+								                 '</li>' +
+								                 '<li class="page-item"><button type="button" class="page-link" id="pre">이전</button>' +
+								                 '</li>' +
+								                 '<li class="page-item active"><div class="page-link" id="currentPage"></div>' +
+								                 '</li>' +
+								                 '<li class="page-item"><button type="button" class="page-link" id="next">다음</button>' +
+								                 '</li>' +
+								                 '<li class="page-item"><button type="button" class="page-link" id="last">마지막</button>' +
+								                 '</li>' +
+								             '</ul>' +
+								         '</nav>' +
+								     '</div>' +
 					            '</div>' +
 					        '</div>');
 							
@@ -504,6 +529,8 @@
                             '<td colspan="4" style="text-align:center;">사용한 휴가가 없습니다.</td>'+
                             '</tr>')
 						}
+						
+						$('#currentPage').text(currentPage);
 						
 						updateBtnState();
 					}
@@ -653,15 +680,15 @@
 				$('#content').append(
 					    '<div class="row">' +
 					        '<div class="col-md-4">' +
-					            '<div class="profile-img mb-3">' +
+					            '<div class="profile-img mt-5 mb-3">' +
 					                '<img id="profileImg" src="${pageContext.request.contextPath}/upload/profile_img/' + json.originalFile +'" alt="프로필 사진" class="img-fluid rounded mb-3">' +
 					            '</div>' +
-					            '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#profileModal">' +
+					            '<button type="button" class="btn btn-primary" style="width:300px;" data-bs-toggle="modal" data-bs-target="#profileModal">' +
 					                '프로필 사진 업데이트' +
 					            '</button>' +
 					        '</div>' +
 					        '<div class="col-md-8">' +
-					            '<h5>인사</h5>' +
+					        	'<h5 class="fw-bold">인사</h5>' +
 					            '<div class="row g-3">' +
 					                '<div class="col-md-6">' +
 					                    '<label class="form-label">이름</label>' +
@@ -732,45 +759,48 @@
 						const addressDetail = addressArr[1];
 						console.log(addressDetail)
 						$('#content').append(
-								'<div class="mt-4">' +
-								    '<h5>개인</h5>' +
-								    '<form id="EmpPersnalForm">' +
-								        '<div class="row g-3">' +
-								            '<div class="col-md-6">' +
-								                '<label class="form-label">개인 이메일</label>' +
-								                '<input type="email" class="form-control" id="empEmail" name="empEmail" value="' + json.empEmail + '">' +
-								                '<div id="empEmailError" class="error-message"></div>' +
-							                '</div>' +
-								            '<div class="col-md-6">' +
-								                '<label class="form-label">휴대폰 번호</label>' +
-								                '<input type="tel" class="form-control" id="contact" name="contact" value="' + json.contact + '">' +
-								                '<div id="contactError" class="error-message"></div>' +
-							                '</div>' +
-								        '</div>' +
-								        '<div class="mt-3">' +
-								            '<div class="row mb-3">' +
-								                '<div class="col-md-9">' +
-								                    '<label for="postNo" class="form-label">우편번호</label>' +
-								                    '<input type="number" class="form-control" id="postNo" name="postNo" id="postNo" placeholder="우편번호" readonly value="' + json.postNo + '">' +
-								                    '<div id="postNoError" class="error-message"></div>' +
+								'<div class="row">' +
+								    '<div class="col-4 mt-4"></div>' +
+								    '<div class="col-8 mt-4">' +
+								        '<h5 class="fw-bold">개인</h5>' +
+								        '<form id="EmpPersnalForm">' +
+									        '<div class="row g-3">' +
+										        '<div class="col-md-6">' +
+									                '<label class="form-label">개인 이메일</label>' +
+									                '<input type="email" class="form-control" id="empEmail" name="empEmail" value="' + json.empEmail + '">' +
+									                '<div id="empEmailError" class="error-message"></div>' +
 								                '</div>' +
-								                '<div class="col-md-3 d-flex align-items-end">' +
-								                    '<button type="button" id="selectAddr" class="btn btn-secondary">주소검색</button>' +
+									            '<div class="col-md-6">' +
+									                '<label class="form-label">휴대폰 번호</label>' +
+									                '<input type="tel" class="form-control" id="contact" name="contact" value="' + json.contact + '">' +
+									                '<div id="contactError" class="error-message"></div>' +
 								                '</div>' +
-								            '</div>' +
-								            '<div class="mb-3">' +
-								                '<label for="address" class="form-label">주소</label>' +
-								                '<input type="text" class="form-control" name="address" id="address" placeholder="주소" readonly value="' + address + '">' +
-								                '<div id="addressError" class="error-message"></div>' +
-								            '</div>' +
-								            '<div class="mb-3">' +
-								                '<label for="addressDetail" class="form-label">상세주소</label>' +
-								                '<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소를 입력해주세요" value="' + addressDetail + '">' +
-								                '<div id="addressDetailError" class="error-message"></div>' +
-								            '</div>' +
-								        '</div>' +
-								        '<button type="submit" id="modifyBtn" class="btn btn-danger">수정</button>' +
-								    '</form>' +
+									        '</div>' +
+									        '<div class="mt-3">' +
+									            '<div class="row mb-3">' +
+									                '<div class="col-md-6">' +
+									                    '<label for="postNo" class="form-label">우편번호</label>' +
+									                    '<input type="number" class="form-control" id="postNo" name="postNo" id="postNo" placeholder="우편번호" readonly value="' + json.postNo + '">' +
+									                    '<div id="postNoError" class="error-message"></div>' +
+									                '</div>' +
+									                '<div class="col-md-3 d-flex align-items-end">' +
+									                    '<button type="button" id="selectAddr" class="btn btn-secondary">주소검색</button>' +
+									                '</div>' +
+									            '</div>' +
+									            '<div class="mb-3">' +
+									                '<label for="address" class="form-label">주소</label>' +
+									                '<input type="text" class="form-control" name="address" id="address" placeholder="주소" readonly value="' + address + '">' +
+									                '<div id="addressError" class="error-message"></div>' +
+									            '</div>' +
+									            '<div class="mb-3">' +
+									                '<label for="addressDetail" class="form-label">상세주소</label>' +
+									                '<input type="text" class="form-control" name="addressDetail" id="addressDetail" placeholder="상세주소를 입력해주세요" value="' + addressDetail + '">' +
+									                '<div id="addressDetailError" class="error-message"></div>' +
+									            '</div>' +
+									        '</div>' +
+									        '<button type="submit" id="modifyBtn" class="btn btn-danger">수정</button>' +
+									    '</form>' +
+									'</div>' +
 								'</div>'
 							);
 					}
