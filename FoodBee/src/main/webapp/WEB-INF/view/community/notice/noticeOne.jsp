@@ -82,7 +82,7 @@
 				                                </c:forEach>
 				                            </c:when>
 				                            <c:otherwise>
-				                                첨부파일 없음
+				                                <span class="badge badge-danger mb-3">파일없음</span>
 				                            </c:otherwise>
 				                        </c:choose>
 				                    </td>

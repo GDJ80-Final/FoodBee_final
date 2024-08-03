@@ -1,9 +1,16 @@
 package com.gd.foodbee.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +22,7 @@ import com.gd.foodbee.dto.DraftDocRequestDTO;
 import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.service.DraftDocService;
 import com.gd.foodbee.service.GroupService;
+import com.gd.foodbee.util.FilePath;
 import com.gd.foodbee.util.TeamColor;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +37,9 @@ public class ApprovalController {
 	
 	@Autowired
 	private GroupService groupService;
+	
+	@Autowired
+	private FilePath filePath;
 	
 	// 각 기안서 추가 
 	// 파라미터 : HttpSession session
@@ -135,4 +146,37 @@ public class ApprovalController {
 		
 		return "redirect:/approval/draftBox";
 	}
+	
+	// 첨부파일 다운로드
+	// 파라미터 : String fileName
+	// 반환값 : ResponseEntity
+	// 사용페이지 : draftDocOne
+	@GetMapping("/download2")
+    public ResponseEntity<InputStreamResource> downloadFile2(@RequestParam("file") String filename) {
+        // 실제 파일이 저장된 경로
+    	log.info("Requested file: " + filename);
+    	
+    	String path = filePath.getFilePath() + "draft_file/";
+        File file = new File(path + File.separator + filename);
+
+        // 로그로 경로 확인
+        log.info("file path : " + file.getAbsolutePath());
+
+        // 파일 존재 여부 확인
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .contentLength(file.length())
+                    .body(resource);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
 }	

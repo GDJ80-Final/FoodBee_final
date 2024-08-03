@@ -169,7 +169,7 @@
 						        <c:choose>
 						            <c:when test="${not empty basicFormFileOne}">
 						                <c:forEach items="${basicFormFileOne}" var="one">
-						                    <a href="${pageContext.request.contextPath}/download?file=${one.originalFile}" download="${one.originalFile}">
+						                    <a href="${pageContext.request.contextPath}/download2?file=${one.originalFile}" download="${one.originalFile}">
 						                        ${one.saveFile}
 						                    </a>
 						                    <br>

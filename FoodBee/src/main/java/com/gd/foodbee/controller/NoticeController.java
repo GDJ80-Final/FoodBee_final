@@ -239,8 +239,10 @@ public class NoticeController {
     // 사용페이지 : /community/notice/modifyNotice
     @PostMapping("/community/notice/modifyNoticeAction")
     public String modifyNoticeAction(@RequestParam("noticeNo") int noticeNo,
-                                     NoticeRequestDTO noticeRequest) {
+                                     NoticeRequestDTO noticeRequest,
+                     				@RequestParam(name = "existingFile", required = false) String[] existingFileList) {
 
+    	log.debug(TeamColor.PURPLE + "existingFileList=>" + existingFileList);
         log.debug(TeamColor.PURPLE + "noticeRequest뭘로들어오나=>" + noticeRequest);
         log.debug(TeamColor.PURPLE + "file값 있는지확인=>" + noticeRequest.getFiles());
 
@@ -248,7 +250,7 @@ public class NoticeController {
             // 삭제할 파일 처리
             if (noticeRequest.getDeleteFiles() != null && !noticeRequest.getDeleteFiles().isEmpty()) {
                 for (String fileName : noticeRequest.getDeleteFiles()) {
-                    noticeService.getDeleteNoticeFile(fileName, noticeNo);
+                    noticeService.getDeleteNoticeFile(fileName, noticeNo, existingFileList);
                 }
             }
             noticeService.getModifyNoticeList(noticeNo, noticeRequest);
@@ -267,6 +269,7 @@ public class NoticeController {
 		log.debug(TeamColor.PURPLE + "delete.noticeNo=>" + noticeNo);
 		
 		noticeService.getDeleteNotice(noticeNo);
+		
 	return"redirect:/community/notice/noticeList";
 	}
 }

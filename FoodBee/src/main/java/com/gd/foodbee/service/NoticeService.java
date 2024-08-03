@@ -37,7 +37,7 @@ public interface NoticeService {
 	void getModifyNoticeList(int noticeNo, NoticeRequestDTO noticeRequest);
 	
 	// 공지사항 파일삭제
-	void getDeleteNoticeFile(String fileName, int noticeNo);
+	void getDeleteNoticeFile(String fileName, int noticeNo, String[] existingFileList);
 	
 	// 공지사항 삭제
 	int getDeleteNotice(int noticeNo);

@@ -182,7 +182,7 @@
 								    <c:choose>
 							          <c:when test="${not empty businessTripFileOne}">
 							              <c:forEach items="${businessTripFileOne}" var="one">
-							                  <a href="${pageContext.request.contextPath}/download?file=${one.originalFile}" download="${one.originalFile}">
+							                  <a href="${pageContext.request.contextPath}/download2?file=${one.originalFile}" download="${one.originalFile}">
 							                      ${one.saveFile}
 							                  </a>
 							                  <br>
