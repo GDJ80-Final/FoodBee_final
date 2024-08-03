@@ -68,10 +68,10 @@
 			GROUP_CONCAT(e.emp_name SEPARATOR ',') empName,
 			m.title,
 			DATE_FORMAT(m.create_datetime,'%Y-%m-%d %H:%i') createDatetime,
-			CASE
-        		WHEN mr.read_YN = 'Y' THEN '읽음'
-        		WHEN mr.read_YN = 'N' THEN '안읽음'
-    			END readYN
+	        CASE
+	            WHEN SUM(CASE WHEN mr.read_YN = 'Y' THEN 1 ELSE 0 END) = COUNT(mr.msg_no) THEN '읽음'
+	            ELSE '안읽음'
+	        	END AS readYN
 		FROM
 			msg m
 		INNER JOIN
@@ -81,14 +81,14 @@
 		WHERE
 			m.sender_emp_no = #{empNo}
 			AND m.msg_state = 1
-		<if test='readYN == "Y"'>
-			AND mr.read_YN = 'Y'
-		</if>
-		<if test='readYN == "N"'>
-			AND mr.read_YN = 'N'
-		</if>
 		GROUP BY 
 			m.msg_no
+		<if test='readYN == "Y"'>
+        	HAVING SUM(CASE WHEN mr.read_YN = 'Y' THEN 1 ELSE 0 END) = COUNT(mr.msg_no)
+        </if>
+        <if test='readYN == "N"'>
+            HAVING SUM(CASE WHEN mr.read_YN = 'Y' THEN 1 ELSE 0 END) != COUNT(mr.msg_no)
+        </if>
 		ORDER BY 
 			msgOrder DESC
 		LIMIT 
@@ -232,23 +232,28 @@
 
 	</select>
 	<select id="selectMsgCntSentBox" parameterType="Map" resultType="int">
-		SELECT
-			COUNT(*)
-		FROM
-			msg m
-		INNER JOIN
-			msg_recipient mr ON m.msg_no = mr.msg_no
-		INNER JOIN
-			emp e ON e.emp_no = mr.recipient_emp_no
-		WHERE
-			m.sender_emp_no = #{empNo}
-			AND m.msg_state = 1
-		<if test='readYN == "Y"'>
-			AND mr.read_YN = 'Y'
-		</if>
-		<if test='readYN == "N"'>
-			AND mr.read_YN = 'N'
-		</if>
+    	SELECT COUNT(*)
+    	FROM (
+	        	SELECT
+	            	m.msg_no
+	        	FROM
+	            	msg m
+	        	INNER JOIN
+	            	msg_recipient mr ON m.msg_no = mr.msg_no
+	        	INNER JOIN
+	            	emp e ON e.emp_no = mr.recipient_emp_no
+	        	WHERE
+		            m.sender_emp_no = #{empNo}
+		            AND m.msg_state = 1
+	        	GROUP BY 
+	            	m.msg_no
+	           	<if test='readYN == "Y"'>
+	            	HAVING SUM(CASE WHEN mr.read_YN = 'Y' THEN 1 ELSE 0 END) = COUNT(mr.msg_no)
+	        	</if>
+	        	<if test='readYN == "N"'>
+	            	HAVING SUM(CASE WHEN mr.read_YN = 'Y' THEN 1 ELSE 0 END) != COUNT(mr.msg_no)
+	        	</if>
+	            ) AS s;
 	
 	</select>
 	<select id="selectMsgcntTrashBox" parameterType="int" resultType="int">
