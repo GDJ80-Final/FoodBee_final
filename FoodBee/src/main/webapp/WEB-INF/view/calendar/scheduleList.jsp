@@ -91,7 +91,7 @@
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
 					                 </li>
-					                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+					                 <li class="page-item active"><div class="page-link" id="currentPage"></div>
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
 					                 </li>
@@ -174,7 +174,7 @@
                 },
                 success: function(json) {
   					console.log('personBtn curreptPage : ' + currentPage);
-
+  					$('#currentPage').text(currentPage);
   			        <!-- 4. updateTableForPersonal 함수 실행, ajax통신으로 가져온 데이터 값(json) 던져줌-->
                     updateTableForPersonal(json);
               
@@ -198,6 +198,7 @@
                 success: function(json) {
                     console.log("AJAX Data:", json); // 응답 데이터 확인
   					console.log('teamBtn curreptPage : ' + currentPage);
+  					$('#currentPage').text(currentPage);
   			        <!-- updateTableForTeam 함수 실행, ajax통신으로 가져온 데이터 값(json) 던져줌-->
                     updateTableForTeam(json);
                 },
@@ -220,6 +221,7 @@
                 },
                 success: function(json) {
   					console.log(' roomBtn curreptPage : ' + currentPage);
+  					$('#currentPage').text(currentPage);
   			        <!-- updateTableForRoom 함수 실행, ajax통신으로 가져온 데이터 값(json) 던져줌-->
                     updateTableForRoom(json);
                 },

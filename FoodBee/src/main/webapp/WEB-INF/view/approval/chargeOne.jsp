@@ -20,7 +20,10 @@
             width: 80px;
             margin-right: 10px;
         }
-
+		img {
+			width:160px;
+			height:130px;
+		}
 
         a {
         	text-decoration-line: none;
@@ -181,7 +184,7 @@
 						        <c:choose>
 						            <c:when test="${not empty chargeFileOne}">
 						                <c:forEach items="${chargeFileOne}" var="one">
-						                    <a href="${pageContext.request.contextPath}/download?file=${one.originalFile}" download="${one.originalFile}">
+						                    <a href="${pageContext.request.contextPath}/download2?file=${one.originalFile}" download="${one.originalFile}">
 						                        ${one.saveFile}
 						                    </a>
 						                    <br>

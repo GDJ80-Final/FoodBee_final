@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.gd.foodbee.dto.DraftDocFileDTO;
 import com.gd.foodbee.dto.NoticeDTO;
 import com.gd.foodbee.dto.NoticeFileDTO;
 import com.gd.foodbee.dto.NoticeRequestDTO;
@@ -200,46 +201,103 @@ public class NoticeServiceImpl implements NoticeService{
     		log.debug(TeamColor.PURPLE + "수정할 파일없어요");
     		return;
     	}
+    	
     	//파일이 있는경우
     	for(MultipartFile mf : mfs) {
-    		String originalFile = fileFormatter.fileFormatter(mf);
-    		
-    		log.debug(TeamColor.PURPLE + "originalFile=>" + originalFile);
-    		
-    	    NoticeFileDTO file = NoticeFileDTO.builder()
-        			.noticeNo(noticeNo)
-        			.originalFile(originalFile)
-        			.saveFile(mf.getOriginalFilename())
-        			.type(mf.getContentType())
-        			.build();
-    	    
-          int update2 = noticeFileMapper.insertNoticeFile(file);
-         
-	    	  if (update2 != 1) {
-	  	            throw new RuntimeException("파일입력실패");
-	  	      }
-    	  
-    	  	// 파일 저장
-			String path = filePath.getFilePath() + "notice_file/";
-			log.debug(TeamColor.PURPLE + "path => "+path);
-			//경로에 저장
-			filePath.saveFile(path, originalFile, mf);
-        }	
+            if (mf.getOriginalFilename() != null && !mf.getOriginalFilename().isEmpty()) { 
+	    		String originalFile = fileFormatter.fileFormatter(mf);
+	    		
+	    		log.debug(TeamColor.PURPLE + "originalFile=>" + originalFile);
+	    		
+	    	    NoticeFileDTO file = NoticeFileDTO.builder()
+	        			.noticeNo(noticeNo)
+	        			.originalFile(originalFile)
+	        			.saveFile(mf.getOriginalFilename())
+	        			.type(mf.getContentType())
+	        			.build();
+	    	    
+	          int update2 = noticeFileMapper.insertNoticeFile(file);
+	         
+		    	  if (update2 != 1) {
+		  	            throw new RuntimeException("파일입력실패");
+		  	      }
+	    	  
+	    	  	// 파일 저장
+				String path = filePath.getFilePath() + "notice_file/";
+				log.debug(TeamColor.PURPLE + "path => "+path);
+				//경로에 저장
+				filePath.saveFile(path, originalFile, mf);
+	        }	
+    	}
 	}
 
     // 공지사항 파일 삭제하기
-	// 파라미터 : String fileName, int noticeNo
+	// 파라미터 : String fileName, int noticeNo, String[] existingFileList
 	// 반환값 : X
 	// 사용클래스 : NoticeController.deleteNoticeFile
     @Override
-    public void getDeleteNoticeFile(String fileName, int noticeNo) {
-    	//DTO랑 맞춰주는작업
-        NoticeFileDTO noticeFileDTO = NoticeFileDTO.builder()
-        			.noticeNo(noticeNo)
-        			.saveFile(fileName)
-        			.build();
+    public void getDeleteNoticeFile(String fileName, int noticeNo, String[] existingFileList) {
+    	//삭제할 파일이 들어있는 경로
+    	String path = filePath.getFilePath() + "notice_file/";
+    	List<NoticeFileDTO> fileList = noticeFileMapper.selectNoticeFileList(noticeNo);
+		log.debug(TeamColor.PURPLE + "path => "+path);
+		log.debug(TeamColor.PURPLE + "fileList=>" + fileList);
+		
+		int existingFileListLength;
+		if(existingFileList == null) {
+			existingFileListLength = 0;
+			existingFileList = new String[0];
+		} else {
+			existingFileListLength = existingFileList.length;
+		}
+		
+		// 둘이 같을 경우 기존 파일 변화 x
+		if(fileList.size() != existingFileListLength) {
+			if(fileList != null) {
+				int fileListRow = noticeFileMapper.deleteNoticeFile2(noticeNo);
+				if(fileList.size() != fileListRow) {
+					log.debug("데이터베이스 파일 삭제 개수 잘못됨");
+					throw new RuntimeException();
+				}
+				for(NoticeFileDTO file : fileList) {
+					boolean delete = true;
+					for(String existingFile : existingFileList) {
+						if(existingFile.equals(file.getOriginalFile())) {
+							delete = false;
+						}
+					}
+					if(delete == true) {
+						String result = filePath.deleteFile(path, file.getOriginalFile());
+						log.debug(TeamColor.RED + "file.getOriginalFile() => " + file.getOriginalFile().toString());
+						if(result.equals("fail")) {
+							log.debug("파일 삭제 실패");
+							throw new RuntimeException();
+						}
+					} else {
+						NoticeFileDTO noticeFileDTO = NoticeFileDTO.builder()
+								.noticeNo(noticeNo)
+								.originalFile(file.getOriginalFile())
+								.saveFile(file.getSaveFile())
+								.type(file.getType())
+								.build();
+						log.debug(TeamColor.RED + "noticeFileDTO =>" + noticeFileDTO.toString());
+						int fileRow = noticeFileMapper.insertNoticeFile(noticeFileDTO);
+						if(fileRow != 1) {
+							throw new RuntimeException();
+						}
+					}
+				}
+			}
+		}
+		
+//    	//DTO랑 맞춰주는작업
+//        NoticeFileDTO noticeFileDTO = NoticeFileDTO.builder()
+//        			.noticeNo(noticeNo)
+//        			.saveFile(fileName)
+//        			.originalFile(existingFileList)
+//        			.build();
         
-        noticeFileMapper.deleteNoticeFile(noticeFileDTO);
+       // noticeFileMapper.deleteNoticeFile(noticeFileDTO);
     }
 	
 	// 공지사항 삭제하기
@@ -248,8 +306,20 @@ public class NoticeServiceImpl implements NoticeService{
 	// 사용클래스 : NoticeController.deleteNotice
     @Override
 	public int getDeleteNotice(int noticeNo) {
-		int delete = noticeMapper.deleteNotice(noticeNo);
-		
+    	List<NoticeFileDTO> fileList = noticeFileMapper.selectNoticeFileList(noticeNo);
+		int delete = noticeMapper.deleteNotice(noticeNo);		
+	    String path = filePath.getFilePath() + "notice_file/";
+	       
+	      for(NoticeFileDTO file : fileList) {
+	         String result = filePath.deleteFile(path, file.getOriginalFile());
+	         log.debug(TeamColor.RED + "file.getOriginalFile() => " + file.getOriginalFile().toString());
+	         if(result.equals("fail")) {
+	            log.debug("파일 삭제 실패");
+	            delete = 0;
+	            throw new RuntimeException();
+	         }
+	      }
+	      
 		return delete;
 	}
 }

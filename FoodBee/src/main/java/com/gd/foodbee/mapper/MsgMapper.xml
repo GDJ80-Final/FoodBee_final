@@ -98,7 +98,7 @@
 		SELECT
 			m.msg_no msgNo,
 			se.emp_name sender,
-			GROUP_CONCAT(e.emp_name SEPARATOR ',') receivers,
+			GROUP_CONCAT(CONCAT(e.emp_name, '|', mr.read_YN) SEPARATOR ',') receivers,
 			m.title,
 			m.content,
 			mr.read_YN readYN,

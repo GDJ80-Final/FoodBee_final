@@ -48,6 +48,11 @@ public interface ScheduleMapper {
 	// 반환값  :  "HashMap"
 	List<HashMap<String,Object>>teamList(String dptNo, String search, int beginRow, int rowPerPage);
 	
+	// 개인+팀일정 전체 리스트
+	// 파라미터 : int empNo, String dptNo, int beginRow, int rowPerPage
+	// 반환값 : "HashMap"
+	List<HashMap<String,Object>>personalTeamList(int empNo, String dptNo, int beginRow, int rowPerPage);
+	
 	// 회의일정 전체리스트
 	// 파라미터  : empNo, dptNo, search, beginRow, rowPerPage
 	// 반환값  :  "HashMap"

@@ -43,6 +43,15 @@
     	width: 100px;
     	margin-bottom: 10px;
     }
+    #fileContent{
+    	display:flex;
+    }
+    #fileContent #fileText{
+    	width:500px;
+    }
+    #fileContent button{
+    	margin-left:5px;
+    }
 </style>
 </head>
 <body>
@@ -111,13 +120,15 @@
 				                    <div id="Xfile">                	
 				                        <c:forEach items="${one}" var="file">
 				                            <input type="hidden" value="${one[0].noticeNo}"> 
-				                           	<span>
-				                           		${file.saveFile}
-				                           	</span>
-				                            <c:if test="${file.originalFile != null}">
-				                            	 <input type="hidden" name="originalFile" value="${file.originalFile}" readonly>
-				                            	<button class="deleteFile" data-file="${file.saveFile}">X</button>
-				                            </c:if>
+				                            
+				                           	<div id="fileContent">
+					                            <c:if test="${file.originalFile != null}">
+					                            	 <input type="text" value="${file.saveFile}" class="form-control input-default" readonly="readonly" id="fileText">
+					                            	 <input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
+					                            	<button class="deleteFile" data-file="${file.saveFile}">X</button>
+					                            </c:if>
+				                           	</div>
+				                           	
 				                             <c:if test="${file.originalFile == null}">
 				                            	<input type="text" value="첨부파일이 없습니다" class="form-control bg-transparent flex-grow-1 me-2" readonly="readonly">
 				                            </c:if>

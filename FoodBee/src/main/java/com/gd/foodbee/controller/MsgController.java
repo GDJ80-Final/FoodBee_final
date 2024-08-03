@@ -303,7 +303,8 @@ public class MsgController {
 	}
 	// 파일 다운로드
 	@GetMapping("/msg/download")
-    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(name="file") String filename) {
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam(name="file") String filename,
+    			@RequestParam(name="saveFile") String saveFileName) {
 		
         // 실제 파일이 저장된 경로
         String path = filePath.getFilePath()+"msg_file/";
@@ -320,7 +321,7 @@ public class MsgController {
         try {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + saveFileName)
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
                     .contentLength(file.length())
                     .body(resource);

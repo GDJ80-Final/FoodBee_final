@@ -47,7 +47,22 @@
                                             
                                             <div class="media-body">
                                                 <h5 class="m-b-3">FROM. ${m.sender}</h5>
-                                                <h5 class="m-b-3">TO. ${m.receivers}</h5>
+                                                <h5 class="m-b-3">TO.
+                                                	<c:forEach var="receiver" items="${fn:split(m.receivers, ',')}">
+										                <c:set var="name" value="${fn:substringBefore(receiver, '|')}"/>
+										                <c:set var="status" value="${fn:substringAfter(receiver,'|')}"/>
+                										${name} 
+                										<c:choose>
+										                    <c:when test="${status == 'Y'}">
+										                    	<span class="badge badge-primary badge-sm m-t-5">읽음</span>
+										                    </c:when>
+										                    <c:otherwise>
+										                    	<span class="badge badge-secondary badge-sm m-t-5">안 읽음</span>
+										                    </c:otherwise>
+                										</c:choose>
+            										</c:forEach>
+                                                	<%-- TO. ${m.receivers} --%>
+                                                </h5>
                                                 <p class="m-b-2">보낸 일시 : ${m.createDatetime}</p>
                                             </div>
                                             
@@ -71,7 +86,7 @@
                                         <div class="row m-b-30">
                                         <c:forEach var="file" items="${originalFiles}" varStatus="status">
 											 <div class="col-auto">
-											 	<a href="${pageContext.request.contextPath}/msg/download?file=${file}" class="text-muted" download="${file}">
+											 	<a href="${pageContext.request.contextPath}/msg/download?file=${file}&saveFile=${saveFiles[status.index]}" class="text-muted">
 											  	${saveFiles[status.index]}
 											 </a></div>
 		                

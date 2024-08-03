@@ -81,7 +81,7 @@
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
 					                 </li>
-					                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+					                 <li class="page-item active"><div class="page-link" id="currentPage"></div>
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
 					                 </li>
@@ -136,6 +136,7 @@ $(document).ready(function() {
                 dptNo:"${dptNo}"
             },
             success: function(json) {
+            	$('#currentPage').text(currentPage);
             	console.log("Ajax요청성공", json);
             	updateAllNotice(json);
             },
@@ -153,6 +154,7 @@ $(document).ready(function() {
                 currentPage: currentPage
             },
             success: function(json) {
+            	$('#currentPage').text(currentPage);
             	console.log("Ajax요청성공", json);
             	updateEmpNotice(json);
             },
@@ -172,6 +174,7 @@ $(document).ready(function() {
                 dptNo:"${dptNo}"
             },
             success: function(json) {
+            	$('#currentPage').text(currentPage);
             	console.log("Ajax요청성공", json);
             	updateDptNotice(json);
             },

@@ -24,5 +24,4 @@ public class NoticeRequestDTO {
 	private String originalFile;
 	private MultipartFile[] files;
 	private List<String> deleteFiles;
-	
 }
