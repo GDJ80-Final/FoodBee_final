@@ -14,7 +14,7 @@ public class DayOffHistoryServiceImpl implements DayOffHistoryService{
 	@Autowired
 	private DayOffHistoryMapper dayOffHistoryMapper;
 	
-	private static final int ROW_PER_PAGE = 2;
+	private static final int ROW_PER_PAGE = 10;
 
 	// 휴가 내역 리스트
 	// 파라미터 : int empNo, String year, int currentPage
