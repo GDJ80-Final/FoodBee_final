@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FoodBee:보낸 쪽지함</title>
+<title>FoodBee : 보낸 쪽지함</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -69,8 +69,8 @@
 			                                            <th scope="col"><input type="checkbox" id="selectAll"></th>
 			                                            <th scope="col">받는이</th>
 			                                            <th scope="col">제목</th>
-			                                            <th scope="col">보낸 일시</th>
 			                                            <th scope="col">읽음 여부</th>
+			                                            <th scope="col">보낸 일시</th>
 			                                        </tr>
 			                                    </thead>
 			                                    <tbody id="messageList">

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Insert title here</title>
+<title>FoodBee:쪽지 상세보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
@@ -83,15 +83,25 @@
                                         <c:set var="originalFiles" value="${fn:split(m.originalFiles, ',')}" />
 										<c:set var="saveFiles" value="${fn:split(m.saveFiles, ',')}" />
                                         <h6 class="p-t-15"><i class="fa fa-download mb-2"></i> 첨부파일 </h6>
+                                        <!-- 파일 없는 경우 분기 -->
                                         <div class="row m-b-30">
-                                        <c:forEach var="file" items="${originalFiles}" varStatus="status">
-											 <div class="col-auto">
-											 	<a href="${pageContext.request.contextPath}/msg/download?file=${file}&saveFile=${saveFiles[status.index]}" class="text-muted">
-											  	${saveFiles[status.index]}
-											 </a></div>
-		                
-			           					</c:forEach>
-			           					</div>
+	                                        <c:choose>
+										        <c:when test="${empty originalFiles || originalFiles[0] == ''}">
+											        <div class="col-auto">
+											            <span class="badge badge-danger badge-sm m-t-5">파일 없음</span>
+											        </div>
+										        </c:when>
+										        <c:otherwise>
+										            <c:forEach var="file" items="${originalFiles}" varStatus="status">
+										                <div class="col-auto">
+										                    <a href="${pageContext.request.contextPath}/msg/download?file=${file}&saveFile=${saveFiles[status.index]}" class="text-muted">
+										                        ${saveFiles[status.index]}
+										                    </a>
+										                </div>
+										            </c:forEach>
+										        </c:otherwise>
+										    </c:choose>
+			           				   </div>
                                 </div>
                             </div>
                         </div>
@@ -104,6 +114,7 @@
             <!-- #/ container -->
         </div>
      </div>
+     
    </div>
         <!--**********************************
             Content body end

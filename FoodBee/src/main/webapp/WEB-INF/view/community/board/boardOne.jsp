@@ -51,7 +51,7 @@
                                   <div class="read-content">
                                         <div class="media">                                           
                                             <div class="media-body">
-                                                <h5 class="m-b-3 text-primary">${m.boardCategory} > </h5>  
+                                                <h5 class="m-b-3 text-primary"><a href="${pageContext.request.contextPath}/community/board/boardList">${m.boardCategory} > </a></h5>  
                                                 <h3 class="m-0 mt-2 mb-2">${m.title}</h3>   
                                                 <span class="float-left">조회수 :  ${m.view}</span> 
                                                 <span class="float-right">${m.createDatetime}</span>                                       
@@ -71,7 +71,11 @@
 		                                        </i></span></button>
 		                                        
 	                                        </div>  
-	                                        <div id="post-actions" class="float-right">
+	                                        
+	                                        <div id="post-actions" class="float-left mt-5 mb-5">
+												 <button type="button" class="btn btn-secondary" id="backToList">돌아가기</button>
+					 						</div> 
+	                                        <div id="post-actions" class="float-right mt-5 mb-5">
 												 <button type="button" class="btn btn-info" id="modifyBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">수정</button>
 										         <button  type="button" class="btn btn-danger" id="deleteBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button>
 					 						</div>                               
@@ -142,90 +146,7 @@
             Content body end
         ***********************************-->
         
- 	
 
-
-
-
-
-
-
-
-<%-- <div id="main-wrapper">
-		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-	        <!--**********************************
-	            Content body start
-	        ***********************************-->
-	  <div class="content-body">
-			<div class="container">
-				<div id="backToList"> << 돌아가기 </div>
-				<br>
-				<table class="post-details">
-						<tr>
-							<td>게시글 번호</td>
-							<td>${m.boardNo}</td>
-						</tr>
-						<tr>
-							<td>카테고리</td>
-							<td>${m.boardCategory}</td>
-						</tr>
-						<tr>
-							<td>제목</td>
-							<td>${m.title}</td>
-						</tr>
-						<tr>
-							<td>내용 </td>
-							<td>${m.content}</td>
-						</tr>
-						<tr>
-							<td>조회수</td>
-							<td>${m.view}</td>
-						</tr>
-						<tr>
-							<td>좋아요</td>
-							<td id="likeCnt">${m.likeCnt}</td>
-						</tr>
-							
-				</table>
-				 <div class="post-actions" id="post-actions">
-				 	<button type="button" class="button edit" id="modifyBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">수정</button>
-		            <button  type="button" class="button delete" id="deleteBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button>
-				 </div>
-				 <div class="like-section">
-				 	<button class="like-button" id="likeButton">&#10084;</button>
-				 </div>
-				 <div class="like-count">${m.likeCnt}</div>
-				 <div class="comments-section">
-				 	<h2>댓글</h2>
-				 	<form method="post" action="${pageContext.request.contextPath}/community/board/addComment">
-				 	<div class="comment-input">
-				 			<input type="hidden" name="boardNo" id="boardNo" value="${m.boardNo}">
-					 		<textarea class="comment-box" name="content" placeholder="댓글입력..."></textarea>
-					 		<input type="password" name="commentPw" class="password-box" placeholder="비밀번호 입력">
-					 		<button class="button register" id="addComment">댓글 등록</button>
-				 	</div>
-				 	</form>
-				 	<div id="page">
-				        <button type="button" id="first">First</button>
-				        <button type="button" id="pre">◁</button>
-				        <button type="button" id="next">▶</button>
-				        <button type="button" id="last">Last</button>
-					</div>
-				 	<table class="comment" id="comment">
-				 	<!-- 댓글 리스트 출력  -->
-				 	
-				 	</table>
-				 </div>
-			</div>
-			<!-- 비밀번호 확인 모달 -->
-			<jsp:include page="./checkPwModal.jsp"></jsp:include>
-			<!-- 관리자 사유 입력 모달 -->
-			<jsp:include page="./addReasonModal.jsp"></jsp:include>
-	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include> --%>
 <script>
 
 	let currentPage = 1;

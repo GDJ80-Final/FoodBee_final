@@ -4,8 +4,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>인트라넷 사원 등록</title>
-<style>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoodBee:인트라넷 사원 등록</title>
+
+<!-- Custom Stylesheet -->
+<link href="css/style.css" rel="stylesheet">
+
+<!-- <style>
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
@@ -63,12 +69,162 @@
         margin-bottom: 20px;
         text-align: center;
     }
-</style>
+</style> -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body>
-    <form method="post" action="${pageContext.request.contextPath}/signup" id="signupForm" enctype="multipart/form-data">
+<body class="h-100">
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+   <div class="login-form-bg h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100">
+                <div class="col-xl-6">
+                    <div class="form-input-content">
+                        <div class="card login-form mb-5 mt-5">
+                            <div class="card-body pt-2">
+                            <!-- 가입폼 시작 -->
+                            <div style="text-align:center;">
+                              <a class="mb-5" href="${pageContext.request.contextPath}/login">
+                            	<img src="${pageContext.request.contextPath}/upload/img/logo.png" width="260" height="200">
+                             </a>
+                             <h4>인트라넷 사원 등록</h4>
+                            </div>
+                            <hr>
+                            <br>
+                                <div class="form-validation">
+                             
+                                	
+                                	<form class="form-valide" method="post" action="${pageContext.request.contextPath}/signup" id="signupForm" enctype="multipart/form-data">
+                                        <div class="form-group row">
+                                        	    <label class="col-lg-4 col-form-label" for="empNo">사원번호 <span class="text-danger">*</span>
+                                        	    </label>
+                                        	    <div class="col-lg-6">
+										            <c:choose>
+												        <c:when test="${empty empNo}">
+												        <!-- 포워딩 시에 signupDTO에서 값 그대로 넣어주기  -->
+												            <input type="number" class="form-control" value="${signupDTO.empNo}" name="empNo" id="empNo" readonly>
+												        </c:when>
+												        <c:otherwise>
+												            <input type="number"  class="form-control" value="${empNo}" name="empNo" id="empNo" readonly>
+										        		</c:otherwise>
+										    		</c:choose>
+									    		</div>
+									            <span>${empNoErrorMsg}</span> 
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="empPw">비밀번호 <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                    	        <input type="password" class="form-control" name="empPw" id="empPw" value="${signupDTO.empPw}">
+                                    	         <div id="empPwError" class="error-message">${empPwErrorMsg}</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="confirmedEmpPw">비밀번호 확인 <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="password" class="form-control" name="confirmedEmpPw" id="confirmedEmpPw">
+                                                <div id="confirmedEmpPwError" class="error-message"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-lg-4 col-form-label" for="contact">연락처 <span class="text-danger">*</span>
+                                            </label>
+                                            <div class="col-lg-6">
+                                                <input type="text" class="form-control" name="contact" id="contact" placeholder="000-0000-0000" value="${signupDTO.contact}">
+                                                <div id="contactError" class="error-message">${contactErrorMsg}</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+									        <label class="col-lg-4 col-form-label">주소 
+									        </label>
+									        <div class="col-lg-3">
+									        <button type="button" class="btn btn-primary" id="selectAddr">주소검색</button>
+        									</div>
+                                        </div>
+                                        <div class="form-group row">
+
+									        <label class="col-lg-4 col-form-label" for="postNo">우편번호 <span class="text-danger">*</span>
+									        </label>
+									        <div class="col-lg-6">
+									           <input type="number" class="form-control" name="postNo" id="postNo" placeholder="우편번호" readonly value="${signupDTO.postNo}">
+									           <div id="postNoError" class="error-message">${postNoErrorMsg}</div>
+									        </div>
+        									
+                                        </div>
+
+                                        <div class="form-group row">
+                                               
+								            <label class="col-lg-4 col-form-label" for="address">주소 <span class="text-danger">*</span>
+								            </label>
+								            <div class="col-lg-6">
+								            <input type="text" name="address" id="address" class="form-control" placeholder="주소" readonly value="${signupDTO.address}">
+								            <div id="addressError" class="error-message">${addressErrorMsg}</div>
+											</div>
+
+                                        </div>
+                                        
+                                        <div class="form-group row">
+								            <label class="col-lg-4 col-form-label" for="addressDetail">상세주소 <span class="text-danger">*</span>
+								            </label>
+								            <div class="col-lg-8">
+								            	<input type="text" name="addressDetail" class="form-control" id="addressDetail" placeholder="상세주소를 입력해주세요" value="${signupDTO.addressDetail}">
+								            <div id="addressDetailError" class="error-message">${addressDetailErrorMsg}</div>
+       										</div>
+                                        </div>
+                                        <div class="form-group row">
+								            <label class="col-lg-4 col-form-label" for="profileImg">프로필 사진 <span class="text-danger">*</span>
+								            </label>
+								            <div class="col-lg-8">
+								            	<input type="file" name="profileImg" id="profileImg" class="form-control" required>
+       										</div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-lg-8 ml-auto">
+                                            	<button type="submit" class="btn btn-primary float-right">등록</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+
+    </div>
+
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+
+<!-- 템플릿 적용 전 -->
+<%--     <form method="post" action="${pageContext.request.contextPath}/signup" id="signupForm" enctype="multipart/form-data">
         <div class="form-title">사원 등록</div>
         <div>
             <label for="empNo">사원번호</label>
@@ -126,13 +282,13 @@
         <div>
             <button type="submit">등록</button>
         </div>
-    </form>
+    </form> --%>
 
 <script>
        $(document).ready(function() {
     	   
     	   //사원번호 중복 검사 
-    	   //model에 담았던 result 값
+    	   // model에 담았던 result 값
     	   //1 => 가입불가, 바로 로그인으로 이동
     	   //0 => 가입 가능 
     	   let result = '<%=request.getAttribute("result")%>';
@@ -216,13 +372,13 @@
            }
 
           
-           //커서이동시마다 유효성 검사 
+           // 커서이동시마다 유효성 검사 
            $('#empPw').blur(validateEmpPw);
            $('#confirmedEmpPw').blur(validateConfirmedEmpPw);
            $('#contact').blur(validateContact);
            $('#addressDetail').blur(validateAddrDetail);
            
-           //폼 제출 시 모든 필드 유효성 검사 
+           // 폼 제출 시 모든 필드 유효성 검사 
            $('#signupForm').submit(function(event) {
                validateEmpPw();
                validateConfirmedEmpPw();

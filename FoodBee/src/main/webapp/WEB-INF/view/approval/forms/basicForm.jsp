@@ -10,7 +10,7 @@
 	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<title>Insert title here</title>
+<title>FoodBee : 기안 작성</title>
     <style>
     	
         .form-section {
@@ -86,7 +86,7 @@
     	}
 
     	.remove-file-button {
-        margin-left: 10px; /* Add space between file input and delete button */
+        margin-left: 10px;
     	}
 	
 	    .error{
@@ -122,6 +122,7 @@
                         <div class="card">
                             <div class="card-body ps-5 pe-5">
                                 <!-- 내용 시작 -->
+                                
                                 <!-- Nav tabs -->
                                 <div class="default-tab">
 	                                <ul class="nav nav-tabs mb-3" role="tablist">
@@ -147,55 +148,34 @@
 	                                        </li>
 	                                </ul>
 	                            </div>
-		<%-- 					        <div class="tab" id="basicForm" data-form="basicForm">
-							        <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
-							        기본기안서
-							        </a></div>
-							        <div class="tab" id="revenueForm" data-form="revenueForm">
-							        <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
-							        매출보고
-							        </a></div>
-							        <div class="tab" id="chargeForm" data-form="chargeForm">
-							        <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
-							        지출결의
-							        </a></div>
-							        <div class="tab" id="businessTripForm" data-form="businessTripForm">
-							        <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
-							        출장신청
-							        </a></div>
-							        <div class="tab" id="dayOffForm" data-form="dayOffForm">
-							        <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
-							        휴가신청
-							        </a></div> --%>
-							    
+							    <!-- 입력 폼 시작 -->
                                 <form id="form" method="post" action="${pageContext.request.contextPath}/approval/addDraft" enctype="multipart/form-data">
 							        <!-- 공통 영역 -->
 									<jsp:include page="./commonForm.jsp"></jsp:include>
 							        <!-- 공통 영역 끝 -->
 							        
 							        <!-- 양식 영역 시작 -->
-									 <div class="form-section">
-							            <div class="form-group">
-							            	<input type="hidden" name="tmpNo" value="4">
-							                <label for="title">제목:</label>
-							                <input type="text" class="form-control" id="title" name="title">
-							            </div>
-							            <div class="error" id="titleError"></div>
-							            <div class="form-group">
-							                <label for="content">내용:</label>
-							                <textarea id="content" name="content" class="textarea_editor bg-light"></textarea>
-							            </div>
-							            <div class="error" id="contentError"></div>
-							            <div >
-							            <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
-							            	<button type="button" class="add-file-button mb-3" id="addFileButton"> + 파일 추가</button>	
-	                                    <div id="fileInputsContainer">
-											<div class="file-input-group" id="fileGroup1">
-												<input type="file" id="attachment-1" name="docFiles">
-											</div> 
-											
-	                                    </div>
-	                                    </div>
+									<div class="form-section">
+							           <div class="form-group">
+								             <input type="hidden" name="tmpNo" value="4">
+								             <label for="title">제목:</label>
+								             <input type="text" class="form-control" id="title" name="title">
+							           </div>
+							           <div class="error" id="titleError"></div>
+							           <div class="form-group">
+								             <label for="content">내용:</label>
+								             <textarea id="content" name="content" class="textarea_editor bg-light"></textarea>
+							           </div>
+							           <div class="error" id="contentError"></div>
+							           <div>
+								             <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
+								           	 <button type="button" class="add-file-button mb-3" id="addFileButton"> + 파일 추가</button>	
+		                                     <div id="fileInputsContainer">
+												 <div class="file-input-group" id="fileGroup1">
+													<input type="file" id="attachment-1" name="docFiles">
+												 </div> 
+		                                     </div>
+	                               	  </div>
 							            <!-- <div class="file-upload">
 							                <label for="attachment">첨부파일:</label>
 							                <div id="fileInputsContainer">
@@ -235,82 +215,6 @@
         ***********************************-->
         
 
-<!-- 템플릿 전  -->
-<%-- <div id="main-wrapper">
-		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-	        <!--**********************************
-	            Content body start
-	        ***********************************-->
-	<div class="content-body">
-	<div class="container">
-		    <div class="tabs" id="tabs">
-		        <div class="tab" id="basicForm" data-form="basicForm">
-		        <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
-		        기본기안서
-		        </a></div>
-		        <div class="tab" id="revenueForm" data-form="revenueForm">
-		        <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
-		        매출보고
-		        </a></div>
-		        <div class="tab" id="chargeForm" data-form="chargeForm">
-		        <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
-		        지출결의
-		        </a></div>
-		        <div class="tab" id="businessTripForm" data-form="businessTripForm">
-		        <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
-		        출장신청
-		        </a></div>
-		        <div class="tab" id="dayOffForm" data-form="dayOffForm">
-		        <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
-		        휴가신청
-		        </a></div>
-		    </div>
-		    
-		    <form id="form" method="post" action="${pageContext.request.contextPath}/approval/addDraft" enctype="multipart/form-data">
-		        <!-- 공통 영역 -->
-				<jsp:include page="./commonForm.jsp"></jsp:include>
-		       
-		        <!-- 공통 영역 끝 -->
-		        
-		        <!-- 양식 영역 시작 -->
-				 <div class="form-section">
-		            <div class="form-group">
-		            	<input type="hidden" name="tmpNo" value="4">
-		                <label for="title">제목:</label>
-		                <input type="text" id="title" name="title">
-		                <div class="error" id="titleError"></div>
-		            </div>
-		            <div class="form-group">
-		                <label for="content">내용:</label>
-		                <textarea id="content" name="content"></textarea>
-		                <div class="error" id="contentError"></div>
-		            </div>
-		            <div class="file-upload">
-		                <label for="attachment">첨부파일:</label>
-		                <div id="fileInputsContainer">
-					        <div class="file-input-group" id="fileGroup1">
-					                <input type="file" id="attachment-1" name="docFiles">
-					        </div>
-					   </div>
-        			   <button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>
-		                
-		               
-		            </div>
-		        </div>	
-		        <!-- 양식 영역 끝 -->
-		        <div class="form-actions">
-		            <button type="button" id="returnBox" class="cancel-btn">취소</button>
-		            <button type="button" id="submitBtn" class="submit-btn">제출</button>
-		        </div>
-			</form>	
-			<!-- 폼 종료 -->
-	    </div>
-	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
-	     --%>
 	    
 	    
 		<!-- 모달 -->

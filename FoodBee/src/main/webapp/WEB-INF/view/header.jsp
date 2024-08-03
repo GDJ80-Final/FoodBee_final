@@ -100,7 +100,7 @@
                                         <li>
                                             <a href="${pageContext.request.contextPath}/myPage"><i class="icon-user"></i> <span>마이페이지</span></a>
                                         </li>
-                                        <li><a href="${pageContext.request.contextPath}/msg/receivedMsgBox"><i class="icon-envelope-open"></i><span>쪽지함</span></a></li>
+                                        <li><a href="${pageContext.request.contextPath}/msg/addMsg"><i class="icon-envelope-open"></i><span> 쪽지 쓰기 </span></a></li>
                                         
                                         <hr class="my-2">
                                         
