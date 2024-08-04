@@ -35,7 +35,7 @@
 			COALESCE (
 				SUM(
 				CASE 
-			    	WHEN type_name = '연차' THEN 1
+			    	WHEN type_name = '연차' THEN DATEDIFF(end_date, start_date) + 1
 			    	WHEN type_name = '반차' THEN 0.5
 		    		ELSE 0
 		    		END
