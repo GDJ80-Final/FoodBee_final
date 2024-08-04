@@ -85,7 +85,7 @@
                         <div class="col-lg-6 col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/schedule/schedule">${emp.empName}님의 다가오는 일정 >></a></h4>
+                                    <h4 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/calendar/schedule"> 다가오는 일정 >></a></h4>
                                     <table id="scheduleTable" class="table responsive">
 									    <thead>
 									        <tr>
