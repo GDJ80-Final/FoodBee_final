@@ -260,7 +260,7 @@
             }else{
             $.each(json.personalList, function(index, item) {
                 let newRow = $("<tr>" +
-                        "<td>" + item.scheduleNo + "</td>" +
+                        "<td>" + item.scheduleOrder + "</td>" +
                         "<td><a href='" + "${pageContext.request.contextPath}/calendar/scheduleOne?scheduleNo=" + item.scheduleNo + "'>" + item.title + "</a></td>" +
                         "<td>" + item.startDatetime + "</td>" +
                         "<td>" + item.endDatetime + "</td>" +

@@ -93,6 +93,7 @@
 	<!-- 개인일정 전체리스트 -->
 	<select id="personalList" parameterType="HashMap" resultType="com.gd.foodbee.dto.ScheduleDTO">
 		SELECT 
+			ROW_NUMBER() OVER(ORDER BY startDatetime) scheduleOrder,
 			schedule_no scheduleNo, 
 			emp_no empNo, 
 			title, 
@@ -116,7 +117,7 @@
 	    </if>
 	    AND type = '개인'
 		ORDER BY 
-			start_datetime DESC
+			scheduleOrder DESC
 		LIMIT 
 			#{beginRow}, #{rowPerPage}
 	</select>

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class ScheduleDTO {
+	private int scheduleOrder;
 	private int scheduleNo;
 	private int empNo;
 	private String title;

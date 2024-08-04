@@ -174,21 +174,23 @@
                 }else{
                 	button = "";
                 }
-            	// 상세보기 페이지 URL 설정
-                let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
-                
-                let newRow = $("<tr>" +
-                    "<td>" + item.tmpName + "</td>" +
-                    "<td>" + item.empName + "</td>" +
-                    "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
-                    "<td>" + state + "&nbsp" +button + "</td>" +
-                    "<td>" + item.createDatetime + "</td>" +
-                    "</tr>");
-                tableBody.append(newRow);
-            	});
-            }
-            $("#tableBody").show();
-          }
+                if (state === '미결') { // 미결 상태인 경우에만 추가
+                    let button = "<button class='badge badge-danger px-2'>승인필요</button>";
+                    let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
+
+	                    let newRow = $("<tr>" +
+	                        "<td>" + item.tmpName + "</td>" +
+	                        "<td>" + item.empName + "</td>" +
+	                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+	                        "<td>" + state + "&nbsp" + button + "</td>" +
+	                        "<td>" + item.createDatetime + "</td>" +
+	                        "</tr>");
+	                    tableBody.append(newRow);
+                		}
+            		});
+       			}
+        		$("#tableBody").show();
+   		 	}
 	    
 		// 개인 + 팀 일정 리스트
 	    function loadTeamSchedule(currentPage) {
