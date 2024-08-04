@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사내 게시판 글 목록</title>
+<title>FoodBee : 사내 게시판 글 목록</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
 
@@ -70,7 +70,7 @@
                             <div class="card-body">
                                 <!-- 내용 시작 -->
                                 <div class="text-right">
-                                	<button class="btn btn-info" id="writeButton">글쓰기</button>
+                                	<button class="btn btn-info" id="writeButton">글 작성</button>
                                 </div>
                                 
 			                    <!-- Nav tabs -->
@@ -87,12 +87,7 @@
                                     </ul>
                                    
                                 </div>
-						      <!--   <div class="btn-group">
-						            <button class="btn btn-primary btn-block" id="all">전체</button>
-						            <button class="btn btn-primary btn-block" id="chat">잡담</button>
-						            <button class="btn btn-primary btn-block" id="company">회사이야기</button>
-						            <button class="btn btn-primary btn-block" id="question">질문</button>
-						        </div> -->
+					
 						       <div class="table-responsive">
 						        <table class="table">
 						            <thead>

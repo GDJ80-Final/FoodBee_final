@@ -36,7 +36,7 @@
                             <div class="card-body">
                                 <div class="email-left-box">
                                 <a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
-                                    <div class="mail-list mt-4"><a href="email-inbox.html" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>보낸 쪽지함</b> 
+                                    <div class="mail-list mt-4"><a href="#" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>보낸 쪽지함</b> 
                                     <span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
                                     </a>
                                         

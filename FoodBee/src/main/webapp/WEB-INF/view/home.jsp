@@ -8,12 +8,12 @@
     
 <!-- theme meta -->
 <meta name="theme-name" content="quixlab" />
-<title>home</title>
+<title>FoodBee : 홈</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
     #attendanceTime, #departureTime {
-        font-size: 1.2em; /* 텍스트 크기를 키워서 보이기 쉽게 합니다. */
-        color: black; /* 텍스트 색상을 검정색으로 지정합니다. */
+        font-size: 1.2em; 
+        color: black; 
     }
     #contentTitle a{
     	font-size: 30px;
@@ -29,8 +29,205 @@
 	        <!--**********************************
 	            Content body start
 	        ***********************************-->
-	  	<div class="content-body">
-			세션값
+
+     <div class="content-body">
+
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                            
+                            <!-- 근태 -->
+                            	<div class="float-right">
+	                            	<button type="button" class="btn btn-light" id="attendanceStartButton">출근</button>
+	              					<button type="button" class="btn btn-light" id="attendanceEndButton">퇴근</button>
+              					</div>
+                                <h3 class="card-title text-white font-weight-bold"> 오늘의 근무 >> </h3>
+                                
+                                <div class="d-inline-block">             
+              						<div  class="text-white" id="attendanceTime" style="display:none;">출근 시간:</div>
+									<div class="text-white" id="departureTime" style="display:none;">퇴근 시간:</div>
+									<div  class="text-white" id="workTime" style="display:none;">근무 시간:</div>
+                                </div>
+                                <span class="float-right display-6 opacity-5"><i class="fa fa-users"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">근무 현황 >> </h3>
+                                <div class="d-inline-block">
+                                    <!-- 근무 progress 바 영역 -->
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+            <!--         <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Customer Satisfaction</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white">99%</h2>
+                                    <p class="text-white mb-0">Jan - March 2019</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                
+				<!-- 일정 -->
+                <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/schedule/schedule">${emp.empName}님의 다가오는 일정 >></a></h4>
+                                    <table id="scheduleTable" class="table responsive">
+									    <thead>
+									        <tr>
+									            <th>유형</th>
+									            <th>제목</th>
+									            <th>시작일</th>
+									            <th>종료일</th>
+									            <th>작성자</th>
+									        </tr>
+									    </thead>
+									    <tbody id="tableBody">
+									    </tbody>
+									</table>
+                                </div>
+                            </div>
+                            
+                        </div> 
+                    <!-- 일정 종료 -->   
+                    <!-- 쪽지함 -->
+	                    <div class="col-lg-6 col-md-12">
+	                        <div class="card">
+	                            <div class="card-body">
+	                                <h3 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/msg/receivedMsgBox">읽지 않은 쪽지 >> </a></h3>
+	                                <div id="activity">
+	                                	<table class="table responsive">
+	                                		<!-- 쪽지함 -->
+	                                		<thead>
+	                                                <tr>
+	                                                    <th>보낸이</th>
+	                                                    <th>제목</th>
+	                                                    <th>보낸일시</th>
+	                                                   
+	                                                </tr>
+	                                        </thead>
+	                                        <tbody id="messageList">
+	                                        
+	                                        
+	                                        </tbody>
+	                                	
+	                                	</table>
+	                   
+	                                </div> 
+	                                
+	                            </div>
+	                        </div>
+	                    </div>
+                    <!-- 쪽지함 종료  -->
+                     
+                        
+                    </div>
+           		<!-- 결재함  -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                  
+                                    <div class="card-body">
+                                    <h3 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/approval/approvalBox">결재 대기 >> </a></h3>
+                                        <table id="approvalTable" class="table responsive">
+										    <thead>
+										        <tr>
+										            <th>양식유형</th>
+										            <th>기안자</th>
+										            <th>제목</th>
+										            <th>결재상태</th>
+										            <th>기안일시</th>
+										        </tr>
+										    </thead>
+										    <tbody id="approvalTableBody">
+										    </tbody>
+									   </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<!-- 결재함 종료  -->
+				<!-- 인기글 리스트 -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                            <h4 class="text-weight-bold"><a href="${pageContext.request.contextPath}/community/board/boardList">이번주 커뮤니티 인기글 >></a></h4>
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>번호</th>
+								                    <th>카테고리</th>
+								                    <th>제목</th>
+								                    <th>작성 일자</th>
+								                    <th>조회수</th>
+								                    <th>좋아요</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="boardBodyMostLiked">
+                                                <!-- 게시판 인기글 -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+				<!-- 인기글 종료 -->
+				
+
+                
+
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+      </div>
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+   
+	  	<jsp:include page="./footer.jsp"></jsp:include>
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	
+	  	<!-- 템플릿 적용 전 -->
+<%-- 			세션값
 			<div>empNo : ${emp.empNo}</div>
 			<div>empName : ${emp.empName}</div>
 			<div>dptNo : ${emp.dptNo}</div>
@@ -85,16 +282,33 @@
 	 	
  	</div>
  	
- 	<jsp:include page="./footer.jsp"></jsp:include>
  	
-	<script>
-	window.onload = function() {
+ 	
+ 	
+ 	
+ 	
+ <!-- footer -->
+ 	<jsp:include page="./footer.jsp"></jsp:include> --%>
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ 	
+ <!-- 스크립트 -->
+<script>
+	$(document).ready(function(){
 		let currentEmpNo = "${emp.empNo}"; // 현재 empNo 값을 가져옵니다.
 	    let currentDptNo = "${emp.dptNo}";
 	    let currentPage = 1;
 
 	    loadTeamSchedule(currentPage);
 	    loadApprovalBoxList(currentPage);
+	    // 페이지 로드시 쪽지함 호출
+	    loadMsg("N",1);
+	    loadMostLikedList();
 	    
 	    // 결재함 리스트
         function loadApprovalBoxList(currentPage) {
@@ -445,7 +659,76 @@
 	    resetAtSpecificTime(5, 00); // 특정 시간 (예: 오전 5:00)에 초기화 설정
 	    checkDateChangePeriodically(); // 주기적으로 날짜 변경 확인
 	    loadAttendanceRecord(); // 출근 기록 로드
-	};
+	    
+	    
+	    
+	    
+	    
+	    // 쪽지함
+        function loadMsg(readYN, page){
+            $.ajax({
+                url : '${pageContext.request.contextPath}/msg/receivedMsgBox',
+                method: 'post',
+                data : {
+                    readYN : readYN,
+                    currentPage : page
+                },
+                success:function(json){
+                    console.log(json);
+
+                    lastPage = json.lastPage;
+                    console.log('Current Page =>', currentPage, 'Last Page =>', lastPage);
+					$('#currentPage').text(currentPage);
+                    $('#messageList').empty();
+                    if (json.msgList.length === 0) {
+                        $('#messageList').append(
+                            '<tr>'+
+                            '<td colspan="6" style="text-align:center;">쪽지가 없습니다</td>'+
+                            '</tr>')
+                       
+                    }else{
+                    	json.msgList.forEach(function(item){
+	                        console.log(item);
+	                        $('#messageList').append(
+	                            '<tr>'+
+	                            '<td>'+ item.empName + '</td>'+
+	                            '<td><a href="${pageContext.request.contextPath}/msg/msgOne?msgNo='+
+	                                    item.msgNo +'">'+ item.title + '</a></td>'+
+	                            '<td>'+ item.createDatetime+ '</td>'+
+	                            '</tr>'
+	                          );
+                    	});	
+                    }
+
+                }
+            });
+        }
+	    // 인기글 리스트 출력
+        function loadMostLikedList(){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/community/board/getMostLikedList',
+				method : 'post',
+				success:function(json){
+					   console.log(json);
+					   json.forEach(function(item){
+						   console.log(item)
+							   $('#boardBodyMostLiked').append('<tr>' +
+									'<td>'+ item.boardOrder +'</td>'+
+									'<td>'+ item.boardCategory + '</td>'+
+									'<td><a id="title" href="${pageContext.request.contextPath}/community/board/boardOne?boardNo='+
+											item.boardNo +'" data-board-no="' + item.boardNo + '">'+ '<span class="badge badge-danger">인기</span>&nbsp;&nbsp;' + item.title +'&nbsp;'+' ['+item.commentCnt+'] '+'</a></td>'+
+									'<td>'+ item.createDatetime + '</td>'+
+									'<td>'+ item.view + '</td>'+
+									'<td>'+ item.likeCnt + '</td>'+
+									'</tr>' 
+						  	 	 );
+							});
+						}
+					});
+				}
+        // 인기글 리스트 출력 종료
+	   
+	});
 
     </script>
  

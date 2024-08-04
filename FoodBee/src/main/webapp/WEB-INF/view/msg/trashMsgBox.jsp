@@ -36,16 +36,16 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="email-left-box">
-                                <a href="${pageContext.request.contextPath}/msg/addMsg" class="btn btn-primary btn-block">새 쪽지 쓰기</a>
+                                	<button class="btn btn-info btn-block" id="toMsgBox">쪽지함으로 복구</button> 
                                     <div class="mail-list mt-4">
-                                    <a href="#" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>휴지통</b> 
-                                    <span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
-                                    </a> 
+	                                    <a href="#" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i> <b>휴지통</b> 
+	                                    <span class="badge badge-primary badge-sm float-right m-t-5" id="msgCntAll">${msgCntAll}</span>
+	                                    </a> 
                                     </div>
                                     
                                     <h5 class="mt-5 m-b-10"></h5>
                                     <div class="list-group mail-list">
-                                    	 <button class="btn btn-info btn-block" id="toMsgBox">쪽지함으로 복구</button> 
+                                    	 <button class="btn btn-danger m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="deleteMsg"><i class="ti-close m-r-5 f-s-12"></i> 쪽지 삭제</button>
                                     </div>
                                 </div>
                                 <div class="email-right-box">
@@ -92,7 +92,7 @@
                                     </nav>
                                 </div>
                               	<div class="text-right m-t-15">
-		       						<button class="btn btn-danger m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="deleteMsg"><i class="ti-close m-r-5 f-s-12"></i> 쪽지 삭제</button>
+		       						
 		   						</div>
                                 </div>
                             </div>

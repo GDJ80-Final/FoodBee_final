@@ -223,66 +223,7 @@
     <script src="js/styleSwitcher.js"></script>
 
 
-<!-- 템플릿 적용 전 -->
-<%--     <form method="post" action="${pageContext.request.contextPath}/signup" id="signupForm" enctype="multipart/form-data">
-        <div class="form-title">사원 등록</div>
-        <div>
-            <label for="empNo">사원번호</label>
-            <c:choose>
-		        <c:when test="${empty empNo}">
-		        <!-- 포워딩 시에 signupDTO에서 값 그대로 넣어주기  -->
-		            <input type="number" value="${signupDTO.empNo}" name="empNo" id="empNo" readonly>
-		        </c:when>
-		        <c:otherwise>
-		            <input type="number" value="${empNo}" name="empNo" id="empNo" readonly>
-        		</c:otherwise>
-    		</c:choose>
-            <span>${empNoErrorMsg}</span>
-        </div>
-        <div>
-            <label for="empPw">비밀번호</label>
-            <input type="password" name="empPw" id="empPw" value="${signupDTO.empPw}">
-            <!--포워딩되어서 올 경우 form value에 입력값 담아주기 + model에 담긴 에러메세지 출력  -->
-            <div id="empPwError" class="error-message">${empPwErrorMsg}</div>
-        </div>
-        <div>
-            <label for="confirmedEmpPw">비밀번호 확인</label>
-            <input type="password" name="confirmedEmpPw" id="confirmedEmpPw">
-            <div id="confirmedEmpPwError" class="error-message"></div>
-        </div>
-        <div>
-            <label for="contact">연락처</label>
-            <input type="text" name="contact" id="contact" placeholder="000-0000-0000" value="${signupDTO.contact}">
-            <div id="contactError" class="error-message">${contactErrorMsg}</div>
-        </div>
-        <div>
-            <label>주소</label>
-            <button type="button" id="selectAddr">주소검색</button>
-        </div>
-        <div>
-            <label for="postNo">우편번호</label>
-            <input type="number" name="postNo" id="postNo" placeholder="우편번호" readonly value="${signupDTO.postNo}">
-            <div id="postNoError" class="error-message">${postNoErrorMsg}</div>
-        </div>
-        <div>
-            <label for="address">주소</label>
-            <input type="text" name="address" id="address" placeholder="주소" readonly value="${signupDTO.address}">
-            <div id="addressError" class="error-message">${addressErrorMsg}</div>
-        </div>
-        <div>
-            <label for="addressDetail">상세주소</label>
-            <input type="text" name="addressDetail" id="addressDetail" placeholder="상세주소를 입력해주세요" value="${signupDTO.addressDetail}">
-            <div id="addressDetailError" class="error-message">${addressDetailErrorMsg}</div>
-        </div>
-        <div>
-            <label for="profileImg">프로필 사진</label>
-            <input type="file" name="profileImg" id="profileImg" required>
-            
-        </div>
-        <div>
-            <button type="submit">등록</button>
-        </div>
-    </form> --%>
+
 
 <script>
        $(document).ready(function() {

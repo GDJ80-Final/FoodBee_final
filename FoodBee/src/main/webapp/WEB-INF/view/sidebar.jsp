@@ -12,6 +12,7 @@
                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">쪽지함</span>
                         </a>
                         <ul aria-expanded="false">
+                        	<li><a href="${pageContext.request.contextPath}/msg/addMsg">새 쪽지 작성</a></li>
                             <li><a href="${pageContext.request.contextPath}/msg/receivedMsgBox">받은 쪽지함</a></li>
                             <li><a href="${pageContext.request.contextPath}/msg/sentMsgBox">보낸 쪽지함</a></li>
                             <li><a href="${pageContext.request.contextPath}/msg/trashMsgBox">휴지통</a></li>
