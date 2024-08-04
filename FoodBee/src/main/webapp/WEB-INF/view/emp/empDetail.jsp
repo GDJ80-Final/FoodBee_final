@@ -20,6 +20,10 @@
             align-items: center;
             justify-content: center;
         }
+        #back{
+    	width: 100px;
+    	margin-bottom: 10px;
+    	}
     </style>
 </head>
 <body>
@@ -51,6 +55,7 @@
 			                            <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="dayOffHistory">휴가 내역</a>
 			                            </li>
 			                        </ul>
+			                        <a href="${pageContext.request.contextPath}/emp/empList" class="btn btn-primary btn-block" id="back">돌아가기</a>
 	                            	<div class="row">
 	                            		<div class="col"></div>
 	                            		<div class="col-8">
@@ -58,7 +63,7 @@
 									        	<div id="year" class="mt-5">
 									        		<select id="yearSelect" class="form-select"></select>
 									        	</div>
-												<div id="content" class="mt-5">
+												<div id="content" class="mt-3">
 										           
 									            </div>
 									        </form>
