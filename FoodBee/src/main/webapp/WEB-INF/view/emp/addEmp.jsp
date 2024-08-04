@@ -15,75 +15,133 @@
 	            Content body start
 	        ***********************************-->
 		  <div class="content-body">
-
-			<h1>사원 등록 및 초대</h1>
-			<form method="post" id="addEmpForm" action="${pageContext.request.contextPath}/addEmp">
-				<div>
-					사원번호 <input type="number" id="empNo" name="empNo" readonly>
-					<button type="button" id="createNoBtn">사원번호 생성</button>
-					<span id="noMsg" class="msg">${empNoErrorMsg}</span>
+		  	<div class="row page-titles mx-0">
+		         <div class="col p-md-0">
+		             <ol class="breadcrumb">
+		                 <li class="breadcrumb-item"><a href="javascript:void(0)">사원</a></li>
+		                 <li class="breadcrumb-item active"><a href="javascript:void(0)">사원 초대</a></li>
+		             </ol>
+		         </div>
+		   	</div>
+		  
+		  	<div class="container-fluid">
+               <div class="row">
+               		<div class="col-lg"></div>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                            	<div class="row mt-3">
+                            		<div class="col"></div>
+                            		<div class="col-9">
+		                            	<div class="form-validation">
+											<form method="post" id="addEmpForm" class="form-valide"  action="${pageContext.request.contextPath}/addEmp">
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="empNo">사원번호 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<input type="number" class="form-control" id="empNo" name="empNo"  readonly>
+														<button type="button" class="btn btn-primary mt-3" id="createNoBtn">사원번호 생성</button>
+														<div id="noMsg" class="msg">${empNoErrorMsg}</div>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="empName">사원명 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+		                                       	    	<input type="text" class="form-control"  id="empName" name="empName" required>
+														<span id="nameMsg" class="msg">${empNameErrorMsg}</span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="empState">상태 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<select id="empState"  class="form-control" name="empState">
+															<option value="">---상태 선택---
+															<option value="0">가발령
+															<option value="1">재직
+														</select> 
+														<span id="stateMsg" class="msg">${empStateErrorMsg}</span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="office">본사/지사 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<select id="office" class="form-control">
+															<option value="">---본사/지사 선택---</option>
+														</select>
+														<span id="officeMsg" class="msg"></span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="dept">부서 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<select id="dept" class="form-control">
+															<option value="">---부서 선택---</option>
+														</select>
+														<span id="deptMsg" class="msg"></span>
+													</div>
+												</div>
+												<div  class="form-group row">
+													<label class="col-lg-4 col-form-label" for="team">팀 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<select id="team" name="dptNo" class="form-control">
+															<option value="">---팀 선택---</option>
+														</select>
+														<span id="teamMsg" class="msg"></span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="rankName">직급 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<select id="rankName" name="rankName" class="form-control">
+															<option value="">---직급 선택---
+															<option value="사원">사원
+															<option value="대리">대리
+															<option value="팀장">팀장
+															<option value="부서장">부서장
+															<option value="지서장">지사장
+															<option value="CEO">CEO
+														</select>
+														<span id="rankMsg" class="msg">${rankNameErrorMsg}</span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="startDate">입사일 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<input type="date" id="startDate" name="startDate" class="form-control" required>
+														<span id="dateMsg" class="msg">${startDateErrorMsg}</span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-4 col-form-label" for="empEmail">이메일 <span class="text-danger">*</span>
+		                                       	    </label>
+		                                       	    <div class="col-lg-6">
+														<input type="email" id="empEmail" name="empEmail" class="form-control" required>
+														<span id="emailMsg" class="msg">${empEmailErrorMsg}</span>
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-lg-8 ml-auto">
+														<button type="button" class="btn btn-primary float-right" id="addBtn">등록 및 초대</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+									<div class="col"></div>								
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg"></div>
 				</div>
-				<div>
-					사원명 <input type="text" id="empName" name="empName" required>
-					<span id="nameMsg" class="msg">${empNameErrorMsg}</span>
-				</div>
-				<div>
-					상태
-					<select id="empState" name="empState">
-						<option value="">---상태 선택---
-						<option value="0">가발령
-						<option value="1">재직
-					</select> 
-					<span id="stateMsg" class="msg">${empStateErrorMsg}</span>
-				</div>
-				<div>
-					본사/지사
-					<select id="office">
-						<option value="">---본사/지사 선택---</option>
-					</select>
-					<span id="officeMsg" class="msg"></span>
-				</div>
-				<div>
-					부서
-					<select id="dept">
-						<option value="">---부서 선택---</option>
-					</select>
-					<span id="deptMsg" class="msg"></span>
-				</div>
-				<div>
-					팀
-					<select id="team" name="dptNo">
-						<option value="">---팀 선택---</option>
-					</select>
-					<span id="teamMsg" class="msg"></span>
-				</div>
-				
-				<div>
-					직급 
-					<select id="rankName" name="rankName">
-						<option value="">---직급 선택---
-						<option value="사원">사원
-						<option value="대리">대리
-						<option value="팀장">팀장
-						<option value="부서장">부서장
-						<option value="지서장">지사장
-						<option value="CEO">CEO
-					</select>
-					<span id="rankMsg" class="msg">${rankNameErrorMsg}</span>
-				</div>
-				
-				<div>
-					입사일 <input type="date" id="startDate" name="startDate" required>
-					<span id="dateMsg" class="msg">${startDateErrorMsg}</span>
-				</div>
-				<div>
-					이메일 <input type="email" id="empEmail" name="empEmail" required>
-					<span id="emailMsg" class="msg">${empEmailErrorMsg}</span>
-				</div>
-				<div>
-					<button type="button" id="addBtn">등록 및 초대</button>
-				</div>
-			</form>
+			</div>
 		</div>
 	</div>
  	<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
@@ -200,6 +258,13 @@
 			}
 			
 			
+			if($('#empName').val() == '') {
+				$('#stateMsg').text('상태를 선택해주세요 ');
+				$('#stateMsg').focus();
+				return;
+			} else {
+				$('#stateMsg').text('');
+			}
 			if($('#empState').val() == '') {
 				$('#stateMsg').text('상태를 선택해주세요 ');
 				$('#stateMsg').focus();
