@@ -365,7 +365,7 @@
             	 let midApprovalState = getApprovalStateText(item.midApprovalState);
                  let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
             	
-                 let modifyButton = `<a href=""><button>수정가능</button></a>`;
+                 let modifyButton = `<a href=""><button class='badge badge-danger px-2'>수정가능</button></a>`;
                 //승인날짜 null값 표시
                  let midApprovalDatetime = item.midApprovalDatetime;
                  if(midApprovalDatetime === null){
