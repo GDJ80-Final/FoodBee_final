@@ -61,27 +61,22 @@
             height: 100px;
             resize: none;
         }
-        .file-upload {
-            display: flex;
-            align-items: center;
+        .add-file-button {
             margin-top: 10px;
-        }
-        .file-upload label {
-            width: 80px;
-            margin-right: 10px;
-        }
-        .file-upload input[type="text"] {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-        }
-        .file-upload button {
-            background-color: #000;
-            color: #fff;
+            padding: 10px 20px;
             border: none;
-            padding: 8px 10px;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
             cursor: pointer;
         }
+        .add-file-button:hover {
+            background-color: #555;
+        }
+    	#fileInputsContainer {
+	        display: flex;
+	        flex-direction: column; 
+    	}
         .form-actions {
             display: flex;
             justify-content: center;
@@ -185,93 +180,115 @@
 	            Content body start
 	        ***********************************-->
 	<div class="content-body">
-	<div class="container">
-		<div class="tabs" id="tabs">
-		    <div class="tab" id="basicForm" data-form="basicForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
-			    	기본기안서
-			    </a>
-		    </div>
-		    <div class="tab" id="revenueForm" data-form="revenueForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
-			    	매출보고
-			    </a>
-		    </div>
-		    <div class="tab" id="chargeForm" data-form="chargeForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
-			    	지출결의
-			    </a>
-		    </div>
-		    <div class="tab" id="businessTripForm" data-form="businessTripForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
-			    	출장신청
-			    </a>
-		    </div>
-		    <div class="tab" id="dayOffForm" data-form="dayOffForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
-			    	휴가신청
-			    </a>
-		    </div>
+	
+		<div class="row page-titles mx-0">
+			<div class="col p-md-0">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+					<li class="breadcrumb-item"><a href="javascript:void(0)">기안 작성</a></li>
+					<li class="breadcrumb-item active"><a href="javascript:void(0)">지출 결의</a></li>
+				</ol>
+			</div>
 		</div>
-		<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
-			<!-- 공통 영역 포함 -->
-		    <jsp:include page="./commonForm.jsp"></jsp:include>
-		    <!-- 공통 영역 끝 -->
-		    
-		    <!-- 양식 영역 시작 -->
-			<div class="form-section">
-		    	<div class="form-group">
-		            <label for="yearSelect"></label>
-					<select id="yearSelect"></select>
-					<label for="monthSelect">월 선택:</label>
-					<select id="monthSelect"></select>						       	        
-					<input type="hidden" id="description" name="description">
-		        </div>	            
-		        <div class="form-group">
-		        	<input type="hidden" name="tmpNo" value="5">
-		            <label for="title">제목:</label>
-		            <input type="text" id="title" name="title">
-		        </div>
-		        <div class="form-group">
-		            <label for="categoryContainer">내역:</label>
-		            <div id="categoryContainer"><hr>
-					    <div class="category-row" style="display: flex; flex-direction: column;">
-					        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-					            <label for="typeName">적요:</label>
-					            <input type="text" id="typeName" placeholder="지출내용" style="margin-right: 20px;" name="typeName">
-					            
-					            <label for="amount">금액:</label>
-					            <input type="text" id="amount" placeholder="금액 입력" name="amount">원
-					        </div>
-					        <div style="display: flex; align-items: center;">
-					            <label for="description" style="margin-right: 10px;">비고:</label>
-					            <textarea style="width:400px;" id="text" placeholder="상세내용" name="text"></textarea>
-					            
-					            <button type="button" class="add-category">+ 추가</button>	
-					        </div>
-					        <hr>
-					    </div>
+		<!-- row -->
+	
+		<div class="container-fluid">
+			<div class="row">
+		    	<div class="col-lg-12">
+		        	<div class="card">
+		            	<div class="card-body ps-5 pe-5">
+						<!-- 내용 시작 -->	
+						
+						<!-- Nav tabs -->
+                        <div class="default-tab">
+                        	<ul class="nav nav-tabs mb-3" role="tablist">
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="basicForm" href="${pageContext.request.contextPath}/approval/forms/basicForm">
+	                            	기본기안서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="revenueForm" href="${pageContext.request.contextPath}/approval/forms/revenueForm">
+	                            	매출보고서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link active" id="chargeForm" href="${pageContext.request.contextPath}/approval/forms/chargeForm">
+	                            	지출결의서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="businessTripForm" href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
+	                            	출장신청서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="dayOffForm" href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
+	                            	휴가신청서</a>
+	                            </li>
+                        	</ul>
+                        </div>
+                        
+                        <!-- 입력 폼 시작 -->
+						<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
+							<!-- 공통 영역 포함 -->
+						    <jsp:include page="./commonForm.jsp"></jsp:include>
+						    <!-- 공통 영역 끝 -->
+						    
+						    <!-- 양식 영역 시작 -->
+							<div class="form-section">
+						    	<div class="form-group">
+						            <label for="yearSelect"></label>
+									<select id="yearSelect"></select>
+									<label for="monthSelect">월 선택:</label>
+									<select id="monthSelect"></select>						       	        
+									<input type="hidden" id="description" name="description">
+						        </div>	            
+						        <div class="form-group">
+						        	<input type="hidden" name="tmpNo" value="5">
+						            <label for="title">제목:</label>
+						            <input type="text" id="title" name="title">
+						        </div>
+						        <div class="form-group">
+						            <label for="categoryContainer">내역:</label>
+						            <div id="categoryContainer"><hr>
+									    <div class="category-row" style="display: flex; flex-direction: column;">
+									        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+									            <label for="typeName">적요:</label>
+									            <input type="text" id="typeName" placeholder="지출내용" name="typeName" style="width: 350px; max-width: 350px;">
+									            
+									            <label for="amount" style="margin-left: 30px;">금액:</label>
+									            <input type="text" id="amount" placeholder="금액 입력" name="amount" style="width: 315px; max-width: 315px;">원
+									        </div>
+									        <div style="display: flex; align-items: center;">
+									            <label for="description" style="margin-right: 10px;">비고:</label>
+									            <textarea style="width:785px;" id="text" placeholder="상세내용" name="text"></textarea>
+									            
+									            <button type="button" class="btn btn-primary add-category">추가</button>	
+									        </div>
+									        <hr>
+									    </div>
+									</div>
+						        </div>
+						        <div>
+									<h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
+									<button type="button" class="add-file-button mb-3" id="addFileButton"> + 파일 추가</button>
+		                            <div id="fileInputsContainer">
+										<div class="file-input-group" id="fileGroup1">
+											<input type="file" id="attachment-1" name="docFiles">
+										</div> 
+		                        	</div>
+	                        	</div>
+							</div>	
+							<!-- 양식 영역 끝 -->
+							
+						    <div class="text-center">
+						    	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
+						    	<button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+							</div>	
+						</form>
+						<!-- 폼 종료 -->
+						</div>
 					</div>
-		        </div>
-		        <div class="file-upload">
-                <label for="attachment">첨부파일:</label>
-	                <div id="fileInputsContainer">
-				        <div class="file-input-group" id="fileGroup1">
-				        	<input type="file" id="attachment-1" name="docFiles">
-				        </div>
-				    </div>
-	      			<button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>		                
-		               
-		     	</div>
+				</div>
 			</div>	
-			<!-- 양식 영역 끝 -->
-			
-		    <div class="form-actions">
-		        <button type="button" id="returnBox" class="cancel-btn">취소</button>
-	            <button type="button" id="submitBtn" class="submit-btn">제출</button>
-			</div>	
-		</form>
-	</div>
+		</div>
 	</div>
 </div>
 
@@ -346,36 +363,41 @@ $(document).ready(function() {
     updateMonthSelect(initialYear);
     monthSelect.val(initialMonth < 10 ? '0' + initialMonth : initialMonth);
     
-	// 카테고리 추가 기능
-	$(document).on('click', '.add-category', function() {
-	    const newRow = `	            		    	
-	    	<div class="category-row" style="display: flex; flex-direction: column;">
-		        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-		            <label for="typeName">적요:</label>
-		            <input type="text" placeholder="지출내용" style="margin-right: 20px;" name="typeName">
-		            
-		            <label for="amount">금액:</label>
-		            <input type="text" placeholder="금액 입력" name="amount">원
-		        </div>
-		        <div style="display: flex; align-items: center;">
-		            <label for="description" style="margin-right: 10px;">비고:</label>
-		            <textarea style="width: 400px;" placeholder="상세내용" name="text"></textarea>
-		            <button type="button" class="remove-category">삭제</button>
-		        </div>
-		        <hr>
-		    </div>`;
-	    $('#categoryContainer').append(newRow);
-	});
-	
-	// 카테고리 삭제 기능
-	$(document).on('click', '.remove-category', function() {
-	    // 카테고리 수가 1개 이상일 경우에만 삭제
-	    if ($('#categoryContainer .category-row').length > 1) {
-	        $(this).closest('.category-row').remove();
-	    } else {
-	        alert("삭제 할 수 없습니다.");
-	    }
-	});
+ 	// 카테고리 추가 기능
+    $(document).on('click', '.add-category', function() {
+        const newRow = `
+            <div class="category-row" style="display: flex; flex-direction: column;">
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+            
+	            <label for="typeName">적요:</label>
+	            <input type="text" id="typeName" placeholder="지출내용" name="typeName" style="width: 350px; max-width: 350px;">
+	            
+	            <label for="amount" style="margin-left: 30px;">금액:</label>
+	            <input type="text" id="amount" placeholder="금액 입력" name="amount" style="width: 315px; max-width: 315px;">원
+	            
+	        </div>
+	        <div style="display: flex; align-items: center;">
+	        
+	            <label for="description" style="margin-right: 10px;">비고:</label>
+	            <textarea style="width:785px;" id="text" placeholder="상세내용" name="text"></textarea>
+	            
+	            <button type="button" class="btn btn-danger remove-category">삭제</button>
+	            
+	        </div>
+            <hr>
+            </div>`;
+        $('#categoryContainer').append(newRow);
+    });
+
+    // 카테고리 삭제 기능
+    $(document).on('click', '.remove-category', function() {
+        // 카테고리 수가 1개 이상일 경우에만 삭제
+        if ($('#categoryContainer .category-row').length > 1) {
+            $(this).closest('.category-row').remove();
+        } else {
+            alert("삭제 할 수 없습니다.");
+        }
+    });
 	
 	// 폼 제출 시 년도와 월을 합쳐서 description 필드에 설정
 	$('#form').on('submit', function(e) {
@@ -421,9 +443,9 @@ $(document).ready(function() {
     $('#addFileButton').click(function() {
         fileOrder++;
         let newFileInput = 
-            '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+            '<div class="file-input-group d-flex align-items-center mt-3" id="fileGroup${fileOrder}">'+
             '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
-             '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+             '<button type="button" class="btn btn-danger remove-file-button mt-2 ms-3" data-file-id="fileGroup${fileOrder}">삭제</button>'+
             '</div>';
         $('#fileInputsContainer').append(newFileInput);
     });

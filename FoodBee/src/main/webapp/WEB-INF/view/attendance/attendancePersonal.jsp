@@ -102,7 +102,7 @@
 						                    
 						                    <!-- endTime 미등록 시 X -->
 						                    <c:choose>
-						                        <c:when test="${empty m.endTime}">
+						                        <c:when test="${empty m.updateEndTime}">
 						                            <td>X</td>
 						                        </c:when>
 						                        <c:otherwise>

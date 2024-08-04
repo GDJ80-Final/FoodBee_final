@@ -61,27 +61,22 @@
             height: 100px;
             resize: none;
         }
-        .file-upload {
-            display: flex;
-            align-items: center;
+        .add-file-button {
             margin-top: 10px;
-        }
-        .file-upload label {
-            width: 80px;
-            margin-right: 10px;
-        }
-        .file-upload input[type="text"] {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-        }
-        .file-upload button {
-            background-color: #000;
-            color: #fff;
+            padding: 10px 20px;
             border: none;
-            padding: 8px 10px;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
             cursor: pointer;
         }
+        .add-file-button:hover {
+            background-color: #555;
+        }
+    	#fileInputsContainer {
+	        display: flex;
+	        flex-direction: column; 
+    	}
         .form-actions {
             display: flex;
             justify-content: center;
@@ -184,87 +179,109 @@
 	            Content body start
 	        ***********************************-->
 	<div class="content-body">
-	<div class="container">	
-		<div class="tabs" id="tabs">
-			<div class="tab" id="basicForm" data-form="basicForm">
-		        <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
-			    	기본기안서
-			    </a>
-	     	</div>
-			<div class="tab" id="revenueForm" data-form="revenueForm">
-				<a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
-			 		매출보고
-				</a>
-			</div>
-			<div class="tab" id="chargeForm" data-form="chargeForm">
-				<a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
-			 		지출결의
-				</a>
-			</div>
-			<div class="tab" id="businessTripForm" data-form="businessTripForm">
-				<a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
-					출장신청
-				</a>
-			</div>
-			<div class="tab" id="dayOffForm" data-form="dayOffForm">
-				<a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
-					휴가신청
-				</a>
+	
+	  	<div class="row page-titles mx-0">
+			<div class="col p-md-0">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+					<li class="breadcrumb-item"><a href="javascript:void(0)">기안 작성</a></li>
+					<li class="breadcrumb-item active"><a href="javascript:void(0)">휴가 신청</a></li>
+				</ol>
 			</div>
 		</div>
-		<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
-			<!-- 공통 영역 포함 -->
-			<jsp:include page="./commonForm.jsp"></jsp:include>
-			<!-- 공통 영역 끝 -->
-			
-			<!-- 양식 영역 시작 -->
-			<div class="form-section">
-				<div class="form-group">
-					<label for="category">유형:</label>
-					<input type="radio" id="category" name="typeName" value="연차"> 연차          
-					<input type="radio" id="category" name="typeName" value="반차" style="margin-left: 20px;"> 반차
-			    </div>
-			    <div class="form-group">
-			        <label for="remaining">잔여 휴가:</label>
-			        <input type="text" id="dayOff" name="dayoff" readonly="readonly">
-			        
-			        <label style="margin-left: 400px;">기간:</label>
-			        <input type="date" id="startDate" name="startDate"> ~
-			        <input type="date" id="endDate" name="endDate">
-			    </div>
-			    <div class="form-group">
-			        <label for=emergency>비상연락:</label>
-			        <input type="text" id="emergency" name="text">
-			    </div>
-			    <div class="form-group">
-			    	<input type="hidden" name="tmpNo" value="2">
-			        <label for="title">제목:</label>
-			        <input type="text" id="title" name="title">
-			    </div>
-			    <div class="form-group">
-			        <label for="content">내용:</label>
-			        <textarea id="content" name="content" placeholder="휴가 사유을 작성하세요."></textarea>
-			    </div>
-			    <div class="file-upload">
-                <label for="attachment">첨부파일:</label>
-	                <div id="fileInputsContainer">
-				        <div class="file-input-group" id="fileGroup1">
-				        	<input type="file" id="attachment-1" name="docFiles">
-				        </div>
-				    </div>
-	      			<button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>		                
-		               
-		     	</div>
+		<!-- row -->
+	
+		<div class="container-fluid">
+			<div class="row">
+		    	<div class="col-lg-12">
+		        	<div class="card">
+		            	<div class="card-body ps-5 pe-5">
+						<!-- 내용 시작 -->	
+						
+						<!-- Nav tabs -->
+                        <div class="default-tab">
+                        	<ul class="nav nav-tabs mb-3" role="tablist">
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="basicForm" href="${pageContext.request.contextPath}/approval/forms/basicForm">
+	                            	기본기안서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="revenueForm" href="${pageContext.request.contextPath}/approval/forms/revenueForm">
+	                            	매출보고서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="chargeForm" href="${pageContext.request.contextPath}/approval/forms/chargeForm">
+	                            	지출결의서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link" id="businessTripForm" href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
+	                            	출장신청서</a>
+	                            </li>
+	                            <li class="nav-item">
+	                            	<a class="nav-link active" id="dayOffForm" href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
+	                            	휴가신청서</a>
+	                            </li>
+                        	</ul>
+                        </div>
+						<!-- 입력 폼 시작 -->
+						<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
+							<!-- 공통 영역 포함 -->
+							<jsp:include page="./commonForm.jsp"></jsp:include>
+							<!-- 공통 영역 끝 -->
+							
+							<!-- 양식 영역 시작 -->
+							<div class="form-section">
+								<div class="form-group">
+									<label for="category">유형:</label>
+									<input type="radio" id="category" name="typeName" value="연차"> 연차          
+									<input type="radio" id="category" name="typeName" value="반차" style="margin-left: 20px;"> 반차
+							    </div>
+							    <div class="form-group">
+							        <label for="remaining">잔여 휴가:</label>
+							        <input type="text" id="dayOff" name="dayoff" readonly="readonly">
+							        
+							        <label style="margin-left: 400px;">기간:</label>
+							        <input type="date" id="startDate" class="form-control-sm" name="startDate"> ~
+							        <input type="date" id="endDate" class="form-control-sm" name="endDate">
+							    </div>
+							    <div class="form-group">
+							        <label for=emergency>비상연락:</label>
+							        <input type="text" id="emergency" name="text">
+							    </div>
+							    <div class="form-group">
+							    	<input type="hidden" name="tmpNo" value="2">
+							        <label for="title">제목:</label>
+							        <input type="text" id="title" name="title">
+							    </div>
+							    <div class="form-group">
+							        <label for="content">내용:</label>
+							        <textarea id="content" name="content" placeholder="휴가 사유을 작성하세요."></textarea>
+							    </div>
+							    <div>
+									<h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
+									<button type="button" class="add-file-button mb-3" id="addFileButton"> + 파일 추가</button>
+		                            <div id="fileInputsContainer">
+										<div class="file-input-group" id="fileGroup1">
+											<input type="file" id="attachment-1" name="docFiles">
+										</div> 
+		                         	</div>
+	                             </div>  
+							</div>
+						    <!-- 양식 영역 끝 -->
+								<div class="text-center">
+						            <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
+						            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+								</div>
+							</form>
+							<!-- 폼 종료 -->
+						</div>
+					</div>
+				</div>
 			</div>
-		    <!-- 양식 영역 끝 -->
-			<div class="form-actions">
-				<button type="button" id="returnBox" class="cancel-btn">취소</button>
-	            <button type="button" id="submitBtn" class="submit-btn">제출</button>
-			</div>
-		</form>
-	</div>
+		</div>
 	</div>
 </div>
+		
  		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 <!-- 모달 -->
 <jsp:include page="./empModal.jsp"></jsp:include>     
@@ -409,13 +426,13 @@ $(document).ready(function() {
 	
 	/* 파일 여러 개 추가  */
 	let fileOrder = 1;
-    // 파일 추가 버튼 클릭 시
+	// 파일 추가 버튼 클릭 시
     $('#addFileButton').click(function() {
         fileOrder++;
         let newFileInput = 
-            '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+            '<div class="file-input-group d-flex align-items-center mt-3" id="fileGroup${fileOrder}">'+
             '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
-             '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+             '<button type="button" class="btn btn-danger remove-file-button mt-2 ms-3" data-file-id="fileGroup${fileOrder}">삭제</button>'+
             '</div>';
         $('#fileInputsContainer').append(newFileInput);
     });

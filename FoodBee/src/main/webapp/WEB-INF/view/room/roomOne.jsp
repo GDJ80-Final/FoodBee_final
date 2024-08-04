@@ -162,8 +162,8 @@
 					            </tr>
 					        </table>
 					        <div class="text-center" style="margin-bottom: 30px;">
-                            	<button type="submit" class="btn btn-info">예약</button>&nbsp;&nbsp;
-                            	<button type="button" class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">취소</button>
+                            	<button type="button" class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/room/roomList'">돌아가기</button>&nbsp;&nbsp;
+                            	<button type="submit" class="btn btn-info">예약</button>                            	
                             </div>
 					    </form>
 					</div>

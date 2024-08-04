@@ -61,27 +61,22 @@
             height: 100px;
             resize: none;
         }
-        .file-upload {
-            display: flex;
-            align-items: center;
+        .add-file-button {
             margin-top: 10px;
-        }
-        .file-upload label {
-            width: 80px;
-            margin-right: 10px;
-        }
-        .file-upload input[type="text"] {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ccc;
-        }
-        .file-upload button {
-            background-color: #000;
-            color: #fff;
+            padding: 10px 20px;
             border: none;
-            padding: 8px 10px;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
             cursor: pointer;
         }
+        .add-file-button:hover {
+            background-color: #555;
+        }
+    	#fileInputsContainer {
+	        display: flex;
+	        flex-direction: column; 
+    	}
         .form-actions {
             display: flex;
             justify-content: center;
@@ -174,6 +169,10 @@
 	    .category-row textarea {
 	        resize: none;
 	    }
+	    select {
+		    height: 35px; /* 원하는 높이로 설정 */
+		    padding: 5px; /* 내부 여백을 추가하여 더 부드럽게 보이도록 */
+		}
     </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -186,93 +185,113 @@
 	            Content body start
 	        ***********************************-->
 	<div class="content-body">
-	<div class="container">
-		<div class="tabs" id="tabs">
-		    <div class="tab" id="basicForm" data-form="basicForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/basicForm">
-			    	기본기안서
-			    </a>
-			</div>
-		    <div class="tab" id="revenueForm" data-form="revenueForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/revenueForm">
-			    	매출보고
-			    </a>
-		    </div>
-		    <div class="tab" id="chargeForm" data-form="chargeForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/chargeForm">
-			   		지출결의
-			    </a>
-		    </div>
-		    <div class="tab" id="businessTripForm" data-form="businessTripForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
-			    	출장신청
-			    </a>
-		    </div>
-		    <div class="tab" id="dayOffForm" data-form="dayOffForm">
-			    <a href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
-			    	휴가신청
-			    </a>
-		    </div>
+	
+		<div class="row page-titles mx-0">
+            <div class="col p-md-0">
+            	<ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">기안 작성</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">매출 보고</a></li>
+                </ol>
+            </div>
+        </div>
+        <!-- row -->
+	
+		<div class="container-fluid">
+        	<div class="row">
+        		<div class="col-lg-12">
+	                <div class="card">
+	                    <div class="card-body ps-5 pe-5">
+                        	<!-- 내용 시작 -->
+                        	
+							<!-- Nav tabs -->
+                            <div class="default-tab">
+	                        	<ul class="nav nav-tabs mb-3" role="tablist">
+                                	<li class="nav-item">
+                                    	<a class="nav-link" id="basicForm" href="${pageContext.request.contextPath}/approval/forms/basicForm">
+                                    	기본기안서</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    	<a class="nav-link active" id="revenueForm" href="${pageContext.request.contextPath}/approval/forms/revenueForm">
+                                    	매출보고서</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    	<a class="nav-link" id="chargeForm" href="${pageContext.request.contextPath}/approval/forms/chargeForm">
+                                    	지출결의서</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    	<a class="nav-link" id="businessTripForm" href="${pageContext.request.contextPath}/approval/forms/businessTripForm">
+                                    	출장신청서</a>
+                                    </li>
+                                    <li class="nav-item">
+                                    	<a class="nav-link" id="dayOffForm" href="${pageContext.request.contextPath}/approval/forms/dayOffForm">
+                                    	휴가신청서</a>
+                                    </li>
+	                            </ul>
+                            </div>
+                            
+                            <!-- 입력 폼 시작 -->
+							<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
+							    <!-- 공통 영역 포함 -->
+							    <jsp:include page="./commonForm.jsp"></jsp:include>
+							    <!-- 공통 영역 끝 -->
+							    
+							    <!-- 양식 영역 시작 -->
+						        <div class="form-section">
+						            <div class="form-group">
+						                <label for="yearSelect">발생 년월:</label>
+										<select id="yearSelect"></select>
+										<select id="monthSelect"style="margin-left: 30px;"></select>
+										<input type="hidden" id="description" name="description">
+						            </div>
+						            <div class="form-group">
+						            	<input type="hidden" name="tmpNo" value="1">
+						                <label for="title">제목:</label>
+						                <input type="text" id="title" name="title">
+						            </div>
+						            
+						            <div class="form-group">
+									    <label for="categoryContainer">내역:</label>
+									    <div id="categoryContainer"><hr>
+									        <div class="category-row" style="display: flex; align-items: center;">
+									            <label for="categorySelect">카테고리:</label>
+									            <select class="categorySelect" name="typeName" id="category">
+									                <option value="category0">==선택==</option>
+									                <option value="간편식">간편식</option>
+									                <option value="쌀/곡물">쌀/곡물</option>
+									                <option value="육/수산">육/수산</option>
+									                <option value="음료/주류">음료/주류</option>
+									                <option value="청과">청과</option>
+									            </select>
+									            
+									            <label for="revenue"style="margin-left: 100px;">매출액:</label>
+									            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원
+									            <button type="button" class="btn btn-primary add-category" style="margin-left: 50px;">추가</button>
+									        </div><hr>
+									    </div>
+									</div>
+						            <div>
+										<h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
+										<button type="button" class="add-file-button mb-3" id="addFileButton"> + 파일 추가</button>
+			                            <div id="fileInputsContainer">
+											<div class="file-input-group" id="fileGroup1">
+												<input type="file" id="attachment-1" name="docFiles">
+											</div> 
+			                        	</div>
+		                        	</div>      
+						        </div> 
+						        <!-- 양식 영역 끝 -->
+						         
+								<div class="text-center">
+						        	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
+						            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+								</div>
+							</form>
+						</div>	
+					</div>		
+				</div>			
+			</div>							      
 		</div>
-		<form method="post" action="${pageContext.request.contextPath}/approval/addDraft" id="form" enctype="multipart/form-data">
-		    <!-- 공통 영역 포함 -->
-		    <jsp:include page="./commonForm.jsp"></jsp:include>
-		    <!-- 공통 영역 끝 -->
-		    
-		    <!-- 양식 영역 시작 -->
-	        <div class="form-section">
-	            <div class="form-group">
-	                <label for="yearSelect">발생 년월:</label>
-					<select id="yearSelect"></select>
-					<label for="monthSelect"></label>
-					<select id="monthSelect"></select>
-					<input type="hidden" id="description" name="description">
-	            </div>
-	            <div class="form-group">
-	            	<input type="hidden" name="tmpNo" value="1">
-	                <label for="title">제목:</label>
-	                <input type="text" id="title" name="title">
-	            </div>
-	            
-	            <div class="form-group">
-				    <label for="categoryContainer">내역:</label>
-				    <div id="categoryContainer"><hr>
-				        <div class="category-row" style="display: flex; align-items: center;">
-				            <label for="categorySelect">카테고리:</label>
-				            <select class="categorySelect" name="typeName" id="category">
-				                <option value="category0">==선택==</option>
-				                <option value="간편식">간편식</option>
-				                <option value="쌀/곡물">쌀/곡물</option>
-				                <option value="육/수산">육/수산</option>
-				                <option value="음료/주류">음료/주류</option>
-				                <option value="청과">청과</option>
-				            </select>
-				            
-				            <label for="revenue">매출액:</label>
-				            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원
-				            <button type="button" class="add-category">+ 추가</button>
-				        </div><hr>
-				    </div>
-				</div>
-	            <div class="file-upload">
-                <label for="attachment">첨부파일:</label>
-	                <div id="fileInputsContainer">
-				        <div class="file-input-group" id="fileGroup1">
-				        	<input type="file" id="attachment-1" name="docFiles">
-				        </div>
-				    </div>
-	      			<button type="button" class="add-file-button" id="addFileButton">+ 파일 추가</button>		                
-		               
-		     	</div>      
-	         </div> 
-	         <!-- 양식 영역 끝 -->
-	         
-		     <div class="form-actions">
-			     <button type="button" id="returnBox" class="cancel-btn">취소</button>
-           		 <button type="button" id="submitBtn" class="submit-btn">제출</button>
-		     </div>
-		</form>      
-	</div>
 	</div>
 </div>
  		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
@@ -359,9 +378,9 @@ $(document).ready(function() {
 	                <option value="청과">청과</option>
 	            </select>
 	            
-	            <label for="revenue">매출액:</label>
+	            <label for="revenue" style="margin-left: 100px;">매출액:</label>
 	            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원	            
-	            <button type="button" class="remove-category">삭제</button>
+	            <button type="button" class="btn btn-danger remove-category" style="margin-left: 50px;">삭제</button>
 	        </div><hr>`;
         $('#categoryContainer').append(newRow);
     });
@@ -421,12 +440,12 @@ $(document).ready(function() {
         });
 
         if (!categoryFilled) {
-            alert("최소 하나의 카테고리를 선택해주세요.");
+            alert("카테고리를 선택해주세요.");
             valid = false;
         }
 
         if (!amountFilled) {
-            alert("최소 하나의 매출액을 입력해주세요.");
+            alert("매출액을 입력해주세요.");
             valid = false;
         }
 
@@ -439,13 +458,13 @@ $(document).ready(function() {
 	
 	/* 파일 여러 개 추가  */
 	let fileOrder = 1;
-    // 파일 추가 버튼 클릭 시
+	// 파일 추가 버튼 클릭 시
     $('#addFileButton').click(function() {
         fileOrder++;
         let newFileInput = 
-            '<div class="file-input-group" id="fileGroup${fileOrder}">'+
+            '<div class="file-input-group d-flex align-items-center mt-3" id="fileGroup${fileOrder}">'+
             '<input type="file" id="attachment-${fileOrder}" name="docFiles">'+
-             '<button type="button" class="remove-file-button" data-file-id="fileGroup${fileOrder}">삭제</button>'+
+             '<button type="button" class="btn btn-danger remove-file-button mt-2 ms-3" data-file-id="fileGroup${fileOrder}">삭제</button>'+
             '</div>';
         $('#fileInputsContainer').append(newFileInput);
     });
@@ -455,7 +474,7 @@ $(document).ready(function() {
     	console.log('test');
     	let fileGroupId = $(this).data('file-id');
         $('#' + fileGroupId).remove();
-    });
+    });     
    
 });
 </script>

@@ -368,30 +368,30 @@ function updatePagination(currentPage, lastPage, dataLength) {
 function changePage(page) {
     // 현재 상태에 따라 데이터 로드
     if (currentStatus === 'all') {
-        loadAllAttendanceData(page);
+        loadAllAttendanceData(page); // 전체 데이터 로드
     } else {
-        loadAttendanceDataByStatus(currentStatus, page);
+        loadAttendanceDataByStatus(currentStatus, page); // 상태에 따른 데이터 로드
     }
 }
 
 // 활성화된 버튼의 클래스를 업데이트하는 함수
 function setActiveButton(button) {
-    // 모든 버튼에서 active 클래스를 제거
     $('.nav-link').removeClass('active');
-    // 클릭된 버튼에 active 클래스를 추가
     $(button).addClass('active');
 }
 
 
 // 버튼 클릭 시 현재 상태를 업데이트하고 페이지를 로드
-function onTabClick(status) {
- loadAttendanceDataByStatus(status, 1); // 첫 페이지로 로드
+function onTabClick(status, button) {
+    currentStatus = status; // 상태 업데이트
+    changePage(1); // 페이지를 1로 초기화
+    setActiveButton(button); // 클릭된 버튼에 active 클래스를 추가
 }
 
 // 각 탭에 대한 클릭 핸들러를 설정
 $('.nav-link').click(function() {
- const status = $(this).data('status'); // 각 버튼에 data-status 속성 추가
- onTabClick(status);
+    const status = $(this).data('status'); // 각 버튼에 data-status 속성 추가
+    onTabClick(status, this); // 현재 버튼을 인자로 추가
 });
 
 // 페이지 로드 시 전체 데이터 로드
