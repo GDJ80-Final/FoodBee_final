@@ -22,7 +22,9 @@ public class SendEmail {
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			
-			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+			
+			
+			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 	        mimeMessageHelper.setTo(emailDTO.getTo()); // 메일 수신자
             mimeMessageHelper.setSubject(emailDTO.getSubject()); // 메일 제목
             mimeMessageHelper.setText(emailDTO.getMessage(), true); // 메일 본문 내용, HTML 여부

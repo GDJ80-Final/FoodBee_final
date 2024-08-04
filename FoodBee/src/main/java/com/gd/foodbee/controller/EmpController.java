@@ -1,5 +1,9 @@
 package com.gd.foodbee.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -143,11 +147,35 @@ public class EmpController {
 			return "addEmp";
 		}
 	 
+		
+		
 		String url = "http://localhost/foodbee/signup?empNo=" + empDTO.getEmpNo();
 		EmailDTO emailDTO = EmailDTO.builder()
 				 .to(empDTO.getEmpEmail())
 			     .subject("[FoodBee] 인트라넷 등록 링크")
-			     .message("인트라넷 등록 링크 : <a href=\"" + url + "\">" + url + "</a> 입니다.")
+			     .message("<!DOCTYPE html>\n"
+			     		+ "<html lang=\"ko\">\n"
+			     		+ "<head>\n"
+			     		+ "    <meta charset=\"UTF-8\">\n"
+			     		+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+			     		+ "    <title>인트라넷 등록 안내</title>\n"
+			     		+ "</head>\n"
+			     		+ "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
+			     		+ "    <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
+			     		+ "        <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
+			     		+ "            <h1>인트라넷 등록안내</h1>\n"
+			     		+ "        </div>\n"
+			     		+ "        <div style=\"padding: 20px 0;\">\n"
+			     		+ "            <p>안녕하세요,</p>\n"
+			     		+ "            <p>FoodBee 인트라넷 등록 링크입니다.</p>\n"
+			     		+ "            <a href=\\\"\" + url + \"\\\">\" + url + \" style=\"display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px; margin-top: 20px;\"></a>\n"
+			     		+ "            <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
+			     		+ "            <p>문의사항이 있으시면 언제든 연락 주시기 바랍니다.</p>\n"
+			     		+ "            <p>감사합니다.</p>\n"
+			     		+ "        </div>\n"
+			     		+ "    </div>\n"
+			     		+ "</body>\n"
+			     		+ "</html>")
 			     .build();
 	
 		empService.addEmp(empDTO, emailDTO);
@@ -166,7 +194,7 @@ public class EmpController {
 	@ResponseBody
 	public String sendAuthEmail(@RequestParam int empNo, 
 				@RequestParam String empEmail,
-				HttpServletRequest request) {
+				HttpServletRequest request) throws Exception {
 		
 		log.debug(TeamColor.RED + empNo);
 		log.debug(TeamColor.RED + empEmail);
@@ -175,10 +203,36 @@ public class EmpController {
 		
 		log.debug(TeamColor.RED + authNum);
 		if(authNum != 0) {
+			
+			
 			EmailDTO emailDTO = EmailDTO.builder()
 	                .to(empEmail)
 	                .subject("[FoodBee] 인증번호")
-	                .message("인증번호는 " + authNum + " 입니다. ")
+	                .message("<!DOCTYPE html>\n"
+	                		+ "<html lang=\"ko\">\n"
+	                		+ "<head>\n"
+	                		+ " <meta charset=\"UTF-8\">\n"
+	                		+ " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+	                		+ " <title>인증번호 안내</title>\n"
+	                		+ "</head>\n"
+	                		+ "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
+	                		+ " <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
+	                		+ " <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
+	                		+ " <h1>인증번호 안내</h1>\n"
+	                		+ " </div>\n"
+	                		+ " <div style=\"padding: 20px 0;\">\n"
+	                		+ " <p>안녕하세요,</p>\n"
+	                		+ " <p>FoodBee 비밀번호 찾기 인증번호입니다</p>\n"
+	                		+ " <div style=\"font-size: 24px; font-weight: bold; color: #007bff; text-align: center; padding: 10px; border: 2px dashed #007bff; margin: 20px 0;\">\n"
+	                		+ authNum
+	                		+ " </div>\n"
+	                		+ " <p>이 인증번호는 10분 동안 유효합니다. 인증 페이지에서 위의 번호를 입력해 주세요.</p>\n"
+	                		+ " <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
+	                		+ " <p>감사합니다.</p>\n"
+	                		+ " </div>\n"
+	                		+ " </div>\n"
+	                		+ "</body>\n"
+	                		+ "</html>")
 	                .build();
 
 			
@@ -273,7 +327,30 @@ public class EmpController {
         EmailDTO emailDTO = EmailDTO.builder()
 				 .to(empEmail)
 			     .subject("[FoodBee] 임시 비밀번호")
-			     .message("임시비밀번호 : " + tmpPw)
+			     .message("<!DOCTYPE html>\n"
+	                		+ "<html lang=\"ko\">\n"
+	                		+ "<head>\n"
+	                		+ " <meta charset=\"UTF-8\">\n"
+	                		+ " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+	                		+ " <title>임시 비밀번호 안내</title>\n"
+	                		+ "</head>\n"
+	                		+ "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
+	                		+ " <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
+	                		+ " <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
+	                		+ " <h1>임시 비밀번호 안내</h1>\n"
+	                		+ " </div>\n"
+	                		+ " <div style=\"padding: 20px 0;\">\n"
+	                		+ " <p>안녕하세요,</p>\n"
+	                		+ " <p>FoodBee 계정의 임시 비밀번호 입니다.</p>\n"
+	                		+ " <div style=\"font-size: 24px; font-weight: bold; color: #007bff; text-align: center; padding: 10px; border: 2px dashed #007bff; margin: 20px 0;\">\n"
+	                		+ tmpPw
+	                		+ " </div>\n"
+	                		+ " <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
+	                		+ " <p>감사합니다.</p>\n"
+	                		+ " </div>\n"
+	                		+ " </div>\n"
+	                		+ "</body>\n"
+	                		+ "</html>")
 			     .build();
 	
 		sendEmail.sendEmail(emailDTO);
@@ -299,8 +376,30 @@ public class EmpController {
 		String url = "http://localhost/foodbee/signup?empNo=" + empNo;
 		EmailDTO emailDTO = EmailDTO.builder()
 				 .to(empEmail)
-			     .subject("[FoodBee] 회원가입 링크")
-			     .message("회원가입 링크 : <a href=\"" + url + "\">" + url + "</a> 입니다.")
+			     .subject("[FoodBee] 인트라넷 등록 링크")
+			     .message("<!DOCTYPE html>\n"
+			    		 + "<html lang=\"ko\">\n"
+			    		 + "<head>\n"
+			    		 + " <meta charset=\"UTF-8\">\n"
+			    		 + " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+			    		 + " <title>인트라넷 등록 안내</title>\n"
+			    		 + "</head>\n"
+			    		 + "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
+			    		 + " <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
+			    		 + " <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
+			    		 + " <h1>인트라넷 등록안내</h1>\n"
+			    		 + " </div>\n"
+			    		 + " <div style=\"padding: 20px 0;\">\n"
+			    		 + " <p>안녕하세요,</p>\n"
+			    		 + " <p>FoodBee 인트라넷 등록 링크입니다.</p>\n"
+			    		 + " <a href=\"" + url + "\" style=\"display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px; margin-top: 20px;\">인트라넷 등록</a>\n"
+			    		 + " <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
+			    		 + " <p>문의사항이 있으시면 언제든 연락 주시기 바랍니다.</p>\n"
+			    		 + " <p>감사합니다.</p>\n"
+			    		 + " </div>\n"
+			    		 + " </div>\n"
+			    		 + "</body>\n"
+			    		 + "</html>")
 			     .build();
 	
 		sendEmail.sendEmail(emailDTO);
