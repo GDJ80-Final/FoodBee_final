@@ -19,6 +19,10 @@
         
         margin-top: 10px;
     }
+    .error-message {
+      color: red;
+      display: none; 
+    }
 </style>
 </head>
 <body>
@@ -73,7 +77,7 @@
 	                                        </div>  
 	                                        
 	                                        <div id="post-actions" class="float-left mt-5 mb-5">
-												 <button type="button" class="btn btn-secondary" id="backToList">돌아가기</button>
+												 <button type="button" class="btn btn-primary" id="backToList">돌아가기</button>
 					 						</div> 
 	                                        <div id="post-actions" class="float-right mt-5 mb-5">
 												 <button type="button" class="btn btn-info" id="modifyBoard" data-bs-toggle="modal" data-bs-target="#staticBackdrop">수정</button>
@@ -272,8 +276,8 @@
 		}
 	    // 비밀번호 유효성 검사 함수
 	    function validatePassword(password) {
-	        // 비밀번호 정규식: 대소문자, 숫자, 특수문자를 포함하여 8-16자
-	        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+	        // 비밀번호 정규식: 숫자 4자
+	        const passwordRegex = /^\d{4}$/;
 	        return passwordRegex.test(password);
 	    }
 	    
@@ -281,7 +285,7 @@
 	    $('#commentPw').blur(function() {
 	        let commentPw = $(this).val().trim();
 	        if (!validatePassword(commentPw)) {
-	            $('#passwordError').text('비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.');
+	            $('#passwordError').text('비밀번호는 숫자 4자여야 합니다.');
 	        } else {
 	            $('#passwordError').text('');
 	        }
@@ -440,7 +444,7 @@
                                 }
                             }
                         } else {
-                            $('#errorMessage').show();
+                            alert('비밀번호가 틀렸습니다.')
                         }
                     }
                 });
@@ -475,7 +479,7 @@
             					
                               }
             			}else{ // 비번 불일치시 에러 메세지 출력 
-            				$('#errorMessage').show();
+            				$('#errorMessage').text('비밀번호가 일치하지 않습니다.')
             			}
             		}
             		
@@ -500,10 +504,11 @@
      	
         $('#addReasonButton').click(function() {
             let selectedReason = $('#reasonSelect').val();
+            console.log(selectedReason)
             if (!selectedReason) {
-                $('#errorMessage').show();
+                alert('사유를 선택해주세요')
             } else {
-                $('#errorMessage').hide();
+                
                 console.log('선택된 사유:', selectedReason);
                 console.log('adminAction :',adminAction);
                 if(adminAction === 'board'){

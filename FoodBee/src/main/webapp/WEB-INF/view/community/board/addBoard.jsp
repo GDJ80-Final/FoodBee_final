@@ -75,7 +75,7 @@
 		                                 </div>
 		                                 <div class="text-right m-t-15">
 	                                        <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10 send-btn" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성</button>
-	                                        <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 cancel-btn" type="button" id="cancelBtn"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
+	                                        <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 cancel-btn" type="button" id="cancelBtn"><i class="ti-close m-r-5 f-s-12"></i> 돌아가기</button>
 	                                     </div>
 		                                  
 							           
@@ -172,8 +172,8 @@
 	    });
 	    // 비밀번호 유효성 검사 함수
 	    function validatePassword(password) {
-	        // 비밀번호 정규식: 대소문자, 숫자, 특수문자를 포함하여 8-16자
-	        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
+	        // 비밀번호 정규식: 숫자 4자
+	        const passwordRegex = /^\d{4}$/;
 	        return passwordRegex.test(password);
 	    }
 	    
@@ -208,7 +208,7 @@
 	    $('#boardPw').blur(function() {
 	        let boardPw = $(this).val().trim();
 	        if (!validatePassword(boardPw)) {
-	            $('#passwordError').text('비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.');
+	            $('#passwordError').text('비밀번호는 숫자 4자여야 합니다.');
 	        } else {
 	            $('#passwordError').text('');
 	        }

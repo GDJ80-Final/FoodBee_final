@@ -179,9 +179,9 @@
         function updateBtnState() {
             console.log("update");
             $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
-            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0);
             $('#first').closest('li').toggleClass('disabled', currentPage === 1);
-            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0);
         }
 		//이전 
         $('#pre').click(function() {

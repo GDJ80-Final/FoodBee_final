@@ -170,8 +170,8 @@
 	        resize: none;
 	    }
 	    select {
-		    height: 35px; /* 원하는 높이로 설정 */
-		    padding: 5px; /* 내부 여백을 추가하여 더 부드럽게 보이도록 */
+		    height: 35px; 
+		    padding: 5px; 
 		}
     </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -239,22 +239,22 @@
 							    <!-- 양식 영역 시작 -->
 						        <div class="form-section">
 						            <div class="form-group">
-						                <label for="yearSelect">발생 년월:</label>
+						                <label for="yearSelect">매출년월 </label>
 										<select id="yearSelect"></select>
-										<select id="monthSelect"style="margin-left: 30px;"></select>
+										<select id="monthSelect" style="margin-left: 30px;"></select>
 										<input type="hidden" id="description" name="description">
 						            </div>
 						            <div class="form-group">
 						            	<input type="hidden" name="tmpNo" value="1">
-						                <label for="title">제목:</label>
+						                <label for="title">제목 </label>
 						                <input type="text" id="title" name="title">
 						            </div>
 						            
 						            <div class="form-group">
-									    <label for="categoryContainer">내역:</label>
+									    <label for="categoryContainer">내역 </label>
 									    <div id="categoryContainer"><hr>
 									        <div class="category-row" style="display: flex; align-items: center;">
-									            <label for="categorySelect">카테고리:</label>
+									            <label for="categorySelect">카테고리 </label>
 									            <select class="categorySelect" name="typeName" id="category">
 									                <option value="category0">==선택==</option>
 									                <option value="간편식">간편식</option>
@@ -264,9 +264,9 @@
 									                <option value="청과">청과</option>
 									            </select>
 									            
-									            <label for="revenue"style="margin-left: 100px;">매출액:</label>
-									            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount">원
-									            <button type="button" class="btn btn-primary add-category" style="margin-left: 50px;">추가</button>
+									            <label for="revenue"style="margin-left: 100px;">매출액 </label>
+									            <input type="text" class="revenueInput" placeholder="매출액 입력" name="amount" id="amount"> 원
+									            <button type="button" class="btn btn-primary add-category" style="margin-left: 50px;"> 추가</button>
 									        </div><hr>
 									    </div>
 									</div>
@@ -283,8 +283,8 @@
 						        <!-- 양식 영역 끝 -->
 						         
 								<div class="text-center">
-						        	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
-						            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+						        	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-left" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 돌아가기</button>
+						            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성하기</button>
 								</div>
 							</form>
 						</div>	

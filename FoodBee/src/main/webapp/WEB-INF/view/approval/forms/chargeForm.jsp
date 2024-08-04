@@ -169,6 +169,10 @@
 	    .category-row textarea {
 	        resize: none;
 	    }
+	    select {
+		    height: 35px; 
+		    padding: 5px;
+		}
     </style>
 </head>
 <body>
@@ -234,30 +238,29 @@
 						    <!-- 양식 영역 시작 -->
 							<div class="form-section">
 						    	<div class="form-group">
-						            <label for="yearSelect"></label>
+						    		<label for="monthSelect">지출년월 </label>    
 									<select id="yearSelect"></select>
-									<label for="monthSelect">월 선택:</label>
-									<select id="monthSelect"></select>						       	        
+									<select id="monthSelect" style="margin-left: 30px;"></select>						       	        
 									<input type="hidden" id="description" name="description">
 						        </div>	            
 						        <div class="form-group">
 						        	<input type="hidden" name="tmpNo" value="5">
-						            <label for="title">제목:</label>
+						            <label for="title">제목 </label>
 						            <input type="text" id="title" name="title">
 						        </div>
 						        <div class="form-group">
-						            <label for="categoryContainer">내역:</label>
+						            <label for="categoryContainer">내역 </label>
 						            <div id="categoryContainer"><hr>
 									    <div class="category-row" style="display: flex; flex-direction: column;">
 									        <div style="display: flex; align-items: center; margin-bottom: 10px;">
-									            <label for="typeName">적요:</label>
+									            <label for="typeName">적요 </label>
 									            <input type="text" id="typeName" placeholder="지출내용" name="typeName" style="width: 350px; max-width: 350px;">
 									            
-									            <label for="amount" style="margin-left: 30px;">금액:</label>
-									            <input type="text" id="amount" placeholder="금액 입력" name="amount" style="width: 315px; max-width: 315px;">원
+									            <label for="amount" style="margin-left: 30px;">금액 </label>
+									            <input type="text" id="amount" placeholder="금액 입력" name="amount" style="width: 315px; max-width: 315px;"> &nbsp;원
 									        </div>
 									        <div style="display: flex; align-items: center;">
-									            <label for="description" style="margin-right: 10px;">비고:</label>
+									            <label for="description" style="margin-right: 10px;">비고 </label>
 									            <textarea style="width:785px;" id="text" placeholder="상세내용" name="text"></textarea>
 									            
 									            <button type="button" class="btn btn-primary add-category">추가</button>	
@@ -278,9 +281,9 @@
 							</div>	
 							<!-- 양식 영역 끝 -->
 							
-						    <div class="text-center">
-						    	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
-						    	<button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+						    <div class="text-center mt-3">
+						    	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-left" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 돌아가기</button>
+						    	<button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성하기</button>
 							</div>	
 						</form>
 						<!-- 폼 종료 -->
@@ -369,16 +372,16 @@ $(document).ready(function() {
             <div class="category-row" style="display: flex; flex-direction: column;">
             <div style="display: flex; align-items: center; margin-bottom: 10px;">
             
-	            <label for="typeName">적요:</label>
+	            <label for="typeName">적요 </label>
 	            <input type="text" id="typeName" placeholder="지출내용" name="typeName" style="width: 350px; max-width: 350px;">
 	            
-	            <label for="amount" style="margin-left: 30px;">금액:</label>
-	            <input type="text" id="amount" placeholder="금액 입력" name="amount" style="width: 315px; max-width: 315px;">원
+	            <label for="amount" style="margin-left: 30px;">금액 </label>
+	            <input type="text" id="amount" placeholder="금액 입력" name="amount" style="width: 315px; max-width: 315px;">&nbsp;원
 	            
 	        </div>
 	        <div style="display: flex; align-items: center;">
 	        
-	            <label for="description" style="margin-right: 10px;">비고:</label>
+	            <label for="description" style="margin-right: 10px;">비고 </label>
 	            <textarea style="width:785px;" id="text" placeholder="상세내용" name="text"></textarea>
 	            
 	            <button type="button" class="btn btn-danger remove-category">삭제</button>
@@ -410,8 +413,38 @@ $(document).ready(function() {
 	$('#submitBtn').click(function(e) {
         let drafterNo = $('#drafterEmpNo').val();
         console.log(drafterNo)
-        
-        // 폼 필드 유효성 검사
+ 		// 공백 검사
+		let errorMessage = '';
+		
+		if ($('#title').val().trim() === '') {
+		        errorMessage += '제목을 입력해 주세요.\n';
+		}
+		if ($('#typeName').val().trim() === '') {
+		        errorMessage += '적요를 입력해 주세요.\n';
+		}
+		if ($('#amount').val().trim() === '') {
+	        errorMessage += '금액을 입력해 주세요.\n';
+		}
+		if ($('#text').val().trim() === '') {
+	        errorMessage += '비고를 입력해 주세요.\n';
+		}
+		
+		if ($('#midApproverNo').val().trim() === '') {
+		        errorMessage += '중간결재자를 선택해 주세요.\n';
+		}
+		if ($('#finalApproverNo').val().trim() === '') {
+		        errorMessage += '최종결재자를 선택해 주세요.\n';
+		}
+		
+		// 공백 검사 및 결재자 검사 후 AJAX 요청
+		if (errorMessage === '') {
+			$('#form').submit();
+		} else {
+		    e.preventDefault();
+		    alert(errorMessage);
+		}
+		
+    /*     // 폼 필드 유효성 검사
         let title = $('#title').val();
         let typeName = $('#typeName').val();
         let amount = $('#amount').val();
@@ -434,7 +467,7 @@ $(document).ready(function() {
             return false;
         }
         
-        $('#form').submit();
+        $('#form').submit(); */
     });
    
 	/* 파일 여러 개 추가  */

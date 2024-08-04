@@ -16,7 +16,7 @@
                  <option value="기타">기타</option>
 			  
 			  </select>
-			  <div class="error-message" id="errorMessage">사유입력은 필수입니다.</div>
+			  
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>

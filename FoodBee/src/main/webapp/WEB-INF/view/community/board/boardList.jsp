@@ -274,25 +274,26 @@
 		})
 		
 		$('#all').click(function(){
-			loadBoardList(currentPage,"all","");
+			loadBoardList(1,"all","");
 			$('.nav-link').removeClass('active');
 			$(this).addClass('active');
+			
 			//전체목록
 			});
 		$('#chat').click(function(){
-			loadBoardList(currentPage,"chat","")
+			loadBoardList(1,"chat","")
 			$('.nav-link').removeClass('active');
 			$(this).addClass('active');
 			
 			});
 		$('#company').click(function(){
-			loadBoardList(currentPage,"company","")
+			loadBoardList(1,"company","")
 			$('.nav-link').removeClass('active');
 			$(this).addClass('active');
 			
 			});
 		$('#question').click(function(){
-			loadBoardList(currentPage,"question","")
+			loadBoardList(1,"question","")
 			$('.nav-link').removeClass('active');
 			$(this).addClass('active');
 			
@@ -304,9 +305,9 @@
 	    function updateBtnState() {
 	        console.log("update");
 	        $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
-	        $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        $('#next').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0 );
 	        $('#first').closest('li').toggleClass('disabled', currentPage === 1);
-	        $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        $('#last').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0);
 	        }
 		// 이전 
 		$('#pre').click(function() {

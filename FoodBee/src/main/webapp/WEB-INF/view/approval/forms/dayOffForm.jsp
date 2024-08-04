@@ -232,30 +232,31 @@
 							<!-- 양식 영역 시작 -->
 							<div class="form-section">
 								<div class="form-group">
-									<label for="category">유형:</label>
+									<label for="category">유형 </label>
 									<input type="radio" id="category" name="typeName" value="연차"> 연차          
 									<input type="radio" id="category" name="typeName" value="반차" style="margin-left: 20px;"> 반차
 							    </div>
 							    <div class="form-group">
-							        <label for="remaining">잔여 휴가:</label>
-							        <input type="text" id="dayOff" name="dayoff" readonly="readonly">
-							        
-							        <label style="margin-left: 400px;">기간:</label>
+							        <label for="remaining">잔여 휴가 </label>
+							        <input type="text" id="dayOff" name="dayoff" readonly="readonly">		     
+							    </div>
+							    <div class="form-group">
+							        <label>기간 </label>
 							        <input type="date" id="startDate" class="form-control-sm" name="startDate"> ~
 							        <input type="date" id="endDate" class="form-control-sm" name="endDate">
 							    </div>
 							    <div class="form-group">
-							        <label for=emergency>비상연락:</label>
+							        <label for=emergency>비상연락처 </label>
 							        <input type="text" id="emergency" name="text">
 							    </div>
 							    <div class="form-group">
 							    	<input type="hidden" name="tmpNo" value="2">
-							        <label for="title">제목:</label>
+							        <label for="title">제목 </label>
 							        <input type="text" id="title" name="title">
 							    </div>
 							    <div class="form-group">
-							        <label for="content">내용:</label>
-							        <textarea id="content" name="content" placeholder="휴가 사유을 작성하세요."></textarea>
+							        <label for="content">내용 </label>
+							        <textarea id="content" name="content" placeholder="휴가 사유을 작성하세요." class="textarea_editor bg-light"></textarea>
 							    </div>
 							    <div>
 									<h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
@@ -268,9 +269,9 @@
 	                             </div>  
 							</div>
 						    <!-- 양식 영역 끝 -->
-								<div class="text-center">
-						            <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
-						            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+								<div class="text-center mt-3">
+						            <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-left" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 돌아가기</button>
+						            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성하기</button>
 								</div>
 							</form>
 							<!-- 폼 종료 -->
@@ -387,8 +388,47 @@ $(document).ready(function() {
 	$('#submitBtn').click(function(e) {
         let drafterNo = $('#drafterEmpNo').val();
         console.log(drafterNo)
-        
-        // 폼 필드 유효성 검사
+        let typeName = $("input[name='typeName']:checked").val();
+		let errorMessage = '';
+		
+		if (!typeName) {
+			errorMessage += '유형을 선택해 주세요.\n';
+		}
+		
+		let startDate = $('#startDate').val();
+		let endDate = $('#endDate').val();
+		if (startDate === '' || endDate === '') {
+		    errorMessage += '기간을 입력해 주세요.\n';
+		} 
+		
+		if ($('#emergency').val().trim() === '') {
+		    errorMessage += '비상연락처를 입력해 주세요.\n';
+		}
+		
+		if ($('#title').val().trim() === '') {
+		    errorMessage += '제목을 입력해 주세요.\n';
+		}
+		
+		if ($('#content').val().trim() === '') {
+		    errorMessage += '내용을 입력해 주세요.\n';
+		}
+		if ($('#midApproverNo').val().trim() === '') {
+		    errorMessage += '중간결재자를 선택해 주세요.\n';
+	    }
+		if ($('#finalApproverNo').val().trim() === '') {
+		    errorMessage += '최종결재자를 선택해 주세요.\n';
+		}
+		
+		// 공백 및 날짜 유효성 검사 후 AJAX 요청
+		if (errorMessage === '') {
+		    $('#form').submit();
+		} else {
+		    e.preventDefault();
+		    alert(errorMessage);
+		
+		}
+	});
+/*         // 폼 필드 유효성 검사
         let typeName = $("input[name='typeName']:checked").val();
         let startDate = $('#startDate').val();
         let endDate = $('#endDate').val();
@@ -422,7 +462,7 @@ $(document).ready(function() {
         }
         
         $('#form').submit();
-    });
+    }); */
 	
 	/* 파일 여러 개 추가  */
 	let fileOrder = 1;

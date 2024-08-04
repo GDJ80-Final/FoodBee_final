@@ -110,7 +110,8 @@
                 <div class="col p-md-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">기안 작성</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">기안 작성</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">출장 신청</a></li>
                     </ol>
                 </div>
             </div>
@@ -197,7 +198,7 @@
 	                               	    </div>  
 						          </div>	
 							        <!-- 양식 영역 끝 -->
-							        <div class="text-center">
+							        <div class="text-center mt-3">
 							            <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
 							            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
 							        </div>
@@ -332,49 +333,47 @@
 		// 결재사인 유무 체크
 		$('#submitBtn').click(function(e) {
             // 공백 및 날짜 유효성 검사
-            let hasError = false;
-            if ($('#place').val().trim() === '') {
-                $('#placeError').text('출장지를 입력해 주세요.');
-                hasError = true;
-            } else {
-                $('#placeError').text('');
-            }
+            
+		    let errorMessage = '';
+		
+		    if ($('#place').val().trim() === '') {
+		        errorMessage += '출장지를 입력해 주세요.\n';
+		    }
+		
+		    let startDate = $('#startDate').val();
+		    let endDate = $('#endDate').val();
+		    if (startDate === '' || endDate === '') {
+		        errorMessage += '기간을 입력해 주세요.\n';
+		    } else if (new Date(startDate) > new Date(endDate)) {
+		        errorMessage += '종료 날짜는 시작 날짜 이후여야 합니다.\n';
+		    }
+		
+		    if ($('#emergency').val().trim() === '') {
+		        errorMessage += '비상연락을 입력해 주세요.\n';
+		    }
+		
+		    if ($('#title').val().trim() === '') {
+		        errorMessage += '제목을 입력해 주세요.\n';
+		    }
+		
+		    if ($('#content').val().trim() === '') {
+		        errorMessage += '내용을 입력해 주세요.\n';
+		    }
+		    if ($('#midApproverNo').val().trim() === '') {
+		        errorMessage += '중간결재자를 선택해 주세요.\n';
+		    }
+		    if ($('#finalApproverNo').val().trim() === '') {
+		        errorMessage += '최종결재자를 선택해 주세요.\n';
+		    }
+		
+		    // 공백 및 날짜 유효성 검사 후 AJAX 요청
+		    if (errorMessage === '') {
+		        $('#form').submit();
+		    } else {
+		    	e.preventDefault();
+		        alert(errorMessage);
+		    }
 
-            let startDate = $('#startDate').val();
-            let endDate = $('#endDate').val();
-            if (startDate === '' || endDate === '') {
-                $('#periodError').text('기간을 입력해 주세요.');
-                hasError = true;
-            } else if (new Date(startDate) > new Date(endDate)) {
-                $('#periodError').text('종료 날짜는 시작 날짜 이후여야 합니다.');
-                hasError = true;
-            } else {
-                $('#periodError').text('');
-            }
-
-            if ($('#emergency').val().trim() === '') {
-                $('#emergencyError').text('비상연락을 입력해 주세요.');
-                hasError = true;
-            } else {
-                $('#emergencyError').text('');
-            }
-
-            if ($('#title').val().trim() === '') {
-                $('#titleError').text('제목을 입력해 주세요.');
-                hasError = true;
-            } else {
-                $('#titleError').text('');
-            }
-
-            if ($('#content').val().trim() === '') {
-                $('#contentError').text('내용을 입력해 주세요.');
-                hasError = true;
-            } else {
-                $('#contentError').text('');
-            }
-            if (!hasError) {
-	        $('#form').submit();
-	      }
 	   });
 		
 		

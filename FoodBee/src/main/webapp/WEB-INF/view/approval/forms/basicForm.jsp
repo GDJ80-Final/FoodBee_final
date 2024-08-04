@@ -110,7 +110,8 @@
                 <div class="col p-md-0">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">기안 작성</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">기안 작성</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">기본 기안</a></li>
                     </ol>
                 </div>
             </div>
@@ -189,9 +190,9 @@
 							            </div> -->
 							        </div>	
 							        <!-- 양식 영역 끝 -->
-							        <div class="text-center">
-							            <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-right" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 취소</button>
-							            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 제출</button>
+							        <div class="text-center mt-3">
+							            <button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-left" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 돌아가기</button>
+							            <button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성하기</button>
 							        </div>
 								</form>	
 								<!-- 폼 종료 -->
@@ -284,47 +285,32 @@
         $('#submitBtn').click(function(e) {
             
 
-            // 공백 검사
-            let hasError = false;
-            if ($('#title').val().trim() === '') {
-                $('#titleError').text('제목을 입력해 주세요.');
-                hasError = true;
-            } else {
-                $('#titleError').text('');
-            }
-            if ($('#content').val().trim() === '') {
-                $('#contentError').text('내용을 입력해 주세요.');
-                hasError = true;
-            } else {
-                $('#contentError').text('');
-            }
 
-            // 공백 검사 후 AJAX 요청
-            if (!hasError) {
-            	$('#form').submit();
-            }
-        });
-		/* 기안서 입력 공백 검사 */
+		    // 공백 검사
+		    let errorMessage = '';
 		
-		 // 입력 필드 블러 이벤트 리스너
-        $('#title').blur(function() {
-            let title = $(this).val().trim();
-            if (title === '') {
-                $('#titleError').text('제목을 입력해 주세요.');
-            } else {
-                $('#titleError').text('');
-            }
+		    if ($('#title').val().trim() === '') {
+		        errorMessage += '제목을 입력해 주세요.\n';
+		    }
+		    if ($('#content').val().trim() === '') {
+		        errorMessage += '내용을 입력해 주세요.\n';
+		    }
+		    if ($('#midApproverNo').val().trim() === '') {
+		        errorMessage += '중간결재자를 선택해 주세요.\n';
+		    }
+		    if ($('#finalApproverNo').val().trim() === '') {
+		        errorMessage += '최종결재자를 선택해 주세요.\n';
+		    }
+		
+		    // 공백 검사 및 결재자 검사 후 AJAX 요청
+		    if (errorMessage === '') {
+		        $('#form').submit();
+		    } else {
+		    	e.preventDefault();
+		        alert(errorMessage);
+		    }
         });
-
-        $('#content').blur(function() {
-            let content = $(this).val().trim();
-            if (content === '') {
-                $('#contentError').text('내용을 입력해 주세요.');
-            } else {
-                $('#contentError').text('');
-            }
-        });
-
+		
 
 
 	});
