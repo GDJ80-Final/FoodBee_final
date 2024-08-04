@@ -191,7 +191,7 @@
 							    </div>
 							    <div class="form-group">
 							        <label for="remaining">잔여 휴가:</label>
-							        
+						            <input type="text" id="dayOff" readonly="readonly">
 							        <label for="period" style="margin-left: 400px;">기간:</label>
 							        <input type="date" id="startDate" name="startDate" value="${dayOffDetailOne.startDate}"> ~
 							        <input type="date" id="endDate" name="endDate" value="${dayOffDetailOne.endDate}">
@@ -398,6 +398,70 @@
         	let fileGroupId = $(this).data('file-id');
             $('#' + fileGroupId).remove();
         });
+        
+        let empNo; // 직원 번호를 저장할 변수 선언
+
+	    // 호출되면 페이지에 담을 emp 정보 불러오기 
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/approval/forms/commonForm',
+	        method: 'get',
+	        success: function(json) {
+	            empNo = json.empNo; // 직원 번호를 변수에 저장
+	            $('#drafterEmpNo').val(empNo);
+	            console.log(empNo); // 직원 번호 확인
+	            $('#drafterEmpNoField').val(json.empName + '(' + empNo + ')');
+	            console.log($('#drafterEmpNoField').val());
+	            $('#name').val(json.empName);
+	            $('#department').val(json.dptName);
+	            
+	            let drafterNo = $('#drafterEmpNo').val();
+	        	
+	        	$.ajax({
+	                url: '${pageContext.request.contextPath}/approval/getSign',
+	                method: 'get',
+	                data: {
+	                    approverNo: drafterNo
+	                },
+	                success: function(json) {
+	                    console.log('sign 있음');
+	                },
+	                error: function(xhr, status, error) {
+	                    alert("결재사인을 등록을 해주세요");
+	                    window.location.href = '${pageContext.request.contextPath}/myPage';
+	                }
+	            });
+
+	            // 잔여휴가 불러오기 호출
+	            getRemainingDayOff(empNo); // empNo를 인자로 전달
+	        },
+	        error: function() {
+	            alert('기본정보 불러오는데 실패했습니다.');
+	        }
+	    });
+		
+
+	    // 잔여 휴가 불러오기 함수
+	    function getRemainingDayOff(empNo) {
+	        const year = new Date().getFullYear(); // 현재 연도
+
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/emp/getRemainingDayOff',
+	            method: 'POST',
+	            data: {
+	                empNo: empNo,
+	                year: year
+	            },
+	            success: function(json) {
+	                console.log('휴가 있음:', json);
+	                $('#dayOff').val(json + ' 개');
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('오류 발생:', error);
+	                alert('휴가 정보를 불러오는 데 실패했습니다.');
+	            }
+	        });
+	    }
+			
 
 	});
 </script>
