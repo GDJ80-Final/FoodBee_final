@@ -463,15 +463,24 @@
 		      }
          }
       });
-      // 버튼 활성화
+   // 버튼 활성화
       function updateBtnState() {
          console.log("update");
          <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
          <!-- prop은 설정의 속성-->
-           $('#pre').prop('disabled', currentPage === 1);
-           $('#next').prop('disabled', currentPage === lastPage);
-           $('#first').prop('disabled', currentPage === 1);
-           $('#last').prop('disabled', currentPage === lastPage);
+      // 현재 페이지가 1이면 '이전' 및 '처음' 버튼 비활성화
+         $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+         $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+
+         // lastPage가 0이면 '다음' 및 '마지막' 버튼 비활성화
+         if (lastPage === 0) {
+             $('#next').closest('li').addClass('disabled');
+             $('#last').closest('li').addClass('disabled');
+         } else {
+             // 현재 페이지가 마지막 페이지와 같으면 '다음' 및 '마지막' 버튼 비활성화
+             $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+             $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+         }
        }
     });
 </script>

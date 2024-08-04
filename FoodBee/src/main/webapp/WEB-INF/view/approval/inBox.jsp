@@ -71,7 +71,7 @@
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
 					                 </li>
-					                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+					                 <li class="page-item active"><div class="page-link" id="currentPage"></div>
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
 					                 </li>
@@ -106,6 +106,7 @@
 					empNo: "${empNo}"
 				},
 				success: function(json){
+					$('#currentPage').text(currentPage);
 					updateAllList(json);
 				},
 				error: function(){
@@ -139,10 +140,13 @@
 		
 		function updateAllList(json){
 			lastPage = json.listLastPage;
-			console.log('lastPage : '+ lastPage);
+			console.log('수신참조lastPage : '+ lastPage);
+			console.log('수신참조 currentPage: '+ currentPage);
 			
 			let tableBody = $("#t");
 			tableBody.empty();
+			//버튼 활성화
+			updateBtnState();
 			
 			if(json.referrerList == ""){
             	tableBody.append("<tr><td colspan='5'>수신참조된 기안서가 없습니다</td></tr>");
@@ -214,16 +218,23 @@
 				loadAllList(currentPage)
 			}
 		});
-		// 버튼 활성화
+		 //페이징 버튼 활성화
         function updateBtnState() {
-           console.log("update");
-           <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
-           <!-- prop은 설정의 속성-->
-             $('#pre').prop('disabled', currentPage === 1);
-             $('#next').prop('disabled', currentPage === lastPage);
-             $('#first').prop('disabled', currentPage === 1);
-             $('#last').prop('disabled', currentPage === lastPage);
-         }
+            console.log("update");
+        	// 현재 페이지가 1이면 '이전' 및 '처음' 버튼 비활성화
+            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+
+            // lastPage가 0이면 '다음' 및 '마지막' 버튼 비활성화
+            if (lastPage === 0) {
+                $('#next').closest('li').addClass('disabled');
+                $('#last').closest('li').addClass('disabled');
+            } else {
+                // 현재 페이지가 마지막 페이지와 같으면 '다음' 및 '마지막' 버튼 비활성화
+                $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+                $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+            }
+        }
 	})
 </script>
 </div>

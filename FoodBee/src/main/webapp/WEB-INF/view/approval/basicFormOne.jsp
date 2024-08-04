@@ -162,7 +162,7 @@
 						    </div>
 						    <div class="form-group">
 						        <label for="content">내용:</label>
-						        <textarea id="content" name="content" readonly="readonly">${basicFormOne.content}</textarea>
+						        <textarea rows="6" cols="50" id="content" name="content" readonly="readonly">${basicFormOne.content}</textarea>
 						    </div>
 						    <div class="file-upload">
 						        <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>

@@ -174,7 +174,7 @@
 							                <label for="charge">금액:</label>
 							                <input type="text" class="chargeInput" placeholder="금액 입력" value="${detail.amount}" readonly="readonly">원
 							                <label for="note" style="margin-left: 20px;">비고:</label>
-							                <textarea style="width: 400px; margin-top: 20px;" placeholder="상세내용" readonly="readonly">${detail.text}</textarea>
+								            <textarea rows="4" cols="40" readonly="readonly">${detail.text}</textarea>								
 							            </div>
 						            </c:forEach>
 						        </div>

@@ -141,7 +141,7 @@ $(document).ready(function() {
             	updateAllNotice(json);
             },
             error: function() {
-                alert("전체 공지사항을 가져올 수 없습니다.");
+                console.log("전체공지사항을 가져올 수 없어요");
             }
         });
     }
@@ -159,7 +159,7 @@ $(document).ready(function() {
             	updateEmpNotice(json);
             },
             error: function() {
-                alert("전사원별 공지사항을 가져올 수 없습니다.");
+            	console.log("전사원별 공지사항을 가져올 수 없어요");
             }
         });
     }
@@ -179,7 +179,7 @@ $(document).ready(function() {
             	updateDptNotice(json);
             },
             error: function() {
-                alert("전사원별 공지사항을 가져올 수 없습니다.");
+            	console.log("부서별 공지사항을 가져올 수 없어요");
             }
         });
     }
@@ -197,7 +197,6 @@ $(document).ready(function() {
         tableBody.empty();
         
         if(json.list == ""){
-        	alert("공지사항이 존재하지 않습니다");
         	tableBody.append("<tr><td colspan='5'>공지사항이 작성되지 않았습니다.</td></tr>");
         }else{
         $.each(json.list, function(index, item) {
@@ -228,7 +227,6 @@ $(document).ready(function() {
         tableBody.empty();
         
         if(json.allEmpList == ""){
-        	alert("전사운별 공지사항이 없습니다");
         	tableBody.append("<tr><td colspan='5'>전사원별 공지사항이 작성되지 않았습니다.</td></tr>");
         }else{
         $.each(json.allEmpList, function(index, item) {
@@ -257,7 +255,6 @@ $(document).ready(function() {
         tableBody.empty();
         
         if(json.allDptList == ""){
-        	alert("부서별 공지사항이 없습니다");
         	tableBody.append("<tr><td colspan='5'>부서별 공지사항이 작성되지 않았습니다.</td></tr>");
         }else{
         $.each(json.allDptList, function(index, item) {
@@ -334,15 +331,24 @@ $(document).ready(function() {
 	         }
     });
     
-    // 버튼 활성화
+ 	// 버튼 활성화
     function updateBtnState() {
        console.log("update");
        <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
        <!-- prop은 설정의 속성-->
-         $('#pre').prop('disabled', currentPage === 1);
-         $('#next').prop('disabled', currentPage === lastPage);
-         $('#first').prop('disabled', currentPage === 1);
-         $('#last').prop('disabled', currentPage === lastPage);
+    // 현재 페이지가 1이면 '이전' 및 '처음' 버튼 비활성화
+       $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+       $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+
+       // lastPage가 0이면 '다음' 및 '마지막' 버튼 비활성화
+       if (lastPage === 0) {
+           $('#next').closest('li').addClass('disabled');
+           $('#last').closest('li').addClass('disabled');
+       } else {
+           // 현재 페이지가 마지막 페이지와 같으면 '다음' 및 '마지막' 버튼 비활성화
+           $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+           $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+       }
      }
 });
 </script>
