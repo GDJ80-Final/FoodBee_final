@@ -15,6 +15,10 @@
         font-size: 1.2em; /* 텍스트 크기를 키워서 보이기 쉽게 합니다. */
         color: black; /* 텍스트 색상을 검정색으로 지정합니다. */
     }
+    #contentTitle a{
+    	font-size: 30px;
+    	font-weight: bold;
+    }
 </style>
 </head>
 <body>
