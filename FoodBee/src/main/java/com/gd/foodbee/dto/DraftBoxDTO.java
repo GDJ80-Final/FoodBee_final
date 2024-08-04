@@ -16,8 +16,10 @@ public class DraftBoxDTO {
 	private String title;
 	private String approvalStateNo;
 	private String midApprovalDatetime;
+	private String midApproverReason;
 	private String finalApprovalDatetime;
 	private String midApprovalState;
 	private String finalApprovalState;
+	private String finalApproverReason;
 	private String createDatetime;
 }

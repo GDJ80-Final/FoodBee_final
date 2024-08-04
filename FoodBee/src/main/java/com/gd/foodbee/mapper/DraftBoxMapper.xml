@@ -11,8 +11,10 @@
 			dd.doc_approver_state_no approvalStateNo,
 			DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d') midApprovalDatetime,
 			dd.mid_approval_state midApprovalState,
+			dd.mid_approver_reason midApproverReason,
 			DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d') finalApprovalDatetime,
 			dd.final_approval_state finalApprovalState,
+			dd.final_approver_reason finalApproverReason,
 			DATE_FORMAT(dd.create_datetime, '%Y-%m-%d') createDatetime
 		FROM 
 			draft_doc dd

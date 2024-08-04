@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 <!-- 메인템플릿 -->
@@ -15,38 +16,39 @@
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 <!-- 템플릿 div -->
 <div class="content-body">
-	<div class="row page-titles mx-0">
+   <div class="row page-titles mx-0">
          <div class="col p-md-0">
              <ol class="breadcrumb">
-                 <li class="breadcrumb-item"><a href="javascript:void(0)">커뮤니티</a></li>
-                 <li class="breadcrumb-item active"><a href="javascript:void(0)">공지사항</a></li>
+                 <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">내문서함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
              </ol>
          </div>
-   	</div>
-	
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-lg-12">
-			 	<div class="card">
-			 		<div class="card-body">	
-			 		<!-- 여기서부터 내용시작 -->
-						<div class="table-responsive mb-3">
-							<table class="table header-border">
-								<tr class="table-info">
-									<th>결재대기</th>
-									<th>승인중</th>
-									<th>승인완료</th>
-									<th>반려</th>
-								</tr>
-								<tr>
-									<td><c:out value="${stateBox.zeroState == null ? 0 : stateBox.zeroState}"></c:out>건</td>
-									<td><c:out value="${stateBox.oneState == null ? 0 : stateBox.oneState}"></c:out>건</td>
-									<td><c:out value="${stateBox.twoState == null ? 0 : stateBox.twoState}"></c:out>건</td>
-									<td><c:out value="${stateBox.nineState == null ? 0 : stateBox.nineState}"></c:out>건</td>
-								</tr>
-							</table>
-						</div>
-						<ul class="nav nav-tabs mb-3">
+      </div>
+   
+   <div class="container-fluid">
+      <div class="row">
+         <div class="col-lg-12">
+             <div class="card">
+                <div class="card-body">   
+                <!-- 여기서부터 내용시작 -->
+                  <div class="table-responsive mb-3">
+                     <table class="table header-border">
+                        <tr class="table-info">
+                           <th>결재대기</th>
+                           <th>승인중</th>
+                           <th>승인완료</th>
+                           <th>반려</th>
+                        </tr>
+                        <tr>
+                           <td><c:out value="${stateBox.zeroState == null ? 0 : stateBox.zeroState}"></c:out>건</td>
+                           <td><c:out value="${stateBox.oneState == null ? 0 : stateBox.oneState}"></c:out>건</td>
+                           <td><c:out value="${stateBox.twoState == null ? 0 : stateBox.twoState}"></c:out>건</td>
+                           <td><c:out value="${stateBox.nineState == null ? 0 : stateBox.nineState}"></c:out>건</td>
+                        </tr>
+                     </table>
+                  </div>
+                  <ul class="nav nav-tabs mb-3">
                             <li class="nav-item"><a href="#navpills-1" class="nav-link active" data-toggle="tab" aria-expanded="false" id="allBtn">전체</a>
                             </li>
                             <li class="nav-item"><a href="#navpills-2" class="nav-link" data-toggle="tab" aria-expanded="false" id="zeroBtn">결재대기</a>
@@ -58,47 +60,67 @@
                              <li class="nav-item"><a href="#navpills-3" class="nav-link" data-toggle="tab" aria-expanded="true" id="nineBtn">반려</a>
                             </li>
                         </ul>
-						<div id="table-body" class="table-responsive">
-						    <table class="table header-border">
-						        <tr>
-						            <th>양식유형</th>
-									<th>제목</th>
-									<th>현재상태</th>
-									<th>중간결재일</th>
-									<th>중간상태</th>
-									<th>최종결재일</th>
-									<th>최종상태</th>
-									<th>작성일 </th>
-						        </tr>
-						        <tbody id="tableBody">
-						            <!-- 여기서 리스트출력 -->
-						        </tbody>
-						    </table>
-						</div>
-						<input type="hidden" id="hiddenPage" value="all">
-						<!-- panel & page -->
-						<div class="bootstrap-pagination mt-3" id="page">
-					         <nav>
-					             <ul class="pagination justify-content-center">
-					                 <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
-					                 </li>
-					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
-					                 </li>
-					                 <li class="page-item active"><div class="page-link" id="currentPage"></div>
-					                 </li>
-					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
-					                 </li>
-					                 <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
-					                 </li>
-					             </ul>
-					         </nav>
-					     </div>
-						<!-- 여기가 내용끝! --> 		
+                  <div id="table-body" class="table-responsive">
+                      <table class="table header-border">
+                          <tr>
+                              <th>양식유형</th>
+                           <th>제목</th>
+                           <th>현재상태</th>
+                           <th>중간결재일</th>
+                           <th>중간상태</th>
+                           <th>최종결재일</th>
+                           <th>최종상태</th>
+                           <th>작성일 </th>
+                          </tr>
+                          <tbody id="tableBody">
+                              <!-- 여기서 리스트출력 -->
+                          </tbody>
+                      </table>
+                  </div>
+                  <input type="hidden" id="hiddenPage" value="all">
+                  <!-- panel & page -->
+                  <div class="bootstrap-pagination mt-3" id="page">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
+                                </li>
+                                <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+                                </li>
+                                <li class="page-item active"><div class="page-link" id="currentPage"></div>
+                                </li>
+                                <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+                                </li>
+                                <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- 모달창 -->
+                     <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                         <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+                                 <div class="modal-header">
+                                     <h5 class="modal-title" id="exampleModalLabel">반려 이유 확인</h5>
+                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                         <span aria-hidden="true">&times;</span>
+                                     </button>
+                                 </div>
+                                 <div class="modal-body">
+                                     <!-- 반려 이유가 표시될 영역 -->
+ 
+                                 </div>
+                                 <div class="modal-footer">
+                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                  <!-- 여기가 내용끝! -->       
                     </div>
                 </div>
             </div>
         </div>
-	</div>
+   </div>
 </div><!-- content-body마지막 -->
 </div><!-- 메인마지막 -->
 <!-- 템플릿 footer -->
@@ -119,23 +141,23 @@
             loadAllDocList(1);
         });
         //결재대기 버튼 클릭시 결재대기 기안리스트 로드
-		$("#zeroBtn").click(function() {
-			loadZeroDocList(1);
+      $("#zeroBtn").click(function() {
+         loadZeroDocList(1);
         });
         //승인중 버튼 클릭시 승인중 기안리스트 로드
-		$("#oneBtn").click(function() {
-			loadOneDocList(1);        
+      $("#oneBtn").click(function() {
+         loadOneDocList(1);        
         });
         //승인완료 버튼 클릭시 승인완료 기안리스트 로드
-		$("#twoBtn").click(function() {
-			loadtwoDocList(1);
-		});
+      $("#twoBtn").click(function() {
+         loadtwoDocList(1);
+      });
         //반려 버튼 클릭시 반려 기안리스트 로드
-		$("#nineBtn").click(function() {
-			loadNineDocList(1);
-		});
+      $("#nineBtn").click(function() {
+         loadNineDocList(1);
+      });
         
-    	//전체기안서 데이터 
+       //전체기안서 데이터 
         function loadAllDocList(currentPage) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/approval/allDocList",
@@ -145,12 +167,12 @@
                     empNo: "${empNo}"
                 },
                 success: function(json) {
-                	console.log("Ajax 요청 성공:", json); 
-                	$('#currentPage').text(currentPage);
+                   console.log("Ajax 요청 성공:", json); 
+                   $('#currentPage').text(currentPage);
                     updateAllDocList(json);
                 },
                 error: function() {
-                	console.log("Ajax 요청 실패:", json); 
+                   console.log("Ajax 요청 실패:", json); 
                     alert("전체기안서를 가져올 수 없습니다.");
                 }
             });
@@ -165,8 +187,8 @@
                     empNo: "${empNo}"
                 },
                 success: function(json) {
-                	$('#currentPage').text(currentPage);
-                	updateZeroTypeDocList(json)
+                   $('#currentPage').text(currentPage);
+                   updateZeroTypeDocList(json)
                 },
                 error: function() {
                     alert("결재대기상태의 기안서를 가져올 수 없습니다.");
@@ -174,7 +196,7 @@
             });
         }
         
-     	 //승인중 기안서 데이터
+         //승인중 기안서 데이터
         function loadOneDocList(currentPage) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/approval/oneDocList",
@@ -184,16 +206,16 @@
                     empNo: "${empNo}"
                 },
                 success: function(json) {
-                	$('#currentPage').text(currentPage);
-                	updateOneTypeDocList(json)
+                   $('#currentPage').text(currentPage);
+                   updateOneTypeDocList(json)
                 },
                 error: function() {
                     alert("승인중상태의 기안서를 가져올 수 없습니다.");
                 }
             });
         }
-     	 //승인완료 기안서데이터
-     	  function loadtwoDocList(currentPage) {
+         //승인완료 기안서데이터
+          function loadtwoDocList(currentPage) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/approval/twoDocList",
                 type: "GET",
@@ -202,16 +224,16 @@
                     empNo: "${empNo}"
                 },
                 success: function(json) {
-                	$('#currentPage').text(currentPage);
-                	updateTwoTypeDocList(json)
+                   $('#currentPage').text(currentPage);
+                   updateTwoTypeDocList(json)
                 },
                 error: function() {
                     alert("승인완료상태의 기안서를 가져올 수 없습니다.");
                 }
             });
         }
-     	//반려 기안서데이터
-     	  function loadNineDocList(currentPage) {
+        //반려 기안서데이터
+          function loadNineDocList(currentPage) {
             $.ajax({
                 url: "${pageContext.request.contextPath}/approval/nineDocList",
                 type: "GET",
@@ -220,17 +242,17 @@
                     empNo: "${empNo}"
                 },
                 success: function(json) {
-                	$('#currentPage').text(currentPage);
-                	updateNineTypeDocList(json)
+                   $('#currentPage').text(currentPage);
+                   updateNineTypeDocList(json)
                 },
                 error: function() {
                     alert("반려상태의 기안서를 가져올 수 없습니다.");
                 }
             });
         }
-     	 
-     	 //중간승인자&최종승인자의 승인상태값
-     	 function getApprovalStateText(stateNo) {
+         
+         //중간승인자&최종승인자의 승인상태값
+         function getApprovalStateText(stateNo) {
              let stateText = '';
              switch (parseInt(stateNo)) {
                  case 0:
@@ -247,7 +269,7 @@
              }
              return stateText;
          }
-     	// URL 설정 함수
+        // URL 설정 함수
              function getDetailUrl(tmpName, draftDocNo) {
              let detailUrl = "";
              switch(tmpName) {
@@ -272,25 +294,28 @@
              return detailUrl;
          }
 
-		//전체
+      //전체
         function updateAllDocList(json) {
-        	<!-- DB 조회해온 last 페이지 순번 -->
-        	lastPage = json.allDocLastPage;
-			console.log('lastPage : ' + lastPage);
+         
+         console.log('json : ' +  JSON.stringify(json));
+           <!-- DB 조회해온 last 페이지 순번 -->
+           lastPage = json.allDocLastPage;
+         console.log('lastPage : ' + lastPage);
             <!-- hiddenFieldValue 값을 개인으로 세팅 -->
-        	hiddenFieldValue = "allTypeDoc"
+           hiddenFieldValue = "allTypeDoc"
             console.log("hiddenFieldValue : " + hiddenFieldValue);
             <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
-			updateBtnState();
-			
+         updateBtnState();
+         
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             
             if(json.allDocList == ""){
-            	tableBody.append("<tr><td colspan='9'>작성한 기안서가 없습니다</td></tr>");
+               tableBody.append("<tr><td colspan='9'>작성한 기안서가 없습니다</td></tr>");
             }else{
             $.each(json.allDocList, function(index, item) {
+               
                 let approvalStateText = '';
                 let approvalStateNo = parseInt(item.approvalStateNo);  // 숫자로 변환
                 switch (approvalStateNo) {
@@ -311,28 +336,30 @@
                 }
                 //승인자의 중간상태값, 최종상태값
                 let midApprovalState = getApprovalStateText(item.midApprovalState);
-                let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
+                let finalApprovalState = getApprovalStateText(item.finalApprovalState);   
+                
                 //승인날짜 null값 표시
                 let midApprovalDatetime = item.midApprovalDatetime;
                 if(midApprovalDatetime === null){
-                	midApprovalDatetime = "승인전";
+                   midApprovalDatetime = "승인전";
                 }
                 let finalApprovalDatetime = item.finalApprovalDatetime;
                 if(finalApprovalDatetime === null){
-                	finalApprovalDatetime = "승인전";
+                   finalApprovalDatetime = "승인전";
                 }
                 
-   				
+               
                 let modifyButton = approvalStateNo === 0 ? `<a href=""><button class='badge badge-danger px-2'>수정가능</button></a>` : '';
+                let rejectionButton = approvalStateNo === 9 ? `<button class='checkRejection badge badge-warning px-2' data-toggle='modal' data-target='#rejectionModal' data-mid-reason='${item.midApproverReason}' data-final-reason='${item.finalApproverReason}'>이유열기</button>` : '';
                 
-             	// 상세보기 페이지 URL 설정
+                // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
-				
+            
                 let newRow = $("<tr>" +
                         "<td>" + item.tmpName + "</td>" +
                         "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                         "<td>" + approvalStateText + 
-                        "<br>" + modifyButton + "</td>" +
+                        "<br>" + modifyButton +rejectionButton+ "</td>" +
                         "<td>" + midApprovalDatetime + "</td>" +
                         "<td>" + midApprovalState + "</td>" +
                         "<td>" + finalApprovalDatetime + "</td>" +
@@ -340,51 +367,63 @@
                         "<td>" + item.createDatetime + "</td>" +
                         "</tr>");
                 
-                tableBody.append(newRow);
-           		});
-            }
+                      tableBody.append(newRow);
+
+                 });
+			            $(document).on('click', '.checkRejection', function() {
+			                let midApproverReason = $(this).data('mid-reason');
+			                let finalApproverReason = $(this).data('final-reason');
+			                $('.modal-body').html(`
+			                    <p>중간 승인 사유: ${midApproverReason}</p>
+			                    <p>최종 승인 사유: ${finalApproverReason}</p>
+			                `);
+			            });
+                  
+            	}
             
             $("#tableBody").show();
         }
+      
+      
         //결재대기상태
         function updateZeroTypeDocList(json) {
-        	<!-- DB 조회해온 last 페이지 순번 -->
-        	lastPage = json.zeroDocLastPage;
-			console.log('lastPage : ' + lastPage);
+           <!-- DB 조회해온 last 페이지 순번 -->
+           lastPage = json.zeroDocLastPage;
+         console.log('lastPage : ' + lastPage);
             <!-- hiddenFieldValue 값을 개인으로 세팅 -->
-        	hiddenFieldValue = "zeroTypeDoc"
+           hiddenFieldValue = "zeroTypeDoc"
             console.log("hiddenFieldValue : " + hiddenFieldValue);
             <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
-			updateBtnState();
-			
-			
+         updateBtnState();
+         
+         
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             
             if(json.zeroDocList == ""){
-            	tableBody.append("<tr><td colspan='8'>결재대기상태의 기안서가 없습니다</td></tr>");
+               tableBody.append("<tr><td colspan='8'>결재대기상태의 기안서가 없습니다</td></tr>");
             }else{
             $.each(json.zeroDocList, function(index, item) {
-            	//중간승인자의 상태값, 최종승인자의 상태값
-            	 let midApprovalState = getApprovalStateText(item.midApprovalState);
-                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);	
-            	
+               //중간승인자의 상태값, 최종승인자의 상태값
+                let midApprovalState = getApprovalStateText(item.midApprovalState);
+                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);   
+               
                  let modifyButton = `<a href=""><button class='badge badge-danger px-2'>수정가능</button></a>`;
                 //승인날짜 null값 표시
                  let midApprovalDatetime = item.midApprovalDatetime;
                  if(midApprovalDatetime === null){
-                 	midApprovalDatetime = "승인전";
+                    midApprovalDatetime = "승인전";
                  }
                  let finalApprovalDatetime = item.finalApprovalDatetime;
                  if(finalApprovalDatetime === null){
-                 	finalApprovalDatetime = "승인전";
+                    finalApprovalDatetime = "승인전";
                  }
-             	// 상세보기 페이지 URL 설정
+                // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
-                		 "<td>" + item.tmpName + "</td>" +
-                		 "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+                       "<td>" + item.tmpName + "</td>" +
+                       "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "결재대기" + "<br>" + modifyButton + "</td>" +
                          "<td>" + midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
@@ -394,40 +433,40 @@
                          "</tr>");
                 
                 tableBody.append(newRow);
-           		});
+                 });
             }
             
             $("#tableBody").show();
         }
         //승인중상태
         function updateOneTypeDocList(json) {
-        	<!-- DB 조회해온 last 페이지 순번 -->
-        	lastPage = json.oneDocLastPage;
-			console.log('승인중 lastPage : ' + lastPage);
-			console.log('승인중 currentPage:' + currentPage);
+           <!-- DB 조회해온 last 페이지 순번 -->
+           lastPage = json.oneDocLastPage;
+         console.log('승인중 lastPage : ' + lastPage);
+         console.log('승인중 currentPage:' + currentPage);
             <!-- hiddenFieldValue 값을 개인으로 세팅 -->
-        	hiddenFieldValue = "oneTypeDoc"
+           hiddenFieldValue = "oneTypeDoc"
             console.log("hiddenFieldValue : " + hiddenFieldValue);
             <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
-			updateBtnState();
-			
+         updateBtnState();
+         
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             if(json.oneDocList == ""){
-            	tableBody.append("<tr><td colspan='8'>승인중상태의 기안서가 없습니다</td></tr>");
+               tableBody.append("<tr><td colspan='8'>승인중상태의 기안서가 없습니다</td></tr>");
             }else{
             $.each(json.oneDocList, function(index, item) {
-            	//중간승인자의 상태값, 최종승인자의 상태값
-           	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
-            	
+               //중간승인자의 상태값, 최종승인자의 상태값
+                  let midApprovalState = getApprovalStateText(item.midApprovalState);
+               
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
-            	
-             	// 상세보기 페이지 URL 설정
+               
+                // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
-                		 "<td>" + item.tmpName + "</td>" +
-                		 "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+                       "<td>" + item.tmpName + "</td>" +
+                       "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "승인중" + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
@@ -443,32 +482,32 @@
         }
         //승인완료상태
         function updateTwoTypeDocList(json) {
-        	<!-- DB 조회해온 last 페이지 순번 -->
-        	lastPage = json.twoDocLastPage;
-			console.log('lastPage : ' + lastPage);
+           <!-- DB 조회해온 last 페이지 순번 -->
+           lastPage = json.twoDocLastPage;
+         console.log('lastPage : ' + lastPage);
             <!-- hiddenFieldValue 값을 개인으로 세팅 -->
-        	hiddenFieldValue = "twoTypeDoc"
+           hiddenFieldValue = "twoTypeDoc"
             console.log("hiddenFieldValue : " + hiddenFieldValue);
             <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
-			updateBtnState();
-			
-			
+         updateBtnState();
+         
+         
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             if(json.twoDocList == ""){
-            	tableBody.append("<tr><td colspan='5'>>승인완료상태의 기안서가 없습니다</td></tr>");
+               tableBody.append("<tr><td colspan='5'>>승인완료상태의 기안서가 없습니다</td></tr>");
             }else{
             $.each(json.twoDocList, function(index, item) {
-            	//중간승인자의 상태값, 최종승인자의 상태값
-           	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
+               //중간승인자의 상태값, 최종승인자의 상태값
+                  let midApprovalState = getApprovalStateText(item.midApprovalState);
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
                 
-             	// 상세보기 페이지 URL 설정
+                // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
-                		 "<td>" + item.tmpName + "</td>" +
-                		 "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+                       "<td>" + item.tmpName + "</td>" +
+                       "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "승인완료" + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
@@ -478,37 +517,37 @@
                          "</tr>");
                 
                 tableBody.append(newRow);
-            	});
+               });
             }
             $("#tableBody").show();
         }
         //반려상태
         function updateNineTypeDocList(json) {
-        	<!-- DB 조회해온 last 페이지 순번 -->
-        	lastPage = json.nineDocLastPage;
-			console.log('lastPage : ' + lastPage);
+           <!-- DB 조회해온 last 페이지 순번 -->
+           lastPage = json.nineDocLastPage;
+         console.log('lastPage : ' + lastPage);
             <!-- hiddenFieldValue 값을 개인으로 세팅 -->
-        	hiddenFieldValue = "nineTypeDoc"
+           hiddenFieldValue = "nineTypeDoc"
             console.log("hiddenFieldValue : " + hiddenFieldValue);
             <!-- 버튼 활성화 함수(updateBtnState) 실행 -->
-			updateBtnState();
-			
+         updateBtnState();
+         
             let tableBody = $("#tableBody");
             tableBody.empty();
             
             if(json.nineDocList == ""){
-            	tableBody.append("<tr><td colspan='8'>반려상태의 기안서가 없습니다</td></tr>");
+               tableBody.append("<tr><td colspan='8'>반려상태의 기안서가 없습니다</td></tr>");
             }else{
             $.each(json.nineDocList, function(index, item) {
-            	//중간승인자의 상태값, 최종승인자의 상태값
-           	 	let midApprovalState = getApprovalStateText(item.midApprovalState);
+               //중간승인자의 상태값, 최종승인자의 상태값
+                  let midApprovalState = getApprovalStateText(item.midApprovalState);
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
                 
-            	// 상세보기 페이지 URL 설정
+               // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
-                		 "<td>" + item.tmpName + "</td>" +
-                		 "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+                       "<td>" + item.tmpName + "</td>" +
+                       "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "반려" + "</td>" +
                          "<td>" + item.midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
@@ -518,107 +557,107 @@
                          "</tr>");
                 
                 tableBody.append(newRow);
-            	});
+               });
             }
             $("#tableBody").show();
         }
         
         <!-- pre 버튼 클릭 시 동작 -->
         $('#pre').click(function() {
-  		   console.log('pre click : ' + currentPage);
-  		 if (currentPage > 1) {
-     		  currentPage = currentPage - 1;
-     		 if (hiddenFieldValue === "allTypeDoc") {
-				  console.log("allTypeDoc");
-				  loadAllDocList(currentPage);
-		      } else if (hiddenFieldValue === "zeroTypeDoc") {
-				  console.log("zeroTypeDoc");
-				  loadZeroDocList(currentPage);
-		      } else if (hiddenFieldValue === "oneTypeDoc") {
-				  console.log("oneTypeDoc");
-				  loadOneDocList(currentPage);
-		      } else if (hiddenFieldValue === "twoTypeDoc") {
-				  console.log("twoTypeDoc");
-				  loadtwoDocList(currentPage);
-		      } else if (hiddenFieldValue === "nineTypeDoc") {
-				  console.log("nineTypeDoc");
-				  loadNineDocList(currentPage);
-		      }
-		   }
+           console.log('pre click : ' + currentPage);
+         if (currentPage > 1) {
+             currentPage = currentPage - 1;
+            if (hiddenFieldValue === "allTypeDoc") {
+              console.log("allTypeDoc");
+              loadAllDocList(currentPage);
+            } else if (hiddenFieldValue === "zeroTypeDoc") {
+              console.log("zeroTypeDoc");
+              loadZeroDocList(currentPage);
+            } else if (hiddenFieldValue === "oneTypeDoc") {
+              console.log("oneTypeDoc");
+              loadOneDocList(currentPage);
+            } else if (hiddenFieldValue === "twoTypeDoc") {
+              console.log("twoTypeDoc");
+              loadtwoDocList(currentPage);
+            } else if (hiddenFieldValue === "nineTypeDoc") {
+              console.log("nineTypeDoc");
+              loadNineDocList(currentPage);
+            }
+         }
         });
 
         <!-- next 버튼 클릭 시 동작 -->
         $('#next').click(function() {
-  			console.log('next click : ' + currentPage);
+           console.log('next click : ' + currentPage);
 
-  			 if (currentPage < lastPage) {
-  	            currentPage = currentPage + 1;
-	  	          if (hiddenFieldValue === "allTypeDoc") {
-	 				  console.log("allTypeDoc");
-	 				  loadAllDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "zeroTypeDoc") {
-	 				  console.log("zeroTypeDoc");
-	 				  loadZeroDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "oneTypeDoc") {
-	 				  console.log("oneTypeDoc");
-	 				  loadOneDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "twoTypeDoc") {
-	 				  console.log("twoTypeDoc");
-	 				  loadtwoDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "nineTypeDoc") {
-	 				  console.log("nineTypeDoc");
-	 				  loadNineDocList(currentPage);
-	 		      }
-  	         }
+            if (currentPage < lastPage) {
+                 currentPage = currentPage + 1;
+                  if (hiddenFieldValue === "allTypeDoc") {
+                  console.log("allTypeDoc");
+                  loadAllDocList(currentPage);
+                } else if (hiddenFieldValue === "zeroTypeDoc") {
+                  console.log("zeroTypeDoc");
+                  loadZeroDocList(currentPage);
+                } else if (hiddenFieldValue === "oneTypeDoc") {
+                  console.log("oneTypeDoc");
+                  loadOneDocList(currentPage);
+                } else if (hiddenFieldValue === "twoTypeDoc") {
+                  console.log("twoTypeDoc");
+                  loadtwoDocList(currentPage);
+                } else if (hiddenFieldValue === "nineTypeDoc") {
+                  console.log("nineTypeDoc");
+                  loadNineDocList(currentPage);
+                }
+              }
         });
         <!-- first 버튼 클릭 시 동작 -->
         $('#first').click(function() {
-  			console.log('first click : ' + currentPage);
+           console.log('first click : ' + currentPage);
 
-  		  if (currentPage > 1) {
+          if (currentPage > 1) {
               currentPage = 1;
               if (hiddenFieldValue === "allTypeDoc") {
- 				  console.log("allTypeDoc");
- 				  loadAllDocList(currentPage);
- 		      } else if (hiddenFieldValue === "zeroTypeDoc") {
- 				  console.log("zeroTypeDoc");
- 				  loadZeroDocList(currentPage);
- 		      } else if (hiddenFieldValue === "oneTypeDoc") {
- 				  console.log("oneTypeDoc");
- 				  loadOneDocList(currentPage);
- 		      } else if (hiddenFieldValue === "twoTypeDoc") {
- 				  console.log("twoTypeDoc");
- 				  loadtwoDocList(currentPage);
- 		      } else if (hiddenFieldValue === "nineTypeDoc") {
- 				  console.log("nineTypeDoc");
- 				  loadNineDocList(currentPage);
- 		      }
+               console.log("allTypeDoc");
+               loadAllDocList(currentPage);
+             } else if (hiddenFieldValue === "zeroTypeDoc") {
+               console.log("zeroTypeDoc");
+               loadZeroDocList(currentPage);
+             } else if (hiddenFieldValue === "oneTypeDoc") {
+               console.log("oneTypeDoc");
+               loadOneDocList(currentPage);
+             } else if (hiddenFieldValue === "twoTypeDoc") {
+               console.log("twoTypeDoc");
+               loadtwoDocList(currentPage);
+             } else if (hiddenFieldValue === "nineTypeDoc") {
+               console.log("nineTypeDoc");
+               loadNineDocList(currentPage);
+             }
            }
         });
         <!-- last 버튼 클릭 시 동작 -->
         $('#last').click(function() {
-      	  
-  			console.log('last click : ' + currentPage);
+           
+           console.log('last click : ' + currentPage);
 
-  			 if (currentPage < lastPage) {
-  	            currentPage = lastPage
-	  	          if (hiddenFieldValue === "allTypeDoc") {
-	 				  console.log("allTypeDoc");
-	 				  loadAllDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "zeroTypeDoc") {
-	 				  console.log("zeroTypeDoc");
-	 				  loadZeroDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "oneTypeDoc") {
-	 				  console.log("oneTypeDoc");
-	 				  loadOneDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "twoTypeDoc") {
-	 				  console.log("twoTypeDoc");
-	 				  loadtwoDocList(currentPage);
-	 		      } else if (hiddenFieldValue === "nineTypeDoc") {
-	 				  console.log("nineTypeDoc");
-	 				  loadNineDocList(currentPage);
-	 		      }
-  	         }
+            if (currentPage < lastPage) {
+                 currentPage = lastPage
+                  if (hiddenFieldValue === "allTypeDoc") {
+                  console.log("allTypeDoc");
+                  loadAllDocList(currentPage);
+                } else if (hiddenFieldValue === "zeroTypeDoc") {
+                  console.log("zeroTypeDoc");
+                  loadZeroDocList(currentPage);
+                } else if (hiddenFieldValue === "oneTypeDoc") {
+                  console.log("oneTypeDoc");
+                  loadOneDocList(currentPage);
+                } else if (hiddenFieldValue === "twoTypeDoc") {
+                  console.log("twoTypeDoc");
+                  loadtwoDocList(currentPage);
+                } else if (hiddenFieldValue === "nineTypeDoc") {
+                  console.log("nineTypeDoc");
+                  loadNineDocList(currentPage);
+                }
+              }
         });
         
       //페이징 버튼 활성화
