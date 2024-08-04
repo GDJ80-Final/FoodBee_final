@@ -150,7 +150,7 @@ public class AttendanceController {
 		int row = attendanceService.modifyTime(updateStartTime, updateEndTime, updateReason, empNo, date);
 		log.debug(TeamColor.GREEN + "row => " + row);
 		
-		return "redirect:/attendance/attendancePersonal";
+		return "redirect:/attendance/attendanceReport?date=" + date;
 	}
 	
 	// 개인 근태

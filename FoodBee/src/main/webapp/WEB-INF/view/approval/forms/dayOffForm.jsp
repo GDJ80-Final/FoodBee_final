@@ -366,6 +366,14 @@ $(document).ready(function() {
         const remainingDays = parseFloat($('#dayOff').val()); // 잔여 휴가 값
         const start = new Date(startDate);
 
+        // 유형이 선택되지 않았으면 경고창 띄우기
+        let typeName = $("input[name='typeName']:checked").val();
+        if (!typeName) {
+            alert("유형을 먼저 선택해 주세요.");
+            $('#startDate').val(''); // 시작 날짜 초기화
+            return; // 함수 종료
+        }
+
         // 엔드데이트의 최대값 설정
         if (startDate) {
             const maxEndDate = new Date(start);
@@ -373,7 +381,7 @@ $(document).ready(function() {
             $('#endDate').attr('max', maxEndDate.toISOString().split('T')[0]); // max 속성 설정
             
             // 유형이 반차인 경우 종료 날짜를 시작 날짜로 설정
-            if ($("input[name='typeName']:checked").val() === "반차") {
+            if (typeName === "반차") {
                 $('#endDate').prop('readonly', true); // 엔드데이트를 readonly로 설정
                 $('#endDate').val(startDate); // 엔드데이트 값을 스타트데이트로 설정
             } else {
@@ -428,41 +436,6 @@ $(document).ready(function() {
 		
 		}
 	});
-/*         // 폼 필드 유효성 검사
-        let typeName = $("input[name='typeName']:checked").val();
-        let startDate = $('#startDate').val();
-        let endDate = $('#endDate').val();
-        let emergency = $('#emergency').val();
-        let title = $('#title').val();
-        let content = $('#content').val();
-        
-        if (!typeName) {
-            alert("유형을 선택해주세요.");
-            return false;
-        }
-        if (!startDate) {
-            alert("시작 날짜를 입력해주세요.");
-            return false;
-        }
-        if (!endDate) {
-            alert("종료 날짜를 입력해주세요.");
-            return false;
-        }
-        if (!emergency) {
-            alert("비상연락처를 입력해주세요.");
-            return false;
-        }
-        if (!title) {
-            alert("제목을 입력해주세요.");
-            return false;
-        }
-        if (!content) {
-            alert("내용을 입력해주세요.");
-            return false;
-        }
-        
-        $('#form').submit();
-    }); */
 	
 	/* 파일 여러 개 추가  */
 	let fileOrder = 1;

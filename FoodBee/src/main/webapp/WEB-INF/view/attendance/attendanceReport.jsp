@@ -67,7 +67,7 @@
 							    </c:otherwise>
 							</c:choose>
 							</table>
-							<c:if test="${attendanceDTO.date ne null and attendanceDTO.approvalState == 0}">
+							<c:if test="${attendanceDTO.date ne null and attendanceDTO.approvalState == 0 or attendanceDTO.approvalState == 9}">
 								<div class="text-center" style="margin-bottom: 20px;margin-top: 80px;">
 									<button type="button" class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceModify?date=${attendanceDTO.date}'">수정</button>&nbsp;&nbsp;&nbsp;&nbsp;
 									<button type="submit" class="btn btn-dark" onclick="showAlert();">확정</button>
