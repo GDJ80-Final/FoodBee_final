@@ -266,7 +266,7 @@
                         state = '알 수 없음';
                 }
                 
-                // 승인하러가기 버튼 생성
+                // 승인필요 버튼 생성
                 if (state === '미결') {
                     button = "<button class='badge badge-danger px-2'>승인필요</button>";
                 }else{

@@ -37,6 +37,19 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
         
         return approvalBoxMapper.getApprovalListAll(empNo, beginRow, ROW_PER_PAGE);
 	}
+	// 내 결제함 home리스트
+	// 파라미터 : int currentPage, int empNO
+	// 반환값 : List<ApprovalBoxDTO>
+	// 사용클래스 : ApprovalBoxController.approvalHomeList
+	@Override
+	public List<ApprovalBoxDTO> getApprovalBoxHome(int currentPage, int empNo){
+		
+		int rowPerPage = 5;
+		int beginRow = 0;
+		beginRow = (currentPage -1) * rowPerPage;
+		
+		return approvalBoxMapper.getApprovalListAll(empNo, beginRow, rowPerPage);
+	}
 	
 	// 결재함 미결리스트
 	// 파라미터 : int currentpage, int empNo

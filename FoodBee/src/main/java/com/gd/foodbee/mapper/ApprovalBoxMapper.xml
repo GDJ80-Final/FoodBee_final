@@ -11,11 +11,11 @@
 		    dd.doc_approver_state_no approverStateNo,
 		    dd.mid_approver_no midApproverNo,
 		    dd.mid_approval_state midApprovalState,
-		    dd.mid_approval_datetime midApprovalDatetime,
+		    DATE_FORMAT(dd.mid_approval_datetime, '%Y-%m-%d %H:%i') midApprovalDatetime,
 		    dd.final_approver_no finalApproverNo,
 		    dd.final_approval_state finalApprovalState,
-		    dd.final_approval_datetime finalApprovalDatetime,
-		    dd.create_datetime createDatetime,
+		    DATE_FORMAT(dd.final_approval_datetime, '%Y-%m-%d %H:%i') finalApprovalDatetime,
+		    DATE_FORMAT(dd.create_datetime, '%Y-%m-%d %H:%i') createDatetime,
 		    dd.draft_doc_no draftDocNo
 		FROM 
 		    draft_doc dd

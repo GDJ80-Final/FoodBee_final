@@ -40,7 +40,11 @@
 			<div id="departureTime" style="display:none;">퇴근 시간:</div>
 			<div id="workTime" style="display:none;">근무 시간:</div>
 	 	</div>
+	 	<!-- 일정 -->
 	 	<div class="content-body">
+	 		<span id="contentTitle">
+	 			<a href="calendar/scheduleList">일정알림</a>
+	 		</span>
 	 		<table id="scheduleTable" class="table header-border" border="1">
 			    <thead>
 			        <tr>
@@ -55,6 +59,26 @@
 			    </tbody>
 			</table>
 	 	</div>
+	 	<!-- 결재함 -->
+	 	<div class="content-body">
+	 		<span id="contentTitle">
+	 			<a href="approval/approvalBox">결재함</a>
+	 		</span>
+	 		<table id="approvalTable" class="table header-border" border="1">
+			    <thead>
+			        <tr>
+			            <th>양식유형</th>
+			            <th>기안자</th>
+			            <th>제목</th>
+			            <th>결재상태</th>
+			            <th>기안일시</th>
+			        </tr>
+			    </thead>
+			    <tbody id="approvalTableBody">
+			    </tbody>
+			</table>
+	 	</div>
+	 	
  	</div>
  	
  	<jsp:include page="./footer.jsp"></jsp:include>
@@ -66,7 +90,103 @@
 	    let currentPage = 1;
 
 	    loadTeamSchedule(currentPage);
+	    loadApprovalBoxList(currentPage);
+	    
+	    // 결재함 리스트
+        function loadApprovalBoxList(currentPage) {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/approval/approvalHomeList",
+                type: "GET",
+                data: {
+                    currentPage: currentPage,
+                    empNo: currentEmpNo
+                },
+                success: function(json) {
+                    console.log("Ajax 요청 성공:", json); 
+                    updateApprovalBoxList(json)
+                },
+                error: function() {
+                    console.log("Ajax 요청 실패:", json); 
+                }
+            });
+        }
+        // URL 설정 함수
+        function getDetailUrl(tmpName, draftDocNo) {
+            let detailUrl = "";
+            switch(tmpName) {
+                case "매출보고":
+                    detailUrl = "${pageContext.request.contextPath}/approval/revenueOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "휴가신청":
+                    detailUrl = "${pageContext.request.contextPath}/approval/dayOffOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "출장신청":
+                    detailUrl = "${pageContext.request.contextPath}/approval/businessTripOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "기본기안서":
+                    detailUrl = "${pageContext.request.contextPath}/approval/basicFormOne?draftDocNo=" + draftDocNo;
+                    break;
+                case "지출결의":
+                    detailUrl = "${pageContext.request.contextPath}/approval/chargeOne?draftDocNo=" + draftDocNo;
+                    break;
+                default:
+                    detailUrl = "#";
+            }
+            return detailUrl;
+        }
+	    // success함수
+        function updateApprovalBoxList(json) {
+            let tableBody = $("#approvalTableBody");
+            tableBody.empty();
+            
+            if(json == ""){
+            	tableBody.append("<tr><td colspan='5'>결재올라온 기안서가 없습니다</td></tr>");
+            }else{
+           	json.forEach(function(item) {
+                let empNo = currentEmpNo;
+                let midApproverNo = item.midApproverNo;
+                let finalApproverNo = item.finalApproverNo;
+                let approvalState = '';
+                let state = '';
 
+                if (empNo == midApproverNo) {
+                    approvalState = parseInt(item.midApprovalState);
+                } else if (empNo == finalApproverNo) {
+                    approvalState = parseInt(item.finalApprovalState);
+                }
+
+                switch (approvalState) {
+                    case 0:
+                        state = '미결';
+                        break;
+                    case 1:
+                        state = '기결';
+                        break;
+                    default:
+                        state = '알 수 없음';
+                }
+                if (state === '미결') {
+                    button = "<button class='badge badge-danger px-2'>승인필요</button>";
+                }else{
+                	button = "";
+                }
+            	// 상세보기 페이지 URL 설정
+                let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
+                
+                let newRow = $("<tr>" +
+                    "<td>" + item.tmpName + "</td>" +
+                    "<td>" + item.empName + "</td>" +
+                    "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+                    "<td>" + state + "&nbsp" +button + "</td>" +
+                    "<td>" + item.createDatetime + "</td>" +
+                    "</tr>");
+                tableBody.append(newRow);
+            	});
+            }
+            $("#tableBody").show();
+          }
+	    
+		// 개인 + 팀 일정 리스트
 	    function loadTeamSchedule(currentPage) {
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/calendar/personalTeamList',

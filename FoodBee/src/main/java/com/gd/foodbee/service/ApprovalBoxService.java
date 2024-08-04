@@ -15,6 +15,9 @@ public interface ApprovalBoxService {
 	// 결재함 전체 리스트
 	List<ApprovalBoxDTO> getApprovalListAll(int currentPage, int empNo);
 	
+	//Home 결재함
+	List<ApprovalBoxDTO> getApprovalBoxHome(int currentPage, int empNo);
+	
 	// 미결 리스트
 	List<ApprovalBoxDTO> getZeroListAll(int currentPage, int empNo);
 	

@@ -105,6 +105,20 @@ public class ApprovalBoxController {
 		
 		return allList;
 	}
+	
+	// Home에 넣을 결재함리스트
+	// 파라미터 : int currentPage, int empNo
+	// 반환값 : List<>
+	// 사용페이지 : home
+	@GetMapping("/approval/approvalHomeList")
+	@ResponseBody
+	public List<ApprovalBoxDTO> approvalHomeList(int currentPage, int empNo){
+		
+		List<ApprovalBoxDTO> homeList = approvalBoxService.getApprovalBoxHome(currentPage, empNo);
+		
+		return homeList;
+	}
+
 	// 결재함 미결 리스트
 	// 파라미터 : int currentPage, int empNo
 	// 반환값 : Map<>allZeroList
