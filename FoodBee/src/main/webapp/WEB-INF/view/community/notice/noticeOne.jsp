@@ -75,7 +75,7 @@
 				                        <c:choose>
 				                            <c:when test="${not empty one[0].originalFile}">
 				                                <c:forEach items="${one}" var="item">
-				                                    <a href="${pageContext.request.contextPath}/download?file=${item.originalFile}" download="${item.originalFile}" class="form-control input-default">
+				                                    <a href="${pageContext.request.contextPath}/download?file=${item.originalFile}&saveFile=${item.saveFile}" class="form-control input-default">
 				                                        ${item.saveFile}
 				                                    </a>
 				                                    <br>
