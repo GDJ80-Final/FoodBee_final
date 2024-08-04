@@ -11,6 +11,16 @@
 <div id="main-wrapper">
 <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+
+	<div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">매출</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">품목별 조회</a></li>
+            </ol>
+        </div>
+   	</div>
+   	
 	<div class="content-body">
 		<div class="container-fluid">
         	<div class="row">
@@ -48,7 +58,7 @@
 						    </div>
 					    </div>
 					   
-					    <canvas id="lineChart" style="width:100%;max-width:1200px"></canvas>
+					    <canvas id="lineChart" style="width:100%;max-width:1200px; height: 500px;"></canvas>
 				    	</div>
 					</div>
 				</div>

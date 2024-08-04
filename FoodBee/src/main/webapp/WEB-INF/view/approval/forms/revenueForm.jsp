@@ -402,60 +402,54 @@ $(document).ready(function() {
         const description = year + '-' + month;
         $('#description').val(description);
     });
- 	
-	$('#submitBtn').click(function(e) {
-        let drafterNo = $('#drafterEmpNo').val();
-        console.log(drafterNo)
-        
-        // 폼 필드 유효성 검사
-        let year = $('#yearSelect').val();
-        let month = $('#monthSelect').val();
-        let title = $('#title').val();
-        let categories = $('.categorySelect');
-        let amounts = $('.revenueInput');
-        let valid = true;
-
-        if (!year || !month) {
-            alert("발생 년월을 선택해주세요.");
-            valid = false;
-        }
-        if (!title) {
-            alert("제목을 입력해주세요.");
-            valid = false;
-        }
-
-        let categoryFilled = false; // 카테고리 유효성 검사 플래그
-        let amountFilled = false; // 매출액 유효성 검사 플래그
-
-        categories.each(function(index) {
-            if ($(this).val() !== "category0") {
-                categoryFilled = true;
-            }
-        });
-
-        amounts.each(function(index) {
-            if ($(this).val().trim() !== "") {
-                amountFilled = true;
-            }
-        });
-
-        if (!categoryFilled) {
-            alert("카테고리를 선택해주세요.");
-            valid = false;
-        }
-
-        if (!amountFilled) {
-            alert("매출액을 입력해주세요.");
-            valid = false;
-        }
-
-        if (!valid) {
-            return false; // 유효성 검사를 통과하지 못한 경우 제출하지 않음
-        }
-        
-        $('#form').submit();
-    });
 	
+	$('#submitBtn').click(function(e) {
+	    let drafterNo = $('#drafterEmpNo').val();
+	    console.log(drafterNo);
+	    
+	    // 공백 검사
+	    let errorMessage = '';	    	  
+	    
+	    // 제목 입력 검사
+	    if ($('#title').val().trim() === '') {
+	        errorMessage += '제목을 입력해 주세요.\n';
+	    }
+	    
+	 	// 카테고리 입력 검사
+	    let categorySelected = false;
+	    $('.categorySelect').each(function() {
+	        if ($(this).val() !== 'category0') { // 'category0'이 아닌 경우
+	            categorySelected = true; // 유효한 카테고리가 선택됨
+	        }
+	    });
+
+	    if (!categorySelected) {
+	        errorMessage += '카테고리를 선택해 주세요.\n'; // 'category0'이 선택된 경우
+	    }
+	    
+	    // 매출액 입력 검사
+	    if ($('.revenueInput').filter(function() { return $(this).val().trim() !== ''; }).length === 0) {
+	        errorMessage += '매출액을 입력해 주세요.\n';
+	    }
+	    
+	    // 중간결재자 입력 검사
+	    if ($('#midApproverNo').val().trim() === '' || $('#midApproverNo').val().trim() === null) {
+	        errorMessage += '중간결재자를 선택해 주세요.\n';
+	    }
+	    
+	    // 최종결재자 입력 검사
+	    if ($('#finalApproverNo').val().trim() === '' || $('#finalApproverNo').val().trim() === null) {
+	        errorMessage += '최종결재자를 선택해 주세요.\n';
+	    }
+	    
+	    // 공백 검사 및 결재자 검사 후 AJAX 요청
+	    if (errorMessage === '') {
+	        $('#form').submit();
+	    } else {
+	        e.preventDefault();
+	        alert(errorMessage);
+	    }
+	});
 	/* 파일 여러 개 추가  */
 	let fileOrder = 1;
 	// 파일 추가 버튼 클릭 시

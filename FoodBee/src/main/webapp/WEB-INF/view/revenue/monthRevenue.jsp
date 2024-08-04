@@ -14,61 +14,81 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
 body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-    }
-    .content-body {
-        display: flex;
-        padding: 0 50px; /* 좌우 여백 추가 (원하는 크기로 변경) */
-    }
-    .up-section {
-        padding: 50px; /* 위쪽 섹션의 여백 설정 */
-        text-align: center; /* 텍스트 중앙 정렬 */
-        width: 100%;
-    }
-    .left-section, .right-section {
-        padding: 20px;
-    }
-    .left-section {
-        width: 40%;
-    }
-    .right-section {
-        width: 60%;
-    }
-    select {
+    margin: 0;
+    padding: 0;
+}
+.up-section {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    width: 100%;
+}
+.left-section, .right-section {
+    padding: 20px;
+    box-sizing: border-box; /* 패딩 포함하여 크기 계산 */
+    float: left; /* 왼쪽으로 플로팅 */
+}
+.left-section {
+    width: 40%; /* 왼쪽 섹션 너비 */
+}
+.right-section {
+    width: 60%; /* 오른쪽 섹션 너비 */
+}
+select {
     width: 80px; /* 너비 조정 (원하는 크기로 변경) */
-    font-size: 50px; /* 폰트 크기 조정 (선택 사항) */
+    font-size: 20px; /* 폰트 크기 조정 (선택 사항) */
     padding: 5px; /* 패딩 추가 (선택 사항) */
+}
+
+/* 부모 요소에서 clearfix 사용 */
+.content-body::after {
+    content: "";
+    display: table;
+    clear: both; /* 플로팅된 요소 정리 */
 }
 </style>
 </head>
 <body>
 <div id="main-wrapper">
-	<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-	<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
+    <jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
 	
-	<div class="up-section">
-        <div>
-	        <select id="yearSelect"></select>
-	        <select id="monthSelect"></select> 매출
-    	</div>
+	<div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">매출</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">전체 조회</a></li>
+            </ol>
+        </div>
+   	</div>
+	<div class="content-body">
+	    <div class="container-fluid">
+	        <div class="row">
+	            <div class="col-lg-12">
+	                <div class="card">
+	                     <div class="card-body" style="padding: 20px;">
+	                     	<div class="up-section">
+	                            <div>
+	                                <select id="yearSelect"></select>
+	                                <select id="monthSelect"></select> 매출
+	                            </div>
+	                        </div>
+	                            
+	                        <section class="left-section">
+	                            <canvas id="donutChart" style="max-width: 100%; height: 200px;"></canvas><br><br><br>
+	                            <div id="monthlyTotal"></div>
+	                            <div id="previousMonthTotal"></div>
+	                        </section>
+	                        
+	                        <section class="right-section">
+	                            <canvas id="totalChart" style="width: 100%; height: 600px;"></canvas>
+	                        </section>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     </div>
-	    
-	<div class="content-body">	
-	    <section class="left-section">
-	        <canvas id="donutChart" style="max-width: 500px;"></canvas><br><br><br>
-	        <div id="monthlyTotal"></div>
-	        <div id="previousMonthTotal"></div>
-	    </section>
-	    <section class="right-section">
-	        <canvas id="totalChart" style="width:100%;max-width:800px; height:100%;max-height:600px;"></canvas>
-	    </section>
-	</div>
-	
+    <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 </div>
-<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 
 
 <script>

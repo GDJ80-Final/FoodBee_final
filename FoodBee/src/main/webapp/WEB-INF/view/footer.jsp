@@ -5,6 +5,10 @@
     <div class="footer">
          <div class="copyright">
              <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Quixlab</a> 2018</p>
+             <p><a href="https://github.com/GDJ80-Final/FoodBee_final">FoodBee</a> 2024 
+             [ <a href="https://github.com/YeonjuRa">나연주</a>, <a href="https://github.com/mareto1017">박상진</a>,
+               <a href="https://github.com/seogibeom">서기범</a>, <a href="https://github.com/ahyoung1122">임아영</a> ]
+             </p>
          </div>
     </div>
 <!--**********************************
