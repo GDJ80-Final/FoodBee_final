@@ -14,8 +14,8 @@
             margin: 30px auto;
         }
         .profile-img {
-            width: 300px;
-            height: 300px;
+            width: 100%;
+  			height: auto;
             background-color: #f0f0f0;
             display: flex;
             align-items: center;
@@ -691,7 +691,7 @@
 					            '<div class="profile-img mt-5 mb-3">' +
 					                '<img id="profileImg" src="${pageContext.request.contextPath}/upload/profile_img/' + json.originalFile +'" alt="프로필 사진" class="img-fluid rounded mb-3">' +
 					            '</div>' +
-					            '<button type="button" class="btn btn-primary" style="width:300px;" data-bs-toggle="modal" data-bs-target="#profileModal">' +
+					            '<button type="button" class="btn btn-primary" style="width: 100%;" data-bs-toggle="modal" data-bs-target="#profileModal">' +
 					                '프로필 사진 업데이트' +
 					            '</button>' +
 					        '</div>' +

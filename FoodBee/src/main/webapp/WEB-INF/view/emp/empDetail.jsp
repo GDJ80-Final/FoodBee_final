@@ -13,8 +13,8 @@
             margin: 30px auto;
         }
         .profile-img {
-            width: 300px;
-            height: 300px;
+            width: 100%;
+            height: auto;
             background-color: #f0f0f0;
             display: flex;
             align-items: center;
