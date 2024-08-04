@@ -230,19 +230,21 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		
 		if(row == 1) {
 			Map<String,Object> doc = approvalBoxMapper.getDocOne(draftDocNo);
-			DraftDocDetailDTO docDetail = approvalBoxMapper.getDocDetailOne(draftDocNo);
+			List<DraftDocDetailDTO> docDetailList = approvalBoxMapper.getDocDetailList(draftDocNo);
 			
-			Map<String,Object> m = new HashMap<String,Object>();
-			m.put("docDetail", docDetail);
-			m.put("doc", doc);
-			if((Integer)(doc.get("tmpNo")) == 3) {
-				row = approvalBoxMapper.insertBusinessTrip(m);
-			}
-			if((Integer)(doc.get("tmpNo")) == 1) {
-				row = approvalBoxMapper.insertRevenue(m);
-			}
-			if((Integer)(doc.get("tmpNo")) == 2) {
-				row = approvalBoxMapper.insertDayOffTrip(m);
+			for(DraftDocDetailDTO docDetail : docDetailList) {
+				Map<String,Object> m = new HashMap<String,Object>();
+				m.put("docDetail", docDetail);
+				m.put("doc", doc);
+				if((Integer)(doc.get("tmpNo")) == 3) {
+					row = approvalBoxMapper.insertBusinessTrip(m);
+				}
+				if((Integer)(doc.get("tmpNo")) == 1) {
+					row = approvalBoxMapper.insertRevenue(m);
+				}
+				if((Integer)(doc.get("tmpNo")) == 2) {
+					row = approvalBoxMapper.insertDayOffTrip(m);
+				}
 			}
 			
 			if(row != 1) {
