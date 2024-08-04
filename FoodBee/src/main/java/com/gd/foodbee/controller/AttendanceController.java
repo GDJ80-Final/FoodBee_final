@@ -185,7 +185,7 @@ public class AttendanceController {
 	    }
 		List<AttendanceDTO> list = attendanceService.getAttendancePersonal(empNo, currentPage, startDate, endDate);				
 		
-		int lastPage = attendanceService.getAttendancePersonalCnt(empNo);
+		int lastPage = attendanceService.getAttendancePersonalCnt(empNo, startDate, endDate);
 		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
 		model.addAttribute("list", list);
@@ -253,7 +253,7 @@ public class AttendanceController {
 	
 	    Map<String, Object> allAttendanceList = new HashMap<>();
 	    allAttendanceList.put("allList", allList);
-	    allAttendanceList.put("currentPage", currentPage);
+	    allAttendanceList.put("allCurrentPage", currentPage);
 	    allAttendanceList.put("allLastPage", allLastPage);
 	    
 	    return allAttendanceList;
@@ -279,7 +279,7 @@ public class AttendanceController {
 	    Map<String, Object> attendanceList = new HashMap<>();
 	    attendanceList.put("list", list);
 	    attendanceList.put("currentPage", currentPage);
-	    attendanceList.put("allLastPage", lastPage);
+	    attendanceList.put("lastPage", lastPage);
 	    
 	    return attendanceList;
 	}

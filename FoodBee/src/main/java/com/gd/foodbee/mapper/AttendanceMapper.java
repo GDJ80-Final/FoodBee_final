@@ -59,10 +59,10 @@ public interface AttendanceMapper {
 	List<AttendanceDTO> selectAttendancePersonal(int empNo, String startDate, String endDate, int beginRow, int rowPerPage);
 	
 	// 개인 근태 cnt
-	// 파라미터 : int empNo
+	// 파라미터 : int empNo, String startDate, String endDate
 	// 반환값 : int
 	// 사용클래스 : AttendanceServiceImpl.getAttendancePersonalCnt
-	int selectAttendancePersonalCnt(int empNo);
+	int selectAttendancePersonalCnt(int empNo, String startDate, String endDate);
 	
 	// 근태 확정
 	// 파라미터 : int empNo, String date

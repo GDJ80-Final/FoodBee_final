@@ -57,7 +57,7 @@
 						    </table>
 						    <div class="text-center" style="margin-bottom: 20px;margin-top: 80px;">
 							    <button type="button" class="btn btn-danger" onclick="location.href='${pageContext.request.contextPath}/attendance/attendanceReport'">돌아가기</button>&nbsp;&nbsp;&nbsp;&nbsp;
-							    <button type="submit" class="btn btn-info">수정 완료</button>
+							    <button type="submit" class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10">수정 완료</button>
 						    </div>
 						</form>
 					</div>

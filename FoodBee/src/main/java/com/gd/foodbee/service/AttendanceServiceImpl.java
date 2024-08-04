@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AttendanceServiceImpl implements AttendanceService {
 	@Autowired AttendanceMapper attendanceMapper;
 	
-	private static final int ROW_PER_PAGE = 10;
+	private static final int ROW_PER_PAGE = 2;
 	
 	// 최신 근태 기록
 	public AttendanceDTO getAttendanceRecord(int empNo) {
@@ -121,10 +121,12 @@ public class AttendanceServiceImpl implements AttendanceService {
 	// 반환 값 : X
 	// 사용 클래스 : AttendanceController.attendancePersonal
 	@Override
-	public int getAttendancePersonalCnt(int empNo) {
+	public int getAttendancePersonalCnt(int empNo, String startDate, String endDate) {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		log.debug(TeamColor.GREEN + "startDate => " + startDate);
+		log.debug(TeamColor.GREEN + "endDate => " + endDate);
 		
-		int cnt = attendanceMapper.selectAttendancePersonalCnt(empNo);
+		int cnt = attendanceMapper.selectAttendancePersonalCnt(empNo, startDate, endDate);
 		log.debug(TeamColor.GREEN + "cnt => " + cnt);
 		
 		int lastPage = (int) Math.ceil((double) cnt / ROW_PER_PAGE);

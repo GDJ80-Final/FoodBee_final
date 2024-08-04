@@ -94,8 +94,8 @@
 			attendance 
 		SET 
 			update_start_time = CONCAT(DATE(update_start_time), ' ', #{updateStartTime}, ':00'), 
-			update_end_time = CONCAT(DATE(update_end_time), ' ', #{updateEndTime}, ':00'),
-			update_reason = #{updateReason}
+		    update_end_time = IFNULL(CONCAT(DATE(update_end_time), ' ', #{updateEndTime}, ':00'), CONCAT(DATE(NOW()), ' ', #{updateEndTime}, ':00')),
+		    update_reason = #{updateReason}
 		WHERE 
 			emp_no = #{empNo} 
 			AND date = #{date}
@@ -103,56 +103,80 @@
 	
 	<!-- 개인 근태 출력 -->
 	<select id="selectAttendancePersonal" parameterType="map" resultType="com.gd.foodbee.dto.AttendanceDTO">
-		SELECT 
-			emp_no empNo, 
-			date, 
-			approval_reason approvalReason,
-			DATE_FORMAT(start_time, '%H:%i') startTime, 		 
-			DATE_FORMAT(end_time, '%H:%i') endTime,
-			DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
-			DATE_FORMAT(update_end_time, '%H:%i') updateEndTime,
-			update_reason updateReason,
-			CASE
-		        WHEN 
-		        	approval_state = 1 THEN '미승인'
-		        WHEN 
-		        	approval_state = 2 THEN '승인'
-		        WHEN 
-		        	approval_state = 9 THEN '반려'
-		        WHEN 
-		        	approval_state = 0 THEN '등록 전'
-		        ELSE '알 수 없음'
-		    END approvalState,
-			CASE 
-	            WHEN 
-	            	start_time = update_start_time 
-	            	AND end_time = update_end_time 
-	            THEN 'x'
-	            ELSE 'o'
-        	END updateStatus
-		FROM 
-			attendance 
-		WHERE 
-			emp_no = #{empNo}
-			<if test="startDate != null and endDate != null">
-	           	AND date BETWEEN #{startDate} AND #{endDate}
-	       	</if>	
-		ORDER BY 
-			date DESC
-		<if test="startDate == null and endDate == null">
-        	LIMIT 
-        		#{beginRow}, #{rowPerPage}
-    	</if>
+		 <choose>
+	     	<when test="startDate != null and endDate != null">
+	            SELECT 
+	                emp_no empNo, 
+	                date, 
+	                approval_reason approvalReason,
+	                DATE_FORMAT(start_time, '%H:%i') startTime,         
+	                DATE_FORMAT(end_time, '%H:%i') endTime,
+	                DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
+	                DATE_FORMAT(update_end_time, '%H:%i') updateEndTime,
+	                update_reason updateReason,
+	                CASE
+	                    WHEN approval_state = 1 THEN '미승인'
+	                    WHEN approval_state = 2 THEN '승인'
+	                    WHEN approval_state = 9 THEN '반려'
+	                    WHEN approval_state = 0 THEN '확정 전'
+	                    ELSE '알 수 없음'
+	                END approvalState,
+	                CASE 
+	                    WHEN start_time = update_start_time AND end_time = update_end_time THEN 'x'
+	                    ELSE 'o'
+	                END updateStatus
+	            FROM 
+	                attendance 
+	            WHERE 
+	                emp_no = #{empNo}
+	                AND date BETWEEN #{startDate} AND #{endDate}
+	            ORDER BY 
+	                date DESC
+	            LIMIT #{beginRow}, #{rowPerPage}
+	        </when>
+	        <otherwise>
+	            SELECT 
+	                emp_no empNo, 
+	                date, 
+	                approval_reason approvalReason,
+	                DATE_FORMAT(start_time, '%H:%i') startTime,         
+	                DATE_FORMAT(end_time, '%H:%i') endTime,
+	                DATE_FORMAT(update_start_time, '%H:%i') updateStartTime,
+	                DATE_FORMAT(update_end_time, '%H:%i') updateEndTime,
+	                update_reason updateReason,
+	                CASE
+	                    WHEN approval_state = 1 THEN '미승인'
+	                    WHEN approval_state = 2 THEN '승인'
+	                    WHEN approval_state = 9 THEN '반려'
+	                    WHEN approval_state = 0 THEN '확정 전'
+	                    ELSE '알 수 없음'
+	                END approvalState,
+	                CASE 
+	                    WHEN start_time = update_start_time AND end_time = update_end_time THEN 'x'
+	                    ELSE 'o'
+	                END updateStatus
+	            FROM 
+	                attendance 
+	            WHERE 
+	                emp_no = #{empNo}
+	            ORDER BY 
+	                date DESC
+	            LIMIT #{beginRow}, #{rowPerPage}
+	        </otherwise>
+	    </choose>
 	</select>
 	
 	<!-- 개인 근태 cnt -->
-	<select id="selectAttendancePersonalCnt" parameterType="int" resultType="int">
+	<select id="selectAttendancePersonalCnt" parameterType="map" resultType="int">
 		SELECT 
-			COUNT(*)
-		FROM 
-			attendance
-		WHERE 
-			emp_no = #{empNo}
+	        COUNT(*)
+	    FROM 
+	        attendance
+	    WHERE 
+	        emp_no = #{empNo}
+	        <if test="startDate != null and endDate != null">
+	            AND date BETWEEN #{startDate} AND #{endDate}
+	        </if>
 	</select>
 	
 	<!-- 근태 확정 -->
@@ -185,7 +209,7 @@
 		        WHEN 
 		        	a.approval_state = 9 THEN '반려'
 		        WHEN 
-		        	a.approval_state = 0 THEN '등록 전'
+		        	a.approval_state = 0 THEN '확정 전'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
@@ -232,7 +256,7 @@
 		        WHEN 
 		        	a.approval_state = 9 THEN '반려'
 		        WHEN 
-		        	a.approval_state = 0 THEN '등록 전'
+		        	a.approval_state = 0 THEN '확정 전'
 		        ELSE '알 수 없음'
 		    END approvalState,
 			CASE 
@@ -273,6 +297,7 @@
 		WHERE 
 			e.dpt_no = #{dptNo} 
 			AND a.emp_no != #{empNo}
+			AND a.approval_state != 0
 	</select>
 	
 	<!-- 팀원 근태 승인 상태별 cnt -->
@@ -286,6 +311,7 @@
 		WHERE 
 			e.dpt_no = #{dptNo} 
 			AND a.emp_no != #{empNo}
+			AND a.approval_state != 0
 			AND a.approval_state = #{approvalState}
 	</select>
 	

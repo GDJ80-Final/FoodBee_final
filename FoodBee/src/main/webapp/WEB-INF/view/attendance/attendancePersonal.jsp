@@ -5,6 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>근태 조회</title>
+<style>
+    .page-link:disabled {
+        color: lightgray; /* 비활성화된 버튼의 글씨색을 회색으로 변경 */
+        border-color: #dee2e6; /* 테두리 색상도 변경 */
+        cursor: not-allowed; /* 커서를 변경하여 클릭 불가를 표시 */
+    }
+</style>
 </head>
 <body>
 <div id="main-wrapper">
@@ -40,11 +47,11 @@
 							</div>
 						</div>		
 						<form method="get" action="${pageContext.request.contextPath}/attendance/attendancePersonal">
-						    <label for="startDate">기간 선택</label>
+						    <label for="startDate"><b>기간 선택 </b></label>
 						    <input type="date" id="startDate" name="startDate" value="${param.startDate}">
 						    <label for="endDate"> - </label>
 						    <input type="date" id="endDate" name="endDate" value="${param.endDate}">
-						    <button type="submit">조회</button>
+						    <button type="submit" class="btn btn-secondary btn-sm" style="color: white;">조회</button>
 						</form>
 						
 						<table class="table header-border">
@@ -60,7 +67,7 @@
 							<c:choose>
 						        <c:when test="${empty list}">
 						            <tr>
-						                <td colspan="7" style="text-align:center;">등록된 근무시간이 없습니다.</td>
+						                <td colspan="7"><h3>등록 된 근무 시간이 없습니다.</h3></td>
 						            </tr>
 						        </c:when>
 						        <c:otherwise>
@@ -68,25 +75,26 @@
 						            	<tr>
 						                	<td>${m.empNo}</td>
 						                    <td>${m.date}</td>
-						                    <td><b>수정: ${m.updateStartTime}</b><br>등록: ${m.startTime}</td>
-						                    <td><b>수정: ${m.updateEndTime}</b><br>등록: ${m.endTime}</td>
-						                    <td>
-						                        <c:choose>
-						                            <c:when test="${not empty map.rankName and not empty map.empName}">
-						                                ${map.rankName} ${map.empName}
-						                            </c:when>
-						                            <c:otherwise>
-						                                없음
-						                            </c:otherwise>
-						                        </c:choose>
-						                    </td>
-						                    <!-- 승인상태 -->
-						                    <c:if test="${m.approvalState eq '승인' || m.approvalState eq '미승인' || m.approvalState eq '등록 전'}">
+						                    <td><h4>&nbsp;${m.updateStartTime}</h4><span style="font-size:12px;">등록: ${m.startTime}</span></td>
+						                    <td><h4>&nbsp;${m.updateEndTime}</h4><span style="font-size:12px;">등록: ${m.endTime}</span></td>
+					                        
+					                        <!-- 승인자 없을시 없음 -->
+					                        <c:choose>
+					                            <c:when test="${not empty map.rankName and not empty map.empName}">
+					                                <td>${map.rankName} ${map.empName}</td>
+					                            </c:when>
+					                            <c:otherwise>
+					                                <td>없음</td>
+					                            </c:otherwise>
+					                        </c:choose>
+						                    
+						                    <!-- 반려일시 버튼 -->
+						                    <c:if test="${m.approvalState eq '승인' || m.approvalState eq '미승인' || m.approvalState eq '확정 전'}">
 						                        <td>${m.approvalState}</td>
 						                    </c:if>
 						                    <c:if test="${m.approvalState eq '반려'}">
 						                        <td>
-						                        	<button type="button" onclick="showApprovalReason('${m.approvalReason}', '${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}')">
+						                        	<button type="button" class="btn btn-dark" onclick="showApprovalReason('${m.approvalReason}', '${pageContext.request.contextPath}/attendance/attendanceReport?date=${m.date}')">
 													    ${m.approvalState}
 													</button>
 						                        </td>
@@ -106,17 +114,37 @@
 						        </c:otherwise>
 						    </c:choose>
 						</table>
-						<div>
-						    <c:if test="${param.startDate == null || param.endDate == null}">
-						        <c:if test="${currentPage > 1}">
-						            <a href="${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${currentPage - 1}">이전</a>
-						        </c:if>
-						        <span>페이지 ${currentPage} / ${lastPage}</span>
-						        <c:if test="${currentPage < lastPage}">
-						            <a href="${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${currentPage + 1}">다음</a>
-						        </c:if>
-						    </c:if>
-						</div>
+						<!-- panel & page -->
+                        <div class="bootstrap-pagination mt-3" id="page">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                     	<!-- 기본값은 currentPage만 만약 startDate와 endDate가 있으면 해당 값도 포함 -->
+                                        <button type="button" class="page-link" 
+                                            <c:if test="${currentPage == 1}">disabled</c:if>
+                                            onclick="location.href='${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=1<c:if test="${not empty param.startDate}">&startDate=${param.startDate}</c:if><c:if test="${not empty param.endDate}">&endDate=${param.endDate}</c:if>'">처음</button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button type="button" class="page-link" 
+                                            <c:if test="${currentPage == 1}">disabled</c:if>
+                                            onclick="location.href='${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${currentPage - 1}<c:if test="${not empty param.startDate}">&startDate=${param.startDate}</c:if><c:if test="${not empty param.endDate}">&endDate=${param.endDate}</c:if>'">이전</button>
+                                    </li>
+                                    <li class="page-item active">
+                                        <div class="page-link">${currentPage}</div>
+                                    </li>
+                                    <li class="page-item">
+                                        <button type="button" class="page-link" 
+                                            <c:if test="${currentPage == lastPage}">disabled</c:if>
+                                            onclick="location.href='${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${currentPage + 1}<c:if test="${not empty param.startDate}">&startDate=${param.startDate}</c:if><c:if test="${not empty param.endDate}">&endDate=${param.endDate}</c:if>'">다음</button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button type="button" class="page-link" 
+                                            <c:if test="${currentPage == lastPage}">disabled</c:if>
+                                            onclick="location.href='${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${lastPage}<c:if test="${not empty param.startDate}">&startDate=${param.startDate}</c:if><c:if test="${not empty param.endDate}">&endDate=${param.endDate}</c:if>'">마지막</button>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
 					</div>
 					</div>
 				</div>

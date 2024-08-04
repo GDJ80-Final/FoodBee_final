@@ -32,7 +32,7 @@ public interface AttendanceService {
 	List<AttendanceDTO> getAttendancePersonal(int empNo, int currentPage, String startDate, String endDate);
 	
 	// 개인 근태 cnt
-	int getAttendancePersonalCnt(int empNo);
+	int getAttendancePersonalCnt(int empNo, String startDate, String endDate);
 	
 	// 근태 확정
 	int modifyAttendanceFinalTime(String date, int empNo);
