@@ -202,7 +202,7 @@ $(document).ready(function() {
         $.each(json.list, function(index, item) {
 
             let newRow = $("<tr>" +
-                "<td>" + item.noticeNo + "</td>" +
+                "<td>" + item.noticeOrder + "</td>" +
                 "<td>" + item.type + "</td>" +
                 "<td><a href='" + "${pageContext.request.contextPath}/community/notice/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
                 "<td>" + item.name + "</td>" +
@@ -231,7 +231,7 @@ $(document).ready(function() {
         }else{
         $.each(json.allEmpList, function(index, item) {
 	            let newRow = $("<tr>" +
-	                "<td>" + item.noticeNo + "</td>" +
+	                "<td>" + item.noticeOrder + "</td>" +
 	                "<td>" + item.type + "</td>" +
 	                "<td><a href='" + "${pageContext.request.contextPath}/community/notice/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
 	                "<td>" + item.name + "</td>" +
@@ -259,7 +259,7 @@ $(document).ready(function() {
         }else{
         $.each(json.allDptList, function(index, item) {
             let newRow = $("<tr>" +
-                "<td>" + item.noticeNo + "</td>" +
+                "<td>" + item.noticeOrder + "</td>" +
                 "<td>" + item.type + "</td>" +
                 "<td><a href='" + "${pageContext.request.contextPath}/community/notice/noticeOne?noticeNo=" + item.noticeNo + "'>" + item.title + "</a></td>" +
                 "<td>" + item.name + "</td>" +

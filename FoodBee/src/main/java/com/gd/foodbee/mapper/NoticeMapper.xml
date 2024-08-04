@@ -4,6 +4,7 @@
 	<!-- 전체공지사항 리스트 -->
 	<select id="noticeList" parameterType="HashMap" resultType="HashMap" >	
 		SELECT 
+			ROW_NUMBER() OVER(ORDER BY createDatetime) noticeOrder,
 		    n.notice_no noticeNo, 
 		    n.writer_emp_no writerEmpNo, 
 		    n.dpt_no dptNo, 
@@ -26,13 +27,14 @@
 		AND n.type = '부서') 
 			OR n.type ='전사원'
 		ORDER BY 
-			n.create_datetime DESC
+			noticeOrder DESC
 		LIMIT 
 			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 전사원공지사항 리스트 -->
 	<select id="allEmpNoticeList" parameterType="HashMap" resultType="HashMap">
 		SELECT 
+			ROW_NUMBER() OVER(ORDER BY createDatetime) noticeOrder,
 			n.notice_no noticeNo, 
 			n.writer_emp_no writerEmpNo, 
 			n.dpt_no dptNo, 
@@ -49,13 +51,14 @@
 		WHERE 
 			type = '전사원'
 		ORDER BY
-			n.create_datetime DESC
+			noticeOrder DESC
 		LIMIT 
 			#{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 부서별공지사항 리스트 -->
 	<select id="allDptNoticeList" parameterType="HashMap" resultType="HashMap">
 		SELECT 
+			ROW_NUMBER() OVER(ORDER BY createDatetime) noticeOrder,
 		    n.notice_no noticeNo, 
 		    n.writer_emp_no writerEmpNo, 
 		    n.dpt_no dptNo, 
@@ -77,7 +80,7 @@
 		    g.superior_dpt_no = (SELECT superior_dpt_no FROM `group` WHERE dpt_no = #{dptNo})
 		AND n.type = '부서'
 		ORDER BY 
-			n.create_datetime DESC
+			noticeOrder DESC
 		LIMIT 
 			#{beginRow}, #{rowPerPage}
 	</select>
