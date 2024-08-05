@@ -7,6 +7,9 @@ import com.gd.foodbee.dto.AttendanceDTO;
 
 public interface AttendanceService {
 	
+	// 주간 근태 기록
+	List<HashMap<String, Object>> getAttendanceRecordByWeek(int empNo);
+	
 	// 최신 근태 기록
 	AttendanceDTO getAttendanceRecord(int empNo);
 	

@@ -22,6 +22,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	
 	private static final int ROW_PER_PAGE = 2;
 	
+	// 주간 근태 기록
+	public List<HashMap<String, Object>> getAttendanceRecordByWeek(int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+		return attendanceMapper.selectAttendanceRecordByWeek(empNo);
+	}
+	
 	// 최신 근태 기록
 	public AttendanceDTO getAttendanceRecord(int empNo) {
 		log.debug(TeamColor.GREEN + "empNo => " + empNo);

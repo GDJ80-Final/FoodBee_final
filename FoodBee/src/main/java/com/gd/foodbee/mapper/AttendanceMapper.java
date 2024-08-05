@@ -10,6 +10,12 @@ import com.gd.foodbee.dto.AttendanceDTO;
 @Mapper
 public interface AttendanceMapper {
 	
+	// 주간 근태 기록
+	// 파라미터 : int empNo
+	// 반환값 : List<HashMap<String, Obect>>
+	// 사용클래스 : AttendanceServiceImpl.
+	List<HashMap<String, Object>> selectAttendanceRecordByWeek(int empNo);
+	
 	// 최신 근태 기록
 	// 파라미터 : int empNo
 	// 반환값 : AttendanceDTO

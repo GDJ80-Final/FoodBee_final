@@ -10,6 +10,8 @@
 <meta name="theme-name" content="quixlab" />
 <title>FoodBee : 홈</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="path/to/your/script.js" defer></script>
 <style>
     #attendanceTime, #departureTime {
         font-size: 1.2em; 
@@ -46,9 +48,9 @@
                                 <h3 class="card-title text-white font-weight-bold"> 오늘의 근무 >> </h3>
                                 
                                 <div class="d-inline-block">             
-              						<div  class="text-white" id="attendanceTime" style="display:none;">출근 시간:</div>
+              						<div class="text-white" id="attendanceTime" style="display:none;">출근 시간:</div>
 									<div class="text-white" id="departureTime" style="display:none;">퇴근 시간:</div>
-									<div  class="text-white" id="workTime" style="display:none;">근무 시간:</div>
+									<div class="text-white" id="workTime" style="display:none;">근무 시간:</div>
                                 </div>
                                 <span class="float-right display-6 opacity-5"><i class="fa fa-users"></i></span>
                             </div>
@@ -56,11 +58,15 @@
                     </div>
 
                     <div class="col-lg-6 col-sm-12">
-                        <div class="card gradient-3">
+                        <div class="card gradient-8">
                             <div class="card-body">
                                 <h3 class="card-title text-white">근무 현황 >> </h3>
                                 <div class="d-inline-block">
                                     <!-- 근무 progress 바 영역 -->
+                                    <!-- 주간 --> 
+                                    <canvas id="weeklyWorkTimeChart" width="400" height="50"></canvas>
+                                    <!-- 오늘 -->
+                                    <canvas id="workTimeChart" width="400" height="50"></canvas>
                                 </div>
                                 <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
                             </div>
@@ -526,13 +532,196 @@
 	            const start = new Date(startTime);
 	            const end = new Date(endTime);
 	            const workTimeInSeconds = (end - start) / 1000;
+	            
+	         	// 여기서 그래프를 그리기 위해 workTimeInSeconds 값을 반환
+	            drawWorkTimeChart(workTimeInSeconds); // 그래프 그리기 함수 호출
+	            
 	            const hours = Math.floor(workTimeInSeconds / 3600);
 	            const minutes = Math.floor((workTimeInSeconds % 3600) / 60);
 	            return hours + '시간 ' + minutes + '분';
 	        }
 	        return '0시간 0분';
 	    }
+		
+	 	// 오늘 근무 그래프 함수
+	    function drawWorkTimeChart(workTimeInSeconds) {
+	        const ctx = document.getElementById('workTimeChart').getContext('2d');
 
+	        // 시간을 시간 단위로 변환
+	        const workTimeInHours = workTimeInSeconds / 3600; // 초를 시간으로 변환
+	        const defaultWorkTime = 8; // 기본 근무 시간 (8시간)
+
+	        // 그래프 데이터 준비
+	        const data = {
+	            labels: ['오늘'], // Y축 레이블
+	            datasets: [{
+	                label: '근무 시간', // 녹색 부분
+	                data: [Math.min(workTimeInHours, defaultWorkTime)], // 현재 근무 시간 또는 기본 근무 시간
+	                backgroundColor: 'rgba(75, 192, 192, 0.6)', // 녹색
+	                borderColor: 'rgba(75, 192, 192, 1)', // 경계선 색상
+	                borderWidth: 1,
+	                stack: 'Stack 0' // 스택 그룹
+	            }, {
+	                label: '초과 근무', // 빨간색 부분
+	                data: [Math.max(0, workTimeInHours - defaultWorkTime)], // 초과 근무 시간
+	                backgroundColor: 'rgba(255, 99, 132, 0.6)', // 빨간색
+	                borderColor: 'rgba(255, 99, 132, 1)', // 경계선 색상
+	                borderWidth: 1,
+	                stack: 'Stack 0' // 스택 그룹
+	            }, {
+	                label: '남은 시간', // 하얀색 부분
+	                data: [Math.max(0, defaultWorkTime - workTimeInHours)], // 남은 하얀색 부분
+	                backgroundColor: 'rgba(255, 255, 255, 0.6)', // 하얀색
+	                borderColor: 'rgba(200, 200, 200, 1)', // 경계선 색상
+	                borderWidth: 1,
+	                stack: 'Stack 0' // 스택 그룹
+	            }]
+	        };
+
+	        // Chart.js로 가로막대 그래프 그리기
+	        const chart = new Chart(ctx, {
+	            type: 'bar', // 그래프 유형을 일반 막대 그래프로 설정
+	            data: data,
+	            options: {
+	                indexAxis: 'y', // Y축을 가로로 설정하여 가로막대 그래프 구현
+	                plugins: {
+	                    legend: {
+	                        display: false // 범례를 표시하지 않음
+	                    }
+	                },
+	                scales: {
+	                    x: { // X축 설정
+	                        beginAtZero: true,
+	                        stacked: true, // 스택을 활성화
+	                        title: {
+	                            display: false
+	                        },
+	                        max: defaultWorkTime + 2 // X축 최대값을 기본 근무 시간보다 조금 크게 설정
+	                    },
+	                    y: { // Y축 설정
+	                        stacked: true, // 스택을 활성화
+	                        title: {
+	                            display: false
+	                        }
+	                    }
+	                }
+	            }
+	        });
+	    }
+	    
+	 	// 주간 근무 시간 그래프 함수
+        let weeklyWorkTimeChart; // 차트 인스턴스 변수를 전역으로 선언
+
+		function drawWeeklyWorkTimeChart(totalWorkTimeInSeconds) {
+		    const ctx = document.getElementById('weeklyWorkTimeChart').getContext('2d');
+		
+		    // 기존 차트가 있으면 파괴
+		    if (weeklyWorkTimeChart) {
+		        weeklyWorkTimeChart.destroy();
+		    }
+		
+		    // 시간을 시간 단위로 변환
+		    const totalWorkTimeInHours = totalWorkTimeInSeconds / 3600; // 초를 시간으로 변환
+		    const defaultWorkTime = 40; // 주간 기준 근무 시간 (40시간)
+		
+		    // 스택 데이터 준비
+		    const data = {
+		        labels: ['주간'], // Y축 레이블
+		        datasets: [{
+		            label: '근무 시간',
+		            data: [Math.min(totalWorkTimeInHours, defaultWorkTime)], // 기본 근무 시간 이내의 시간
+		            backgroundColor: 'rgba(75, 192, 192, 0.6)', // 녹색
+		            borderColor: 'rgba(75, 192, 192, 1)', // 경계선 색상
+		            borderWidth: 1,
+		            stack: 'Stack 0' // 스택 그룹
+		        }, {
+		            label: '초과 근무',
+		            data: [Math.max(0, totalWorkTimeInHours - defaultWorkTime)], // 초과 근무 시간
+		            backgroundColor: 'rgba(255, 99, 132, 0.6)', // 빨간색
+		            borderColor: 'rgba(255, 99, 132, 1)', // 경계선 색상
+		            borderWidth: 1,
+		            stack: 'Stack 0' // 스택 그룹
+		        }, {
+		            label: '남은 시간',
+		            data: [Math.max(0, defaultWorkTime - totalWorkTimeInHours)], // 남은 하얀색 부분
+		            backgroundColor: 'rgba(255, 255, 255, 0.6)', // 하얀색
+		            borderColor: 'rgba(200, 200, 200, 1)', // 경계선 색상
+		            borderWidth: 1,
+		            stack: 'Stack 0' // 스택 그룹
+		        }]
+		    };
+		
+		    // Chart.js로 가로막대 그래프 그리기
+		    weeklyWorkTimeChart = new Chart(ctx, {
+		        type: 'bar', // 그래프 유형을 일반 막대 그래프로 설정
+		        data: data,
+		        options: {
+		            indexAxis: 'y', // Y축을 가로로 설정하여 가로막대 그래프 구현
+		            plugins: {
+		                legend: {
+		                    display: false // 범례를 표시하지 않음
+		                }
+		            },
+		            scales: {
+		                x: { // X축 설정
+		                    beginAtZero: true,
+		                    stacked: true, // 스택을 활성화
+		                    title: {
+		                        display: false
+		                    },
+		                    max: defaultWorkTime + 10 // X축 최대값을 기본 근무 시간보다 조금 크게 설정
+		                },
+		                y: { // Y축 설정
+		                    stacked: true, // 스택을 활성화
+		                    title: {
+		                        display: false
+		                    }
+		                }
+		            }
+		        }
+		    });
+		}
+	 	
+     	// 주간 근무 시간을 저장할 배열 선언
+        const weeklyWorkTimeInSeconds = [0, 0, 0, 0, 0, 0, 0]; // 일~토 근무 시간 초기화
+
+        // 주간 근무  AJAX 호출
+    	function loadWeeklyAttendance(empNo) {
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/attendance/loadAttendanceRecordByWeek',
+	            type: 'GET',
+	            data: { empNo: empNo },
+	            success: function(response) {
+	            	console.log("AJAX Response:", response); // 응답 데이터 확인
+	                // 응답 데이터 처리
+	                response.forEach(record => {
+	                    const workDate = new Date(record.workDate); // workDate는 서버에서 반환된 날짜
+	                    const dayIndex = workDate.getDay(); // 0 (일요일) ~ 6 (토요일)
+	
+	                    // 받은 totalSeconds를 해당 요일의 배열에 추가
+	                    weeklyWorkTimeInSeconds[dayIndex] += record.totalSeconds; 
+	                });
+	
+	                console.log(weeklyWorkTimeInSeconds); // 최종 주간 근무 시간 배열 출력
+	
+	                // 총 근무 시간 합산
+	                const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);
+	
+	                // 그래프 그리기 함수 호출
+	                drawWeeklyWorkTimeChart(totalWeeklyWorkTimeInSeconds);
+	            },
+	            error: function(error) {
+	                console.error("Error loading attendance records:", error);
+	            }
+	        });
+	    }            	
+    	
+        // 총 근무 시간 합산
+        const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);
+        
+        // 그래프 그리기
+        drawWeeklyWorkTimeChart(totalWeeklyWorkTimeInSeconds);
+	 
 	    // 로그인 시 이전 empNo와 비교하여 로컬 스토리지 초기화
 	    function checkEmpNoChange() {
 	        const storedEmpNo = localStorage.getItem('empNo');
@@ -659,6 +848,7 @@
 	    resetAtSpecificTime(5, 00); // 특정 시간 (예: 오전 5:00)에 초기화 설정
 	    checkDateChangePeriodically(); // 주기적으로 날짜 변경 확인
 	    loadAttendanceRecord(); // 출근 기록 로드
+	    loadWeeklyAttendance(currentEmpNo); // 주간 출근 기록 로드
 	    
 	    
 	    

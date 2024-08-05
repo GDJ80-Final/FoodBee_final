@@ -26,6 +26,15 @@ public class AttendanceController {
 	@Autowired 
 	private AttendanceService attendanceService;
 	
+	// 주간 근태 기록
+	@GetMapping("/attendance/loadAttendanceRecordByWeek")
+	@ResponseBody
+    public List<HashMap<String, Object>> loadAttendanceRecordByWeek(@RequestParam("empNo") int empNo) {
+		log.debug(TeamColor.GREEN + "empNo => " + empNo);
+		
+        return attendanceService.getAttendanceRecordByWeek(empNo);
+    }
+	
 	// 최신 근태 기록
 	@GetMapping("/attendance/loadAttendanceRecord")
 	@ResponseBody

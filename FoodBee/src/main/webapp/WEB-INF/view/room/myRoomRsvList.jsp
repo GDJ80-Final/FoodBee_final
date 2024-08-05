@@ -51,7 +51,7 @@
 						    <div id="categoryButtons">
 						    <ul class="nav nav-tabs mb-3" role="tablist">
 								<li class="nav-item">
-									<a href="${pageContext.request.contextPath}/room/roomRsvList" class="nav-link">전체 예약</a>
+									<a href="${pageContext.request.contextPath}/room/roomRsvList" class="nav-link">날짜별 예약</a>
 								</li>
 								<li class="nav-item">
 									<a href="${pageContext.request.contextPath}/room/myRoomRsvList" class="nav-link active">내 예약</a>
