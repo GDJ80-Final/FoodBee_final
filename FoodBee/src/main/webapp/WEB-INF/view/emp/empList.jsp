@@ -131,7 +131,13 @@
 		let teamAuthCode;
 	
 		$(document).ready(function() {
+			console.log("msg : ${msg}");
+			if("${msg}" !== null && "${msg}" !== ""){
+				alert("${msg}");
+			}
+			
 			loadEmpList(1);
+			
 			
 			$('#preloader').addClass('active').show();
 			// 본사/지사 데이터

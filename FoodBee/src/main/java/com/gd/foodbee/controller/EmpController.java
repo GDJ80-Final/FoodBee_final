@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
@@ -118,12 +119,13 @@ public class EmpController {
 		}
 		
 	//사원 등록 및 초대
-	//파라미터 : EmpDTO empDTO,  Errors errors,HttpServletRequest request,Model model
+	//파라미터 : EmpDTO empDTO,  Errors errors, RedirectAttributes redirectAttributes, HttpServletRequest request,Model model
 	//반환 값 : String(View)
 	//사용 페이지 : /emp/addEmp
 	@PostMapping("/emp/addEmp")
 	public String addEmp(@Valid EmpDTO empDTO,
 			Errors errors,
+			RedirectAttributes redirectAttributes,
 			HttpServletRequest request,
 			Model model) {
 	 
@@ -143,6 +145,8 @@ public class EmpController {
 				// "이름+errorMsg"형태로 모델에 추가
 				model.addAttribute(e.getField()+"ErrorMsg", e.getDefaultMessage());
 			}
+			
+			model.addAttribute("msg","인트라넷 등록 이메일 발송 실패");
 			
 			return "emp/addEmp";
 		}
@@ -180,8 +184,8 @@ public class EmpController {
 	
 		empService.addEmp(empDTO, emailDTO);
 			
-	 
-		    
+		redirectAttributes.addFlashAttribute("msg", "사원 등록 및 인트라넷 등록 이메일을 발송했습니다.");
+    
 	    // 사원 목록으로 이동
 	 	return "redirect:/emp/empList";
 	 }

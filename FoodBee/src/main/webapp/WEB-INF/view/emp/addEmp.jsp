@@ -153,6 +153,9 @@
  	
 	<script>
 	$(document).ready(function() {
+		if("${msg}" !== null && "${msg}" !== ""){
+			alert("${msg}");
+		}
 		$('#empState').change(function() {
 
 	        // 만약 empState가 "재직"이면 본사/지사, 부서, 팀을 활성화
