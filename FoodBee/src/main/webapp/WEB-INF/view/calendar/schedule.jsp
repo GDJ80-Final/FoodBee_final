@@ -4,6 +4,8 @@
 <!DOCTYPE html>
 <html>
  <head>
+<title>FoodBee : 캘린더</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
    <style>
     #calendar {
       width: 100%; /* 화면 너비에 맞추기 */

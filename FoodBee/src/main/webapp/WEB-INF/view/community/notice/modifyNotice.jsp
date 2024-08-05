@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 수정</title>
+<title>FoodBee : 공지사항 수정</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
 	table {
         width: 100%; 
@@ -125,7 +126,7 @@
 					                            <c:if test="${file.originalFile != null}">
 					                            	 <input type="text" value="${file.saveFile}" class="form-control input-default" readonly="readonly" id="fileText">
 					                            	 <input type="hidden" name="existingFile" value="${file.originalFile}" readonly>
-					                            	<button class="deleteFile" data-file="${file.saveFile}">X</button>
+					                            	<button class="deleteFile btn btn-danger" data-file="${file.saveFile}">X</button>
 					                            </c:if>
 				                           	</div>
 				                           	

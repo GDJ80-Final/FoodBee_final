@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FoodBee : 지출기안서</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     	
@@ -150,6 +150,7 @@
          <div class="col p-md-0">
              <ol class="breadcrumb">
                  <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)">내문서함</a></li>
                  <li class="breadcrumb-item active"><a href="javascript:void(0)" id="whatDocBox">기안함</a></li>
                  <li class="breadcrumb-item active"><a href="javascript:void(0)">지출기안서</a></li>
              </ol>

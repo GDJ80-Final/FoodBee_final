@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>출장상세보기</title>
+<title>FoodBee : 출장상세</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 	table {
         width: 100%; 

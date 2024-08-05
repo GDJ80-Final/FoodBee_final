@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>수신함</title>
+<title>FoodBee : 수신함</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>

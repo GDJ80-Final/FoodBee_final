@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>개인일정 수정</title>
+<title>FoodBee : 일정변경</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 	table {
         width: 100%; 

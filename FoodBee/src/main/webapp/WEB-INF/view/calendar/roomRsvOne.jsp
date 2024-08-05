@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FoodBee : 회의일정상세</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
 	table {
         width: 100%; 

@@ -4,8 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항</title>
-</head>
+<title>FoodBee : 전체 공지사항</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>	
 	#addNotice {
 	    display: flex;
@@ -20,6 +20,7 @@
 	}
 	
 </style>
+</head>
 <body>
 <!-- 메인템플릿 -->
 <div id="main-wrapper">
