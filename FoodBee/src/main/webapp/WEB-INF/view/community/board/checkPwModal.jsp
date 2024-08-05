@@ -2,14 +2,14 @@
 
 
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
+	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="staticBackdropLabel">비밀번호 확인</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-			  <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+			  <input type="password" id="password" placeholder="비밀번호를 입력하세요" class="form-control">
 			
 	      </div>
 	      <div class="modal-footer">

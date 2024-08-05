@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 	<div class="modal fade" id="addReason" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg">
+	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <h5 class="modal-title" id="staticBackdropLabel">삭제 사유입력</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-			  <select id="reasonSelect">
+			  <select id="reasonSelect" class="custom-select mr-sm-2">
 			  	 <option value="" disabled selected>삭제 사유를 선택하세요</option>
                  <option value="욕설/비속어">욕설/비속어</option>
                  <option value="광고/스팸">광고/스팸</option>
