@@ -164,7 +164,7 @@
 									        </label>
 									        <div class="col-lg-6">
 									           <input type="number" class="form-control" name="postNo" id="postNo" placeholder="우편번호" readonly value="${signupDTO.postNo}">
-									           <div id="postNoError" class="error-message">${postNoErrorMsg}</div>
+									           
 									        </div>
         									
                                         </div>
@@ -192,7 +192,7 @@
 								            <label class="col-lg-4 col-form-label" for="profileImg">프로필 사진 <span class="text-danger">*</span>
 								            </label>
 								            <div class="col-lg-8">
-								            	<input type="file" name="profileImg" id="profileImg" class="form-control" required>
+								            	<input type="file" name="profileImg" id="profileImg" class="form-control">
        										</div>
                                         </div>
                                         <div class="form-group row">

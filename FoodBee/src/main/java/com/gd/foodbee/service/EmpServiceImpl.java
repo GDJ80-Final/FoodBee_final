@@ -98,30 +98,50 @@ public class EmpServiceImpl implements EmpService{
 		if(row == 0) {
 			throw new RuntimeException();
 		}
-		
+		// 프로필이 안들어올때 
+		String originalFile = null;
 		MultipartFile mf = signupDTO.getProfileImg();
-		log.debug(TeamColor.YELLOW + "multipartfile mf => " + mf.toString());
-		
-		//파일명 년월일시부초 형태로 변환 -> 파일명 중복 안되게 하기 위해서 
-		String originalFile = fileFormatter.fileFormatter(mf);
-		
-		ProfileDTO profileDTO = ProfileDTO.builder()
+		if(mf == null || mf.isEmpty()) {
+			log.debug(TeamColor.YELLOW + "파일 없음");
+			ProfileDTO profileDTO = ProfileDTO.builder()
 					.empNo(signupDTO.getEmpNo())
-					.originalFile(originalFile)
-					.saveFile(mf.getOriginalFilename())
-					.type(mf.getContentType())
+					.originalFile("default.png")
+					.saveFile("default.png")
+					.type("image/png")
 					.build();
-		//프로필 사진 등록 
-		int row2 = profileMapper.insertProfileImg(profileDTO);
-		if(row2 == 0) {
-			throw new RuntimeException();
+			//프로필 사진 등록 
+			int row2 = profileMapper.insertProfileImg(profileDTO);
+			if(row2 == 0) {
+				throw new RuntimeException();
+			}
+		}else {
+			// 프로필 사진 들어올때
+			
+			log.debug(TeamColor.YELLOW + "multipartfile mf => " + mf.toString());
+			
+			//파일명 년월일시부초 형태로 변환 -> 파일명 중복 안되게 하기 위해서 
+			originalFile = fileFormatter.fileFormatter(mf);
+			
+			ProfileDTO profileDTO = ProfileDTO.builder()
+						.empNo(signupDTO.getEmpNo())
+						.originalFile(originalFile)
+						.saveFile(mf.getOriginalFilename())
+						.type(mf.getContentType())
+						.build();
+			//프로필 사진 등록 
+			int row2 = profileMapper.insertProfileImg(profileDTO);
+			if(row2 == 0) {
+				throw new RuntimeException();
+			}
+			// 파일 저장
+			//Controller 에서 넘겨받은 HttpServletRequest 객체 받아서 RealPath 구해서 파일 저장하기 
+			String path = filePath.getFilePath() + "profile_img/";
+			log.debug(TeamColor.YELLOW +"path =>"+ path);
+			
+			filePath.saveFile(path, originalFile, mf);
+			
 		}
-		// 파일 저장
-		//Controller 에서 넘겨받은 HttpServletRequest 객체 받아서 RealPath 구해서 파일 저장하기 
-		String path = filePath.getFilePath() + "profile_img/";
-		log.debug(TeamColor.YELLOW +"path =>"+ path);
 		
-		filePath.saveFile(path, originalFile, mf);
 		
 	}
 	
