@@ -150,7 +150,7 @@
          <div class="col p-md-0">
              <ol class="breadcrumb">
                  <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
-                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)" id="whatDocBox">기안함</a></li>
                  <li class="breadcrumb-item active"><a href="javascript:void(0)">지출기안서</a></li>
              </ol>
          </div>
@@ -163,6 +163,7 @@
 			 		<div class="card-body">	
 			 		<!-- 여기서부터 내용시작 -->
 			 			<!-- 공통폼 -->
+			 			<a href="" id="return" class="btn btn-primary mb-2">돌아가기</a>
 						<jsp:include page="./forms/commonForm.jsp"></jsp:include>
 						<div class="form-section">
 						    <div class="form-group">
@@ -242,7 +243,7 @@
 						        </c:if>
 						    </div>
 						       <!-- 반려사유 확인버튼 -->
-						      	<c:if test="${chargeOne.midApproverReason != null || chargeOne.finalApproverReason != null}">
+						      	<c:if test="${chargeOne.docApproverState == 9 && (chargeOne.midApproverReason != null || chargeOne.finalApproverReason != null)}">
 						      		<div id="rejectionCheck">
 						      			<button type="button" class="btn btn-warning" id="rejectionBtn">반려사유 확인</button>
 						      		</div>						      	
@@ -323,10 +324,13 @@
 		    
 		    if(${empNo} == drafter){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
+				$('#whatDocBox').text("기안함");
 			} else if(${empNo} == midApprover || ${empNo} == finalApprover){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/approvalBox');
+				$('#whatDocBox').text("결재함");
 			} else {
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/inBox');
+				$('#whatDocBox').text("수신함");
 			}
 		
 		    $("#drafterEmpNo").val(drafter);

@@ -150,7 +150,7 @@
          <div class="col p-md-0">
              <ol class="breadcrumb">
                  <li class="breadcrumb-item"><a href="javascript:void(0)">결재</a></li>
-                 <li class="breadcrumb-item active"><a href="javascript:void(0)">기안함</a></li>
+                 <li class="breadcrumb-item active"><a href="javascript:void(0)" id="whatDocBox">>기안함</a></li>
                  <li class="breadcrumb-item active"><a href="javascript:void(0)">기본기안서</a></li>
              </ol>
          </div>
@@ -163,6 +163,7 @@
 			 		<div class="card-body">	
 			 		<!-- 여기서부터 내용시작 -->
 			 			<!-- 공통폼 -->
+			 					<a href="" id="return" class="btn btn-primary mb-2">돌아가기</a>
 								<jsp:include page="./forms/commonForm.jsp"></jsp:include>
 							    <div class="form-section">
 							        <div class="form-group">
@@ -187,7 +188,7 @@
 							        </div>
 							        <div class="form-group">
 							            <label for="content">내용:</label>
-							            <textarea id="content" rows="6" cols="50" name="content">${dayOffOne.content}</textarea>
+							            <textarea id="content" rows="6" cols="50" name="content" readonly="readonly">${dayOffOne.content}</textarea>
 							        </div>
 							        <div class="file-upload">
 							            <h5 class="m-b-20"><i class="fa fa-paperclip m-r-5 f-s-18"></i> 첨부파일</h5>
@@ -242,7 +243,7 @@
 								       	</c:if>
 							      </div>
 						       <!-- 반려사유 확인버튼 -->
-						      	<c:if test="${dayOffOne.midApproverReason != null || dayOffOne.finalApproverReason != null}">
+						      	<c:if test="${dayOffOne.docApproverState == 9 && (dayOffOne.midApproverReason != null || dayOffOne.finalApproverReason != null)}">
 						      		<div id="rejectionCheck">
 						      			<button type="button" class="btn btn-warning" id="rejectionBtn">반려사유 확인</button>
 						      		</div>						      	
@@ -391,10 +392,13 @@
 		    
 		    if(${empNo} == drafter){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/draftBox');
+				$('#whatDocBox').text("기안함");
 			} else if(${empNo} == midApprover || ${empNo} == finalApprover){
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/approvalBox');
+				$('#whatDocBox').text("결재함");
 			} else {
 				$('#return').attr('href', '${pageContext.request.contextPath}/approval/inBox');
+				$('#whatDocBox').text("수신함");
 			}
 		
 		    $("#drafterEmpNo").val(drafter);
