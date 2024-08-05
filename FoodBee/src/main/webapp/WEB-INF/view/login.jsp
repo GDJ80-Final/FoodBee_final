@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="form-group">
                                         <input type="password" id="empPw" name="empPw" class="form-control" placeholder="비밀번호" required>
-                                        <span id="pwMsg" class="msg"></span>
+                                        <span id="pwMsg" class="msg">${msg}</span>
                                     </div>
                                     <input type="checkbox" name="saveId" value="O"> &nbsp;&nbsp;아이디 저장
                                     <br><br>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gd.foodbee.dto.EmailDTO;
 import com.gd.foodbee.dto.EmpDTO;
@@ -57,11 +58,12 @@ public class LoginController {
 	}
 	
 	// 로그인
-	// 파라미터 : LoginDTO, HttpServletResponse, HttpSession
+	// 파라미터 : LoginDTO, Model model, HttpServletResponse, HttpSession
 	// 반환 값 : String(View)
 	// 사용 페이지 : /login
 	@PostMapping("/login")
 	public String login(LoginDTO loginDto,
+				RedirectAttributes redirectAttributes,
 				HttpServletResponse response,
 				HttpSession session) {
 		
@@ -91,7 +93,7 @@ public class LoginController {
 		        response.addCookie(cookie);
 			}
 		} else {
-			
+			redirectAttributes.addFlashAttribute("msg", "사원번호 또는 비밀번호가 잘못되었습니다.");
 			return "redirect:/login";
 		}
 	
