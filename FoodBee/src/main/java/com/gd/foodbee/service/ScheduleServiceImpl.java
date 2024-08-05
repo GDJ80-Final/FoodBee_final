@@ -113,6 +113,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 	// 사용클래스 :  ScheduleController.roomScheduleList
 	@Override
 	public List<HashMap<String,Object>> roomListAll(int currentPage, int empNo, String dptNo, String search){
+		log.debug(TeamColor.PURPLE + empNo + "<==empNo");
+		log.debug(TeamColor.PURPLE + dptNo + "<==dptNo");
+		log.debug(TeamColor.PURPLE + currentPage + "<==currentPage");
+		
 		
 		int beginRow = (currentPage -1)*this.ROW_PER_PAGE;
 

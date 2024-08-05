@@ -263,6 +263,7 @@
             startDate DESC
         LIMIT #{beginRow}, #{rowPerPage}
 	</select>
+	
 	<!-- 회의일정 전체리스트 -->
 	<select id="roomList" resultType="HashMap" parameterType="HashMap">
 	     SELECT 
@@ -283,7 +284,7 @@
 	        room_info ri ON ri.room_no = r.room_no
 	    WHERE 
 	        r.rsv_state = 1
-        AND r.`type` = 'personal'
+        AND r.`type` = '개인'
         AND e.emp_no = #{empNo}
 	        <if test="search != null and search != ''">
 	            AND (
@@ -316,7 +317,7 @@
 	    INNER JOIN 
 	        room_info ri ON ri.room_no = r.room_no
 	    WHERE 
-	        r.rsv_state = 1 AND r.`type` = 'team' AND e.dpt_no = #{dptNo}
+	        r.rsv_state = 1 AND r.`type` = '팀' AND e.dpt_no = #{dptNo}
 	        <if test="search != null and search != ''">
 	            AND (
 	                '팀' LIKE '%${search}%'

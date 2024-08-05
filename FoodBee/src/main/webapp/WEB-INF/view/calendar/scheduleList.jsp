@@ -345,7 +345,8 @@
         // 회의실 일정 리스트
         function updateTableForRoom(json) {
         	lastPage = json.roomLastPage;
-      	    console.log('lastPage : ' + lastPage);
+      	    console.log('회의실예약lastPage : ' + lastPage);
+      	    console.log('회의실예약curretPage: '+ currentPage);
             <!-- hiddenFieldValue 값을 회의실로 세팅 -->
         	hiddenFieldValue = "room"
             console.log("hiddenFieldValue : " + hiddenFieldValue);

@@ -247,18 +247,18 @@
           title: '<c:out value="회의" />',
           start: '<c:out value="${room.startDatetime}" />',
           end: '<c:out value="${room.endDatetime}" />',
-          <c:if test="${room.type == 'team'}">
+          <c:if test="${room.type == '팀'}">
             color: '#99E000',
           </c:if>
-          <c:if test="${room.type == 'personal'}">
+          <c:if test="${room.type == '개인'}">
           color: '#FF8383',
        
          </c:if>
           //
-          <c:if test="${room.type == 'team'}">
+          <c:if test="${room.type == '팀'}">
            	type : '팀',
           </c:if>
-          <c:if test="${room.type == 'personal'}">
+          <c:if test="${room.type == '개인'}">
           	type : '개인',
          </c:if>
           rsvEmp: '<c:out value="${room.empName}"/>',
