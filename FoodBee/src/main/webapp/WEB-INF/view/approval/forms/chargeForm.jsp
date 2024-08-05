@@ -282,7 +282,6 @@
 							<!-- 양식 영역 끝 -->
 							
 						    <div class="text-center mt-3">
-						    	<button class="btn btn-dark m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 float-left" type="button" id="returnBox"><i class="ti-close m-r-5 f-s-12"></i> 돌아가기</button>
 						    	<button class="btn btn-primary m-b-30 m-t-15 f-s-14 p-l-20 p-r-20 m-r-10" type="button" id="submitBtn"><i class="fa fa-paper-plane m-r-5"></i> 작성하기</button>
 							</div>	
 						</form>
