@@ -104,7 +104,7 @@
 															<option value="대리">대리
 															<option value="팀장">팀장
 															<option value="부서장">부서장
-															<option value="지서장">지사장
+															<option value="지사장">지사장
 															<option value="CEO">CEO
 														</select>
 														<span id="rankMsg" class="msg">${rankNameErrorMsg}</span>
