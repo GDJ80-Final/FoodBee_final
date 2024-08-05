@@ -87,7 +87,7 @@
 			e.emp_name empName,
 			e.emp_no empNo,
 			e.emp_email empEmail,			
-			e.ext_no extNo,
+			COALESCE(e.ext_no,'') extNo,
 			e.start_date startDate,
 			e.signup_YN signupYN,
 			e.rank_name rankName,
