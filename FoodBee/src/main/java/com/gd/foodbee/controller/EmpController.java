@@ -144,7 +144,7 @@ public class EmpController {
 				model.addAttribute(e.getField()+"ErrorMsg", e.getDefaultMessage());
 			}
 			
-			return "addEmp";
+			return "emp/addEmp";
 		}
 	 
 		
@@ -154,35 +154,35 @@ public class EmpController {
 				 .to(empDTO.getEmpEmail())
 			     .subject("[FoodBee] 인트라넷 등록 링크")
 			     .message("<!DOCTYPE html>\n"
-			     		+ "<html lang=\"ko\">\n"
-			     		+ "<head>\n"
-			     		+ "    <meta charset=\"UTF-8\">\n"
-			     		+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-			     		+ "    <title>인트라넷 등록 안내</title>\n"
-			     		+ "</head>\n"
-			     		+ "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
-			     		+ "    <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
-			     		+ "        <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
-			     		+ "            <h1>인트라넷 등록안내</h1>\n"
-			     		+ "        </div>\n"
-			     		+ "        <div style=\"padding: 20px 0;\">\n"
-			     		+ "            <p>안녕하세요,</p>\n"
-			     		+ "            <p>FoodBee 인트라넷 등록 링크입니다.</p>\n"
-			     		+ "            <a href=\\\"\" + url + \"\\\">\" + url + \" style=\"display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px; margin-top: 20px;\"></a>\n"
-			     		+ "            <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
-			     		+ "            <p>문의사항이 있으시면 언제든 연락 주시기 바랍니다.</p>\n"
-			     		+ "            <p>감사합니다.</p>\n"
-			     		+ "        </div>\n"
-			     		+ "    </div>\n"
-			     		+ "</body>\n"
-			     		+ "</html>")
+			    		 + "<html lang=\"ko\">\n"
+			    		 + "<head>\n"
+			    		 + " <meta charset=\"UTF-8\">\n"
+			    		 + " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+			    		 + " <title>인트라넷 등록 안내</title>\n"
+			    		 + "</head>\n"
+			    		 + "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
+			    		 + " <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
+			    		 + " <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
+			    		 + " <h1>인트라넷 등록안내</h1>\n"
+			    		 + " </div>\n"
+			    		 + " <div style=\"padding: 20px 0;\">\n"
+			    		 + " <p>안녕하세요,</p>\n"
+			    		 + " <p>FoodBee 인트라넷 등록 링크입니다.</p>\n"
+			    		 + " <a href=\"" + url + "\" style=\"display: inline-block; padding: 10px 20px; background-color: #007bff; color: #ffffff; text-decoration: none; border-radius: 5px; margin-top: 20px;\">인트라넷 등록</a>\n"
+			    		 + " <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
+			    		 + " <p>문의사항이 있으시면 언제든 연락 주시기 바랍니다.</p>\n"
+			    		 + " <p>감사합니다.</p>\n"
+			    		 + " </div>\n"
+			    		 + " </div>\n"
+			    		 + "</body>\n"
+			    		 + "</html>")
 			     .build();
 	
 		empService.addEmp(empDTO, emailDTO);
 			
 	 
 		    
-		    // 사원 목록으로 이동
+	    // 사원 목록으로 이동
 	 	return "redirect:/emp/empList";
 	 }
 	 
