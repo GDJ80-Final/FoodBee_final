@@ -174,7 +174,7 @@
 			emp_no empNo,
 			contact,
 			post_no postNo,
-			address,
+			COALESCE(address,'') address,
 			emp_email empEmail
 		FROM
 			emp
@@ -191,12 +191,12 @@
 			e.rank_name rankName,
 			sc.state_code_name empState,
 			sc.state_code empStateCode,
-			g.dpt_name teamName,
-			g.dpt_no teamNo,
-			sg.dpt_name deptName,
-			sg.dpt_no deptNo,
-			ssg.dpt_name officeName,
-			ssg.dpt_no officeNo,
+			COALESCE(g.dpt_name, '') teamName,
+			COALESCE(g.dpt_no, '') teamNo,
+			COALESCE(sg.dpt_name, '') deptName,
+			COALESCE(sg.dpt_no, '') deptNo,
+			COALESCE(ssg.dpt_name, '') officeName,
+			COALESCE(ssg.dpt_no, '') officeNo,
 			i.original_file originalFile,
 			s.approval_sign_file approvalSignFile
 		FROM
@@ -207,11 +207,11 @@
 			approval_sign s ON s.emp_no = e.emp_no
 		LEFT JOIN
 			`group` g ON g.dpt_no = e.dpt_no
-		INNER JOIN
+		LEFT JOIN
 			`group` sg ON sg.dpt_no = g.superior_dpt_no
-		INNER JOIN
+		LEFT JOIN
 			`group` ssg ON ssg.dpt_no = sg.superior_dpt_no
-		INNER JOIN
+		LEFT JOIN
 			state_code sc ON sc.state_code = e.emp_state
 				AND sc.state_cf_code = 'EMP'
 		WHERE

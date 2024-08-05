@@ -385,9 +385,14 @@
 						data: {empNo : ${empNo}},
 						success:function(json){
 							console.log(json);
-							const addressArr = json.address.split("|");
-							const address = addressArr[0];
-							const addressDetail = addressArr[1];
+							let addressArr;
+							let address ='';
+							let addressDetail ='';
+							if(json.address !== null && json.address !== ''){
+								addressArr = json.address.split("|");
+								addres = addressArr[0];
+								addressDetail = addressArr[1];
+							}
 							$('#content').append(
 									'<div class="row">' +
 									    '<div class="col-4 mt-4"></div>' +
