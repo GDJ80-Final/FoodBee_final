@@ -127,6 +127,15 @@
 	        margin: 5px 0;
 	        padding: 10px;
     	}
+    	#rejectionCheck {
+    		display: flex;
+		    justify-content: center; /* 중앙 정렬 */
+    	}
+    	#modalTitle{
+    		font-size: 20px;
+    		color: black;
+    		margin-bottom: 20px;
+    	}
 </style>
 </head>
 <body>
@@ -232,6 +241,46 @@
 											</div>
 								       	</c:if>
 							      </div>
+						       <!-- 반려사유 확인버튼 -->
+						      	<c:if test="${dayOffOne.midApproverReason != null || dayOffOne.finalApproverReason != null}">
+						      		<div id="rejectionCheck">
+						      			<button type="button" class="btn btn-warning" id="rejectionBtn">반려사유 확인</button>
+						      		</div>						      	
+						        </c:if>
+						          <!-- 모달창 -->
+			                     <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			                         <div class="modal-dialog" role="document">
+			                             <div class="modal-content">
+			                                 <div class="modal-header">
+			                                     <h5 class="modal-title" id="exampleModalLabel">반려사유</h5>
+			                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                                         <span aria-hidden="true">&times;</span>
+			                                     </button>
+			                                 </div>
+			                                 <div class="modal-body">
+			                                     <c:if test="${dayOffOne.midApproverReason != null}">
+		                                     			<div id="modalTitle">
+		                                     				중간반려 이유
+		                                     			</div>
+		                                     			<div>		                                     			
+		                                     				<c:out value="${dayOffOne.midApproverReason}"></c:out>
+		                                     			</div>			
+			                                     </c:if>
+			                                     <c:if test="${dayOffOne.finalApproverReason != null}">
+														<div id="modalTitle">
+		                                     				최종반려 이유
+		                                     			</div>
+		                                     			<div>		
+		                                     				<c:out value="${dayOffOne.finalApproverReason}"></c:out>
+		                                     			</div>
+			                                     </c:if>
+			                                 </div>
+			                                 <div class="modal-footer">
+			                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			                                 </div>
+			                             </div>
+			                         </div>
+			                     </div>
 							</div>
 							<!-- 여기가 내용끝! --> 		
                     </div>
@@ -245,6 +294,12 @@
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
 		$(document).ready(function() {
+			
+			//반려이유 모달창
+			 $('#rejectionBtn').click(function() {
+			        $('#rejectionModal').modal('show');
+		     });
+			
 			let empNo; // 직원 번호를 저장할 변수 선언
 
 		    // 호출되면 페이지에 담을 emp 정보 불러오기 

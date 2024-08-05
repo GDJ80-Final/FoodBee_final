@@ -349,35 +349,28 @@
                 }
                 
                
-                let modifyButton = approvalStateNo === 0 ? `<a href=""><button class='badge badge-danger px-2'>수정가능</button></a>` : '';
-                let rejectionButton = approvalStateNo === 9 ? `<button class='checkRejection badge badge-warning px-2' data-toggle='modal' data-target='#rejectionModal' data-mid-reason='${item.midApproverReason}' data-final-reason='${item.finalApproverReason}'>이유열기</button>` : '';
+                let modifyButton = approvalStateNo === 0 ? `<button class='badge badge-danger px-2'>수정가능</button>` : '';
+                let rejectionButton = approvalStateNo === 9 ? `<button class='badge badge-warning px-2'>이유확인</button>` : '';
                 
                 // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
             
                 let newRow = $("<tr>" +
-                        "<td>" + item.tmpName + "</td>" +
-                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
-                        "<td>" + approvalStateText + 
-                        "<br>" + modifyButton +rejectionButton+ "</td>" +
-                        "<td>" + midApprovalDatetime + "</td>" +
-                        "<td>" + midApprovalState + "</td>" +
-                        "<td>" + finalApprovalDatetime + "</td>" +
-                        "<td>" + finalApprovalState + "</td>" +
-                        "<td>" + item.createDatetime + "</td>" +
-                        "</tr>");
+                		"<td>" + item.tmpName + "</td>" +
+                	    "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
+                	    "<td>" + approvalStateText + 
+                	    "<br><a href='" + detailUrl + "'>" + modifyButton + "</a>" +
+                	    "<a href='" + detailUrl + "'>" + rejectionButton + "</a></td>" +
+                	    "<td>" + midApprovalDatetime + "</td>" +
+                	    "<td>" + midApprovalState + "</td>" +
+                	    "<td>" + finalApprovalDatetime + "</td>" +
+                	    "<td>" + finalApprovalState + "</td>" +
+                	    "<td>" + item.createDatetime + "</td>" +
+                	    "</tr>");
                 
                       tableBody.append(newRow);
 
                  });
-			            $(document).on('click', '.checkRejection', function() {
-			                let midApproverReason = $(this).data('mid-reason');
-			                let finalApproverReason = $(this).data('final-reason');
-			                $('.modal-body').html(`
-			                    <p>중간 승인 사유: ${midApproverReason}</p>
-			                    <p>최종 승인 사유: ${finalApproverReason}</p>
-			                `);
-			            });
                   
             	}
             
@@ -408,8 +401,27 @@
                //중간승인자의 상태값, 최종승인자의 상태값
                 let midApprovalState = getApprovalStateText(item.midApprovalState);
                  let finalApprovalState = getApprovalStateText(item.finalApprovalState);   
-               
-                 let modifyButton = `<a href=""><button class='badge badge-danger px-2'>수정가능</button></a>`;
+                 
+                 let approvalStateText = '';
+                 let approvalStateNo = parseInt(item.approvalStateNo);  // 숫자로 변환
+                 switch (approvalStateNo) {
+                     case 0:
+                         approvalStateText = '결재대기';
+                         break;
+                     case 1:
+                         approvalStateText = '승인중';
+                         break;
+                     case 2:
+                         approvalStateText = '승인완료';
+                         break;
+                     case 9:
+                         approvalStateText = '반려';
+                         break;
+                     default:
+                         approvalStateText = '알 수 없음';
+                 }
+
+                 let modifyButton = approvalStateNo === 0 ? `<button class='badge badge-danger px-2'>수정가능</button>` : '';
                 //승인날짜 null값 표시
                  let midApprovalDatetime = item.midApprovalDatetime;
                  if(midApprovalDatetime === null){
@@ -424,7 +436,8 @@
                 let newRow = $("<tr>" +
                        "<td>" + item.tmpName + "</td>" +
                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
-                         "<td>" + "결재대기" + "<br>" + modifyButton + "</td>" +
+                         "<td>" + "결재대기" + "<br>" + 
+                         "<br><a href='" + detailUrl + "'>" + modifyButton + "</a></td>" +
                          "<td>" + midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
                          "<td>" + finalApprovalDatetime + "</td>" +
@@ -461,16 +474,25 @@
                   let midApprovalState = getApprovalStateText(item.midApprovalState);
                
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
-               
+                //승인날짜 null값 표시
+                let midApprovalDatetime = item.midApprovalDatetime;
+                if(midApprovalDatetime === null){
+                   midApprovalDatetime = "승인전";
+                }
+                let finalApprovalDatetime = item.finalApprovalDatetime;
+                if(finalApprovalDatetime === null){
+                   finalApprovalDatetime = "승인전";
+                }
+                
                 // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
                        "<td>" + item.tmpName + "</td>" +
                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "승인중" + "</td>" +
-                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
-                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + finalApprovalDatetime + "</td>" +
                          "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
@@ -503,15 +525,25 @@
                   let midApprovalState = getApprovalStateText(item.midApprovalState);
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
                 
+                //승인날짜 null값 표시
+                let midApprovalDatetime = item.midApprovalDatetime;
+                if(midApprovalDatetime === null){
+                   midApprovalDatetime = "승인전";
+                }
+                let finalApprovalDatetime = item.finalApprovalDatetime;
+                if(finalApprovalDatetime === null){
+                   finalApprovalDatetime = "승인전";
+                }
+                
                 // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
                 let newRow = $("<tr>" +
                        "<td>" + item.tmpName + "</td>" +
                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
                          "<td>" + "승인완료" + "</td>" +
-                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
-                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + finalApprovalDatetime + "</td>" +
                          "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");
@@ -543,15 +575,49 @@
                   let midApprovalState = getApprovalStateText(item.midApprovalState);
                 let finalApprovalState = getApprovalStateText(item.finalApprovalState);
                 
+                //승인날짜 null값 표시
+                let midApprovalDatetime = item.midApprovalDatetime;
+                if(midApprovalDatetime === null){
+                   midApprovalDatetime = "승인전";
+                }
+                let finalApprovalDatetime = item.finalApprovalDatetime;
+                if(finalApprovalDatetime === null){
+                   finalApprovalDatetime = "승인전";
+                }
+                
+                
+                let approvalStateText = '';
+                let approvalStateNo = parseInt(item.approvalStateNo);  // 숫자로 변환
+                switch (approvalStateNo) {
+                    case 0:
+                        approvalStateText = '결재대기';
+                        break;
+                    case 1:
+                        approvalStateText = '승인중';
+                        break;
+                    case 2:
+                        approvalStateText = '승인완료';
+                        break;
+                    case 9:
+                        approvalStateText = '반려';
+                        break;
+                    default:
+                        approvalStateText = '알 수 없음';
+                }
+                
+                let rejectionButton = approvalStateNo === 9 ? `<button class='badge badge-warning px-2'>이유확인</button>` : '';
+                
                // 상세보기 페이지 URL 설정
                 let detailUrl = getDetailUrl(item.tmpName, item.draftDocNo);
+               
                 let newRow = $("<tr>" +
                        "<td>" + item.tmpName + "</td>" +
                        "<td><a href='" + detailUrl + "'>" + item.title + "</a></td>" +
-                         "<td>" + "반려" + "</td>" +
-                         "<td>" + item.midApprovalDatetime + "</td>" +
+                         "<td>" + "반려" + 
+                         "<br>" + "<a href='" + detailUrl + "'>" + rejectionButton + "</a></td>" +
+                         "<td>" + midApprovalDatetime + "</td>" +
                          "<td>" + midApprovalState + "</td>" +
-                         "<td>" + item.finalApprovalDatetime + "</td>" +
+                         "<td>" + finalApprovalDatetime + "</td>" +
                          "<td>" + finalApprovalState + "</td>" +
                          "<td>" + item.createDatetime + "</td>" +
                          "</tr>");

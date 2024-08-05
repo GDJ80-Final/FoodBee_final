@@ -127,6 +127,15 @@
 	        margin: 5px 0;
 	        padding: 10px;
     	}
+    	#rejectionCheck {
+    		display: flex;
+		    justify-content: center; /* 중앙 정렬 */
+    	}
+    	#modalTitle{
+    		font-size: 20px;
+    		color: black;
+    		margin-bottom: 20px;
+    	}
     	
 </style>
 </head>
@@ -231,7 +240,47 @@
 							       		</div>
 							       	</c:if>
 						      </div>
-						</div>
+						      <!-- 반려사유 확인버튼 -->
+						      	<c:if test="${businessTripOne.midApproverReason != null || businessTripOne.finalApproverReason != null}">
+						      		<div id="rejectionCheck">
+						      			<button type="button" class="btn btn-warning" id="rejectionBtn">반려사유 확인</button>
+						      		</div>						      	
+						        </c:if>
+						          <!-- 모달창 -->
+			                     <div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			                         <div class="modal-dialog" role="document">
+			                             <div class="modal-content">
+			                                 <div class="modal-header">
+			                                     <h5 class="modal-title" id="exampleModalLabel">반려사유</h5>
+			                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			                                         <span aria-hidden="true">&times;</span>
+			                                     </button>
+			                                 </div>
+			                                 <div class="modal-body">
+			                                     <c:if test="${businessTripOne.midApproverReason != null}">
+		                                     			<div id="modalTitle">
+		                                     				중간반려 이유
+		                                     			</div>
+		                                     			<div>		                                     			
+		                                     				<c:out value="${businessTripOne.midApproverReason}"></c:out>
+		                                     			</div>			
+			                                     </c:if>
+			                                     <c:if test="${businessTripOne.finalApproverReason != null}">
+														<div id="modalTitle">
+		                                     				최종반려 이유
+		                                     			</div>
+		                                     			<div>		
+		                                     				<c:out value="${businessTripOne.finalApproverReason}"></c:out>
+		                                     			</div>
+			                                     </c:if>
+			                                 </div>
+			                                 <div class="modal-footer">
+			                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			                                 </div>
+			                             </div>
+			                         </div>
+			                     </div>
+							</div>
 						<!-- 여기가 내용끝! --> 		
                     </div>
                 </div>
@@ -244,6 +293,12 @@
 <jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include>
 	<script>
 		$(document).ready(function() {
+			
+			//반려이유 모달창
+			 $('#rejectionBtn').click(function() {
+			        $('#rejectionModal').modal('show');
+		     });
+				 
 		    
 			$("#referrer").hide();
 			$("#reset").hide();
