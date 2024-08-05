@@ -10,38 +10,42 @@
 	      </div>
 	      <div class="modal-body">
 			  <form>
-				<div>
-					본사/지사
-					<select id="office">
-						<option value="">---본사/지사 선택---</option>
-					</select>
-					부서
-					<select id="dept">
+				<div class="form-row justify-content-center align-items-center mt-3">
+		        	<div class="col-auto my-1">
+						<select id="office" class="custom-select mr-sm-2">
+							<option value="">---본사/지사 선택---</option>
+						</select>
+			        </div>
+		        	<div class="col-auto my-1">
+					<select id="dept" class="custom-select mr-sm-2">
 						<option value="">---부서 선택---</option>
 					</select>
-					팀
-					<select id="team">
+			        </div>
+		        	<div class="col-auto my-1">
+					<select id="team" class="custom-select mr-sm-2">
 						<option value="">---팀 선택---</option>
 					</select>
-					직급 
-					<select id="rankName" name="rankName">
-						<option value="">---직급 선택---
-						<option value="사원">사원
-						<option value="대리">대리
-						<option value="팀장">팀장
-						<option value="부서장">부서장
-						<option value="지서장">지사장
-						<option value="CEO">CEO
+			        </div>
+		        	<div class="col-auto my-1">
+					<select id="rankName" name="rankName" class="custom-select mr-sm-2">
+						<option value="">---직급 선택---</option>
+						<option value="사원">사원</option>
+						<option value="대리">대리</option>
+						<option value="팀장">팀장</option>
+						<option value="부서장">부서장</option>
+						<option value="지서장">지사장</option>
+						<option value="CEO">CEO</option>
 					</select>
-				</div>
-				<div>
-					사원 번호
-					<input type="number" id="empNo" name="empNo">
-					
-					<button id="searchBtn" type="button">검색</button>
-				</div>
+			        </div>
+				  	<div class="col-auto my-1">
+				    	<input type="number" id="empNo" name="empNo" class="form-control-sm" placeholder="사원번호를 입력하세요 ">
+				  	</div>
+				  	<div class="col-auto my-1">
+				    	<button id="searchBtn" type="button" class="btn btn-primary">검색</button>
+				  	</div>
+			  	</div>
 			</form>
-		    <table class="table" id="empList">
+		    <table class="table mt-3" id="empList">
 		        
 		            <tr>
 		                <th>본사/지사</th>
@@ -54,12 +58,23 @@
 		            </tr>
 		        
 		   </table>
-		   <div id="page">
-		        <button type="button" id="first">First</button>
-		        <button type="button" id="pre">◁</button>
-		        <button type="button" id="next">▶</button>
-		        <button type="button" id="last">Last</button>
-		   </div>
+		   <!-- panel & page -->
+			<div class="bootstrap-pagination mt-3" id="page">
+		         <nav>
+		             <ul class="pagination justify-content-center">
+		                 <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
+		                 </li>
+		                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
+		                 </li>
+		                 <li class="page-item active"><div class="page-link" id="currentPage">${currentPage}</div>
+		                 </li>
+		                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
+		                 </li>
+		                 <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
+		                 </li>
+		             </ul>
+		         </nav>
+		     </div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
