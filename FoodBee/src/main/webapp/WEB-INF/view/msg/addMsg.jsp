@@ -213,14 +213,14 @@
 				}
 			});
 			
-			// 버튼 활성화
-			function updateBtnState() {
-				console.log("update");
-		        $('#pre').prop('disabled', currentPage === 1);
-		        $('#next').prop('disabled', currentPage === lastPage);
-		        $('#first').prop('disabled', currentPage === 1);
-		        $('#last').prop('disabled', currentPage === lastPage);
-		    }
+			//페이징 버튼 활성화
+	        function updateBtnState() {
+	            console.log("update");
+	            $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	            $('#first').closest('li').toggleClass('disabled', currentPage === 1);
+	            $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        }
 			
 			// 사원 목록 출력
 			function loadEmpList(page){
@@ -239,6 +239,7 @@
 						console.log(json);
 						lastPage = json.lastPage;
 						console.log('curreptPage : ' + currentPage);
+						$('#currentPage').text(currentPage);
 						$('#empList').empty();
 						$('#empList').append('<tr>' +
 								'<th>본사/지사</th>' +
@@ -279,7 +280,7 @@
 						'<td>' + item.rankName +'</td>' + 
 						'<td>' + item.empNo +'</td>' + 
 						'<td>' + item.empName +'</td>' + 
-						'<td><button type="button" id="selectEmp" class="selectEmp" value="' + item.empNo + '" data-name="' + item.empName + '">선택</button></td>' +
+						'<td><button type="button" id="selectEmp" class="selectEmp btn btn-primary" value="' + item.empNo + '" data-name="' + item.empName + '">선택</button></td>' +
 						'</tr>');
 				}
 			
