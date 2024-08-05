@@ -104,66 +104,7 @@
 
 
 
-<%-- 
 
-
-
-
-
-<!-- 템플릿 적용 전 -->
-<div id="main-wrapper">
-		<jsp:include page="/WEB-INF/view/header.jsp"></jsp:include>
-		
-		<jsp:include page="/WEB-INF/view/sidebar.jsp"></jsp:include>
-	        <!--**********************************
-	            Content body start
-	        ***********************************-->
-	  <div class="content-body">
-		<div class="container">
-	        <h2>익명게시판 작성</h2>
-	        <form method="post" action="${pageContext.request.contextPath}/community/board/addBoard">
-	            <table>
-	                <tr>
-	                    <td>제목:</td>
-	                    <td><input type="text" name="title" id="title" class="input-full">
-	                    	<div id="titleError" class="error"></div>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <td>카테고리:</td>
-	                    <td>
-	                        <select name="boardCategory" id="boardCategory" class="input-full">
-	                            <option value="잡담">잡담</option>
-	                            <option value="회사이야기">회사이야기</option>
-	                            <option value="질문">질문</option>
-	                        </select>
-	                        <div id="categoryError" class="error"></div>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <td>비밀번호:</td>
-	                    <td><input type="password" id="boardPw" name="boardPw" class="input-full" required>
-	                    <div id="passwordError" class="error"></div>
-	                    </td>
-	                </tr>
-	                <tr>
-	                    <td colspan="2">
-	                        <textarea id="content" name="content" placeholder="내용을 입력하세요..."></textarea>
-	                        <div id="contentError" class="error"></div>
-	                    </td>
-	                </tr>
-	                <tr class="button-row">
-	                    <td colspan="2">
-	                        <button type="submit" id="submitBtn">작성</button>
-	                        <button type="reset" id="resetButton">취소</button>
-	                    </td>
-	                </tr>
-	            </table>
-	        </form>
-	    </div>
-	</div>
-</div>
- 		<jsp:include page="/WEB-INF/view/footer.jsp"></jsp:include> --%>
 <script>
 	$(document).ready(function(){
 	    $('#cancelBtn').click(function(){
@@ -240,6 +181,7 @@
 	            $('#addBoardForm').submit();
 	        }else{
 	        	 e.preventDefault();
+	        	 alert('모든 항목을 입력해주세요.')
 	        }
 	    });
 

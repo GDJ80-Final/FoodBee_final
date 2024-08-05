@@ -286,8 +286,10 @@
 	        let commentPw = $(this).val().trim();
 	        if (!validatePassword(commentPw)) {
 	            $('#passwordError').text('비밀번호는 숫자 4자여야 합니다.');
-	        } else {
-	            $('#passwordError').text('');
+	        } else if(commentPw === ''){
+	            $('#passwordError').text('비밀번호를 입력해주세요');
+	        }else{
+	        	$('#passwordError').text('');
 	        }
 	    });
 
@@ -309,11 +311,11 @@
 	        $('#content').blur();
 
 	        // 유효성 검사 확인
-	        if ($('.error:contains("입력해 주세요"), .error:contains("비밀번호는 대소문자, 숫자, 특수문자를 포함하여 8-16자 사이여야 합니다.")').length === 0) {
+	        if ($('.error:contains("입력해 주세요"), .error:contains("비밀번호는 숫자 4자여야 합니다.")').length === 0) {
 	            $('#addCommentForm').submit();
 	        }else{
 	        	 e.preventDefault();
-	   
+	   			 alert('내용과 비밀번호를 확인해주세요.')
 	        }
 	    });
 	    
@@ -338,9 +340,9 @@
 	    function updateBtnState() {
 	        console.log("update");
 	        $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
-	        $('#next').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        $('#next').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0 );
 	        $('#first').closest('li').toggleClass('disabled', currentPage === 1);
-	        $('#last').closest('li').toggleClass('disabled', currentPage === lastPage);
+	        $('#last').closest('li').toggleClass('disabled', currentPage === lastPage || lastPage === 0 );
 	        }
 		// 이전 
 		$('#pre').click(function() {

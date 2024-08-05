@@ -383,8 +383,8 @@
 		    // 제출 버튼 클릭 시 전체 유효성 검사
 		    
 		    $('#submitBtn').click(function(e) {
-		        // 기본 폼 제출 방지
-		        e.preventDefault();
+		        
+		        
 
 		        // 모든 입력 필드 블러 이벤트 트리거
 		        $('#recipient').blur();
@@ -394,6 +394,9 @@
 		        // 유효성 검사 확인
 		        if ($('.error:contains("입력해 주세요")').length === 0) {
 		            $('#addMsgForm').submit();
+		        }else{
+		        	e.preventDefault();
+		        	alert('모든 항목을 입력해주세요.')
 		        }
 		    });
 
