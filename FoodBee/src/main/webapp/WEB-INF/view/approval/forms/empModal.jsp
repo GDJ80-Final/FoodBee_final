@@ -37,14 +37,11 @@
 						<option value="CEO">CEO</option>
 					</select>
 			        </div>
-				  	<div class="col-auto my-1">
-				    	<input type="number" id="empNo" name="empNo" class="form-control-sm" placeholder="사원번호를 입력하세요 ">
-				  	</div>
-				  	<div class="col-auto my-1">
-				    	<button id="searchBtn" type="button" class="btn btn-primary">검색</button>
-				  	</div>
 			  	</div>
 			  	<div class="form-row justify-content-center align-items-center mt-3">
+			  		<div class="col-auto my-1">
+				    	<input type="number" id="empNo" name="empNo" class="form-control-sm" placeholder="사원번호를 입력하세요 ">
+				  	</div>
 			  		<div class="col-auto my-1">
 				    	<button id="searchBtn" type="button" class="btn btn-primary">검색</button>
 				  	</div>
