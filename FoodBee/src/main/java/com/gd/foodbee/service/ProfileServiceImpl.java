@@ -40,13 +40,18 @@ public class ProfileServiceImpl implements ProfileService{
 		log.debug(TeamColor.RED +"path =>"+ path);
 		
 		// 원래 파일 삭제
+		// 디폴트 이미지일 경우 삭제 안함
 		String originalFile = profileMapper.selectProfileImg(empNo);
 		log.debug(TeamColor.RED + "originalName =>" + originalFile);
 		if(originalFile != null) {
-			String result = filePath.deleteFile(path, originalFile);
-			if(result.equals("fail")) {
-				throw new RuntimeException();
-			}
+			if(originalFile.equals("default.png")){
+				log.debug(TeamColor.YELLOW + "디폴트 이미지는 삭제 할 수 없습니다.");
+			}else {
+				String result = filePath.deleteFile(path, originalFile);
+				if(result.equals("fail")) {
+					throw new RuntimeException();
+				}
+			}	
 		}
 		
 		originalFile = fileFormatter.fileFormatter(file);
