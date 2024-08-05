@@ -29,6 +29,10 @@
 	    justify-content: center;
 	    min-height: 100vh;
 	}
+	
+	#preloader.active {
+	    background-color: rgba(255, 255, 255, 0.7); /* 반투명 배경 */
+	}
 </style>
 </head>
 <body class="h-100">
@@ -45,6 +49,7 @@
     <!--*******************
         Preloader end
     ********************-->
+    
 
 	 <div class="login-form-bg h-100">
         <div class="container h-100">
@@ -95,9 +100,14 @@
 	<script>
 		$(document).ready(function() {
 			$('#authBtn').click(function(){
+				$('#preloader').addClass('active').show();
+				$('#preloader').fadeIn(100);
+				
+				
 				if($('#empNo').val().length == 0) {
 					$('#noMsg').text('사원번호를 입력해주세요');
 					$('#empNo').focus();
+					$('#preloader').fadeOut(500);
 					return;
 				} else {
 					$('#noMsg').text('');
@@ -106,13 +116,13 @@
 				if($('#empEmail').val().length == 0) {
 					$('#emailMsg').text('이메일을 입력해주세요 ');
 					$('#empEmail').focus();
+					$('#loader').fadeOut(500);
 					return;
 				} else {
 					$('#emailMsg').text('');
 				}
 				
 				$.ajax({
-					async : false,
 					url : '${pageContext.request.contextPath}/sendEmail',
 					method : 'post', 
 					data: {
@@ -120,6 +130,7 @@
 	                	empEmail: $('#empEmail').val()
 	                },
 					success : function(json) {
+						$('#preloader').fadeOut(500);
 						if(json == 'success'){
 							$('#formMsg').text('');
 							let authCheckForm = '<form method="post" id="authCheckForm" action="${pageContext.request.contextPath}/getPw" >' +
@@ -133,8 +144,10 @@
 	                        $('#authCheckContainer').html(authCheckForm).show();
 	                        
 	                        $('#pwBtn').click(function(){
+	                        	
+	                        	$('#preloader').fadeIn(100);
+	                        	
 	                			$.ajax({
-	                				async : false,
 	                				url : '${pageContext.request.contextPath}/getPw',
 	                				method : 'post', 
 	                				data: {
@@ -143,13 +156,14 @@
 	                                	empEmail: $('#empEmail').val()
 	                                },
 	                				success : function(json) {
-	                					if(json === 'success'){
-	                						alert('이메일이 발송되었습니다.');
-	    			                        window.location.href = '${pageContext.request.contextPath}/login';
-	                						
-	                					} else {
-	                						$('#authMsg').text('인증번호가 틀렸습니다.');
-	                					}
+	                					$('#preloader').fadeOut(300, function() {
+	                		                if(json === 'success'){
+	                		                    alert('이메일이 발송되었습니다.');
+	                		                    window.location.href = '${pageContext.request.contextPath}/login';
+	                		                } else {
+	                		                    $('#authMsg').text('인증번호가 틀렸습니다.');
+	                		                }
+	                		            });
 	                				}
 	                				
 	                			});

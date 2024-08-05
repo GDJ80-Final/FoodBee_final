@@ -5,6 +5,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<style>
+	#preloader.active {
+	    background-color: rgba(255, 255, 255, 0.7); /* 반투명 배경 */
+	}
+</style>
 </head>
 <body>
 	<div id="main-wrapper">
@@ -249,9 +254,14 @@
 		});
 		
 		$('#addBtn').click(function(){
+			
+			$('#preloader').addClass('active').show();
+			$('#preloader').fadeIn(100);
+			
 			if($('#empNo').val().length != 8) {
 				$('#noMsg').text('사원번호를 생성해주세요');
 				$('#empNo').focus();
+				$('#preloader').fadeOut(500);
 				return;
 			} else {
 				$('#noMsg').text('');
@@ -261,6 +271,7 @@
 			if($('#empName').val() == '') {
 				$('#stateMsg').text('상태를 선택해주세요 ');
 				$('#stateMsg').focus();
+				$('#preloader').fadeOut(500);
 				return;
 			} else {
 				$('#stateMsg').text('');
@@ -268,6 +279,7 @@
 			if($('#empState').val() == '') {
 				$('#stateMsg').text('상태를 선택해주세요 ');
 				$('#stateMsg').focus();
+				$('#preloader').fadeOut(500);
 				return;
 			} else {
 				$('#stateMsg').text('');
@@ -277,6 +289,7 @@
 				if($('#office').val() == '') {
 					$('#officeMsg').text('본사/지사를 선택해주세요 ');
 					$('#officeMsg').focus();
+					$('#preloader').fadeOut(500);
 					return;
 				} else {
 					$('#officeMsg').text('');
@@ -285,6 +298,7 @@
 				if($('#dept').val() == '') {
 					$('#deptMsg').text('부서를 선택해주세요 ');
 					$('#deptMsg').focus();
+					$('#preloader').fadeOut(500);
 					return;
 				} else {
 					$('#deptMsg').text('');
@@ -293,6 +307,7 @@
 				if($('#team').val() == '') {
 					$('#teamMsg').text('팀을 선택해주세요 ');
 					$('#teamMsg').focus();
+					$('#preloader').fadeOut(500);
 					return;
 				} else {
 					$('#teamMsg').text('');
@@ -302,6 +317,7 @@
 			if($('#rankName').val() == '') {
 				$('#rankMsg').text('직급을 선택해주세요 ');
 				$('#rankMsg').focus();
+				$('#preloader').fadeOut(500);
 				return;
 			} else {
 				$('#rankMsg').text('');
@@ -310,6 +326,7 @@
 			if($('#startDate').val() == '') {
 				$('#dateMsg').text('입사일을 선택해주세요 ');
 				$('#dateMsg').focus();
+				$('#preloader').fadeOut(500);
 				return;
 			} else {
 				$('#dateMsg').text('');
@@ -320,9 +337,11 @@
 			if($('#empEmail').val() == '') {
 				$('#emailMsg').text('이메일을 입력해주세요 ');
 				$('#emialMsg').focus();
+				$('#preloader').fadeOut(100);
 				return;
 			} else if (!emailRegex.test($('#empEmail').val())) {
                 $('#emailMsg').text('유효하지 않은 이메일 형식입니다.');
+                $('#preloader').fadeOut(500);
                 return;
 			} else {
 				$('#emailMsg').text('');
@@ -331,6 +350,7 @@
 			
 			
 			$('#addEmpForm').submit();
+			
 		});	
 	});
 	</script>
