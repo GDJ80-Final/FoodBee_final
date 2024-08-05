@@ -60,7 +60,7 @@
 						            <th>결재상태</th>
 						            <th>기안일시</th>
 						        </tr>
-						        <tbody id="t">
+						        <tbody id="tableBody">
 						            <!-- 여기서 리스트출력 -->
 						        </tbody>
 						    </table>
@@ -144,7 +144,7 @@
 			console.log('수신참조lastPage : '+ lastPage);
 			console.log('수신참조 currentPage: '+ currentPage);
 			
-			let tableBody = $("#t");
+			let tableBody = $("#tableBody");
 			tableBody.empty();
 			//버튼 활성화
 			updateBtnState();

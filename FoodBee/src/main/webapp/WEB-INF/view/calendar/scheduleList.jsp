@@ -468,7 +468,7 @@
          console.log("update");
          <!-- 현재 페이지와 마지막 페이지 값에 따른 버튼 비활성화 처리-->
          <!-- prop은 설정의 속성-->
-      // 현재 페이지가 1이면 '이전' 및 '처음' 버튼 비활성화
+      	// 현재 페이지가 1이면 '이전' 및 '처음' 버튼 비활성화
          $('#pre').closest('li').toggleClass('disabled', currentPage === 1);
          $('#first').closest('li').toggleClass('disabled', currentPage === 1);
 

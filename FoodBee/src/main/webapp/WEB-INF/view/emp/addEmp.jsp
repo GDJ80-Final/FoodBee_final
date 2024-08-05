@@ -34,7 +34,7 @@
                             		<div class="col"></div>
                             		<div class="col-9">
 		                            	<div class="form-validation">
-											<form method="post" id="addEmpForm" class="form-valide"  action="${pageContext.request.contextPath}/addEmp">
+											<form method="post" id="addEmpForm" class="form-valide"  action="${pageContext.request.contextPath}/emp/addEmp">
 												<div class="form-group row">
 													<label class="col-lg-4 col-form-label" for="empNo">사원번호 <span class="text-danger">*</span>
 		                                       	    </label>
