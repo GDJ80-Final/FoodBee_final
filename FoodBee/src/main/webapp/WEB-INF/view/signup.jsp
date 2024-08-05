@@ -311,6 +311,16 @@
                    $('#addressDetailError').text("");
                }
            }
+           function validateAddr(){
+        	   
+        	   const address = $('#address').val().trim();
+        	   if(address === ""){
+        		   $('#addressError').text("주소를 확인해주세요.")
+        	   }else{
+        		   $('#addressError').text("");
+        	   }
+           }
+           
 
           
            // 커서이동시마다 유효성 검사 
@@ -318,16 +328,24 @@
            $('#confirmedEmpPw').blur(validateConfirmedEmpPw);
            $('#contact').blur(validateContact);
            $('#addressDetail').blur(validateAddrDetail);
+           $('#address').blur(validateAddr);
+           
            
            // 폼 제출 시 모든 필드 유효성 검사 
-           $('#signupForm').submit(function(event) {
-               validateEmpPw();
-               validateConfirmedEmpPw();
-               validateContact();
+           $('#signupForm').submit(function(e) {
+        	   
+               $('#empPw').blur(validateEmpPw);
+               $('#confirmedEmpPw').blur(validateConfirmedEmpPw);
+               $('#contact').blur(validateContact);
+               $('#addressDetail').blur(validateAddrDetail);
+               $('#address').blur(validateAddr);
+              
                
-
                if ($('.error-message').text() !== "") {
-                   event.preventDefault();
+                   e.preventDefault();
+                   alert('모든 항목을 입력해주세요.')
+               }else{
+            	   $('#signupForm').submit();
                }
            });
        });

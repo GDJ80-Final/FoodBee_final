@@ -257,7 +257,7 @@
 						console.log(item);
 						$('#comment').append('<tr>' +
 							'<td style="border-top:1px solid;">' + item.content + 
-							'<button type="button" class="float-right btn btn-danger pt-1 pb-1" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop">삭제</button></td>' + 
+							'<button type="button" class="float-right btn btn-danger pt-1 pb-1" id="deleteComment" value="'+item.commentNo+'" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> 삭제</button></td>' + 
 							'</tr>' +
 							'<tr><td style="border-bottom:1px solid;"id="section'+ item.commentOrder +
 							'"><span>' + item.createDatetime + '</span>'+
