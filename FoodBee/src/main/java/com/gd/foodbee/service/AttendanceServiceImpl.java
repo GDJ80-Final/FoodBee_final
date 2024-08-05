@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AttendanceServiceImpl implements AttendanceService {
 	@Autowired AttendanceMapper attendanceMapper;
 	
-	private static final int ROW_PER_PAGE = 2;
+	private static final int ROW_PER_PAGE = 10;
 	
 	// 주간 근태 기록
 	public List<HashMap<String, Object>> getAttendanceRecordByWeek(int empNo) {

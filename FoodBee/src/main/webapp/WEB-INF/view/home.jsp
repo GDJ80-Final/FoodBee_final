@@ -596,12 +596,18 @@
 	                        title: {
 	                            display: false
 	                        },
-	                        max: defaultWorkTime + 2 // X축 최대값을 기본 근무 시간보다 조금 크게 설정
+	                        ticks: {
+	                            color: 'white' // x축 레이블 색상을 하얀색으로 설정
+	                        },
+	                        max: defaultWorkTime + defaultWorkTime / 2 // X축 최대값을 기본 근무 시간보다 조금 크게 설정
 	                    },
 	                    y: { // Y축 설정
 	                        stacked: true, // 스택을 활성화
 	                        title: {
 	                            display: false
+	                        },
+	                        ticks: {
+	                            color: 'white' // Y축 레이블 색상을 하얀색으로 설정
 	                        }
 	                    }
 	                }
@@ -669,12 +675,18 @@
 		                    title: {
 		                        display: false
 		                    },
-		                    max: defaultWorkTime + 10 // X축 최대값을 기본 근무 시간보다 조금 크게 설정
+		                    ticks: {
+		                        color: 'white' // x축 레이블 색상을 하얀색으로 설정
+		                    },
+		                    max: defaultWorkTime + defaultWorkTime / 2 // X축 최대값을 기본 근무 시간보다 조금 크게 설정
 		                },
 		                y: { // Y축 설정
 		                    stacked: true, // 스택을 활성화
 		                    title: {
 		                        display: false
+		                    },
+		                    ticks: {
+		                        color: 'white' // Y축 레이블 색상을 하얀색으로 설정
 		                    }
 		                }
 		            }
