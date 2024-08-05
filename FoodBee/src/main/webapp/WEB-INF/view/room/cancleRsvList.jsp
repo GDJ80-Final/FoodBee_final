@@ -66,7 +66,7 @@
 						            <th>예약시간</th>                
 						            <th>제목</th>
 						            <th>유형</th>
-						            <th>인원</th>
+						            <th>참석인원</th>
 						            <th>부서</th>
 						            <th>예약자</th>     
 						            <th>상태</th>
@@ -81,7 +81,7 @@
 						                <td>${m.meetingTitle}</td>
 						                <td>${m.type}</td>
 						                <td>${m.users} 명</td>
-						                <td>${m.dptNo}</td>
+						                <td>${dptName}</td>
 						                <td>${m.rankName} ${m.empName}</td>
 						                <td>${m.rsvState}</td>
 						            </tr>

@@ -371,7 +371,17 @@ $(document).ready(function() {
         if (!typeName) {
             alert("유형을 먼저 선택해 주세요.");
             $('#startDate').val(''); // 시작 날짜 초기화
+            $('#endDate').val(''); // 종료 날짜 초기화
+            $('#endDate').attr('min', ''); // min 속성 제거
+            $('#endDate').attr('max', ''); // max 속성 제거
             return; // 함수 종료
+        }
+
+        // 엔드데이트의 최소값 설정
+        if (startDate) {
+            $('#endDate').attr('min', startDate); // min 속성 설정
+        } else {
+            $('#endDate').attr('min', ''); // 시작 날짜가 비어있으면 min 속성 제거
         }
 
         // 엔드데이트의 최대값 설정
@@ -379,20 +389,22 @@ $(document).ready(function() {
             const maxEndDate = new Date(start);
             maxEndDate.setDate(start.getDate() + remainingDays - 1);
             $('#endDate').attr('max', maxEndDate.toISOString().split('T')[0]); // max 속성 설정
-            
+
             // 유형이 반차인 경우 종료 날짜를 시작 날짜로 설정
             if (typeName === "반차") {
                 $('#endDate').prop('readonly', true); // 엔드데이트를 readonly로 설정
                 $('#endDate').val(startDate); // 엔드데이트 값을 스타트데이트로 설정
             } else {
                 $('#endDate').prop('readonly', false); // 다른 유형 선택 시 readonly 해제
+                $('#endDate').val(''); // 다른 유형 선택 시 종료 날짜 초기화
             }
         } else {
             $('#endDate').attr('max', ''); // 시작 날짜가 비어있으면 max 속성 제거
             $('#endDate').val(''); // 엔드데이트 초기화
         }
     });
-    
+     	
+ 	// 공백검사
 	$('#submitBtn').click(function(e) {
         let drafterNo = $('#drafterEmpNo').val();
         console.log(drafterNo)

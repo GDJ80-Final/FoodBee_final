@@ -17,6 +17,7 @@ import com.gd.foodbee.dto.EmpDTO;
 import com.gd.foodbee.dto.RoomDTO;
 import com.gd.foodbee.dto.RoomRsvDTO;
 import com.gd.foodbee.mapper.RoomMapper;
+import com.gd.foodbee.service.GroupService;
 import com.gd.foodbee.service.RoomService;
 import com.gd.foodbee.util.TeamColor;
 
@@ -32,6 +33,9 @@ public class RoomController {
 	
 	@Autowired
 	private RoomMapper roomMapper;
+	
+	@Autowired
+	private GroupService groupService;
 
 	// 회의실 목록
 	// 파라미터 : X
@@ -194,9 +198,16 @@ public class RoomController {
 		log.debug(TeamColor.GREEN + "currentPage => " + currentPage);
 		EmpDTO emp = (EmpDTO) session.getAttribute("emp");
 		log.debug(TeamColor.GREEN + "emp => " + emp.toString());
+		
 		List<HashMap<String, Object>> list = roomService.getCancleRsvList(currentPage);
 		log.debug(TeamColor.GREEN + "list => " + list);
+		
 		String rankName = emp.getRankName();
+		String dptNo = emp.getDptNo();
+		
+		String dptName = groupService.getDptName(dptNo);
+		log.debug(TeamColor.GREEN + "dptName => " + dptName);
+		
 		int lastPage = roomService.getCancleRsvLastPage();
 		log.debug(TeamColor.GREEN + "lastPage => " + lastPage);
 		
@@ -204,6 +215,7 @@ public class RoomController {
 		model.addAttribute("currentPage",currentPage);
 		model.addAttribute("lastPage",lastPage);
 		model.addAttribute("rankName",rankName);
+		model.addAttribute("dptName",dptName);
 		
 		return "/room/cancleRsvList";
 	}

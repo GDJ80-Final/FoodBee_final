@@ -256,7 +256,7 @@
 									        <div class="category-row" style="display: flex; align-items: center;">
 									            <label for="categorySelect">카테고리 </label>
 									            <select class="categorySelect" name="typeName" id="category">
-									                <option value="category0">==선택==</option>
+									                <option value="category0">---선택---</option>
 									                <option value="간편식">간편식</option>
 									                <option value="쌀/곡물">쌀/곡물</option>
 									                <option value="육/수산">육/수산</option>
@@ -370,7 +370,7 @@ $(document).ready(function() {
         	<div class="category-row" style="display: flex; align-items: center;">
 	            <label for="categorySelect">카테고리:</label>
 	            <select class="categorySelect" name="typeName" id="category">
-	                <option value="category0">==선택==</option>
+	                <option value="category0">---선택---</option>
 	                <option value="간편식">간편식</option>
 	                <option value="쌀/곡물">쌀/곡물</option>
 	                <option value="육/수산">육/수산</option>

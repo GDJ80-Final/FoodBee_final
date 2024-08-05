@@ -134,12 +134,12 @@
                                     </li>
                                     <li class="page-item">
                                         <button type="button" class="page-link" 
-                                            <c:if test="${currentPage == lastPage}">disabled</c:if>
+                                            <c:if test="${currentPage == lastPage || empty list}">disabled</c:if>
                                             onclick="location.href='${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${currentPage + 1}<c:if test="${not empty param.startDate}">&startDate=${param.startDate}</c:if><c:if test="${not empty param.endDate}">&endDate=${param.endDate}</c:if>'">다음</button>
                                     </li>
                                     <li class="page-item">
                                         <button type="button" class="page-link" 
-                                            <c:if test="${currentPage == lastPage}">disabled</c:if>
+                                            <c:if test="${currentPage == lastPage || empty list}">disabled</c:if>
                                             onclick="location.href='${pageContext.request.contextPath}/attendance/attendancePersonal?currentPage=${lastPage}<c:if test="${not empty param.startDate}">&startDate=${param.startDate}</c:if><c:if test="${not empty param.endDate}">&endDate=${param.endDate}</c:if>'">마지막</button>
                                     </li>
                                 </ul>

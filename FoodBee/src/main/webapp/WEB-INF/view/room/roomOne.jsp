@@ -107,8 +107,8 @@
 					        </div>
 					        <div>	
 						        <label for="type"><b>유형 :</b></label>
-						        <input type="radio" name="type" value="team"> 팀
-						        <input type="radio" name="type" value="personal"> 개인용무
+						        <input type="radio" name="type" value="팀"> 팀
+						        <input type="radio" name="type" value="개인"> 개인
 							</div>	
 					        <table class="table header-border">
 					            <tr>

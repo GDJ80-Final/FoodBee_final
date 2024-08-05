@@ -123,15 +123,15 @@
 						                <div class="page-link">${currentPage}</div>
 						            </li>
 						            <li class="page-item">
-						                <button type="button" class="page-link" 
-						                    <c:if test="${currentPage == lastPage}">disabled</c:if>
-						                    onclick="location.href='${pageContext.request.contextPath}/room/myRoomRsvList?currentPage=${currentPage + 1}'">다음</button>
-						            </li>
-						            <li class="page-item">
-						                <button type="button" class="page-link" 
-						                    <c:if test="${currentPage == lastPage}">disabled</c:if>
-						                    onclick="location.href='${pageContext.request.contextPath}/room/myRoomRsvList?currentPage=${lastPage}'">마지막</button>
-						            </li>
+                                        <button type="button" class="page-link" 
+                                            <c:if test="${currentPage == lastPage || empty rsvListByEmpNo}">disabled</c:if>
+                                            onclick="location.href='${pageContext.request.contextPath}/room/myRoomRsvList?currentPage=${currentPage + 1}'">다음</button>
+                                    </li>
+                                    <li class="page-item">
+                                        <button type="button" class="page-link" 
+                                            <c:if test="${currentPage == lastPage || empty rsvListByEmpNo}">disabled</c:if>
+                                            onclick="location.href='${pageContext.request.contextPath}/room/myRoomRsvList?currentPage=${lastPage}'">마지막</button>
+                                    </li>
 						        </ul>
 						    </nav>
 						</div>
