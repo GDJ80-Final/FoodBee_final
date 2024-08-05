@@ -16,6 +16,6 @@ public class InBoxStateDTO {
 	private int nineState;
 	
 	public int totalCount() {
-        return zeroState + oneState + twoState + nineState;
-    }
+		return zeroState + oneState + twoState + nineState;
+	}
 }

@@ -35,6 +35,10 @@ public class InBoxServiceImpl implements InBoxService {
 	@Override
 	public int countAllReferrerList(int empNo) {
 		InBoxStateDTO stateBox = inBoxMapper.getStateBox(empNo);
+		if(stateBox == null) {
+			return 0;
+		}
+		
 		return stateBox.totalCount();
 	}
 	
@@ -54,6 +58,15 @@ public class InBoxServiceImpl implements InBoxService {
 	// 사용클래스 : InBoxController.inBox
 	@Override
 	public InBoxStateDTO getStateBox(int empNo) {
-		return inBoxMapper.getStateBox(empNo);
+		InBoxStateDTO stateBox = inBoxMapper.getStateBox(empNo);
+		if (stateBox == null) {
+			stateBox = InBoxStateDTO.builder()
+            		.zeroState(0)
+            		.oneState(0)
+            		.twoState(0)
+            		.nineState(0)
+            		.build();
+		}
+		return stateBox;
 	}
 }

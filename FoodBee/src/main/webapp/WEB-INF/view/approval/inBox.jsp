@@ -107,6 +107,7 @@
 					empNo: "${empNo}"
 				},
 				success: function(json){
+					console.log("Ajax 요청 성공:", json);
 					$('#currentPage').text(currentPage);
 					updateAllList(json);
 				},
@@ -149,7 +150,7 @@
 			//버튼 활성화
 			updateBtnState();
 			
-			if(json.referrerList == ""){
+			if(json.referrerList.length === 0){
             	tableBody.append("<tr><td colspan='5'>수신참조된 기안서가 없습니다</td></tr>");
             }else{
 			$.each(json.referrerList, function(index, item){
