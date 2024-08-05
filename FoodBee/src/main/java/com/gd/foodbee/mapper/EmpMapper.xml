@@ -185,7 +185,7 @@
 		SELECT
 			e.emp_no empNo,
 			e.emp_name empName,
-			e.ext_no extNo,
+			COALESCE(e.ext_no, '') as extNo,
 			e.start_date startDate,
 			e.end_date endDate,
 			e.rank_name rankName,
