@@ -364,7 +364,7 @@
             tableBody.empty();
             
             if(json == ""){
-            	tableBody.append("<tr><td colspan='5'>결재올라온 기안서가 없습니다</td></tr>");
+            	tableBody.append("<tr><td colspan='5'>결재 올라온 기안서가 없습니다</td></tr>");
             }else{
            	json.forEach(function(item) {
                 let empNo = currentEmpNo;

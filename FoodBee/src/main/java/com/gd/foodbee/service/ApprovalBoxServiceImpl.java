@@ -48,7 +48,7 @@ public class ApprovalBoxServiceImpl implements ApprovalBoxService {
 		int beginRow = 0;
 		beginRow = (currentPage -1) * rowPerPage;
 		
-		return approvalBoxMapper.getApprovalListAll(empNo, beginRow, rowPerPage);
+		return approvalBoxMapper.getZeroListAll(empNo, beginRow, rowPerPage);
 	}
 	
 	// 결재함 미결리스트

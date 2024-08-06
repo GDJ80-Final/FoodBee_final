@@ -28,7 +28,7 @@
 		    OR final_approver_no = #{empNo} 
 		    AND (mid_approval_state = 1 
 		    AND doc_approver_state_no != 9
-		    OR final_approver_state = 1 
+		    OR final_approval_state = 1 
 		    AND  doc_approver_state_no = 9)
 		ORDER BY 
 			dd.create_datetime DESC
@@ -92,10 +92,10 @@
 		WHERE 
 			(mid_approver_no = #{empNo} 
 			AND (mid_approval_state = 1 
-			OR doc_approver_state_no == 9))
+			OR doc_approver_state_no = 9))
 			OR (final_approver_no = #{empNo} 
 			AND (final_approval_state = 1
-			OR doc_approver_state_no == 9))
+			OR doc_approver_state_no = 9))
 		ORDER BY 
 				dd.create_datetime DESC
 		LIMIT 
@@ -107,10 +107,12 @@
 		FROM 
 			draft_doc
 		WHERE 
-	    	(mid_approver_no = #{empNo} 
-	    	OR final_approver_no = #{empNo} 
-	   		AND mid_approval_state = 1 
-	    	AND mid_approval_state != 9)
+	    	mid_approver_no = #{empNo}
+		    OR final_approver_no = #{empNo} 
+		    AND (mid_approval_state = 1 
+		    AND doc_approver_state_no != 9
+		    OR final_approval_state = 1 
+		    AND  doc_approver_state_no = 9)
 	    	
 	</select>
 	<!-- 미결 리스트 총갯수 -->
