@@ -4,7 +4,7 @@
 	<!-- 전체 결재함 리스트 -->
 	<select id="getApprovalListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
 		SELECT 
-			dd.draft_doc_no draftDocNo,
+		    dd.draft_doc_no draftDocNo,
 		    dt.tmp_name tmpName,
 		    e.emp_name empName,
 		    dd.title title,
@@ -19,18 +19,18 @@
 		    dd.draft_doc_no draftDocNo
 		FROM 
 		    draft_doc dd
-	    INNER JOIN 
-	    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	    INNER JOIN 
-	    	emp e ON dd.drafter_emp_no = e.emp_no
+		INNER JOIN 
+		    doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		INNER JOIN 
+		    emp e ON dd.drafter_emp_no = e.emp_no
 		WHERE 
-		    mid_approver_no = #{empNo}
-	    OR final_approver_no = #{empNo} 
-	    AND mid_approval_state = 1
+		    (mid_approver_no = #{empNo} 
+	    OR (final_approver_no = #{empNo} 
+	    AND mid_approval_state NOT IN (1, 9)))
 		ORDER BY 
-			dd.create_datetime DESC
+		    dd.create_datetime DESC
 		LIMIT 
-			#{beginRow}, #{rowPerPage}
+		    #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 미결 리스트 -->
 	<select id="getZeroListAll" parameterType="Map" resultType="com.gd.foodbee.dto.ApprovalBoxDTO">
@@ -81,19 +81,19 @@
 		    dd.draft_doc_no draftDocNo
 		FROM 
 		    draft_doc dd
-	    INNER JOIN 
-	    	doc_tmp dt ON dd.tmp_no = dt.tmp_no
-	    INNER JOIN 
-	    	emp e ON dd.drafter_emp_no = e.emp_no
+		INNER JOIN 
+		    doc_tmp dt ON dd.tmp_no = dt.tmp_no
+		INNER JOIN 
+		    emp e ON dd.drafter_emp_no = e.emp_no
 		WHERE 
-			(mid_approver_no = #{empNo} 
-			AND mid_approval_state = 1) 
-			OR (final_approver_no = #{empNo} 
-			AND final_approval_state = 1)
+		    (mid_approver_no = #{empNo} 
+		    AND mid_approval_state IN (1, 9)) 
+		    OR (final_approver_no = #{empNo} 
+		    AND final_approval_state IN (1, 9))
 		ORDER BY 
-				dd.create_datetime DESC
+		    dd.create_datetime DESC
 		LIMIT 
-			#{beginRow}, #{rowPerPage}
+		    #{beginRow}, #{rowPerPage}
 	</select>
 	<!-- 전체 리스트 총갯수 -->
 	<select id="countAllList" resultType="int" parameterType="int">
