@@ -215,7 +215,7 @@
 							       	<!-- 최종승인자일 경우, 중간결재자가 승인한 경우, 기안서가 반려상태가 아닌 경우, 최종승인상태가 승인전인경우 -->
 							       	<c:if test="${basicFormOne.docApproverState != 9 && basicFormOne.midApprovalState == 1 && basicFormOne.finalApprovalState == 0 && basicFormOne.finalApproverNo eq empNo}">
 							       		<div id="twoBtn">
-							       			<a href="updateFinalState?draftDocNo=${basicFormOne.draftDocNo}" id="finalApproval">최종승인</a>
+							       			<a href="updateFinalState?draftDocNo=${basicFormOne.draftDocNo}" id="finalApproval" class="btn btn-info btn-block">최종승인</a>
 							       			<button id="fakeBtn" class="btn btn-info btn-danger">반려</button>	
 							       		</div>
 							       		<div id="submitForm">
