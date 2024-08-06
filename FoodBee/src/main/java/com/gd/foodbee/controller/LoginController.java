@@ -166,7 +166,30 @@ public class LoginController {
 	        EmailDTO emailDTO = EmailDTO.builder()
 					 .to(empEmail)
 				     .subject("[FoodBee] 임시 비밀번호")
-				     .message("임시비밀번호 : " + tmpPw)
+				     .message("<!DOCTYPE html>\n"
+		                		+ "<html lang=\"ko\">\n"
+		                		+ "<head>\n"
+		                		+ " <meta charset=\"UTF-8\">\n"
+		                		+ " <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+		                		+ " <title>임시 비밀번호 안내</title>\n"
+		                		+ "</head>\n"
+		                		+ "<body style=\"font-family: 'Arial', sans-serif; line-height: 1.6; color: #333;\">\n"
+		                		+ " <div style=\"max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;\">\n"
+		                		+ " <div style=\"background-color: #f4f4f4; padding: 10px; text-align: center;\">\n"
+		                		+ " <h1>임시 비밀번호 안내</h1>\n"
+		                		+ " </div>\n"
+		                		+ " <div style=\"padding: 20px 0;\">\n"
+		                		+ " <p>안녕하세요,</p>\n"
+		                		+ " <p>FoodBee 계정의 임시 비밀번호 입니다.</p>\n"
+		                		+ " <div style=\"font-size: 24px; font-weight: bold; color: #007bff; text-align: center; padding: 10px; border: 2px dashed #007bff; margin: 20px 0;\">\n"
+		                		+ tmpPw
+		                		+ " </div>\n"
+		                		+ " <p>본 이메일을 요청하지 않으셨다면, 이 메시지를 무시하셔도 됩니다.</p>\n"
+		                		+ " <p>감사합니다.</p>\n"
+		                		+ " </div>\n"
+		                		+ " </div>\n"
+		                		+ "</body>\n"
+		                		+ "</html>")
 				     .build();
 		
 			sendEmail.sendEmail(emailDTO);
