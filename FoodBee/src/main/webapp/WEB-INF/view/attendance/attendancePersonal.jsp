@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>근태 조회</title>
+<title>FoodBee : 근태 조회</title>
 <style>
     .page-link:disabled {
         color: lightgray; /* 비활성화된 버튼의 글씨색을 회색으로 변경 */

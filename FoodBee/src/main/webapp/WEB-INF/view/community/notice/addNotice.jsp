@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>FoodBee : 공지사항 추가</title>
+<title>FoodBee : 공지사항 작성</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style>
 	table {
@@ -120,7 +120,7 @@
 					     		<input type="hidden" name="dptNo" value="${dptNo}">
 					     		<input type="hidden" name="writerEmpNo" value="${empNo}">
 					     		<div id="oneBtn"> 					     		
-					            	<button type="submit" class="btn btn-info btn-block mt-3" id="btnSubmit">공지사항 등록</button>
+					            	<button type="submit" class="btn btn-info btn-block mt-3" id="btnSubmit">공지사항 작성</button>
 					     		</div>
 					        </form>
 					    </div>

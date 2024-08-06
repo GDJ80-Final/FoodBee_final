@@ -11,7 +11,7 @@
 	integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" 
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<title>FoodBee : 지출기안서 변경</title>
+<title>FoodBee : 지출기안서 수정</title>
     <style>
     	 body {
             font-family: Arial, sans-serif;

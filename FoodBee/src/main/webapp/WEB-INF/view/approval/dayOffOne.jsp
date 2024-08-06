@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>FoodBee : 휴가기안서</title>
+<title>FoodBee : 휴가신청서 상세보기</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     	

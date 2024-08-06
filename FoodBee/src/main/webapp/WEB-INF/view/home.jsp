@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-sm-12">
                         <div class="card gradient-1">
-                            <div class="card-body">
+                            <div class="card-body" style="height:196px;">
                             
                             <!-- 근태 -->
                             	<div class="float-right">
@@ -113,7 +113,7 @@
                     <!-- 쪽지함 -->
 	                    <div class="col-lg-6 col-md-12">
 	                        <div class="card">
-	                            <div class="card-body">
+	                            <div class="card-body" style="height:233px;">
 	                                <h3 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/msg/receivedMsgBox">읽지 않은 쪽지 >> </a></h3>
 	                                <div id="activity">
 	                                	<table class="table responsive">

@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>회의실 정보 및 예약</title>
+    <title>FoodBee : 회의실 정보 및 예약</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         /* 타임라인 컨테이너 스타일 */

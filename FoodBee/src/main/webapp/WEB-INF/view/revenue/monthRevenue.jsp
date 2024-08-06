@@ -8,7 +8,7 @@
 
 <!-- theme meta -->
 <meta name="theme-name" content="quixlab" />
-<title>월별 매출 차트</title>
+<title>FoodBee : 매출 전체 조회</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0/dist/chartjs-plugin-datalabels.min.js"></script>

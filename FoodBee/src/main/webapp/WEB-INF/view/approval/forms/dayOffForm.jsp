@@ -11,7 +11,7 @@
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<title>FoodBee : 기안 작성</title>
+<title>FoodBee : 휴가신청서 작성</title>
     <style>
     	 body {
             font-family: Arial, sans-serif;

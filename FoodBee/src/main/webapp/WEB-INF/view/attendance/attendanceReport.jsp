@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>근태보고</title>
+<title>FoodBee : 근태보고</title>
 </head>
 <body>
 <div id="main-wrapper">

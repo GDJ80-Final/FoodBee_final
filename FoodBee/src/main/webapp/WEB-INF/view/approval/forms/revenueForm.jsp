@@ -11,7 +11,7 @@
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>FoodBee : 기안 작성</title>
+<title>FoodBee : 매출보고서 작성</title>
     <style>
     	 body {
             font-family: Arial, sans-serif;

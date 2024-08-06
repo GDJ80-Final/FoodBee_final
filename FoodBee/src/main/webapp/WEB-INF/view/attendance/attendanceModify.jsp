@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>전일 근태보고 수정</title>
+<title>FoodBee : 전일 근태보고 수정</title>
 </head>
 <body>
 <div id="main-wrapper">
