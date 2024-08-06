@@ -87,7 +87,7 @@
 						<div class="bootstrap-pagination mt-3" id="page">
 					         <nav>
 					             <ul class="pagination justify-content-center">
-					                 <li class="page-item"><button type="button" id="first" class="page-link">FIRST</button>
+					                 <li class="page-item"><button type="button" id="first" class="page-link">처음</button>
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="pre">이전</button>
 					                 </li>
@@ -95,7 +95,7 @@
 					                 </li>
 					                 <li class="page-item"><button type="button" class="page-link" id="next">다음</button>
 					                 </li>
-					                 <li class="page-item"><button type="button" class="page-link" id="last">LAST</button>
+					                 <li class="page-item"><button type="button" class="page-link" id="last">마지막</button>
 					                 </li>
 					             </ul>
 					         </nav>
