@@ -144,9 +144,10 @@ function fetchCategoryData(category) {
 function updateChart(data) {
     if (data && data.length > 0) {
         const categories = [...new Set(data.map(item => item.categoryName))];
-        const months = [...new Set(data.map(item => item.referenceMonth))].sort();
+        const months = [...new Set(data.map(item => item.referenceMonth))].sort(); // 'YYYY-MM' 형식으로 그대로 사용
         const revenueData = categories.map(category => {
             return months.map(month => {
+                // referenceMonth가 'YYYY-MM' 형식이므로, 비교 시 substring 필요 없음
                 const record = data.find(item => item.categoryName === category && item.referenceMonth === month);
                 return record ? record.revenue : 0;
             });

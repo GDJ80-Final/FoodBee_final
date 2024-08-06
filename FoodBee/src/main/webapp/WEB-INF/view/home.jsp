@@ -697,36 +697,36 @@
      	// 주간 근무 시간을 저장할 배열 선언
         const weeklyWorkTimeInSeconds = [0, 0, 0, 0, 0, 0, 0]; // 일~토 근무 시간 초기화
 
-        // 주간 근무  AJAX 호출
-    	function loadWeeklyAttendance(empNo) {
-	        $.ajax({
-	            url: '${pageContext.request.contextPath}/attendance/loadAttendanceRecordByWeek',
-	            type: 'GET',
-	            data: { empNo: empNo },
-	            success: function(response) {
-	            	console.log("AJAX Response:", response); // 응답 데이터 확인
-	                // 응답 데이터 처리
-	                response.forEach(record => {
-	                    const workDate = new Date(record.workDate); // workDate는 서버에서 반환된 날짜
-	                    const dayIndex = workDate.getDay(); // 0 (일요일) ~ 6 (토요일)
-	
-	                    // 받은 totalSeconds를 해당 요일의 배열에 추가
-	                    weeklyWorkTimeInSeconds[dayIndex] += record.totalSeconds; 
-	                });
-	
-	                console.log(weeklyWorkTimeInSeconds); // 최종 주간 근무 시간 배열 출력
-	
-	                // 총 근무 시간 합산
-	                const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);
-	
-	                // 그래프 그리기 함수 호출
-	                drawWeeklyWorkTimeChart(totalWeeklyWorkTimeInSeconds);
-	            },
-	            error: function(error) {
-	                console.error("Error loading attendance records:", error);
-	            }
-	        });
-	    }            	
+     	// 주간 근무  AJAX 호출
+        function loadWeeklyAttendance(empNo) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/attendance/loadAttendanceRecordByWeek',
+                type: 'GET',
+                data: { empNo: empNo },
+                success: function(response) {
+                    console.log("AJAX Response:", response); // 응답 데이터 확인
+                    // 응답 데이터 처리
+                    response.forEach(record => {
+                        const workDate = new Date(record.workDate); // workDate는 서버에서 반환된 날짜
+                        const dayIndex = workDate.getDay(); // 0 (일요일) ~ 6 (토요일)
+
+                        // 받은 totalSeconds를 해당 요일의 배열에 추가
+                        weeklyWorkTimeInSeconds[dayIndex] += record.totalSeconds; 
+                    });
+
+                    console.log(weeklyWorkTimeInSeconds); // 최종 주간 근무 시간 배열 출력
+
+                    // 총 근무 시간 합산
+                    const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);
+
+                    // 그래프 그리기 함수 호출
+                    drawWeeklyWorkTimeChart(totalWeeklyWorkTimeInSeconds);
+                },
+                error: function(error) {
+                    console.error("Error loading attendance records:", error);
+                }
+            });
+        }            	
     	
         // 총 근무 시간 합산
         const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);
@@ -768,6 +768,9 @@
 
 	    // 퇴근 버튼 클릭 시
 	    document.getElementById('attendanceEndButton').onclick = function() {
+	    	// 주간 근무 시간 업데이트
+	        loadWeeklyAttendance(currentEmpNo);
+
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/attendance/attendanceEndTime',
 	            method: 'POST',
@@ -852,8 +855,8 @@
 	    // 날짜 변경 확인 주기 설정
 	    function checkDateChangePeriodically() {
 	        setInterval(checkDateChange, 60 * 1000); // 1분마다 날짜 변경 확인
-	    }
-
+	    }		
+	    
 	    resetAttendanceTimes(); // 페이지 로드 시 초기화 함수 호출
 	    checkEmpNoChange(); // empNo 변경 확인
 	    checkDateChange(); // 페이지 로드 시 날짜 변경 확인

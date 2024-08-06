@@ -5,33 +5,33 @@
 	<!-- 해당 월 매출액 출력 -->
 	<select id="selectMonthRevenue" parameterType="String" resultType="com.gd.foodbee.dto.RevenueDTO">
 		SELECT 
-			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) referenceMonth,
+			reference_month referenceMonth,
 			category_name categoryName, 
 			drafter_emp_no drafterEmpNo, 
 			revenue
 		FROM 
 			revenue_history
 		WHERE 
-			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) = #{referenceMonth};
+			reference_month = #{referenceMonth};
 	</select>
 	
 	<!-- 해당년도 전체 매출 -->
 	<select id="selectTotalRevenue" parameterType="String" resultType="com.gd.foodbee.dto.RevenueDTO">
 		SELECT 
-			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) referenceMonth,
+			reference_month referenceMonth,
 			category_name categoryName,
 			drafter_emp_no drafterEmpNo,
 			revenue
 		FROM 
 			revenue_history
 		WHERE 
-			YEAR(reference_month) = #{referenceMonth}
+			reference_month LIKE CONCAT(#{referenceMonth}, '%')
 	</select>
 	
 	<!-- 카테고리 별 매출 -->
 	<select id="selectCategoryRevenue" parameterType="com.gd.foodbee.dto.RevenueDTO" resultType="com.gd.foodbee.dto.RevenueDTO">
 		SELECT 
-			CONCAT(YEAR(reference_month), '-', LPAD(MONTH(reference_month), 2, '0')) referenceMonth,
+			reference_month referenceMonth,
 			category_name categoryName,
 			drafter_emp_no drafterEmpNo,
 			revenue
@@ -39,7 +39,7 @@
 			revenue_history
 		WHERE 
 			category_name = #{categoryName} 
-			AND YEAR(reference_month) = #{referenceMonth}
+			AND reference_month LIKE CONCAT(#{referenceMonth}, '%')
 	</select>
 	
 	<!-- 사용 가능한 연도를 가져옴 -->

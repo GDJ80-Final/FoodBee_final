@@ -11,7 +11,7 @@
 	crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<title>FoodBee : 매출보고서 작성</title>
+<title>FoodBee : 매출보고서</title>
     <style>
     	 body {
             font-family: Arial, sans-serif;
@@ -343,6 +343,7 @@ $(document).ready(function() {
     const monthSelect = $('#monthSelect');
     // 현재 년도만 추가
     yearSelect.append(new Option(currentYear + '년', currentYear));
+    yearSelect.append(new Option(currentYear - 1 + '년', currentYear - 1));
     // 초기 데이터 호출 (현재 년도와 월 기준 전월 데이터)
     let initialYear = currentMonth === 1 ? currentYear - 1 : currentYear;
     let initialMonth = currentMonth === 1 ? 12 : currentMonth - 1;

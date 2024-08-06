@@ -167,7 +167,7 @@ function loadAllAttendanceData(page) {
     });
 }
 
-//상태에 따라 근태 데이터를 로드하는 함수
+// 상태에 따라 근태 데이터를 로드하는 함수
 function loadAttendanceDataByStatus(status, page) {
     currentStatus = status; // 현재 상태 업데이트
     currentPage = page;
@@ -223,7 +223,7 @@ function updateTable(data) {
             row.append($('<td>').text(item.updateStartTime));
             row.append($('<td>').text(item.updateEndTime));
             row.append($('<td>').text(item.approvalState));
-            
+
             // 수정 여부 열 처리
             if (item.updateStatus === 'x') {
                 row.append($('<td>').text('x')); // 수정 여부가 'x'일 경우
@@ -240,71 +240,106 @@ function updateTable(data) {
                 row.append($('<td>').append(updateStatusButton)); // 사유 확인 버튼 추가
             }
 
-            // 반려 버튼 추가
-            let rejectButton = $('<button>')
-                .text('반려')
-                .addClass('btn btn-danger btn-sm')
-                .click(function() {
-                    // 반려 사유 입력 모달 열기
-                    $('#rejectionReasonModal').modal('show'); // 모달 열기
-                    // 모달 확인 버튼 클릭 시 AJAX 호출
-                    $('#submitRejection').off('click').on('click', function() {
-                        let reason = $('#rejectionReason').val(); // 반려 사유 입력 값
+            // 상태에 따른 버튼 처리
+            let buttonsCell = $('<td>');
+
+            if (item.approvalState === '미승인') {
+                // 승인, 반려 버튼 추가
+                let rejectButton = $('<button>')
+                    .text('반려')
+                    .addClass('btn btn-danger btn-sm')
+                    .click(function() {
+                        // 반려 사유 입력 모달 열기
+                        $('#rejectionReasonModal').modal('show'); // 모달 열기
+                        // 모달 확인 버튼 클릭 시 AJAX 호출
+                        $('#submitRejection').off('click').on('click', function() {
+                            let reason = $('#rejectionReason').val(); // 반려 사유 입력 값
+                            $.ajax({
+                                url: '${pageContext.request.contextPath}/attendance/attendanceRejection',
+                                type: 'POST',
+                                data: { 
+                                    date: item.date, 
+                                    empNo: item.empNo, 
+                                    approvalReason: reason 
+                                },
+                                success: function(response) {
+                                    alert('반려되었습니다.'); // 성공 메시지
+                                    loadAllAttendanceData(currentPage); // 데이터 새로 고침
+                                    $('#rejectionReasonModal').modal('hide'); // 모달 닫기
+                                    $('#rejectionReason').val(''); // 입력 값 초기화
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    if (jqXHR.status === 403) {
+                                        alert('권한이 없습니다.');
+                                    } else {
+                                        console.error("오류:", textStatus, errorThrown);
+                                        alert('반려 중 오류가 발생했습니다.');
+                                    }
+                                }
+                            });
+                        });
+                    });
+
+                let acceptButton = $('<button>')
+                    .text('승인')
+                    .addClass('btn btn-success btn-sm')
+                    .click(function() {        
                         $.ajax({
-                            url: '${pageContext.request.contextPath}/attendance/attendanceRejection',
+                            url: '${pageContext.request.contextPath}/attendance/attendanceAccept',
                             type: 'POST',
                             data: { 
                                 date: item.date, 
-                                empNo: item.empNo, 
-                                approvalReason: reason 
+                                empNo: item.empNo 
                             },
                             success: function(response) {
-                                alert('반려되었습니다.'); // 성공 메시지
+                                alert('승인되었습니다.'); 
                                 loadAllAttendanceData(currentPage); // 데이터 새로 고침
-                                $('#rejectionReasonModal').modal('hide'); // 모달 닫기
-                                $('#rejectionReason').val(''); // 입력 값 초기화
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 if (jqXHR.status === 403) {
                                     alert('권한이 없습니다.');
                                 } else {
                                     console.error("오류:", textStatus, errorThrown);
-                                    alert('반려 중 오류가 발생했습니다.');
+                                    alert('승인 중 오류가 발생했습니다.'); 
                                 }
                             }
                         });
                     });
-                });
-                
-            // 승인 버튼 추가
-            let acceptButton = $('<button>')
-                .text('승인')
-                .addClass('btn btn-success btn-sm')
-                .click(function() {        
-                    $.ajax({
-                        url: '${pageContext.request.contextPath}/attendance/attendanceAccept',
-                        type: 'POST',
-                        data: { 
-                            date: item.date, 
-                            empNo: item.empNo 
-                        },
-                        success: function(response) {
-                            alert('승인되었습니다.'); 
-                            loadAllAttendanceData(currentPage); // 데이터 새로 고침
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            if (jqXHR.status === 403) {
-                                alert('권한이 없습니다.');
-                            } else {
-                                console.error("오류:", textStatus, errorThrown);
-                                alert('승인 중 오류가 발생했습니다.'); 
+
+                buttonsCell.append(rejectButton).append('&nbsp;').append('&nbsp;').append(acceptButton);
+            } else if (item.approvalState === '반려') {
+                // 승인 버튼만 추가
+                let acceptButton = $('<button>')
+                    .text('승인')
+                    .addClass('btn btn-success btn-sm')
+                    .click(function() {        
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/attendance/attendanceAccept',
+                            type: 'POST',
+                            data: { 
+                                date: item.date, 
+                                empNo: item.empNo 
+                            },
+                            success: function(response) {
+                                alert('승인되었습니다.'); 
+                                loadAllAttendanceData(currentPage); // 데이터 새로 고침
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                if (jqXHR.status === 403) {
+                                    alert('권한이 없습니다.');
+                                } else {
+                                    console.error("오류:", textStatus, errorThrown);
+                                    alert('승인 중 오류가 발생했습니다.'); 
+                                }
                             }
-                        }
+                        });
                     });
-                });
-            
+
+                buttonsCell.append(acceptButton);
+            }
+
             row.append($('<td>').text(item.finalTime));
-            row.append($('<td>').append(rejectButton).append('&nbsp;').append('&nbsp;').append(acceptButton)); // 버튼 추가
+            row.append(buttonsCell);
             tableBody.append(row);
         });
     }
