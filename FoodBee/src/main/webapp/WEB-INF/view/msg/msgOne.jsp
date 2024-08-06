@@ -125,26 +125,47 @@
 	
 <script>
 	$(document).ready(function(){
+		
 		let empName = '${empName}';
 		let receivers = '${m.receivers}';
+		console.log(receivers);
 		let currentState = '${m.readYN}';
+		console.log(currentState);
 		console.log(empName);
 		console.log(receivers);
-		if(receivers.includes(empName) && currentState === 'N' ){
-			$.ajax({
-				url:'${pageContext.request.contextPath}/msg/updateReadYN',
-				method:'post',
-				data : {
-					msgNo : '${m.msgNo}'
-				},
-				success:function(json){
-					console.log('읽음상태 업데이트 완료');
-				}
-			})
 		
-		}else{
-			console.log('업데이트 되지 않음');
-		}
+	    let receiverList = receivers.split(',');
+	    let readUpdate = false;
+	    
+	    for (let i = 0; i < receiverList.length; i++) {
+	        let receiver = receiverList[i].split('|');
+	        let name = receiver[0];
+	        let status = receiver[1];
+	        
+	        console.log('Receiver: ${name}, Status: ${status}');
+	        
+	        if (name === empName && status === 'N') {
+	        	readUpdate = true;
+	            break;
+	        }
+	    }
+	    
+	    if (readUpdate) {
+	        $.ajax({
+	            url: '${pageContext.request.contextPath}/msg/updateReadYN',
+	            method: 'post',
+	            data: {
+	                msgNo: '${m.msgNo}'
+	            },
+	            success: function(json){
+	                console.log('읽음 상태 업데이트 완료');
+	            }
+	        });
+	    } else {
+	        console.log('업데이트 되지 않음');
+	    }
+	    
+	
 		
 		
 		$('#backTo').click(function(){
