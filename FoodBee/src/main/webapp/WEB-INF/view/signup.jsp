@@ -11,65 +11,7 @@
 <!-- Custom Stylesheet -->
 <link href="css/style.css" rel="stylesheet">
 
-<!-- <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
-    form {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 400px;
-    }
-    form div {
-        margin-bottom: 15px;
-    }
-    form div label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-    form div input[type="text"],
-    form div input[type="password"],
-    form div input[type="number"],
-    form div input[type="file"],
-    form div input[type="button"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-    form div button[type="submit"] {
-        background-color: #28a745;
-        color: #fff;
-        border: none;
-        padding: 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-    }
-    form div button[type="submit"]:hover {
-        background-color: #218838;
-    }
-    .error-message {
-        color: red;
-        font-size: 0.9em;
-        margin-top: 5px;
-    }
-    .form-title {
-        font-size: 1.5em;
-        margin-bottom: 20px;
-        text-align: center;
-    }
-</style> -->
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
@@ -189,7 +131,7 @@
        										</div>
                                         </div>
                                         <div class="form-group row">
-								            <label class="col-lg-4 col-form-label" for="profileImg">프로필 사진 <span class="text-danger">*</span>
+								            <label class="col-lg-4 col-form-label" for="profileImg">프로필 사진 <span class="text-danger"></span>
 								            </label>
 								            <div class="col-lg-8">
 								            	<input type="file" name="profileImg" id="profileImg" class="form-control">
