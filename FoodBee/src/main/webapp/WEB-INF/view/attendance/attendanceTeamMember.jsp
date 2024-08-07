@@ -306,7 +306,7 @@ function updateTable(data) {
                         });
                     });
 
-                buttonsCell.append(rejectButton).append('&nbsp;').append('&nbsp;').append(acceptButton);
+                buttonsCell.append(acceptButton).append('&nbsp;').append('&nbsp;').append(rejectButton);
             } else if (item.approvalState === '반려') {
                 // 승인 버튼만 추가
                 let acceptButton = $('<button>')

@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gd.foodbee.mapper.RevenueMapper">
 	
+	<!-- 해당 년월 카테고리 출력 -->
+	<select id="selectRevenueCategoriesByMonth" parameterType="String" resultType="String">
+		SELECT 
+			category_name categoryName
+		FROM 
+			revenue_history
+        WHERE 
+        	reference_month = #{referenceMonth}
+	
+	</select>
+	
 	<!-- 해당 월 매출액 출력 -->
 	<select id="selectMonthRevenue" parameterType="String" resultType="com.gd.foodbee.dto.RevenueDTO">
 		SELECT 
@@ -12,7 +23,7 @@
 		FROM 
 			revenue_history
 		WHERE 
-			reference_month = #{referenceMonth};
+			reference_month = #{referenceMonth}
 	</select>
 	
 	<!-- 해당년도 전체 매출 -->

@@ -45,6 +45,21 @@ public class RevenueController {
 		return list;
 	}
 	
+	// 해당 월 카테고리 출력
+	// 파라미터 : String referenceMonth
+	// 반환 값 : List<String>
+	// 사용 페이지 : /monthRevenue
+	@PostMapping("/revenue/getCategory")
+	@ResponseBody
+	public List<String> getCategory(@RequestParam(name="YearMonth") String referenceMonth) {
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
+		
+		List<String> list = revenueService.getCategory(referenceMonth);
+		log.debug(TeamColor.GREEN + "list => " + list.toString());
+		
+		return list;
+	}
+	
 	// 전체/카테고리 매출액 출력
 	// 사용 페이지 : /categoryRevenue
 	@GetMapping("/revenue/categoryRevenue")

@@ -334,35 +334,36 @@ $(document).ready(function() {
 	
 	
 	
-    // 현재 날짜를 가져와 셀렉트 박스에 년도와 월 추가
+	// 현재 날짜를 가져와 셀렉트 박스에 년도와 월 추가
 	const currentDate = new Date();
-    const currentYear = currentDate.getFullYear(); // 현재 년도
-    const currentMonth = currentDate.getMonth() + 1; // 현재 월 (0부터 시작하므로 +1)
+	const currentYear = currentDate.getFullYear(); // 현재 년도
+	const currentMonth = currentDate.getMonth() + 1; // 현재 월 (0부터 시작하므로 +1)
 
-    const yearSelect = $('#yearSelect');
-    const monthSelect = $('#monthSelect');
-    // 현재 년도만 추가
-    yearSelect.append(new Option(currentYear + '년', currentYear));
-    yearSelect.append(new Option(currentYear - 1 + '년', currentYear - 1));
-    // 초기 데이터 호출 (현재 년도와 월 기준 전월 데이터)
-    let initialYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-    let initialMonth = currentMonth === 1 ? 12 : currentMonth - 1;
-    yearSelect.val(initialYear);
-    monthSelect.val(initialMonth);
+	const yearSelect = $('#yearSelect');
+	const monthSelect = $('#monthSelect');
+
+	// 현재 년도만 추가
+	yearSelect.append(new Option(currentYear + '년', currentYear));
+
+	// 초기 데이터 호출 (현재 년도와 월 기준 전월 데이터)
+	let initialYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+	let initialMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+	yearSelect.val(initialYear);
 
 	// 월 선택 옵션 설정 함수
-    function updateMonthSelect(selectedYear) {
-        monthSelect.empty();
-        const maxMonth = selectedYear == currentYear ? currentMonth - 1 : 12; // 현재 년도인 경우 현재 월은 제외
-        for (let month = 1; month <= maxMonth; month++) {
-            const monthValue = month < 10 ? '0' + month : month;
-            monthSelect.append(new Option(monthValue + '월', monthValue));
-        }
-    }
+	function updateMonthSelect(selectedYear) {
+	    monthSelect.empty();
+	    monthSelect.append(new Option('---선택---', '')); // 기본값 추가
+	    const maxMonth = selectedYear == currentYear ? currentMonth - 1 : 12; // 현재 년도인 경우 현재 월은 제외
+	    for (let month = 1; month <= maxMonth; month++) {
+	        const monthValue = month < 10 ? '0' + month : month;
+	        monthSelect.append(new Option(monthValue + '월', monthValue));
+	    }
+	}
 
-    // 초기 월 설정
-    updateMonthSelect(initialYear);
-    monthSelect.val(initialMonth < 10 ? '0' + initialMonth : initialMonth);
+	// 초기 월 설정
+	updateMonthSelect(initialYear);
+	monthSelect.val(''); // 기본값으로 '---선택---'을 선택
     
     // 카테고리 추가 기능
     $(document).on('click', '.add-category', function() {
@@ -403,6 +404,50 @@ $(document).ready(function() {
         $('#description').val(description);
     });
 	
+ 	// 연도와 월 선택 후 AJAX 호출
+    $('#yearSelect, #monthSelect').change(function() {
+        const year = $('#yearSelect').val();
+        const month = $('#monthSelect').val();
+        const referenceMonth = year + '-' + month; // YYYY-MM 형식
+
+        // AJAX 호출
+        $.ajax({
+            url: '${pageContext.request.contextPath}/revenue/getCategory',
+            method: 'POST',
+            data: {
+                YearMonth: referenceMonth
+            },
+            success: function(response) {
+                // 카테고리를 선택한 후의 경고를 처리하기 위해 전역 변수 설정
+                window.isCategoryChecked = response && response.length > 0;
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX 호출 중 오류 발생:", error);
+            }
+        });
+    });
+
+ 	// 카테고리 선택 시 경고
+    $(document).on('change', '.categorySelect', function() {
+        const selectedCategory = $(this).val();
+        const year = $('#yearSelect').val();
+        const month = $('#monthSelect').val();
+        const referenceMonth = year + '-' + month; // YYYY-MM 형식
+
+        // 월 셀렉트 박스의 값 확인
+        if (month === '') { // 월이 선택되지 않은 경우
+            alert("월을 선택해 주세요.");
+            $(this).val('category0'); // 카테고리 초기화
+            return; // 함수 종료
+        }
+
+        // 카테고리를 선택했을 때만 경고
+        if (selectedCategory !== 'category0' && window.isCategoryChecked) {
+            alert("이미 데이터가 존재합니다.");
+            $(this).val('category0'); // 선택된 카테고리를 초기화
+        }
+    });
+ 	
 	$('#submitBtn').click(function(e) {
 	    let drafterNo = $('#drafterEmpNo').val();
 	    console.log(drafterNo);
@@ -450,6 +495,7 @@ $(document).ready(function() {
 	        alert(errorMessage);
 	    }
 	});
+	
 	/* 파일 여러 개 추가  */
 	let fileOrder = 1;
 	// 파일 추가 버튼 클릭 시

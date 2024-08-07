@@ -6,7 +6,7 @@
 	<select id="selectAttendanceRecordByWeek" parameterType="int" resultType="map">
 	    SELECT 
 		    DATE(update_start_time) workDate, 
-		    SUM(TIMESTAMPDIFF(SECOND, update_start_time, update_end_time)) totalSeconds
+		    IFNULL(SUM(TIMESTAMPDIFF(SECOND, update_start_time, update_end_time)), 0) totalSeconds
 		FROM 
 		    attendance
 		WHERE 

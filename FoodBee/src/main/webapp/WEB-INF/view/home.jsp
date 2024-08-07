@@ -113,7 +113,7 @@
                     <!-- 쪽지함 -->
 	                    <div class="col-lg-6 col-md-12">
 	                        <div class="card">
-	                            <div class="card-body">
+	                            <div class="card-body" style="height:233px;">
 	                                <h3 class="card-title text-weight-bold"><a href="${pageContext.request.contextPath}/msg/receivedMsgBox">읽지 않은 쪽지 >> </a></h3>
 	                                <div id="activity">
 	                                	<table class="table responsive">
@@ -364,7 +364,7 @@
             tableBody.empty();
             
             if(json == ""){
-            	tableBody.append("<tr><td colspan='5'>결재 올라온 기안서가 없습니다</td></tr>");
+            	tableBody.append("<tr><td colspan='5'>결재올라온 기안서가 없습니다</td></tr>");
             }else{
            	json.forEach(function(item) {
                 let empNo = currentEmpNo;
@@ -729,10 +729,7 @@
         }            	
     	
         // 총 근무 시간 합산
-        const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);
-        
-        // 그래프 그리기
-        drawWeeklyWorkTimeChart(totalWeeklyWorkTimeInSeconds);
+        const totalWeeklyWorkTimeInSeconds = weeklyWorkTimeInSeconds.reduce((total, hours) => total + hours, 0);                
 	 
 	    // 로그인 시 이전 empNo와 비교하여 로컬 스토리지 초기화
 	    function checkEmpNoChange() {
@@ -767,10 +764,7 @@
 	    };
 
 	    // 퇴근 버튼 클릭 시
-	    document.getElementById('attendanceEndButton').onclick = function() {
-	    	// 주간 근무 시간 업데이트
-	        loadWeeklyAttendance(currentEmpNo);
-
+	    document.getElementById('attendanceEndButton').onclick = function() {	    	
 	        $.ajax({
 	            url: '${pageContext.request.contextPath}/attendance/attendanceEndTime',
 	            method: 'POST',
@@ -785,7 +779,7 @@
 	                const workTime = calculateWorkTime(localStorage.getItem('startTime'), formattedTime);
 	                document.getElementById('workTime').innerText = '근무 시간: ' + workTime;
 	                document.getElementById('workTime').style.display = 'block';
-	                document.getElementById('attendanceEndButton').style.display = 'none';
+	                document.getElementById('attendanceEndButton').style.display = 'none';	                
 	                console.log("퇴근 시간:", formattedTime);
 	            },
 	            error: function(xhr, status, error) {
@@ -793,6 +787,7 @@
 	                console.error(error);
 	            }
 	        });
+
 	    };
 
 	    // 특정 시간에 초기화하는 함수
@@ -857,18 +852,14 @@
 	        setInterval(checkDateChange, 60 * 1000); // 1분마다 날짜 변경 확인
 	    }		
 	    
-	    resetAttendanceTimes(); // 페이지 로드 시 초기화 함수 호출
-	    checkEmpNoChange(); // empNo 변경 확인
-	    checkDateChange(); // 페이지 로드 시 날짜 변경 확인
-	    resetAtSpecificTime(5, 00); // 특정 시간 (예: 오전 5:00)에 초기화 설정
-	    checkDateChangePeriodically(); // 주기적으로 날짜 변경 확인
+	 	checkDateChange(); // 페이지 로드 시 날짜 변경 확인
+	 	checkEmpNoChange(); // empNo 변경 확인
 	    loadAttendanceRecord(); // 출근 기록 로드
 	    loadWeeklyAttendance(currentEmpNo); // 주간 출근 기록 로드
-	    
-	    
-	    
-	    
-	    
+	 	resetAttendanceTimes(); // 페이지 로드 시 초기화 함수 호출	    	    
+	    resetAtSpecificTime(5, 00); // 특정 시간 (예: 오전 5:00)에 초기화 설정	    
+	    checkDateChangePeriodically(); // 주기적으로 날짜 변경 확인
+	    	    	    
 	    // 쪽지함
         function loadMsg(readYN, page){
             $.ajax({

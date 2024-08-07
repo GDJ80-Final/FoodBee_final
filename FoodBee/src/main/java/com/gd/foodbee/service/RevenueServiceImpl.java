@@ -18,6 +18,17 @@ import lombok.extern.slf4j.Slf4j;
 public class RevenueServiceImpl implements RevenueService{
 	@Autowired RevenueMapper revenueMapper;
 	
+	// 해당 년월 카테고리
+	// 파라미터 : String referenceMonth
+	// 반환 값 : List<String>
+	// 사용 클래스 : RevenueController.
+	@Override
+	public List<String> getCategory(String referenceMonth) {
+		log.debug(TeamColor.GREEN + "referenceMonth => " + referenceMonth);
+		
+		return revenueMapper.selectRevenueCategoriesByMonth(referenceMonth);
+	}
+	
 	// 해당 월 매출액 출력
 	// 파라미터 : String referenceMonth
 	// 반환 값 : List<RevenueDTO>

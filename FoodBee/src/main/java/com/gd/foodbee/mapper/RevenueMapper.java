@@ -9,6 +9,12 @@ import com.gd.foodbee.dto.RevenueDTO;
 @Mapper
 public interface RevenueMapper {
 	
+	// 해당 년월 카테고리
+	// 파라미터 : String referenceMonth
+	// 반환값 : List<String>
+	// 사용클래스 : RevenueServiceImpl.getCategory
+	List<String> selectRevenueCategoriesByMonth(String referenceMonth);
+		
 	// 해당 월 매출액 출력
 	// 파라미터 : String referenceMonth
 	// 반환값 : List<RevenueDTO>
