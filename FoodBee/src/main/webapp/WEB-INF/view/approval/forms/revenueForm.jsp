@@ -409,6 +409,7 @@ $(document).ready(function() {
         const year = $('#yearSelect').val();
         const month = $('#monthSelect').val();
         const referenceMonth = year + '-' + month; // YYYY-MM 형식
+        const selectedCategory = $('#categorySelect').val(); // 선택된 카테고리 값 가져오기
 
         // AJAX 호출
         $.ajax({
@@ -418,6 +419,7 @@ $(document).ready(function() {
                 YearMonth: referenceMonth
             },
             success: function(response) {
+            	console.log('getCategory Ajax:', response);
                 // 카테고리를 선택한 후의 경고를 처리하기 위해 전역 변수 설정
                 window.isCategoryChecked = response && response.length > 0;
             },
@@ -441,10 +443,29 @@ $(document).ready(function() {
             return; // 함수 종료
         }
 
-        // 카테고리를 선택했을 때만 경고
-        if (selectedCategory !== 'category0' && window.isCategoryChecked) {
-            alert("이미 데이터가 존재합니다.");
-            $(this).val('category0'); // 선택된 카테고리를 초기화
+     	// 카테고리를 선택했을 때만 경고
+        if (selectedCategory !== 'category0') {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/revenue/getCategory',
+                method: 'POST',
+                data: {
+                    YearMonth: referenceMonth
+                },
+                success: function(response) {
+                    console.log('받아온값:', response);
+
+                    // 선택된 카테고리가 응답 데이터에 존재하는지 확인
+                    let isCategoryExists = response.includes(selectedCategory);
+
+                    if (isCategoryExists) {
+                        alert("이미 데이터가 존재합니다.");
+                        $(this).val('category0'); // 선택된 카테고리를 초기화
+                    }
+                }.bind(this), // bind를 사용하여 this를 바인딩
+                error: function(xhr, status, error) {
+                    console.error("getCategory AJAX 호출 중 오류 발생:", error);
+                }
+            });
         }
     });
  	

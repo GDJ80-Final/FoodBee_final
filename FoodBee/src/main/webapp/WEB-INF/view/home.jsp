@@ -846,11 +846,6 @@
 	            }
 	        });
 	    }
-
-	    // 날짜 변경 확인 주기 설정
-	    function checkDateChangePeriodically() {
-	        setInterval(checkDateChange, 60 * 1000); // 1분마다 날짜 변경 확인
-	    }		
 	    
 	 	checkDateChange(); // 페이지 로드 시 날짜 변경 확인
 	 	checkEmpNoChange(); // empNo 변경 확인
@@ -858,7 +853,6 @@
 	    loadWeeklyAttendance(currentEmpNo); // 주간 출근 기록 로드
 	 	resetAttendanceTimes(); // 페이지 로드 시 초기화 함수 호출	    	    
 	    resetAtSpecificTime(5, 00); // 특정 시간 (예: 오전 5:00)에 초기화 설정	    
-	    checkDateChangePeriodically(); // 주기적으로 날짜 변경 확인
 	    	    	    
 	    // 쪽지함
         function loadMsg(readYN, page){
