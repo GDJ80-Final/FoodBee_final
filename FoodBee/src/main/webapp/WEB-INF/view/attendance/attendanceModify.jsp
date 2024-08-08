@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <title>FoodBee : 전일 근태보고 수정</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="main-wrapper">

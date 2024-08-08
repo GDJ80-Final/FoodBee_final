@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>FoodBee : 회의실 목록</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
     /* 테이블 헤더 중앙 정렬 스타일 추가 */
     table th, td {

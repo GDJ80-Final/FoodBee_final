@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>FoodBee : 근태 조회</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <style>
     .page-link:disabled {
         color: lightgray; /* 비활성화된 버튼의 글씨색을 회색으로 변경 */
