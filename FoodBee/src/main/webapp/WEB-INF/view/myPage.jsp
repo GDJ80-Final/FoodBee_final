@@ -279,6 +279,7 @@
 	                            newImageSelected = false;
 	                            $('#updateProfileBtn').hide();
 	                            $('#profileModal').modal('hide');
+	                            location.reload();
 	                        },
 	                        error: function() {
 	                            alert('프로필 사진 업데이트에 실패했습니다.');
