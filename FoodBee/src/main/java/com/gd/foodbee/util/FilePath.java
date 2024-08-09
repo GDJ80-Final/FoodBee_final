@@ -12,7 +12,8 @@ public class FilePath {
 	public String getFilePath() {
 		String path = null;
 		try {
-			path = System.getProperty("user.dir") + "/src/main/resources/static/upload/";
+			//path = System.getProperty("user.dir") + "/src/main/resources/static/upload/";
+			path = "/home/ubuntu/upload/";
 		} catch(Exception e) {
 			throw new RuntimeException("경로 세팅 실패", e);
 		}

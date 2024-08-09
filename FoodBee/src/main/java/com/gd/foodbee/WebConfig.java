@@ -20,8 +20,14 @@ public class WebConfig implements WebMvcConfigurer{
 	
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		 registry.addResourceHandler("/upload/**")
-         	.addResourceLocations("classpath:/static/upload/");
+		
+		// 배포 후 업로드
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:///home/ubuntu/upload/");
+		// 배포 전 업로드 경로
+		 // registry.addResourceHandler("/upload/**")
+         //	.addResourceLocations("classpath:/static/upload/");
+        
 		 registry.addResourceHandler("/css/**")
 		 	.addResourceLocations("classpath:/static/css/");
 		 registry.addResourceHandler("/js/**")
