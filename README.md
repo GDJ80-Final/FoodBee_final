@@ -91,7 +91,8 @@ Tools: STS4, HeidiSQL, Sequel Ace, Github
 
 - WBS
 
-<img width="1440" alt="스크린샷 2024-08-13 오후 10 57 15" src="https://github.com/user-attachments/assets/97c64cbe-60a2-4a09-95e8-194999fdd0d8">
+<img width="1440" alt="스크린샷 2024-08-13 오후 11 08 32" src="https://github.com/user-attachments/assets/5b027356-eb5a-413e-b149-4f195301a545">
+<img width="1440" alt="스크린샷 2024-08-13 오후 11 08 37" src="https://github.com/user-attachments/assets/45f5f19d-eef1-4f81-b6c4-681014543e5c">
 
 - 테이블 정의서(예시)
 
