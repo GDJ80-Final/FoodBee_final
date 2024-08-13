@@ -91,7 +91,6 @@ Tools: STS4, HeidiSQL, Sequel Ace, Github
 
 - WBS
 
-<img width="1440" alt="스크린샷 2024-08-13 오후 10 57 06" src="https://github.com/user-attachments/assets/f253b000-4c65-42f7-930d-1f1216a31396">
 <img width="1440" alt="스크린샷 2024-08-13 오후 10 57 15" src="https://github.com/user-attachments/assets/97c64cbe-60a2-4a09-95e8-194999fdd0d8">
 
 - 테이블 정의서(예시)
